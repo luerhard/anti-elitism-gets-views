@@ -1,4 +1,7 @@
 [core]
-    remote = test
-['remote "test"']
-    url = http://127.0.0.1:9001
+    remote = minio
+['remote "minio"']
+    url = s3://canyou
+    endpointurl = http://localhost:9000
+    access_key_id = 7MjgORkgBzaVEx4MB0B1
+    secret_access_key = vwF4HChlQmRPJatUlLueNGtKWkXAqDou2RudG8aW

@@ -1,7 +1,7 @@
 [core]
     remote = minio
 ['remote "minio"']
-    url = s3://canyou
-    endpointurl = http://localhost:9000
-    access_key_id = 7MjgORkgBzaVEx4MB0B1
-    secret_access_key = vwF4HChlQmRPJatUlLueNGtKWkXAqDou2RudG8aW
+    url = s3://test-bucket
+    endpointurl = https://lerhard.ddns.net/
+    access_key_id = FbfgSTBQFIDh6vZ7DKyt
+    secret_access_key = tdMGRHSVLgs20FEKSQAalv6lZWhILhpJYNAcv9h3

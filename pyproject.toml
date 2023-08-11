@@ -4,11 +4,40 @@ version = "0.1.0"
 description = ""
 authors = ["Lukas Erhard <luerhard@googlemail.com>"]
 readme = "README.md"
-packages = [{include = "populism_on_yt"}]
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+ipykernel = "^6.25.1"
+pandas = "^2.0.3"
+sqlalchemy = "^2.0.19"
+pytest = "^7.4.0"
 
+[tool.black]
+line-length = 100
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+[tool.ruff]
+select = ["E", "F", "I"]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.isort]
+force-single-line = true
+force-sort-within-sections = true
+lines-after-imports = 1
+known-local-folder = ["src"]
 
 [build-system]
 requires = ["poetry-core"]

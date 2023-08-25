@@ -1,3 +1,4 @@
+"""Analysis on populism on YouTube based on PopBERT."""
 
 from configparser import ConfigParser
 from pathlib import Path

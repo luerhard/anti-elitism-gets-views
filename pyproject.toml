@@ -47,6 +47,7 @@ ignore-init-module-imports = true
 "__init__.py" = ["E402"]
 "docs/**" = ["D"]
 "tests/**" = ["D"]
+"notebooks/**" = ["D"]
 
 [tool.ruff.pydocstyle]
 convention = "google"

@@ -44,4 +44,7 @@ class WhisperPipeline:
             generate_kwargs={"language": "<|de|>"},
         )
 
-        return out["text"]
+        text = out["text"]
+        text = text.strip()
+
+        return text

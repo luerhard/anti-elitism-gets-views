@@ -1,6 +1,0 @@
-outs:
-- md5: 05b667079d5c24ceefdc7dc3973f19fa.dir
-  size: 3880946
-  nfiles: 1
-  hash: md5
-  path: testdata

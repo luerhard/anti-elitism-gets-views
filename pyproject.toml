@@ -18,6 +18,9 @@ levenshtein-distance = "^1.0.1"
 pytest-cases = "^3.6.14"
 
 [tool.pytest.ini_options]
+markers = [
+  "slow: marks a test as slow",
+]
 pythonpath = [
   "."
 ]

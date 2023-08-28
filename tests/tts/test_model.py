@@ -1,5 +1,6 @@
 
 from levenshtein_distance import Levenshtein
+import pytest
 from pytest_cases import parametrize_with_cases
 
 import src
@@ -30,6 +31,7 @@ class Cases:
         return file, transcript, allowed_distance
 
 
+@pytest.mark.slow()
 @parametrize_with_cases("file, exp, max_distance", cases=Cases)
 def test_transcribe(file, exp, max_distance):
     model = WhisperPipeline(model_type = "small")

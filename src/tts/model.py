@@ -3,6 +3,7 @@
 from pathlib import Path
 from typing import Literal
 
+import torch
 from transformers import pipeline
 
 WHISPER_MODELS = Literal["tiny", "small", "medium", "large", "large-v2"]
@@ -19,8 +20,11 @@ class WhisperPipeline:
                 type of model. Defaults to "small".
                 See https://huggingface.co/openai/whisper-large-v2 for more details on the models.
         """
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = f"openai/whisper-{model_type}"
-        self.pipe = pipeline("automatic-speech-recognition", model=self.model_name)
+        self.pipe = pipeline(
+            "automatic-speech-recognition", model=self.model_name, device=self.device,
+        )
 
     def transcribe(self, speech_file: str | Path):
         """Transcribe an audio file.

@@ -12,7 +12,7 @@ class LoadWrapper:
 
     @staticmethod
     def _load_transcript(folder):
-        transcript = (folder / "transcript.txt").read_text()
+        transcript = (folder / "transcript.txt").read_text(encoding="utf-8")
         transcript = transcript.strip()
         return transcript
 

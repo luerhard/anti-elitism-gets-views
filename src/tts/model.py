@@ -15,7 +15,8 @@ class WhisperPipeline:
         """Load the model.
 
         Args:
-            model_type (WHISPER_MODELS, optional): Specify the type of model. Defaults to "small".
+            model_type (["tiny", "small", "medium", "large", "large-v2"], optional): Specify the
+                type of model. Defaults to "small".
                 See https://huggingface.co/openai/whisper-large-v2 for more details on the models.
         """
         self.model_name = f"openai/whisper-{model_type}"

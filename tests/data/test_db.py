@@ -9,10 +9,9 @@ from src.data.models import Base
 from src.data.models import Video
 
 class TestDB:
-
     @classmethod
     def setup_class(cls):
-        cls.engine = create_engine("sqlite:////home/lukas/Desktop/sqlite.db")
+        cls.engine = create_engine("sqlite://")
         Base.metadata.create_all(cls.engine)
 
     @classmethod
@@ -27,7 +26,7 @@ class TestDB:
         assert len(info) == 81
 
         crawler = YTCrawler()
-        video = crawler.add_video(info)
+        video = crawler._parse_info_to_video(info)
 
         with Session(self.engine) as s:
             s.add(video)

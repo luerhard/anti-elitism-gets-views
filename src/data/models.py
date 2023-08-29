@@ -14,6 +14,7 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
+
 class Video(Base):
     __tablename__ = "videos"
 
@@ -44,6 +45,5 @@ class Comment(Base):
     author = Column(String)
     author_is_uploader = Column(Boolean)
     is_favorited = Column(Boolean)
-
 
     video = relationship("Video", uselist=False)

@@ -16,7 +16,15 @@ class YTCrawler:
 class YTDownload:
     """Download a specific video."""
 
-    ydl_opts = {}
+    ydl_opts = {
+        "format": "m4a/bestaudio/best",
+        # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors
+        "postprocessors": [{
+            # Extract audio using ffmpeg
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "m4a",
+        }],
+        }
 
     def __init__(self, output: Path, filename: str = "%(title)s.%(ext)s") -> None:
         """Create a Downloader.

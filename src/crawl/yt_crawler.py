@@ -16,16 +16,6 @@ class YTCrawler:
 class YTDownload:
     """Download a specific video."""
 
-    ydl_opts = {
-        "format": "m4a/bestaudio/best",
-        # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors
-        "postprocessors": [{
-            # Extract audio using ffmpeg
-            "key": "FFmpegExtractAudio",
-            "preferredcodec": "m4a",
-        }],
-        }
-
     def __init__(self, output: Path, filename: str = "%(title)s.%(ext)s") -> None:
         """Create a Downloader.
 
@@ -38,7 +28,22 @@ class YTDownload:
                 One option is: %(uploader)s/  -- to create automatic subfolder for the uploader
                     name.
         """
+        self.ydl_opts = {
+        "format": "m4a/bestaudio/best",
+        # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors
+        "postprocessors": [{
+            # Extract audio using ffmpeg
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "m4a",
+        }],
+        }
+
         self.ydl_opts["outtmpl"] = str(output / filename)
+
+        self.ydl_info_opts = {
+            "getcomments": True,
+        }
+        self.ydl_info_opts.update(self.ydl_opts)
 
     def download(self, url: str):
         """Download a video from youtube.
@@ -54,3 +59,17 @@ class YTDownload:
     def _download(url: str, settings: dict[Any]):
         with YoutubeDL(settings) as ydl:
             ydl.download([url])
+
+    def extract_info(self, url: str):
+        """Get Info of a specific video. Includes comments.
+
+        Args:
+            url (str): Full video URL.
+
+        Returns:
+            dict: Sanitized info dict returned by yt_dlp.
+        """
+        with YoutubeDL(self.ydl_info_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            info = ydl.sanitize_info(info)
+        return info

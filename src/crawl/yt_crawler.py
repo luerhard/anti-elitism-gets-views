@@ -1,16 +1,51 @@
 """Crawl specific YT channels and download the matches."""
 
 
+import datetime as dt
 from pathlib import Path
 from typing import Any
 
 from yt_dlp import YoutubeDL
+
+from src.data.models import Comment
+from src.data.models import Video
 
 class YTCrawler:
     """YT Downloader."""
 
     def __init__(self) -> None:
         pass
+
+    def _parse_info_to_video(self, info: dict[str, Any]):
+        video = Video(
+            id=info["id"],
+            title=info["title"],
+            description=info["description"],
+            channel_id=info["channel_id"],
+            duration=info["duration"],
+            view_count=0 if info["view_count"] is None else info["view_count"],
+            like_count=0 if info["like_count"] is None else info["like_count"],
+            comment_count=0 if info["comment_count"] is None else info["comment_count"],
+            datetime_upload=dt.datetime.strptime(info["upload_date"], "%Y%m%d"),
+            was_live=info["was_live"],
+            relative_file_path="testpath/file.m4a",
+        )
+
+        for c_info in info["comments"]:
+            comment = Comment(
+                id=c_info["id"],
+                text=c_info["text"],
+                datetime_upload=dt.datetime.fromtimestamp(c_info["timestamp"]),
+                parent=c_info["parent"],
+                like_count=0 if c_info["like_count"] is None else c_info["like_count"],
+                author=c_info["author"],
+                author_is_uploader=c_info["author_is_uploader"],
+                is_favorited=c_info["is_favorited"],
+            )
+
+            video.comments.append(comment)
+
+        return video
 
 
 class YTDownload:
@@ -29,13 +64,15 @@ class YTDownload:
                     name.
         """
         self.ydl_opts = {
-        "format": "m4a/bestaudio/best",
-        # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors
-        "postprocessors": [{
-            # Extract audio using ffmpeg
-            "key": "FFmpegExtractAudio",
-            "preferredcodec": "m4a",
-        }],
+            "format": "m4a/bestaudio/best",
+            # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors
+            "postprocessors": [
+                {
+                    # Extract audio using ffmpeg
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "m4a",
+                },
+            ],
         }
 
         self.ydl_opts["outtmpl"] = str(output / filename)

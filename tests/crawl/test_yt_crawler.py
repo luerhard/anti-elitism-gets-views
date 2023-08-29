@@ -20,6 +20,5 @@ def test_extract_info(tmp_path):
     url = "https://www.youtube.com/watch?v=BaW_jenozKc"
     info = ydl.extract_info(url)
 
-
     assert info["title"] == 'youtube-dl test video "\'/\\ä↭𝕐'
     assert info["id"] == "BaW_jenozKc"

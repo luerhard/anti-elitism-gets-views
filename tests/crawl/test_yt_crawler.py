@@ -13,11 +13,11 @@ def test_download(tmp_path):
 
 
 @pytest.mark.online()
-def test_extract_info(tmp_path):
+def test_extract_video_info(tmp_path):
     ydl = YTDownload(output=tmp_path)
     # yt-dlp test video
     url = "https://www.youtube.com/watch?v=BaW_jenozKc"
-    info = ydl.extract_info(url)
+    info = ydl.extract_video_info(url)
 
     assert info["title"] == "youtube-dl test video \"'/\\ä↭𝕐"
     assert info["id"] == "BaW_jenozKc"

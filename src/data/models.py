@@ -14,6 +14,16 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
+class Channel(Base):
+    __tablename__ = "channels"
+
+    id = Column(String, primary_key=True)
+    title = Column(String)
+    description = Column(String)
+    channel_follower_count = Column(BigInteger)
+
+    videos = relationship("Video", uselist=True)
+
 
 class Video(Base):
     __tablename__ = "videos"
@@ -21,7 +31,7 @@ class Video(Base):
     id = Column(String, primary_key=True)
     title = Column(String)
     description = Column(String)
-    channel_id = Column(String, index=True)
+    channel_id = Column(String, ForeignKey("channels.id"), index=True)
     datetime_upload = Column(Date)
     duration = Column(Integer)
     view_count = Column(BigInteger)
@@ -31,6 +41,7 @@ class Video(Base):
     relative_file_path = Column(String)
 
     comments = relationship("Comment", uselist=True)
+    channel = relationship("Channel", uselist=False)
 
 
 class Comment(Base):

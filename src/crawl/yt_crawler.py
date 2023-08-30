@@ -7,6 +7,8 @@ from typing import Any
 
 from yt_dlp import YoutubeDL
 
+from src.data import create_engine
+from src.data.models import Channel
 from src.data.models import Comment
 from src.data.models import Video
 
@@ -14,9 +16,9 @@ class YTCrawler:
     """YT Downloader."""
 
     def __init__(self) -> None:
-        pass
+        self.engine = create_engine()
 
-    def _parse_info_to_video(self, info: dict[str, Any]):
+    def _parse_info_to_video(self, info: dict[str, Any]) -> Video:
         video = Video(
             id=info["id"],
             title=info["title"],
@@ -47,6 +49,9 @@ class YTCrawler:
 
         return video
 
+    def _parse_channel_info(self, info: dict[str, Any]) -> Channel:
+        pass
+
 
 class YTDownload:
     """Download a specific video."""
@@ -75,12 +80,13 @@ class YTDownload:
             ],
         }
 
+        output = Path(output)
         self.ydl_opts["outtmpl"] = str(output / filename)
 
-        self.ydl_info_opts = {
+        self.ydl_video_info_opts = {
             "getcomments": True,
         }
-        self.ydl_info_opts.update(self.ydl_opts)
+        self.ydl_video_info_opts.update(self.ydl_opts)
 
     def download(self, url: str):
         """Download a video from youtube.
@@ -97,7 +103,22 @@ class YTDownload:
         with YoutubeDL(settings) as ydl:
             ydl.download([url])
 
-    def extract_info(self, url: str):
+
+    def extract_channel_info(self, url: str) -> dict:
+        """Get all videos of a channel.
+
+        Args:
+            url (str): Channel URL. Form should be: youtube.com/@ChannelName
+
+        Returns:
+            dict: Channel dict. key "entries" has a list of videos.
+        """
+        with YoutubeDL(self.ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            info = ydl.sanitize_info(info)
+        return info
+
+    def extract_video_info(self, url: str) -> dict:
         """Get Info of a specific video. Includes comments.
 
         Args:
@@ -106,7 +127,7 @@ class YTDownload:
         Returns:
             dict: Sanitized info dict returned by yt_dlp.
         """
-        with YoutubeDL(self.ydl_info_opts) as ydl:
+        with YoutubeDL(self.ydl_video_info_opts) as ydl:
             info = ydl.extract_info(url, download=False)
             info = ydl.sanitize_info(info)
         return info

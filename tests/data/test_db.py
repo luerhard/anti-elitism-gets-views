@@ -25,12 +25,8 @@ class TestDB:
 
         assert len(info) == 81
 
-        crawler = YTCrawler()
-        video = crawler._parse_info_to_video(info)
-
-        with Session(self.engine) as s:
-            s.add(video)
-            s.commit()
+        crawler = YTCrawler(engine = self.engine, output=".")
+        crawler.add_video(info)
 
         with Session(self.engine) as s:
             videos = s.query(Video).all()

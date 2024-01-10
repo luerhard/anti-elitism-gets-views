@@ -9,7 +9,8 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 ipykernel = "^6.25.1"
-pandas = "^2.0.3"
+numpy = ">=1.26.2"
+pandas = ">=2.0.3"
 sqlalchemy = "^2.0.19"
 pytest = "^7.4.0"
 transformers = "^4.31.0"

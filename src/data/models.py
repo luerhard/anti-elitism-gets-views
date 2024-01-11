@@ -22,7 +22,7 @@ class Channel(Base):
     description = Column(String)
     channel_follower_count = Column(BigInteger)
 
-    videos = relationship("Video", uselist=True)
+    videos = relationship("Video", uselist=True, back_populates="channel")
 
 
 class Video(Base):
@@ -40,8 +40,8 @@ class Video(Base):
     was_live = Column(Boolean)
     relative_file_path = Column(String)
 
-    comments = relationship("Comment", uselist=True)
-    channel = relationship("Channel", uselist=False)
+    comments = relationship("Comment", uselist=True, back_populates="video")
+    channel = relationship("Channel", uselist=False, back_populates="videos")
 
 
 class Comment(Base):
@@ -57,4 +57,4 @@ class Comment(Base):
     author_is_uploader = Column(Boolean)
     is_favorited = Column(Boolean)
 
-    video = relationship("Video", uselist=False)
+    video = relationship("Video", uselist=False, back_populates="comments")

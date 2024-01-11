@@ -3,40 +3,59 @@
 
 import datetime as dt
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 from yt_dlp import YoutubeDL
 
+from src.data.models import Base
 from src.data.models import Channel
 from src.data.models import Comment
 from src.data.models import Video
+
 
 class YTCrawler:
     """YT Downloader."""
 
     def __init__(self, engine: Engine, output: Path) -> None:
         self.engine = engine
-        self.ydl = YTDownload(output=output)
+        Base.metadata.create_all(bind=engine)
+        self.output = output
 
-    def add_video(self, info: dict[str, Any]):
+    def download_video(self, url):
+        ydl = YTDownload(output=self.output)
+        info = ydl.extract_video_info(url)
+        video = self._parse_info_to_video(info)
+        if self._video_already_exists(video):
+            raise Exception("Video already exists!")
+        comments = self.parse_comments(info)
+        file_path = ydl.download(url)
+        video.relative_file_path = str(file_path)
+        self.add_video(video, comments)
+
+    def _video_already_exists(self, video: Video) -> bool:
+        with Session(self.engine) as s:
+            video = s.query(Video).filter(Video.id == video.id).one_or_none()
+        if not video:
+            return False
+        return True
+
+    def _comment_already_exists(self, comment: Comment) -> bool:
+        with Session(self.engine) as s:
+            comment = s.query(Comment).filter(Comment.id == comment.id).one_or_none()
+        if comment:
+            return True
+        return False
+
+    def add_video(self, video: Video, comments: Iterable[Comment] | None):
         """Adds a video info dict to the database.
 
         Args:
             info (dict[str, Any]): Video info.
         """
         with Session(self.engine) as s:
-            video = s.query(Video).filter(Video.id == info["id"]).one_or_none()
-            if not video:
-                video = self._parse_info_to_video(info)
-
-            for c_info in info["comments"]:
-                comment = (
-                    s.query(Comment).filter(Comment.id == c_info["id"]).one_or_none()
-                )
-                if not comment:
-                    comment = self._parse_single_comment(c_info)
+            for comment in comments:
                 video.comments.append(comment)
 
             try:
@@ -46,6 +65,17 @@ class YTCrawler:
                 s.rollback()
                 raise
 
+    @staticmethod
+    def _copy_video_file(source: Path, destination_folder: Path):
+        filename = source.name
+        destination_file = destination_folder / filename
+
+        if not (destination_file).exists():
+            destination_file.replace(source)
+        else:
+            raise Exception("File already exists in Storage Folder! {}".format(filename))
+
+        return destination_file
 
     @staticmethod
     def _parse_info_to_video(info: dict[str, Any]) -> Video:
@@ -75,6 +105,13 @@ class YTCrawler:
             author_is_uploader=c_info["author_is_uploader"],
             is_favorited=c_info["is_favorited"],
         )
+
+    def parse_comments(self, info: dict[str, Any]) -> list[Comment]:
+        comments = []
+        for c_info in info["comments"]:
+            comment = self._parse_single_comment(c_info)
+            comments.append(comment)
+        return comments
 
     def _parse_channel_info(self, info: dict[str, Any]) -> Channel:
         pass
@@ -107,15 +144,16 @@ class YTDownload:
             ],
         }
 
-        output = Path(output)
-        self.ydl_opts["outtmpl"] = str(output / filename)
+        self.output = Path(output)
+        self.ydl_opts["outtmpl"] = str(self.output / filename)
 
         self.ydl_video_info_opts = {
             "getcomments": True,
+            "writeinfojson": True,
         }
         self.ydl_video_info_opts.update(self.ydl_opts)
 
-    def download(self, url: str):
+    def download(self, url: str) -> Path:
         """Download a video from youtube.
 
         Settings will be read from the class variable.
@@ -124,6 +162,9 @@ class YTDownload:
             url (str): Full URL.
         """
         self._download(url=url, settings=self.ydl_opts)
+        files_in_folder = list(self.output.iterdir())
+        assert len(files_in_folder) == 1
+        return files_in_folder[0]
 
     @staticmethod
     def _download(url: str, settings: dict[Any]):

@@ -18,17 +18,21 @@ class TestDB:
     def teardown_class(cls):
         pass
 
-    def test_insert_video(self):
+    def test_insert_video(self, tmpdir):
         path = src.PATH / "tests/testdata/info.json"
         with path.open("r") as f:
             info = json.load(f)
 
         assert len(info) == 81
 
-        crawler = YTCrawler(engine = self.engine, output=".")
-        crawler.add_video(info)
+        crawler = YTCrawler(engine = self.engine, output=tmpdir)
+        comments = crawler.parse_comments(info)
+        video = crawler._parse_info_to_video(info)
+        crawler.add_video(video, comments)
 
         with Session(self.engine) as s:
             videos = s.query(Video).all()
+            comments = videos[0].comments
 
         assert len(videos) == 1
+        assert len(comments) == 84

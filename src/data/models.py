@@ -14,6 +14,7 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
+
 class Channel(Base):
     __tablename__ = "channels"
 

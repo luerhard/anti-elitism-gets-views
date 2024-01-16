@@ -3,7 +3,9 @@
 
 import datetime as dt
 from pathlib import Path
+import tempfile
 from typing import Any, Iterable
+import shutil
 
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
@@ -14,6 +16,13 @@ from src.data.models import Channel
 from src.data.models import Comment
 from src.data.models import Video
 
+class YTChannelList:
+
+    def __init__(self, engine: Engine):
+        self.engine = engine
+
+    def crawl_channel_info(self, channel_url: str):
+        pass
 
 class YTCrawler:
     """YT Downloader."""
@@ -22,15 +31,23 @@ class YTCrawler:
         self.engine = engine
         Base.metadata.create_all(bind=engine)
         self.output = output
+        self.ydl = YTDownload(output=self.output)
+
+    def download_channel(self, channel_url):
+        all_ids = self.ydl.extract_video_ids(channel_url=channel_url)
+        base_url = "https://www.youtube.com/watch?v="
+        for id_ in all_ids:
+            url = base_url + id_
+            self.download_video(url)
 
     def download_video(self, url):
-        ydl = YTDownload(output=self.output)
-        info = ydl.extract_video_info(url)
+        info = self.ydl.extract_video_info(url)
         video = self._parse_info_to_video(info)
         if self._video_already_exists(video):
-            raise Exception("Video already exists!")
+            print("Video already exists!")
+            return
         comments = self.parse_comments(info)
-        file_path = ydl.download(url)
+        file_path = self.ydl.download(url)
         video.relative_file_path = str(file_path)
         self.add_video(video, comments)
 
@@ -120,7 +137,7 @@ class YTCrawler:
 class YTDownload:
     """Download a specific video."""
 
-    def __init__(self, output: Path, filename: str = "%(title)s.%(ext)s") -> None:
+    def __init__(self, output: Path, filename: str = "%(id)s.%(ext)s") -> None:
         """Create a Downloader.
 
         Args:
@@ -143,10 +160,11 @@ class YTDownload:
                 },
             ],
         }
+        
 
         self.output = Path(output)
-        self.ydl_opts["outtmpl"] = str(self.output / filename)
-
+        self.output.mkdir(parents=True, exist_ok=True)
+        self.filename = filename
         self.ydl_video_info_opts = {
             "getcomments": True,
             "writeinfojson": True,
@@ -161,13 +179,18 @@ class YTDownload:
         Args:
             url (str): Full URL.
         """
-        self._download(url=url, settings=self.ydl_opts)
-        files_in_folder = list(self.output.iterdir())
-        assert len(files_in_folder) == 1
-        return files_in_folder[0]
 
-    @staticmethod
-    def _download(url: str, settings: dict[Any]):
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmpdir:
+            tmpdir = Path(tmpdir)
+            self.ydl_opts["outtmpl"] = str(tmpdir / self.filename)
+            self._download(url=url, settings=self.ydl_opts)
+            files_in_folder = list(tmpdir.iterdir())
+            assert len(files_in_folder) == 1
+            f = files_in_folder[0]
+            shutil.move(f, self.output / f.name)
+        return self.output / f.name
+
+    def _download(self, url: str, settings: dict[Any]):
         with YoutubeDL(settings) as ydl:
             ydl.download([url])
 
@@ -180,10 +203,21 @@ class YTDownload:
         Returns:
             dict: Channel dict. key "entries" has a list of videos.
         """
-        with YoutubeDL(self.ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=False)
+
+        ydl_opts = {
+            "extract_flat": "in_playlist",
+        }
+
+        with YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url)
             info = ydl.sanitize_info(info)
         return info
+
+    def extract_video_ids(self, channel_url: str):
+        info = self.extract_channel_info(channel_url)
+        ids = [entry["id"] for entry in info["entries"]]
+        return ids
+
 
     def extract_video_info(self, url: str) -> dict:
         """Get Info of a specific video. Includes comments.

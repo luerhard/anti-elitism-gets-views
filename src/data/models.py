@@ -44,6 +44,7 @@ class Video(Base):
     comment_count = Column(BigInteger)
     was_live = Column(Boolean)
     relative_file_path = Column(String)
+    format = Column(String, index=True)
 
     comments = relationship("Comment", uselist=True, back_populates="video")
     channel = relationship("Channel", uselist=False, back_populates="videos")

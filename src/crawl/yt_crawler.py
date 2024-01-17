@@ -4,9 +4,11 @@
 from collections.abc import Iterable
 import datetime as dt
 from pathlib import Path
+import re
 import shutil
 import tempfile
 from typing import Any
+from urllib.parse import urlparse
 
 from sqlalchemy import or_
 from sqlalchemy.engine import Engine
@@ -17,6 +19,7 @@ from src.data.models import Base
 from src.data.models import Channel
 from src.data.models import Comment
 from src.data.models import Video
+from src.logging import logger as log
 
 class YTChannelCrawler:
     """YT Downloader."""
@@ -30,38 +33,73 @@ class YTChannelCrawler:
         self.s = Session(self.engine, expire_on_commit=False)
 
         self.ydl = YTDownload(output=self.output)
-        self.info = self.ydl.extract_channel_info(channel_url)
+        self.info = self.ydl.extract_channel_info(channel_url, channel_only=True)
         self.channel = self.get_channel_by_url(self.channel_url)
 
         self.subfolder = self.output / str(self.channel.uploader_id)
         self.subfolder.mkdir(parents=True, exist_ok=True)
+        log.info("init done.")
 
-    def _extract_video_ids(self):
+    @staticmethod
+    def _extract_video_ids(info):
         """Retuns a list of video ids from the info dict."""
-        ids = [entry["id"] for entry in self.info["entries"]]
+        ids = [entry["id"] for entry in info["entries"]]
         return ids
 
     def download_channel(self):
+        """Download all channel videos. Wrapper around functions for videos and shorts."""
+        log.warning("starting channel videos")
+        self.download_channel_videos()
+        log.warning("starting channel shorts")
+        self.download_channel_shorts()
+
+    def download_channel_shorts(self):
         """Starts the download process for the whole channel."""
-        all_ids = self._extract_video_ids()
+        video_url = f"{self.channel_url.rstrip('/')}/shorts"
+        info = self.ydl.extract_channel_info(video_url)
+        all_ids = self._extract_video_ids(info)
+        base_url = "https://www.youtube.com/shorts/"
+        for id_ in all_ids:
+            url = base_url + id_
+            if self._video_already_exists(id_):
+                log.debug("VideoID %s already exists. Skipping...", id_)
+                continue
+            self._download_video(url=url, channel=self.channel, format="shorts")
+
+    def download_channel_videos(self):
+        """Starts the download process for the whole channel."""
+        video_url = f"{self.channel_url.rstrip('/')}/videos"
+        info = self.ydl.extract_channel_info(video_url)
+        all_ids = self._extract_video_ids(info)
         base_url = "https://www.youtube.com/watch?v="
         for id_ in all_ids:
             url = base_url + id_
-            self._download_video(url=url, channel=self.channel)
+            if self._video_already_exists(id_):
+                log.debug("VideoID %s already exists. Skipping...", id_)
+                continue
+            self._download_video(url=url, channel=self.channel, format="videos")
 
-    def _download_video(self, url, channel):
+    def _download_video(self, url, channel, format):
         info = self.ydl.extract_video_info(url)
         video = self._parse_info_to_video(info)
         if self._video_already_exists(video):
             print("Video already exists!")
             return
+        video.format = format
         comments = self._parse_comments(info)
-        file_path = self.ydl.download(url=url, subfolder=self.subfolder)
+        file_path = self.ydl.download(url=url, subfolder=self.subfolder / format)
         video.relative_file_path = str(file_path.relative_to(self.output))
         self.add_video(channel, video, comments)
 
-    def _video_already_exists(self, video: Video) -> bool:
-        video = self.s.query(Video).filter(Video.id == video.id).one_or_none()
+    def _video_already_exists(self, video: Video | str) -> bool:
+        if isinstance(video, Video):
+            video = self.s.query(Video).filter(Video.id == video.id).one_or_none()
+        elif isinstance(video, str):
+            video = self.s.query(Video).filter(Video.id == video).one_or_none()
+        else:
+            msg = "Undefined format for video!"
+            raise Exception(msg)
+
         if not video:
             return False
         return True
@@ -80,7 +118,7 @@ class YTChannelCrawler:
         Args:
             channel_url: The URL of the Channel. Can be the @-id or the actual channel id.
         """
-        name = channel_url.split("/")[-1]
+        name = re.match("/(@(.*?))(/|$)", urlparse(channel_url).path).group(1)
 
         channel = (
             self.s.query(Channel)
@@ -114,6 +152,7 @@ class YTChannelCrawler:
             video: Video object.
             comments: An Iterable with all Comment object to that video.
         """
+        log.debug("Adding Video: %s", video.title)
         for comment in comments:
             video.comments.append(comment)
 
@@ -166,9 +205,15 @@ class YTChannelCrawler:
 
     def _parse_comments(self, info: dict[str, Any]) -> list[Comment]:
         comments = []
+
+        # happens when comments are turned of on a video
+        if info["comments"] is None:
+            return comments
+
         for c_info in info["comments"]:
             comment = self._parse_single_comment(c_info)
             comments.append(comment)
+
         return comments
 
     def _parse_channel_info(self, info: dict[str, Any]) -> Channel:
@@ -223,6 +268,7 @@ class YTDownload:
         """
         if subfolder:
             output = self.output / subfolder
+            output.mkdir(parents=True, exist_ok=True)
         else:
             output = self.output
 
@@ -240,11 +286,13 @@ class YTDownload:
         with YoutubeDL(settings) as ydl:
             ydl.download([url])
 
-    def extract_channel_info(self, url: str) -> dict:
+    def extract_channel_info(self, url: str, channel_only: bool = False) -> dict:
         """Get all videos of a channel.
 
         Args:
             url (str): Channel URL. Form should be: youtube.com/@ChannelName
+            channel_only: If True, restricts the query to only 1 video. Just to get the channel
+                info as fast as possible.
 
         Returns:
             dict: Channel dict. key "entries" has a list of videos.
@@ -254,6 +302,10 @@ class YTDownload:
             "allow_playlist_files": True,
             "writeinfojson": False,
         }
+
+        if channel_only:
+            ydl_opts["playlistend"] = 1
+
         with YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url)
             info = ydl.sanitize_info(info)

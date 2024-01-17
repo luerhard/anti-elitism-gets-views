@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 import src
-from src.crawl.yt_crawler import YTCrawler
+from src.crawl.yt_crawler import YTChannelCrawler
 from src.data.models import Base
 from src.data.models import Video
 
@@ -25,8 +25,8 @@ class TestDB:
 
         assert len(info) == 81
 
-        crawler = YTCrawler(engine = self.engine, output=tmpdir)
-        comments = crawler.parse_comments(info)
+        crawler = YTChannelCrawler(engine = self.engine, output=tmpdir)
+        comments = crawler._parse_comments(info)
         video = crawler._parse_info_to_video(info)
         crawler.add_video(video, comments)
 

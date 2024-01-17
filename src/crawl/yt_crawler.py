@@ -1,12 +1,14 @@
 """Crawl specific YT channels and download the matches."""
 
 
+from collections.abc import Iterable
 import datetime as dt
 from pathlib import Path
-import tempfile
-from typing import Any, Iterable
 import shutil
+import tempfile
+from typing import Any
 
+from sqlalchemy import or_
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 from yt_dlp import YoutubeDL
@@ -16,71 +18,109 @@ from src.data.models import Channel
 from src.data.models import Comment
 from src.data.models import Video
 
-class YTChannelList:
-
-    def __init__(self, engine: Engine):
-        self.engine = engine
-
-    def crawl_channel_info(self, channel_url: str):
-        pass
-
-class YTCrawler:
+class YTChannelCrawler:
     """YT Downloader."""
 
-    def __init__(self, engine: Engine, output: Path) -> None:
+    def __init__(self, channel_url: str, engine: Engine, output: Path) -> None:
+        self.channel_url = channel_url
+        self.output = output
+
         self.engine = engine
         Base.metadata.create_all(bind=engine)
-        self.output = output
-        self.ydl = YTDownload(output=self.output)
+        self.s = Session(self.engine, expire_on_commit=False)
 
-    def download_channel(self, channel_url):
-        all_ids = self.ydl.extract_video_ids(channel_url=channel_url)
+        self.ydl = YTDownload(output=self.output)
+        self.info = self.ydl.extract_channel_info(channel_url)
+        self.channel = self.get_channel_by_url(self.channel_url)
+
+        self.subfolder = self.output / str(self.channel.uploader_id)
+        self.subfolder.mkdir(parents=True, exist_ok=True)
+
+    def _extract_video_ids(self):
+        """Retuns a list of video ids from the info dict."""
+        ids = [entry["id"] for entry in self.info["entries"]]
+        return ids
+
+    def download_channel(self):
+        """Starts the download process for the whole channel."""
+        all_ids = self._extract_video_ids()
         base_url = "https://www.youtube.com/watch?v="
         for id_ in all_ids:
             url = base_url + id_
-            self.download_video(url)
+            self._download_video(url=url, channel=self.channel)
 
-    def download_video(self, url):
+    def _download_video(self, url, channel):
         info = self.ydl.extract_video_info(url)
         video = self._parse_info_to_video(info)
         if self._video_already_exists(video):
             print("Video already exists!")
             return
-        comments = self.parse_comments(info)
-        file_path = self.ydl.download(url)
-        video.relative_file_path = str(file_path)
-        self.add_video(video, comments)
+        comments = self._parse_comments(info)
+        file_path = self.ydl.download(url=url, subfolder=self.subfolder)
+        video.relative_file_path = str(file_path.relative_to(self.output))
+        self.add_video(channel, video, comments)
 
     def _video_already_exists(self, video: Video) -> bool:
-        with Session(self.engine) as s:
-            video = s.query(Video).filter(Video.id == video.id).one_or_none()
+        video = self.s.query(Video).filter(Video.id == video.id).one_or_none()
         if not video:
             return False
         return True
 
     def _comment_already_exists(self, comment: Comment) -> bool:
-        with Session(self.engine) as s:
-            comment = s.query(Comment).filter(Comment.id == comment.id).one_or_none()
+        comment = self.s.query(Comment).filter(Comment.id == comment.id).one_or_none()
         if comment:
             return True
         return False
 
-    def add_video(self, video: Video, comments: Iterable[Comment] | None):
+    def get_channel_by_url(self, channel_url):
+        """Returns a Channel object of a channel url.
+
+        Adds to DB if the Channel does not already exist.
+
+        Args:
+            channel_url: The URL of the Channel. Can be the @-id or the actual channel id.
+        """
+        name = channel_url.split("/")[-1]
+
+        channel = (
+            self.s.query(Channel)
+            .filter(or_(Channel.uploader_id == name, Channel.id == name))
+            .one_or_none()
+        )
+
+        if channel:
+            return channel
+
+        channel = Channel(
+            id=self.info["channel_id"],
+            channel=self.info["channel"],
+            uploader_id=self.info["uploader_id"],
+            title=self.info["title"],
+            description=self.info["description"],
+            channel_follower_count=self.info["channel_follower_count"],
+            channel_url=self.info["uploader_url"],
+            playlist_count=self.info["playlist_count"],
+        )
+
+        self.s.add(channel)
+        self.s.commit()
+        return channel
+
+    def add_video(self, channel: Channel, video: Video, comments: Iterable[Comment] | None):
         """Adds a video info dict to the database.
 
         Args:
-            info (dict[str, Any]): Video info.
+            channel: Channel object the video belongs to.
+            video: Video object.
+            comments: An Iterable with all Comment object to that video.
         """
-        with Session(self.engine) as s:
-            for comment in comments:
-                video.comments.append(comment)
+        for comment in comments:
+            video.comments.append(comment)
 
-            try:
-                s.add(video)
-                s.commit()
-            except Exception:
-                s.rollback()
-                raise
+        video.channel = channel
+
+        self.s.add(video)
+        self.s.commit()
 
     @staticmethod
     def _copy_video_file(source: Path, destination_folder: Path):
@@ -90,7 +130,8 @@ class YTCrawler:
         if not (destination_file).exists():
             destination_file.replace(source)
         else:
-            raise Exception("File already exists in Storage Folder! {}".format(filename))
+            msg = f"File already exists in Storage Folder! {filename}"
+            raise Exception(msg)
 
         return destination_file
 
@@ -123,7 +164,7 @@ class YTCrawler:
             is_favorited=c_info["is_favorited"],
         )
 
-    def parse_comments(self, info: dict[str, Any]) -> list[Comment]:
+    def _parse_comments(self, info: dict[str, Any]) -> list[Comment]:
         comments = []
         for c_info in info["comments"]:
             comment = self._parse_single_comment(c_info)
@@ -160,7 +201,6 @@ class YTDownload:
                 },
             ],
         }
-        
 
         self.output = Path(output)
         self.output.mkdir(parents=True, exist_ok=True)
@@ -171,14 +211,20 @@ class YTDownload:
         }
         self.ydl_video_info_opts.update(self.ydl_opts)
 
-    def download(self, url: str) -> Path:
+    def download(self, url: str, subfolder: Path | None = None) -> Path:
         """Download a video from youtube.
 
         Settings will be read from the class variable.
 
         Args:
             url (str): Full URL.
+            subfolder: If the file should be downloaded to a subfolder in output, a folder can
+                be passed here.
         """
+        if subfolder:
+            output = self.output / subfolder
+        else:
+            output = self.output
 
         with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmpdir:
             tmpdir = Path(tmpdir)
@@ -187,8 +233,8 @@ class YTDownload:
             files_in_folder = list(tmpdir.iterdir())
             assert len(files_in_folder) == 1
             f = files_in_folder[0]
-            shutil.move(f, self.output / f.name)
-        return self.output / f.name
+            shutil.move(f, output / f.name)
+        return output / f.name
 
     def _download(self, url: str, settings: dict[Any]):
         with YoutubeDL(settings) as ydl:
@@ -203,21 +249,15 @@ class YTDownload:
         Returns:
             dict: Channel dict. key "entries" has a list of videos.
         """
-
         ydl_opts = {
             "extract_flat": "in_playlist",
+            "allow_playlist_files": True,
+            "writeinfojson": False,
         }
-
         with YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url)
             info = ydl.sanitize_info(info)
         return info
-
-    def extract_video_ids(self, channel_url: str):
-        info = self.extract_channel_info(channel_url)
-        ids = [entry["id"] for entry in info["entries"]]
-        return ids
-
 
     def extract_video_info(self, url: str) -> dict:
         """Get Info of a specific video. Includes comments.

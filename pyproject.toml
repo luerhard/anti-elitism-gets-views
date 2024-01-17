@@ -60,6 +60,7 @@ ignore-init-module-imports = true
 "docs/**" = ["D"]
 "tests/**" = ["D"]
 "notebooks/**" = ["D"]
+"pipeline/**" = ["D103"]
 
 [tool.ruff.pydocstyle]
 convention = "google"

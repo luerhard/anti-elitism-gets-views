@@ -1,10 +1,10 @@
 from pathlib import Path
+
 import pytest
 from sqlalchemy import create_engine
 
-from src.crawl.yt_crawler import YTCrawler
+from src.crawl.yt_crawler import YTChannelCrawler
 from src.crawl.yt_crawler import YTDownload
-
 
 @pytest.mark.online()
 def test_download(tmp_path: Path):
@@ -30,20 +30,23 @@ def test_extract_video_info(tmp_path: Path):
 class TestDBInsert:
     @classmethod
     def setup_class(cls):
-        cls.engine = create_engine("sqlite:////home/lukas/Desktop/test.sqlite")
+        cls.engine = create_engine("sqlite:////home/lukas/Desktop/testing/test.sqlite")
         # cls.engine = create_engine("sqlite:///:memory:")
 
     @pytest.mark.online()
     def test_download_and_insert(self, tmp_path: Path):
-        ytc = YTCrawler(engine=self.engine, output=tmp_path)
+        ytc = YTChannelCrawler(engine=self.engine, output=tmp_path)
         # yt-dlp test video
         url = "https://www.youtube.com/watch?v=BaW_jenozKc"
 
-        ytc.download_video(url)
+        ytc._download_video(url)
 
     @pytest.mark.online()
     def test_download_channel(self):
-        ytc = YTCrawler(engine=self.engine, output="/home/lukas/Desktop/channel_videos")
+        ytc = YTChannelCrawler(
+            engine=self.engine,
+            output="/home/lukas/Desktop/testing/channel_videos",
+        )
         # yt-dlp test video
         channel_url = "https://www.youtube.com/@sonorityofficial9831"
 

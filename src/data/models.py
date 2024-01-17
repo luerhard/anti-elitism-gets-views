@@ -19,9 +19,13 @@ class Channel(Base):
     __tablename__ = "channels"
 
     id = Column(String, primary_key=True)
+    channel = Column(String, index=True)
+    uploader_id = Column(String, index=True)
     title = Column(String)
     description = Column(String)
     channel_follower_count = Column(BigInteger)
+    channel_url = Column(String)
+    playlist_count = Column(Integer)
 
     videos = relationship("Video", uselist=True, back_populates="channel")
 

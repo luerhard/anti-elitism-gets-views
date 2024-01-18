@@ -1,0 +1,6 @@
+outs:
+- md5: 8f5e068102def4ce465932f4cedcdb90.dir
+  size: 19911156731
+  nfiles: 2034
+  hash: md5
+  path: '@FDP'

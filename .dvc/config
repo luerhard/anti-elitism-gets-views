@@ -2,6 +2,6 @@
     remote = minio
 ['remote "minio"']
     url = s3://ytpop
-    endpointurl = https://lerhard.ddns.net/
-    access_key_id = nuevztahtVDzalnsUNSW
-    secret_access_key = GgXdW7xXj7Je2VbKz7ylMs6nxi9AxPFbgybdDzZI
+    endpointurl = http://193.196.53.63
+    access_key_id = iQZfsKS107vN3X8cVBT5
+    secret_access_key = gmsD7uBMZkVGjRfJBxENeEVCeBhEaxa3UcVqO7kQ

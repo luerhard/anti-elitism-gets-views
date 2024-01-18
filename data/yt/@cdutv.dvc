@@ -1,0 +1,6 @@
+outs:
+- md5: ed41994e2befe66bfc29bcbbaf7d4dfb.dir
+  size: 18154123755
+  nfiles: 2187
+  hash: md5
+  path: '@cdutv'

@@ -1,6 +1,6 @@
 outs:
-- md5: db80983f792a4f38f38fe2be14f7a476.dir
-  size: 18199330640
+- md5: 55bbb6d606ee7d0e49aa5aaa98654ae9.dir
+  size: 18171721700
   nfiles: 2271
   hash: md5
   path: '@cdutv'

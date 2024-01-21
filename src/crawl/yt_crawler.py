@@ -14,6 +14,7 @@ from sqlalchemy import or_
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 from yt_dlp import YoutubeDL
+from yt_dlp.utils import DownloadError
 
 from src.data.models import Base
 from src.data.models import Channel
@@ -64,7 +65,11 @@ class YTChannelCrawler:
             if self._video_already_exists(id_):
                 log.debug("VideoID %s already exists. Skipping...", id_)
                 continue
-            self._download_video(url=url, channel=self.channel, format="shorts")
+            try:
+                self._download_video(url=url, channel=self.channel, format="shorts")
+            except DownloadError as exc:
+                log.warning("Having Download Error")
+                continue
 
     def download_channel_videos(self):
         """Starts the download process for the whole channel."""
@@ -77,7 +82,11 @@ class YTChannelCrawler:
             if self._video_already_exists(id_):
                 log.debug("VideoID %s already exists. Skipping...", id_)
                 continue
-            self._download_video(url=url, channel=self.channel, format="videos")
+            try:
+                self._download_video(url=url, channel=self.channel, format="videos")
+            except DownloadError as exc:
+                log.warning("Having Download Error")
+                continue
 
     def _download_video(self, url, channel, format):
         info = self.ydl.extract_video_info(url)

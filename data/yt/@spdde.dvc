@@ -1,0 +1,6 @@
+outs:
+- md5: 5382043cfb8ea5d381cc481c9e1395c7.dir
+  size: 25523612748
+  nfiles: 1752
+  hash: md5
+  path: '@spdde'

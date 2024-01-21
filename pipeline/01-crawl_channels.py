@@ -14,14 +14,14 @@ STORAGE_PATH.mkdir(parents=True, exist_ok=True)
 ENGINE = create_engine(f"sqlite:///{STORAGE_PATH / 'metadata.sqlite'}")
 
 YTCHANNELS = [
+    "https://www.youtube.com/@spdde",
     "https://www.youtube.com/@csumedia",
     "https://www.youtube.com/@FDP",
     "https://www.youtube.com/@cdutv",
     "https://www.youtube.com/@DieGruenen",
     "https://www.youtube.com/@AfDFraktionimBundestag",
     "https://www.youtube.com/@AfDTV",
-    "https://www.youtube.com/@dielinke",
-    "https://www.youtube.com/@spdde",
+    "https://www.youtube.com/@DIELINKE",
 ]
 
 

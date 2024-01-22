@@ -25,7 +25,7 @@ class TestDB:
 
         assert len(info) == 81
 
-        crawler = YTChannelCrawler(engine = self.engine, output=tmpdir)
+        crawler = YTChannelCrawler(engine = self.engine, channel_url = "", output=tmpdir)
         comments = crawler._parse_comments(info)
         video = crawler._parse_info_to_video(info)
         crawler.add_video(video, comments)
@@ -36,3 +36,4 @@ class TestDB:
 
         assert len(videos) == 1
         assert len(comments) == 84
+

@@ -4,7 +4,7 @@ import pytest
 from pytest_cases import parametrize_with_cases
 
 import src
-from src.tts import WhisperPipeline
+from src.asr import WhisperPipeline
 
 class LoadWrapper:
 

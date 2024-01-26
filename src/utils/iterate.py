@@ -1,5 +1,6 @@
 # ruff: noqa: D103, D100
 
+
 def chunks(iterable, chunksize=2):
     """generator. chunks an iterable into chunks of size 'chunksize'.
 

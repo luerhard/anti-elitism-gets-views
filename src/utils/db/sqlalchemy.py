@@ -1,11 +1,12 @@
 # ruff: noqa: D103, N806, D100
 import alembic
+from alembic.migration import MigrationContext
 import sqlalchemy as sa
 from tqdm.auto import tqdm
 
 from ..iterate import chunks
 
-def set_fast_sqlite_pragmas(dbapi_connection, connection_record): # noqa: ARG001
+def set_fast_sqlite_pragmas(dbapi_connection, connection_record):  # noqa: ARG001
     cursor = dbapi_connection.cursor()
     cursor.execute("PRAGMA synchronous=OFF")
     cursor.execute("PRAGMA journal_mode=OFF")
@@ -44,7 +45,7 @@ def auto_upgrade_engine(engine, meta):
         return flatten_list(get_op(operations))
 
     connection = engine.connect()
-    migration_context = alembic.migration.MigrationContext.configure(connection)
+    migration_context = MigrationContext.configure(connection)
     op = alembic.operations.Operations(migration_context)
     migration_script = alembic.autogenerate.produce_migrations(migration_context, meta)
     for operation in flatten_operations(migration_script.upgrade_ops):
@@ -53,7 +54,6 @@ def auto_upgrade_engine(engine, meta):
 
 
 def copy_database(source_engine, target_engine, metadata: sa.schema.MetaData, chunk_size: int):
-
     if target_engine.dialect.name == "sqlite":
         sa.event.listen(target_engine, "connect", set_fast_sqlite_pragmas)
 

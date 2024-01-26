@@ -23,7 +23,9 @@ class WhisperPipeline:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = f"openai/whisper-{model_type}"
         self.pipe = pipeline(
-            "automatic-speech-recognition", model=self.model_name, device=self.device,
+            "automatic-speech-recognition",
+            model=self.model_name,
+            device=self.device,
         )
 
     def transcribe(self, speech_file: str | Path):

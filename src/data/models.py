@@ -71,6 +71,7 @@ class Transcript(Base):
     __tablename__ = "transcripts"
 
     id = Column(String, ForeignKey("videos.id"), primary_key=True)
+    model_type = Column(String)
     text = Column(String)
 
     video = relationship("Video", uselist=False, back_populates="transcript")

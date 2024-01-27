@@ -1,16 +1,16 @@
 #!/bin/bash
-#SBATCH --job-name=transribe
+#SBATCH --job-name=transcribe
 #SBATCH --partition=single
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=10
 #SBATCH --gres=gpu:1
-#SBATCH --time=110:00:00
-#SBATCH --mem=60gb
+#SBATCH --time=48:00:00
+#SBATCH --mem=10gb
 
 module load devel/cuda/12.1
 
 cd /home/st/st_st/st_ac138201/ws_ytpop/ytpop
 
 poetry install
-poetry run pipeline/02-run-asr.py
+poetry run python pipeline/02-run-asr.py
 

@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 import src
+from src.logging import logger as log
 from src.asr import WhisperPipeline
 from src.data.models import Base
 from src.data.models import Transcript
@@ -13,17 +14,20 @@ BASE_VIDEO_PATH = src.PATH / "data/yt/"
 
 
 def iter_videos(session) -> Video:
-    query = session.query(Video).outerjoin(Transcript).filter(Transcript.id is None).limit(10)
-    yield query
+    query = session.query(Video).outerjoin(Transcript).filter(Transcript.id == None)
+    for video in query:
+        yield video
 
 
 def main():
     engine = create_engine(src.PS_ENGINE)
     Base.metadata.create_all(engine)
-
-    pipeline = WhisperPipeline(model_type="large-v2")
+    log.info("DB Connection established.")
+    pipeline = WhisperPipeline(model_type="large-v3")
+    log.info("Pipeline loaded.")
     with Session(engine, expire_on_commit=False) as s:
         for video in iter_videos(s):
+            log.debug("Video [%s]: %s", video.id, video.title)
             transcript = Transcript(
                 id=video.id,
                 model_type=pipeline.model_type,

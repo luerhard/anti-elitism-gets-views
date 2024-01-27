@@ -5,8 +5,9 @@ from typing import Literal
 
 import torch
 from transformers import pipeline
+from src.logging import logger as log
 
-WHISPER_MODELS = Literal["tiny", "small", "medium", "large", "large-v2"]
+WHISPER_MODELS = Literal["tiny", "small", "medium", "large", "large-v2" "large-v3"]
 
 
 class WhisperPipeline:
@@ -27,6 +28,7 @@ class WhisperPipeline:
             self.device = device
         self.model_type = model_type
         self.model_name = f"openai/whisper-{self.model_type}"
+        log.debug("Load transformers pipeline")
         self.pipe = pipeline(
             "automatic-speech-recognition",
             model=self.model_name,
@@ -52,7 +54,7 @@ class WhisperPipeline:
             return_timestamps=False,
             chunk_length_s=30,
             stride_length_s=(6, 2),
-            batch_size=16,
+            batch_size=4,
             generate_kwargs={"language": "<|de|>"},
         )
 

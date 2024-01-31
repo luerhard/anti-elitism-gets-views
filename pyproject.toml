@@ -24,6 +24,7 @@ torchaudio = "^2.1.2"
 multiprocessing-logging = "^0.3.4"
 alembic = "^1.13.1"
 psycopg = {extras = ["binary", "pool"], version = "^3.1.17"}
+somajo = "^2.4.0"
 
 [tool.pytest.ini_options]
 markers = [

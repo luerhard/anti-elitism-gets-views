@@ -163,3 +163,4 @@ cython_debug/
 Untitled*.ipynb
 .python-version
 **/.DS_Store
+config.ini

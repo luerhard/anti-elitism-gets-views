@@ -5,25 +5,34 @@ from typing import Literal
 
 import torch
 from transformers import pipeline
+from src.logging import logger as log
 
-WHISPER_MODELS = Literal["tiny", "small", "medium", "large", "large-v2"]
+WHISPER_MODELS = Literal["tiny", "small", "medium", "large", "large-v2" "large-v3"]
 
 
 class WhisperPipeline:
     """Simple Whisper Pipeline to transcribe audio files."""
 
-    def __init__(self, model_type: WHISPER_MODELS = "small") -> None:
+    def __init__(self, model_type: WHISPER_MODELS = "small", device: str | None = None) -> None:
         """Load the model.
 
         Args:
             model_type (["tiny", "small", "medium", "large", "large-v2"], optional): Specify the
                 type of model. Defaults to "small".
                 See https://huggingface.co/openai/whisper-large-v2 for more details on the models.
+            device: Can be set to force the device. Otherwise gpu will be used if available.
         """
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model_name = f"openai/whisper-{model_type}"
+        if not device:
+            self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        else:
+            self.device = device
+        self.model_type = model_type
+        self.model_name = f"openai/whisper-{self.model_type}"
+        log.debug("Load transformers pipeline")
         self.pipe = pipeline(
-            "automatic-speech-recognition", model=self.model_name, device=self.device,
+            "automatic-speech-recognition",
+            model=self.model_name,
+            device=self.device,
         )
 
     def transcribe(self, speech_file: str | Path):
@@ -44,8 +53,8 @@ class WhisperPipeline:
             str(speech_file),
             return_timestamps=False,
             chunk_length_s=30,
-            stride_length_s=[6, 0],
-            batch_size=32,
+            stride_length_s=(6, 2),
+            batch_size=4,
             generate_kwargs={"language": "<|de|>"},
         )
 

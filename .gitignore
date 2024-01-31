@@ -162,3 +162,5 @@ cython_debug/
 .vscode/**
 Untitled*.ipynb
 .python-version
+**/.DS_Store
+config.ini

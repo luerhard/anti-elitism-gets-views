@@ -11,7 +11,7 @@ from src.logging import logger as log
 
 STORAGE_PATH = src.PATH / "data/yt"
 STORAGE_PATH.mkdir(parents=True, exist_ok=True)
-ENGINE = create_engine(f"sqlite:///{STORAGE_PATH / 'metadata.sqlite'}")
+ENGINE = create_engine(src.PS_ENGINE)
 
 YTCHANNELS = [
     "https://www.youtube.com/@spdde",

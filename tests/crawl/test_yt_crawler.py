@@ -30,24 +30,14 @@ def test_extract_video_info(tmp_path: Path):
 class TestDBInsert:
     @classmethod
     def setup_class(cls):
-        cls.engine = create_engine("sqlite:////home/lukas/Desktop/testing/test.sqlite")
-        # cls.engine = create_engine("sqlite:///:memory:")
+        # cls.engine = create_engine("sqlite:////home/lukas/Desktop/testing/test.sqlite")
+        cls.engine = create_engine("sqlite:///:memory:")
 
     @pytest.mark.online()
-    def test_download_and_insert(self, tmp_path: Path):
-        ytc = YTChannelCrawler(engine=self.engine, output=tmp_path)
-        # yt-dlp test video
-        url = "https://www.youtube.com/watch?v=BaW_jenozKc"
-
-        ytc._download_video(url)
-
-    @pytest.mark.online()
-    def test_download_channel(self):
+    def test_download_channel(self, tmp_path):
         ytc = YTChannelCrawler(
             engine=self.engine,
-            output="/home/lukas/Desktop/testing/channel_videos",
+            channel_url="https://www.youtube.com/@sonorityofficial9831",
+            output=tmp_path,
         )
-        # yt-dlp test video
-        channel_url = "https://www.youtube.com/@sonorityofficial9831"
-
-        ytc.download_channel(channel_url)
+        ytc.download_channel_videos()

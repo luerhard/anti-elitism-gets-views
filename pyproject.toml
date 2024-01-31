@@ -22,6 +22,8 @@ torch = "^2.1.2"
 torchvision = "^0.16.2"
 torchaudio = "^2.1.2"
 multiprocessing-logging = "^0.3.4"
+alembic = "^1.13.1"
+psycopg = {extras = ["binary", "pool"], version = "^3.1.17"}
 
 [tool.pytest.ini_options]
 markers = [
@@ -62,6 +64,7 @@ ignore-init-module-imports = true
 "tests/**" = ["D"]
 "notebooks/**" = ["D"]
 "pipeline/**" = ["D103"]
+"notebooks/01-playground/**" = ["D103", "E402", "E501"]
 
 [tool.ruff.pydocstyle]
 convention = "google"

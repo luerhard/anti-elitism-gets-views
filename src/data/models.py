@@ -48,6 +48,7 @@ class Video(Base):
 
     comments = relationship("Comment", uselist=True, back_populates="video")
     channel = relationship("Channel", uselist=False, back_populates="videos")
+    transcript = relationship("Transcript", uselist=False, back_populates="video")
 
 
 class Comment(Base):
@@ -64,3 +65,13 @@ class Comment(Base):
     is_favorited = Column(Boolean)
 
     video = relationship("Video", uselist=False, back_populates="comments")
+
+
+class Transcript(Base):
+    __tablename__ = "transcripts"
+
+    id = Column(String, ForeignKey("videos.id"), primary_key=True)
+    model_type = Column(String)
+    text = Column(String)
+
+    video = relationship("Video", uselist=False, back_populates="transcript")

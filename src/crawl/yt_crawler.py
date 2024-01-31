@@ -67,7 +67,7 @@ class YTChannelCrawler:
                 continue
             try:
                 self._download_video(url=url, channel=self.channel, format="shorts")
-            except DownloadError as exc:
+            except DownloadError:
                 log.warning("Having Download Error")
                 continue
 
@@ -84,7 +84,7 @@ class YTChannelCrawler:
                 continue
             try:
                 self._download_video(url=url, channel=self.channel, format="videos")
-            except DownloadError as exc:
+            except DownloadError:
                 log.warning("Having Download Error")
                 continue
 

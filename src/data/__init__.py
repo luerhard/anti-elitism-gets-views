@@ -10,4 +10,5 @@ def create_engine():
     engine = sqlalchemy.create_engine(db_path)
     return engine
 
+
 __all__ = ["create_engine"]

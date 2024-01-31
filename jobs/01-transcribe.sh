@@ -6,6 +6,8 @@
 #SBATCH --gres=gpu:1
 #SBATCH --time=48:00:00
 #SBATCH --mem=10gb
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=lukas.erhard@sowi.uni-stuttgart.de
 
 module load devel/cuda/12.1
 

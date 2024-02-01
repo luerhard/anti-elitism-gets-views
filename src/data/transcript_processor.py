@@ -27,7 +27,7 @@ class TranscriptProcessor:
             out = self.model(**encodings)
 
         probs = torch.nn.functional.sigmoid(out.logits)
-        probs = probs.detach().numpy()
+        probs = probs.detach().cpu().numpy()
         return probs[0]
 
     def tokenize(self, text: str) -> list[str]:

@@ -14,7 +14,7 @@ ENGINE = create_engine(src.PS_ENGINE)
 
 def iter_transcripts(ENGINE):
     with Session(ENGINE) as session:
-        query = session.query(Transcript).yield_per(20).limit(2)
+        query = session.query(Transcript).yield_per(50)
         for transcript in query:
             yield transcript
 

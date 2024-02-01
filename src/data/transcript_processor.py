@@ -8,11 +8,12 @@ class TranscriptProcessor:
     def __init__(self) -> None:
         self.sentence_splitter = SoMaJo("de_CMC", split_sentences=True)
         self.tokenizer = AutoTokenizer.from_pretrained("luerhard/PopBERT")
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model = AutoModelForSequenceClassification.from_pretrained(
             "luerhard/PopBERT"
-        )
+        ).to(self.device)
 
-    def clean_sentence(self, sentence) -> list[str]:
+    def _clean_sentence(self, sentence) -> list[str]:
         sentence = [tok for tok in sentence if tok != "Musik"]
         return sentence
 
@@ -20,6 +21,8 @@ class TranscriptProcessor:
         encodings = self.tokenizer(
             [sentence], is_split_into_words=True, return_tensors="pt"
         )
+        encodings = encodings.to(self.device)
+
         with torch.inference_mode():
             out = self.model(**encodings)
 
@@ -32,6 +35,6 @@ class TranscriptProcessor:
         sentences = []
         for sentence in sentence_iterator:
             tokens = [tok.text for tok in sentence]
-            sentence = self.clean_sentence(tokens)
+            sentence = self._clean_sentence(tokens)
             sentences.append(sentence)
         return sentences

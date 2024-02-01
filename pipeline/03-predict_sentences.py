@@ -55,7 +55,7 @@ def main():
                 tokens=sentence,
             )
             session.add(row)
-        if not transcript_no % 1:
+        if not transcript_no % 100:
             session.commit()
     # session.commit()
     ENGINE.dispose()

@@ -11,6 +11,7 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy.types import ARRAY
 
 Base = declarative_base()
 
@@ -75,3 +76,16 @@ class Transcript(Base):
     text = Column(String)
 
     video = relationship("Video", uselist=False, back_populates="transcript")
+
+
+class Sentence(Base):
+    __tablename__ = "sentences"
+
+    id = Column(Integer, primary_key=True)
+    video_id = Column(String, ForeignKey("videos.id"), ForeignKey("transcripts.id"), index=True)
+    sentence_no = Column(Integer, index=True)
+    elite = Column(Boolean)
+    pplcentr = Column(Boolean)
+    left = Column(Boolean)
+    right = Column(Boolean)
+    tokens = Column(ARRAY(String))

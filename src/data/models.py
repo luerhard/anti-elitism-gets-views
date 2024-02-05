@@ -54,9 +54,10 @@ class Video(Base):
 
 class Comment(Base):
     __tablename__ = "comments"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String, primary_key=True)
-    video_id = Column(String, ForeignKey("videos.id"), nullable=False)
+    video_id = Column(String, ForeignKey("videos.id"), nullable=False, index=True)
     text = Column(String)
     datetime_upload = Column(DateTime)
     parent = Column(String)

@@ -9,28 +9,33 @@ from src.data.transcript_processor import TranscriptCleaner
 from src.logging import logger as log
 
 ENGINE = create_engine(src.PS_ENGINE)
+DROP_TABLES = False
 
 
-def iter_transcripts(ENGINE):
-    with Session(ENGINE) as session:
-        query = session.query(Transcript).yield_per(50)
-        for transcript in query:
-            yield transcript
+def iter_transcripts(session):
+    transcripts = session.query(Transcript).execution_options(
+        stream_results=True,
+        max_row_buffer=5000,
+    )
+    yield from transcripts
 
 
 def main():
-    Base.metadata.drop_all(ENGINE, tables=[Sentence.__table__])
-    Base.metadata.create_all(ENGINE, tables=[Sentence.__table__])
-    log.info("created all tables.")
+    if DROP_TABLES:
+        log.warn("Dropping tables")
+        Base.metadata.drop_all(ENGINE, tables=[Sentence.__table__])
+        Base.metadata.create_all(ENGINE, tables=[Sentence.__table__])
+        log.info("created all tables.")
 
     cleaner = TranscriptCleaner()
     log.info("Processor loaded.")
 
     session = Session(bind=ENGINE, expire_on_commit=False)
-    for transcript_no, transcript in enumerate(iter_transcripts(ENGINE)):
+    for transcript_no, transcript in enumerate(iter_transcripts(session)):
         log.debug("Processing transcript (%d): %s", transcript_no, transcript.id)
         text = transcript.text
         sentences = cleaner.tokenize(text)
+        cache = []
         for sentence_no, sentence in enumerate(sentences, 1):
             if not sentence:
                 continue
@@ -39,10 +44,13 @@ def main():
                 sentence_no=sentence_no,
                 tokens=sentence,
             )
-            session.add(row)
-        if not transcript_no % 100:
+            cache.append(row)
+        if not transcript_no % 500:
+            session.add_all(cache)
+            cache = []
             session.commit()
-    # session.commit()
+    session.add_all(cache)
+    session.commit()
     ENGINE.dispose()
 
 

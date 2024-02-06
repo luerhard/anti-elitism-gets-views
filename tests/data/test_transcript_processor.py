@@ -1,5 +1,9 @@
 from pytest_cases import parametrize_with_cases
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
 
+import src
+from src.data.models import Transcript
 from src.data.transcript_processor import PopBERTPredictor
 from src.data.transcript_processor import TranscriptCleaner
 
@@ -231,3 +235,42 @@ def test_predictions(data):
     popbert = PopBERTPredictor()
     pred = popbert.predict(data["tokens"], chunksize=32)
     assert sum(p.sum() for p in pred) == data["sum_of_preds"]
+
+
+def test_repitition_counter():
+    text = [
+        "Wir",
+        "haben",
+        "über",
+        "ein",
+        "über",
+        "ein",
+        "über",
+        "ein",
+        "Format",
+        "verhandelt",
+        ".",
+    ]
+
+    ngram, count = TranscriptCleaner._count_duplicate_ngrams(text)
+    assert (ngram, count) == (("über", "ein"), 3)
+
+
+def test_in_der_zukunft():
+    engine = create_engine(src.PS_ENGINE)
+    with Session(engine) as s:
+        transcript = s.query(Transcript).filter(Transcript.id == "QgOHFPNlef0").one()
+        text = transcript.text
+        cleaner = TranscriptCleaner()
+        sentences = cleaner.tokenize(text)
+        assert max(len(sent) for sent in sentences) < 500
+
+
+def test_uber_repetition():
+    engine = create_engine(src.PS_ENGINE)
+    with Session(engine) as s:
+        transcript = s.query(Transcript).filter(Transcript.id == "9ch4oU-cClo").one()
+        text = transcript.text
+        cleaner = TranscriptCleaner()
+        sentences = cleaner.tokenize(text)
+        assert max(len(sent) for sent in sentences) < 500

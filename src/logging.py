@@ -43,7 +43,7 @@ def setup_logging(
         log.addHandler(file_handler)
 
     if streamlevel is not None:
-        stream_fmt = "[ytpop] %(message)s"
+        stream_fmt = "[ytpop:%(asctime)s.%(msecs)03d] %(message)s"
         stream_formatter = logging.Formatter(fmt=stream_fmt, datefmt=datefmt)
 
         stream_handler = logging.StreamHandler(stream=sys.stdout)
@@ -55,4 +55,4 @@ def setup_logging(
     return log
 
 
-logger = setup_logging(streamlevel="DEBUG", filelevel=None)
+logger = setup_logging(streamlevel="INFO", filelevel="DEBUG")

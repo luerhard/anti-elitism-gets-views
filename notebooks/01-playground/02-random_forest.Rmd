@@ -1,0 +1,118 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-02-06"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+library(tidyverse)
+library(ggplot2)
+library(caret)
+library(ranger)
+library(iml)
+library(ggpubr)
+```
+
+```{python}
+from src.data.load import video_dataset
+df = video_dataset()
+```
+
+```{r}
+df <- py$df
+df <- df %>%
+  filter(year > 2017, elite < 0.7, duration < 5000)
+
+train <- df %>%
+  sample_frac(0.7)
+test <- df %>% anti_join(train)
+```
+
+
+```{r}
+form <- formula(
+  like_count ~ channel + elite + comment_count + view_count + year + duration + pplcentr
+)
+```
+
+```{r}
+model <- train(
+  form,
+  method="ranger",
+  importance="impurity",
+  respect.unordered.factors="partition",
+  data=train
+)
+```
+
+```{r}
+imp <- importance(model$finalModel)
+tibble(names = names(imp), importance = imp) %>%
+  arrange(importance) %>%
+  ggplot(aes(x=importance, y=reorder(names, importance))) +
+  geom_bar(stat="identity", show.legend=F)
+```
+
+
+```{r, fig.dim=c(9,16)}
+y_true <- test$like_count
+y_test <- predict(model, test)
+
+test <- test %>%
+  mutate_if(is.factor, ~ as.factor(as.character(.))) %>%
+  mutate_if(is.double, as.numeric)
+
+pred <- Predictor$new(
+  model,
+  data = test,
+  y = "like_count",
+)
+
+elite <- FeatureEffect$new(pred, feature = "elite", method = "ale") %>%
+  plot() +
+  theme(axis.title.y = element_blank())
+
+pplcentr <- FeatureEffect$new(pred, feature = "pplcentr", method = "ale") %>%
+  plot() +
+  theme(axis.title.y = element_blank())
+
+year <- FeatureEffect$new(pred, feature = "year", method = "ale") %>%
+  plot() +
+  theme(axis.title.y = element_blank())
+
+channel <- FeatureEffect$new(pred, feature = "channel", method = "ale") %>%
+  plot() +
+  theme(axis.title.y = element_blank())
+
+view_count <- FeatureEffect$new(pred, feature = "view_count", method = "ale") %>%
+  plot() +
+  theme(axis.title.y = element_blank())
+
+comment_count <- FeatureEffect$new(pred, feature = "comment_count", method = "ale") %>%
+  plot() +
+  theme(axis.title.y = element_blank())
+
+
+duration <- FeatureEffect$new(pred, feature = "duration", method = "ale") %>%
+  plot() +
+  theme(axis.title.y = element_blank())
+
+ggarrange(
+  elite,
+  pplcentr,
+  channel,
+  year,
+  view_count,
+  comment_count,
+  duration,
+  ncol=2, nrow=4
+
+)
+```
+
+```{r}
+MLmetrics::R2_Score(y_true = y_true, y_pred = y_test)
+```
+```

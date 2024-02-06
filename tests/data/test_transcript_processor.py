@@ -1,7 +1,7 @@
-from src.data.transcript_processor import TranscriptProcessor
-
 from pytest_cases import parametrize_with_cases
 
+from src.data.transcript_processor import PopBERTPredictor
+from src.data.transcript_processor import TranscriptCleaner
 
 class Cases:
     def case_first(self):
@@ -128,12 +128,50 @@ class Cases:
                 ".",
             ],
         ]
-        return text, exp
+        return {"text": text, "tokens": exp, "sum_of_preds": 0}
+
+    def case_populist(self):
+        text = (
+            "Das ist Klassenkampf von oben, das ist Klassenkampf im Interesse von "
+            "Vermögenden und Besitzenden gegen die Mehrheit der Steuerzahlerinnen und "
+            "Steuerzahler auf dieser Erde."
+        )
+        exp = [
+            [
+                "Das",
+                "ist",
+                "Klassenkampf",
+                "von",
+                "oben",
+                ",",
+                "das",
+                "ist",
+                "Klassenkampf",
+                "im",
+                "Interesse",
+                "von",
+                "Vermögenden",
+                "und",
+                "Besitzenden",
+                "gegen",
+                "die",
+                "Mehrheit",
+                "der",
+                "Steuerzahlerinnen",
+                "und",
+                "Steuerzahler",
+                "auf",
+                "dieser",
+                "Erde",
+                ".",
+            ],
+        ]
+        return {"text": text, "tokens": exp, "sum_of_preds": 3}
 
     def case_music1(self):
         text = "Musik Musik Musik Bis zum nächsten Mal."
         exp = [["Bis", "zum", "nächsten", "Mal", "."]]
-        return text, exp
+        return {"text": text, "tokens": exp, "sum_of_preds": 0}
 
     def case_music2(self):
         text = (
@@ -173,24 +211,23 @@ class Cases:
             ],
         ]
 
-        return text, exp
+        return {"text": text, "tokens": exp, "sum_of_preds": 0}
 
     def case_music3(self):
         text = "Musik "
         exp = [[]]
-        return text, exp
+        return {"text": text, "tokens": exp, "sum_of_preds": 0}
 
 
-@parametrize_with_cases("text,exp", cases=Cases)
-def test_cleaner(text, exp):
-    cleaner = TranscriptProcessor()
-    sentences = cleaner.tokenize(text)
-    assert sentences == exp
+@parametrize_with_cases("data", cases=Cases)
+def test_cleaner(data):
+    cleaner = TranscriptCleaner()
+    sentences = cleaner.tokenize(data["text"])
+    assert sentences == data["tokens"]
 
 
-@parametrize_with_cases("text,exp", cases=Cases)
-def test_predictions(text, exp):
-    cleaner = TranscriptProcessor()
-    sentences = cleaner.tokenize(text)
-    pred = cleaner.predict_populism(sentences[0])
-    assert sentences == exp
+@parametrize_with_cases("data", cases=Cases)
+def test_predictions(data):
+    popbert = PopBERTPredictor()
+    pred = popbert.predict(data["tokens"], chunksize=32)
+    assert sum(p.sum() for p in pred) == data["sum_of_preds"]

@@ -14,5 +14,4 @@ module load devel/cuda/12.1
 cd /home/st/st_st/st_ac138201/ws_ytpop/ytpop
 
 poetry install
-poetry run python pipeline/02-run-asr.py
-
+poetry run python pipeline/02-run_asr.py

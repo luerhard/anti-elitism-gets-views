@@ -44,13 +44,12 @@ def auto_upgrade_engine(engine, meta):
 
         return flatten_list(get_op(operations))
 
-    connection = engine.connect()
-    migration_context = MigrationContext.configure(connection)
-    op = alembic.operations.Operations(migration_context)
-    migration_script = alembic.autogenerate.produce_migrations(migration_context, meta)
-    for operation in flatten_operations(migration_script.upgrade_ops):
-        op.invoke(operation)
-    connection.close()
+    with engine.begin() as connection:
+        migration_context = MigrationContext.configure(connection)
+        op = alembic.operations.Operations(migration_context)
+        migration_script = alembic.autogenerate.produce_migrations(migration_context, meta)
+        for operation in flatten_operations(migration_script.upgrade_ops):
+            op.invoke(operation)
 
 
 def copy_database(source_engine, target_engine, metadata: sa.schema.MetaData, chunk_size: int):

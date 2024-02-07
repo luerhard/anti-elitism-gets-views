@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=transcribe
+#SBATCH --job-name=popbert
 #SBATCH --partition=single
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=10

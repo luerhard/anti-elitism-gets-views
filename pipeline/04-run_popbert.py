@@ -8,11 +8,11 @@ from src.logging import logger as log
 from src.utils.iterate import chunks
 
 ENGINE = create_engine(src.PS_ENGINE)
-CHUNKSIZE = 2
+CHUNKSIZE = 64
 
 
 def iter_sentences(session):
-    query = session.query(Sentence).yield_per(500)
+    query = session.query(Sentence).execution_options(stream_results=True, max_row_buffer=5000)
     yield from chunks(query, chunksize=CHUNKSIZE)
 
 
@@ -34,8 +34,7 @@ def main():
         session.add_all(sentences)
         if not chunk_no % 100:
             session.commit()
-            break
-    # session.commit()
+    session.commit()
     ENGINE.dispose()
 
 

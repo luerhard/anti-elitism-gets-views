@@ -281,4 +281,5 @@ def test_manifesto_model():
     manifesto = ManifestorPredictor()
     sentence = ["These", "principles", "are", "under", "threat", "."]
     prediction = manifesto.predict(sentence)
-    assert prediction == ["501 - Environmental Protection: Positive"]
+    labels, probs = list(zip(*prediction, strict=False))
+    assert labels == ("501 - Environmental Protection: Positive",)

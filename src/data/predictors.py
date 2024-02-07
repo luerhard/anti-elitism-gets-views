@@ -8,6 +8,7 @@ from transformers import AutoModelForSequenceClassification
 from transformers import AutoTokenizer
 
 import src
+from src.logging import logger as log
 from src.utils.iterate import chunks
 
 class TransformerPredictor(metaclass=ABCMeta):
@@ -119,6 +120,7 @@ class ManifestorPredictor(TransformerPredictor):
     def tokenizer(self):
         if not self._tokenizer:
             self._tokenizer = AutoTokenizer.from_pretrained("xlm-roberta-large")
+            log.info("Manifesto Tokenizer loaded.")
         return self._tokenizer
 
     @property
@@ -129,6 +131,7 @@ class ManifestorPredictor(TransformerPredictor):
                 trust_remote_code=True,
             ).to(self.device)
             self._labels = self._model.config.id2label
+            log.info("Manifesto Classifier loaded.")
 
         return self._model
 
@@ -145,7 +148,8 @@ class ManifestorPredictor(TransformerPredictor):
         return encodings
 
     def _get_probas(self, out):
-        probabilities = torch.softmax(out.logits, dim=1).detach().cpu().numpy()
-        preds = np.argmax(probabilities, axis=1)
+        probs = torch.softmax(out.logits, dim=1).detach().cpu().numpy()
+        preds = np.argmax(probs, axis=1)
+        confidences = probs.max(axis=1)
         labels = [self._labels[i] for i in preds]
-        return labels
+        return list(zip(labels, confidences, strict=True))

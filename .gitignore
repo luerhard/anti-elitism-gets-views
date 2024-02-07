@@ -164,3 +164,5 @@ Untitled*.ipynb
 .python-version
 **/.DS_Store
 config.ini
+.Rproj.user
+**/.Rhistory

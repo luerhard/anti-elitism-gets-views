@@ -11,3 +11,14 @@ config.read(PATH / "config.ini")
 credentials = f"{config['DB']['username']}:{config['DB']['password']}"
 db = f"{config['DB']['ip']}:{config['DB']['port']}/{config['DB']['database']}"
 PS_ENGINE = f"postgresql+psycopg://{credentials}@{db}"
+
+colormap = {
+    "CDU": "#000000",
+    "CSU": "#000000",
+    "Grüne": "#1AA037",
+    "DIE LINKE": "#8B008B",  # SPD complementary for visual disambiguation
+    "FDP": "#FFEF00",
+    "AfD TV": "#0489DB",
+    "AfD-Fraktion Bundestag": "#0489DB",
+    "SPD": "#E3000F",
+}

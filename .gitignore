@@ -166,3 +166,4 @@ Untitled*.ipynb
 config.ini
 .Rproj.user
 **/.Rhistory
+slurm-*.out

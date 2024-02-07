@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=popbert
+#SBATCH --job-name=manifesto
 #SBATCH --partition=single
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=10

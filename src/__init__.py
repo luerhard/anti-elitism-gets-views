@@ -9,8 +9,12 @@ config = ConfigParser()
 config.read(PATH / "config.ini")
 
 credentials = f"{config['DB']['username']}:{config['DB']['password']}"
+
 db = f"{config['DB']['ip']}:{config['DB']['port']}/{config['DB']['database']}"
 PS_ENGINE = f"postgresql+psycopg://{credentials}@{db}"
+
+test_db = f"{config['DB']['ip']}:{config['DB']['port']}/test_{config['DB']['database']}"
+PS_TEST_ENGINE = f"postgresql+psycopg://{credentials}@{test_db}"
 
 colormap = {
     "CDU": "#000000",

@@ -9,7 +9,7 @@ from src.data.transcript_processor import TranscriptCleaner
 from src.logging import logger as log
 
 ENGINE = create_engine(src.PS_ENGINE)
-DROP_TABLES = False
+DROP_TABLES = True
 
 
 def iter_transcripts(session):
@@ -31,11 +31,11 @@ def main():
     log.info("Processor loaded.")
 
     session = Session(bind=ENGINE, expire_on_commit=False)
+    cache = []
     for transcript_no, transcript in enumerate(iter_transcripts(session)):
         log.debug("Processing transcript (%d): %s", transcript_no, transcript.id)
         text = transcript.text
         sentences = cleaner.tokenize(text)
-        cache = []
         for sentence_no, sentence in enumerate(sentences, 1):
             if not sentence:
                 continue

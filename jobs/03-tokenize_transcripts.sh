@@ -3,7 +3,7 @@
 #SBATCH --partition=single
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=10
-#SBATCH --time=08:00:00
+#SBATCH --time=03:00:00
 #SBATCH --mem=10gb
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=lukas.erhard@sowi.uni-stuttgart.de

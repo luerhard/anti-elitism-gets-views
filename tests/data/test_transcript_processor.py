@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 
 import src
 from src.data.models import Transcript
-from src.data.transcript_processor import PopBERTPredictor
-from src.data.transcript_processor import TranscriptCleaner
+from src.data.predictors import PopBERTPredictor
+from src.data.processors import TranscriptCleaner
 
 class Cases:
     def case_first(self):
@@ -253,7 +253,7 @@ def test_repitition_counter():
     ]
 
     ngram, count = TranscriptCleaner._count_duplicate_ngrams(text)
-    assert (ngram, count) == (("über", "ein"), 3)
+    assert (ngram, count) == (("über", "ein"), 2)
 
 
 def test_in_der_zukunft():

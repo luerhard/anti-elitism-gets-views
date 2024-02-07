@@ -6,6 +6,7 @@ from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import Date
 from sqlalchemy import DateTime
+from sqlalchemy import Float
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
@@ -91,4 +92,5 @@ class Sentence(Base):
     left = Column(Boolean)
     right = Column(Boolean)
     manifesto_class = Column(String, index=True)
+    manifesto_confidence = Column(Float, index=True)
     tokens = Column(ARRAY(String))

@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 import src
 from src.data.models import Transcript
+from src.data.predictors import ManifestorPredictor
 from src.data.predictors import PopBERTPredictor
 from src.data.processors import TranscriptCleaner
 
@@ -274,3 +275,10 @@ def test_uber_repetition():
         cleaner = TranscriptCleaner()
         sentences = cleaner.tokenize(text)
         assert max(len(sent) for sent in sentences) < 500
+
+
+def test_manifesto_model():
+    manifesto = ManifestorPredictor()
+    sentence = ["These", "principles", "are", "under", "threat", "."]
+    prediction = manifesto.predict(sentence)
+    assert prediction == ["501 - Environmental Protection: Positive"]

@@ -15,23 +15,25 @@ class TransformerPredictor(metaclass=ABCMeta):
 
     @abstractmethod
     def __init__(self) -> None:
-        raise NotImplementedError
+        ...
 
     @abstractproperty
     @property
-    def model(self): ...
+    def model(self):
+        ...
 
     @abstractproperty
     @property
-    def tokenizer(self): ...
+    def tokenizer(self):
+        ...
 
-    @abstractproperty
-    @property
-    def max_length(self): ...
+    @abstractmethod
+    def tokenize(self):
+        ...
 
     @abstractmethod
     def _get_probas(self, out):
-        raise NotImplementedError
+        ...
 
     def predict(self, tokens: list[str] | list[list[str]], chunksize=32):
         """Predict populism dimensions of an already tokenized sentence."""
@@ -45,14 +47,7 @@ class TransformerPredictor(metaclass=ABCMeta):
 
         results = []
         for batch in chunks(tokens, chunksize=chunksize):
-            encodings = self.tokenizer(
-                batch,
-                is_split_into_words=True,
-                truncation=True,
-                padding=True,
-                return_tensors="pt",
-                max_length=self.max_length,
-            )
+            encodings = self.tokenize(batch)
             encodings = encodings.to(self.device)
 
             with torch.inference_mode():
@@ -65,7 +60,6 @@ class TransformerPredictor(metaclass=ABCMeta):
 
 
 class PopBERTPredictor(TransformerPredictor):
-
     def __init__(self) -> None:
         self._tokenizer = None
         self._model = None
@@ -96,9 +90,16 @@ class PopBERTPredictor(TransformerPredictor):
             )
         return self._model
 
-    @property
-    def max_length(self):
-        return 512
+    def tokenize(self, batch):
+        encodings = self.tokenizer(
+            batch,
+            is_split_into_words=True,
+            truncation=True,
+            padding=True,
+            return_tensors="pt",
+            max_length=512,
+        )
+        return encodings
 
     def _get_probas(self, out):
         probs = torch.nn.functional.sigmoid(out.logits)
@@ -108,11 +109,11 @@ class PopBERTPredictor(TransformerPredictor):
 
 
 class ManifestorPredictor(TransformerPredictor):
-
     def __init__(self) -> None:
         self._tokenizer = None
         self._model = None
         self._max_length = None
+        self._label = None
 
     @property
     def tokenizer(self):
@@ -125,17 +126,26 @@ class ManifestorPredictor(TransformerPredictor):
         if not self._model:
             self._model = AutoModelForSequenceClassification.from_pretrained(
                 "manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1",
-                self.device,
                 trust_remote_code=True,
-            )
+            ).to(self.device)
+            self._labels = self._model.config.id2label
+
         return self._model
 
-    @property
-    def max_length(self):
-        return 300
+    def tokenize(self, batch):
+        encodings = self.tokenizer(
+            batch,
+            batch,
+            is_split_into_words=True,
+            truncation=True,
+            padding="max_length",
+            return_tensors="pt",
+            max_length=300,
+        )
+        return encodings
 
     def _get_probas(self, out):
-        probs = torch.nn.functional.sigmoid(out.logits)
-        probs = probs.detach().cpu().numpy()
-        labels = np.where(probs > self.thresholds, 1, 0)
+        probabilities = torch.softmax(out.logits, dim=1).detach().cpu().numpy()
+        preds = np.argmax(probabilities, axis=1)
+        labels = [self._labels[i] for i in preds]
         return labels

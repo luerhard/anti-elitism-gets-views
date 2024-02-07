@@ -5,6 +5,7 @@ import sqlalchemy as sa
 from tqdm.auto import tqdm
 
 from ..iterate import chunks
+from src.logging import logger as log
 
 def set_fast_sqlite_pragmas(dbapi_connection, connection_record):  # noqa: ARG001
     cursor = dbapi_connection.cursor()
@@ -49,6 +50,7 @@ def auto_upgrade_engine(engine, meta):
         op = alembic.operations.Operations(migration_context)
         migration_script = alembic.autogenerate.produce_migrations(migration_context, meta)
         for operation in flatten_operations(migration_script.upgrade_ops):
+            log.warn("auto_upgrade: %s", operation.to_diff_tuple())
             op.invoke(operation)
 
 

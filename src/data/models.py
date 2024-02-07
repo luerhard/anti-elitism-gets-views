@@ -46,6 +46,7 @@ class Video(Base):
     was_live = Column(Boolean)
     relative_file_path = Column(String)
     format = Column(String, index=True)
+    excluded = Column(Boolean, server_default="false", index=True)
 
     comments = relationship("Comment", uselist=True, back_populates="video")
     channel = relationship("Channel", uselist=False, back_populates="videos")
@@ -89,4 +90,5 @@ class Sentence(Base):
     pplcentr = Column(Boolean)
     left = Column(Boolean)
     right = Column(Boolean)
+    manifesto_class = Column(String, index=True)
     tokens = Column(ARRAY(String))

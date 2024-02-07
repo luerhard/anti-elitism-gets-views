@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 import src
 from src.data.models import Sentence
-from src.data.transcript_processor import PopBERTPredictor
+from src.data.predictors import PopBERTPredictor
 from src.logging import logger as log
 from src.utils.iterate import chunks
 

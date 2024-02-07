@@ -5,7 +5,7 @@ import src
 from src.data.models import Base
 from src.data.models import Sentence
 from src.data.models import Transcript
-from src.data.transcript_processor import TranscriptCleaner
+from src.data.processors import TranscriptCleaner
 from src.logging import logger as log
 
 ENGINE = create_engine(src.PS_ENGINE)

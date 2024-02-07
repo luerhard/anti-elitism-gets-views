@@ -4,19 +4,18 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 import src
-from src.logging import logger as log
 from src.asr import WhisperPipeline
 from src.data.models import Base
 from src.data.models import Transcript
 from src.data.models import Video
+from src.logging import logger as log
 
 BASE_VIDEO_PATH = src.PATH / "data/yt/"
 
 
 def iter_videos(session) -> Video:
-    query = session.query(Video).outerjoin(Transcript).filter(Transcript.id == None)
-    for video in query:
-        yield video
+    query = session.query(Video).outerjoin(Transcript).filter(Transcript.id == None) # noqa: E711
+    yield from query
 
 
 def main():

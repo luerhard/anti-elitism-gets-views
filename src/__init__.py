@@ -21,8 +21,10 @@ colormap = {
     "CSU": "#000000",
     "Grüne": "#1AA037",
     "DIE LINKE": "#8B008B",  # SPD complementary for visual disambiguation
+    "Linke": "#8B008B",  # SPD complementary for visual disambiguation
     "FDP": "#FFEF00",
     "AfD TV": "#0489DB",
     "AfD-Fraktion Bundestag": "#0489DB",
+    "AfD BT": "#0489DB",
     "SPD": "#E3000F",
 }

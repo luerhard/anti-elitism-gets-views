@@ -30,6 +30,7 @@ somajo = "^2.4.0"
 pyarrow = "^15.0.0"
 rpy2 = "^3.5.15"
 scikit-learn = "^1.4.0"
+matplotlib = "^3.8.2"
 
 [tool.pytest.ini_options]
 markers = [
@@ -58,7 +59,7 @@ select = [
 "Q", # flake8-quotes
 "UP", # pyupgrade
 ]
-ignore = ["D107"]
+ignore = ["D107", "E712"]
 target-version = "py311"
 line-length = 100
 ignore-init-module-imports = true

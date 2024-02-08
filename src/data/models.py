@@ -47,7 +47,7 @@ class Video(Base):
     was_live = Column(Boolean)
     relative_file_path = Column(String)
     format = Column(String, index=True)
-    excluded = Column(Boolean, server_default="false", index=True)
+    is_valid = Column(Boolean, server_default="true", index=True)
 
     comments = relationship("Comment", uselist=True, back_populates="video")
     channel = relationship("Channel", uselist=False, back_populates="videos")
@@ -67,6 +67,7 @@ class Comment(Base):
     author = Column(String)
     author_is_uploader = Column(Boolean)
     is_favorited = Column(Boolean)
+    is_valid = Column(Boolean, server_default="true", index=True)
 
     video = relationship("Video", uselist=False, back_populates="comments")
 
@@ -94,3 +95,4 @@ class Sentence(Base):
     manifesto_class = Column(String, index=True)
     manifesto_confidence = Column(Float, index=True)
     tokens = Column(ARRAY(String))
+    is_valid = Column(Boolean, server_default="true", index=True)

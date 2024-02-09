@@ -3,6 +3,8 @@
 from configparser import ConfigParser
 from pathlib import Path
 
+import pandas as pd
+
 PATH = Path(__file__).parent.parent
 
 config = ConfigParser()
@@ -28,3 +30,5 @@ colormap = {
     "AfD BT": "#0489DB",
     "SPD": "#E3000F",
 }
+
+r_colormap = pd.DataFrame(colormap.items(), columns=["channel", "color"])

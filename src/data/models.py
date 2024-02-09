@@ -52,6 +52,7 @@ class Video(Base):
     comments = relationship("Comment", uselist=True, back_populates="video")
     channel = relationship("Channel", uselist=False, back_populates="videos")
     transcript = relationship("Transcript", uselist=False, back_populates="video")
+    sentences = relationship("Sentence", uselist=True, back_populates="video")
 
 
 class Comment(Base):
@@ -96,3 +97,5 @@ class Sentence(Base):
     manifesto_confidence = Column(Float, index=True)
     tokens = Column(ARRAY(String))
     is_valid = Column(Boolean, server_default="true", index=True)
+
+    video = relationship("Video", uselist=False, back_populates="sentences")

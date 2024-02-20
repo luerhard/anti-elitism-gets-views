@@ -46,7 +46,7 @@ def main():
         for sentence, pred in zip(sentences, predictions, strict=True):
             label, confidence = pred
             sentence.manifesto_class = label
-            sentence.manifesto_confidence = confidence
+            sentence.manifesto_confidence = float(confidence)
 
         session.add_all(sentences)
         if not chunk_no % 100:

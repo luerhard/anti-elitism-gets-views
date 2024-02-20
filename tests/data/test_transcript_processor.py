@@ -7,6 +7,7 @@ from src.data.models import Transcript
 from src.data.predictors import ManifestorPredictor
 from src.data.predictors import PopBERTPredictor
 from src.data.processors import TranscriptCleaner
+from src.utils.iterate import flatten_list
 
 class Cases:
     def case_first(self):
@@ -279,7 +280,36 @@ def test_uber_repetition():
 
 def test_manifesto_model():
     manifesto = ManifestorPredictor()
-    sentence = ["These", "principles", "are", "under", "threat", "."]
-    prediction = manifesto.predict(sentence)
+    cleaner = TranscriptCleaner()
+    sentence = "These principles are under threat."
+    sentence = cleaner.tokenize(sentence)
+    # prediction = manifesto.predict(sentence, sentence)
+    # labels, probs = list(zip(*prediction, strict=False))
+    # assert labels == ("501 - Environmental Protection: Positive",)
+
+    context = (
+        "Human rights and international humanitarian law are fundamental pillars "
+        "of a secure global system."
+    )
+    context = cleaner.tokenize(context)
+    prediction = manifesto.predict(sentence, context)
     labels, probs = list(zip(*prediction, strict=False))
-    assert labels == ("501 - Environmental Protection: Positive",)
+    assert labels == ("201 - Freedom and Human Rights",)
+
+
+def test_manifesto_batch():
+    manifesto = ManifestorPredictor()
+    cleaner = TranscriptCleaner()
+    sentences = ["These principles are under threat.", "Ausländer müssen raus."]
+    sentences = [flatten_list(cleaner.tokenize(sent)) for sent in sentences]
+    contexts = [
+        (
+            "Human rights and international humanitarian law are fundamental pillars "
+            "of a secure global system. And i love sports."
+        ),
+        "Das Boot ist voll.",
+    ]
+    contexts = [cleaner.tokenize(ctx) for ctx in contexts]
+    prediction = manifesto.predict(sentences, contexts)
+    labels, probs = list(zip(*prediction, strict=False))
+    assert labels == ("201 - Freedom and Human Rights", "608 - Multiculturalism: Negative")

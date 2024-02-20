@@ -8,7 +8,7 @@ from src.data.predictors import ManifestorPredictor
 from src.logging import logger as log
 from src.utils.iterate import flatten_list
 
-CHUNKSIZE = 4
+CHUNKSIZE = 32
 CONTEXT_WINDOW = 2
 
 ENGINE = create_engine(src.PS_ENGINE)
@@ -19,7 +19,6 @@ def iter_sentences(session):
         session.query(Video)
         .options(subqueryload(Video.sentences))
         .execution_options(stream_results=True, max_row_buffer=500)
-        .limit(2)
     )
     yield from videos
 

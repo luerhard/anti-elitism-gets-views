@@ -10,54 +10,30 @@ from transformers import AutoTokenizer
 import src
 from src.logging import logger as log
 from src.utils.iterate import chunks
+from src.utils.iterate import flatten_list
 
 class TransformerPredictor(metaclass=ABCMeta):
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     @abstractmethod
-    def __init__(self) -> None:
-        ...
+    def __init__(self) -> None: ...
 
     @abstractproperty
     @property
-    def model(self):
-        ...
+    def model(self): ...
 
     @abstractproperty
     @property
-    def tokenizer(self):
-        ...
+    def tokenizer(self): ...
 
     @abstractmethod
-    def tokenize(self):
-        ...
+    def tokenize(self): ...
 
     @abstractmethod
-    def _get_probas(self, out):
-        ...
+    def _get_probas(self, out): ...
 
-    def predict(self, tokens: list[str] | list[list[str]], chunksize=32):
-        """Predict populism dimensions of an already tokenized sentence."""
-        # ensure correct batch format
-        if len(tokens) < 1:
-            # if tokens is empty, raise Error
-            tokens = [[]]
-        elif isinstance(tokens, list) and isinstance(tokens[0], str):
-            # if tokens is a single sentence wrap in in batch
-            tokens = [tokens]
-
-        results = []
-        for batch in chunks(tokens, chunksize=chunksize):
-            encodings = self.tokenize(batch)
-            encodings = encodings.to(self.device)
-
-            with torch.inference_mode():
-                out = self.model(**encodings)
-
-            probas = self._get_probas(out)
-            results.extend(probas)
-
-        return results
+    @abstractmethod
+    def predict(self): ...
 
 
 class PopBERTPredictor(TransformerPredictor):
@@ -108,6 +84,29 @@ class PopBERTPredictor(TransformerPredictor):
         labels = np.where(probs > self.thresholds, 1, 0)
         return labels
 
+    def predict(self, tokens: list[str] | list[list[str]], chunksize=32):
+        """Predict populism dimensions of an already tokenized sentence."""
+        # ensure correct tokens-batch format
+        if len(tokens) < 1:
+            # if tokens is empty, raise Error
+            tokens = [[]]
+        elif isinstance(tokens, list) and isinstance(tokens[0], str):
+            # if tokens is a single sentence wrap in in batch
+            tokens = [tokens]
+
+        results = []
+        for batch in chunks(tokens, chunksize=chunksize):
+            encodings = self.tokenize(batch)
+            encodings = encodings.to(self.device)
+
+            with torch.inference_mode():
+                out = self.model(**encodings)
+
+            probas = self._get_probas(out)
+            results.extend(probas)
+
+        return results
+
 
 class ManifestorPredictor(TransformerPredictor):
     def __init__(self) -> None:
@@ -135,10 +134,10 @@ class ManifestorPredictor(TransformerPredictor):
 
         return self._model
 
-    def tokenize(self, batch):
+    def tokenize(self, tokens, context):
         encodings = self.tokenizer(
-            batch,
-            batch,
+            tokens,
+            context,
             is_split_into_words=True,
             truncation=True,
             padding="max_length",
@@ -153,3 +152,46 @@ class ManifestorPredictor(TransformerPredictor):
         confidences = probs.max(axis=1)
         labels = [self._labels[i] for i in preds]
         return list(zip(labels, confidences, strict=True))
+
+    def predict(
+        self,
+        tokens: list[str] | list[list[str]],
+        context: list[str] | list[list[str]] | None = None,
+        chunksize=32,
+    ):
+        """Predict populism dimensions of an already tokenized sentence."""
+        # ensure correct tokens-batch format
+        if len(tokens) < 1:
+            # if tokens is empty, raise Error
+            tokens = [[]]
+        elif isinstance(tokens, list) and isinstance(tokens[0], str):
+            # if tokens is a single sentence wrap in in batch
+            tokens = [tokens]
+
+        # ensure correct context-batch format
+        if not context:
+            context = tokens
+        if len(context) < 1:
+            # if tokens is empty, raise Error
+            context = [[]]
+        elif isinstance(context, list) and isinstance(context[0], str):
+            # if tokens is a single sentence wrap in in batch
+            context = [context]
+            context = [flatten_list(cxt) for cxt in context]
+        else:
+            context = [flatten_list(cxt) for cxt in context]
+
+        results = []
+        token_chunks = chunks(tokens, chunksize=chunksize)
+        context_chunks = chunks(context, chunksize=chunksize)
+        for toks, cxts in zip(token_chunks, context_chunks, strict=True):
+            encodings = self.tokenize(toks, cxts)
+            encodings = encodings.to(self.device)
+
+            with torch.inference_mode():
+                out = self.model(**encodings)
+
+            probas = self._get_probas(out)
+            results.extend(probas)
+
+        return results

@@ -28,10 +28,10 @@ def main():
 
     session = Session(bind=ENGINE, expire_on_commit=False)
     for chunk_no, video in enumerate(iter_sentences(session), 1):
-        log.debug("Processing chunk: %d", chunk_no)
+        log.info("Processing video: %d", video.id)
         sentences = sorted(video.sentences, key=lambda x: x.sentence_no)
-        token_sents = [sent.tokens for sent in sentences]
 
+        token_sents = [sent.tokens for sent in sentences]
         sents = []
         contexts = []
         for i, sent in enumerate(sentences, 0):
@@ -43,13 +43,24 @@ def main():
             contexts.append(ctx)
 
         predictions = manifesto.predict(sents, contexts, chunksize=CHUNKSIZE)
+        try:
+            assert len(predictions) == len(sentences)
+        except Exception as e:
+            log.exception(
+                "Len predictions != len sentences... \n preds: %d, sents: %d\npreds:%s\nsents:%s",
+                len(predictions),
+                len(sentences),
+                predictions,
+                sentences,
+            )
+            raise e
         for sentence, pred in zip(sentences, predictions, strict=True):
             label, confidence = pred
             sentence.manifesto_class = label
             sentence.manifesto_confidence = float(confidence)
 
         session.add_all(sentences)
-        if not chunk_no % 100:
+        if not chunk_no % 10:
             session.commit()
     session.commit()
     ENGINE.dispose()

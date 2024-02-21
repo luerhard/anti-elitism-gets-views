@@ -5,10 +5,16 @@ date: "2024-02-06"
 ---
 
 ```{r setup, include=FALSE}
+library(here)
+
 knitr::opts_chunk$set(echo = TRUE)
-library(reticulate)
-library(MASS)
-library(tidyverse)
+options(box.path = here())
+
+box::use(
+  r / load
+)
+box::reload(load)
+
 library(ggplot2)
 library(caret)
 library(ranger)
@@ -16,20 +22,18 @@ library(iml)
 library(ggpubr)
 library(here)
 library(sjPlot)
+library(tidyverse)
 
 theme_set(theme_minimal())
+
+df <- load$video_dataset()
 ```
 
-```{python}
-from src.data.load import video_dataset
-df = video_dataset()
-```
 
 ```{r}
-
 z_transform <- function(x) as.vector(scale(x))
 
-df <- py$df %>%
+df <- df %>%
   filter(channel != "FDP") %>%
   mutate(
     year = as_factor(year)
@@ -45,44 +49,20 @@ df <- py$df %>%
 
 
 
-# train <- df %>%
-#   sample_frac(0.7)
-# test <- df %>% anti_join(train)
-```
-
-
-```{r}
-form <- formula(
-  like_count ~ channel + elite + channel * elite + year + duration
-)
-
-model = glm.nb(form, data=df)
-summary(model)
+train <- df %>%
+  sample_frac(0.7)
+test <- df %>% anti_join(train)
 ```
 
 ```{r}
-sjPlot::plot_model(model, type="eff", terms=c("channel", "elite [-1,0,1]")) +
-  coord_flip() +
-  xlab("Channel") +
-  ylab("Number of Likes") +
-  ggtitle("Marginal Effects of Anti-Elitism")
+form <- formula(like_count ~ elite + pplcentr + view_count + comment_count + channel + duration + year)
 
-ggsave(here("overleaf", "img", "nb_regression_like_count.pdf"), width = 7, height=5)
-```
-
-```{r}
-sjPlot::plot_model(model, type="pred", terms=c("channel", "pop")) +
-  coord_flip()
-```
-
-
-```{r}
 model <- train(
   form,
-  method="ranger",
-  importance="impurity",
-  respect.unordered.factors="partition",
-  data=train
+  method = "ranger",
+  importance = "impurity",
+  respect.unordered.factors = "partition",
+  data = train
 )
 ```
 
@@ -90,8 +70,8 @@ model <- train(
 imp <- importance(model$finalModel)
 tibble(names = names(imp), importance = imp) %>%
   arrange(importance) %>%
-  ggplot(aes(x=importance, y=reorder(names, importance))) +
-  geom_bar(stat="identity", show.legend=F)
+  ggplot(aes(x = importance, y = reorder(names, importance))) +
+  geom_bar(stat = "identity", show.legend = F)
 ```
 
 
@@ -146,8 +126,7 @@ ggarrange(
   view_count,
   comment_count,
   duration,
-  ncol=2, nrow=4
-
+  ncol = 2, nrow = 4
 )
 ```
 

@@ -1,0 +1,70 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-02-06"
+---
+
+```{r setup, include=FALSE}
+library(here)
+
+knitr::opts_chunk$set(echo = TRUE)
+options(box.path = here())
+
+box::use(
+  r / load
+)
+box::reload(load)
+
+library(MASS)
+library(tidyverse)
+library(ggplot2)
+library(sjPlot)
+
+theme_set(theme_minimal())
+
+df <- load$video_dataset()
+```
+
+```{r}
+z_transform <- function(x) as.vector(scale(x))
+
+df <- df %>%
+  filter(channel != "FDP") %>%
+  mutate(
+    year = as_factor(year)
+    # populism = elite * pplcentr,
+    # populism = z_transform(populism),
+  ) %>%
+  group_by(channel) %>%
+  mutate(
+    elite = z_transform(elite),
+    pplcentr = z_transform(pplcentr)
+  ) %>%
+  ungroup()
+
+
+
+# train <- df %>%
+#   sample_frac(0.7)
+# test <- df %>% anti_join(train)
+```
+
+
+```{r}
+form <- formula(
+  like_count ~ channel + elite + channel * elite + year + duration
+)
+
+model <- glm.nb(form, data = df)
+summary(model)
+```
+
+```{r}
+sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite [-1,0,1]")) +
+  coord_flip() +
+  xlab("Channel") +
+  ylab("Number of Likes") +
+  ggtitle("Marginal Effects of Anti-Elitism")
+
+ggsave(here("overleaf", "img", "nb_regression_like_count.pdf"), width = 7, height = 5)
+```

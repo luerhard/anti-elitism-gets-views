@@ -19,6 +19,7 @@ library(MASS)
 library(tidyverse)
 library(ggplot2)
 library(sjPlot)
+library(ggeffects)
 
 theme_set(theme_minimal())
 
@@ -41,12 +42,6 @@ df <- df %>%
     pplcentr = z_transform(pplcentr)
   ) %>%
   ungroup()
-
-
-
-# train <- df %>%
-#   sample_frac(0.7)
-# test <- df %>% anti_join(train)
 ```
 
 
@@ -62,9 +57,13 @@ summary(model)
 ```{r}
 sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite [-1,0,1]")) +
   coord_flip() +
-  xlab("Channel") +
-  ylab("Number of Likes") +
-  ggtitle("Marginal Effects of Anti-Elitism")
+  labs(
+    title = "Marginal Effects of Anti-Elitism",
+    x = "Channel",
+    y = "Number of Likes",
+    color = "Anti-Elitism\n(standardized)"
+  ) +
+  theme_ggeffects(base_family="serif")
 
 ggsave(here("overleaf", "img", "nb_regression_like_count.pdf"), width = 7, height = 5)
 ```

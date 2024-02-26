@@ -67,3 +67,18 @@ sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite [-1,0,1]")) 
 
 ggsave(here("overleaf", "img", "nb_regression_like_count.pdf"), width = 7, height = 5)
 ```
+
+```{r}
+sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite [-1,0,1]")) +
+  coord_flip() +
+  labs(
+    title = "Marginal Effects of Anti-Elitism",
+    x = "Channel",
+    y = "Number of Likes",
+    color = "Anti-Elitism\n(standardized)"
+  ) +
+  theme_ggeffects(base_family="serif") +
+  theme(legend.position="bottom")
+
+ggsave(here("overleaf", "img", "nb_regression_like_count_vertical.pdf"), width = 5, height = 5.5)
+```

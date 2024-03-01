@@ -63,10 +63,10 @@ class Comment(Base):
     video_id = Column(String, ForeignKey("videos.id"), nullable=False, index=True)
     text = Column(String)
     datetime_upload = Column(DateTime)
-    parent = Column(String)
+    parent = Column(String, index=True)
     like_count = Column(Integer)
-    author = Column(String)
-    author_is_uploader = Column(Boolean)
+    author = Column(String, index=True)
+    author_is_uploader = Column(Boolean, index=True)
     is_favorited = Column(Boolean)
     is_valid = Column(Boolean, server_default="true", index=True)
 

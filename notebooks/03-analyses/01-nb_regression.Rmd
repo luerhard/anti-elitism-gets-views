@@ -63,9 +63,10 @@ sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite [-1,0,1]")) 
     y = "Number of Likes",
     color = "Anti-Elitism\n(standardized)"
   ) +
-  theme_ggeffects(base_family="serif")
+  theme_ggeffects(base_family = "serif")
 
 ggsave(here("overleaf", "img", "nb_regression_like_count.pdf"), width = 7, height = 5)
+ggsave(here("overleaf", "img", "nb_regression_like_count.svg"), width = 7, height = 5)
 ```
 
 ```{r}
@@ -77,8 +78,9 @@ sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite [-1,0,1]")) 
     y = "Number of Likes",
     color = "Anti-Elitism\n(standardized)"
   ) +
-  theme_ggeffects(base_family="serif") +
-  theme(legend.position="bottom")
+  theme_ggeffects(base_family = "serif") +
+  theme(legend.position = "bottom")
 
 ggsave(here("overleaf", "img", "nb_regression_like_count_vertical.pdf"), width = 5, height = 5.5)
+ggsave(here("overleaf", "img", "nb_regression_like_count_vertical.svg"), width = 5, height = 5.5)
 ```

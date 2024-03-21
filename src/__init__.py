@@ -18,6 +18,11 @@ PS_ENGINE = f"postgresql+psycopg://{credentials}@{db}"
 test_db = f"{config['DB']['ip']}:{config['DB']['port']}/test_{config['DB']['database']}"
 PS_TEST_ENGINE = f"postgresql+psycopg://{credentials}@{test_db}"
 
+db_section = config["DB_doccano"]
+db_doccano_credentials = f"{db_section['username']}:{db_section['password']}"
+db = f"{db_section['ip']}:{db_section['port']}/{db_section['database']}"
+DOCCANO_ENGINE = f"postgresql+psycopg://{credentials}@{db}"
+
 colormap = {
     "CDU": "#000000",
     "CSU": "#000000",

@@ -24,18 +24,18 @@ def main():
     else:
         transcripts = con.table("transcripts")
     log.warn("DB Connection established.")
-    pipeline = WhisperPipeline(model_type="large-v3")
+    pipeline = WhisperPipeline(model_type="tiny")
     log.warn("Pipeline loaded.")
 
-    video_df = (
-        videos.filter(
-            (videos.format == "videos")
-            & (videos.datetime_upload >= "2017-12-06")
-            & (videos.datetime_upload <= "2024-01-20"),
-        )
-        .anti_join(transcripts, videos.id == transcripts.video_id)
-        .to_pandas()
-    )
+    video_df = videos.filter(
+        [
+            videos.format == "videos",
+            videos.datetime_upload >= "2017-12-06",
+            videos.datetime_upload <= "2024-01-20",
+            videos.id.notin(transcripts.video_id),
+        ],
+    ).to_pandas()
+    log.warn("%d videos left to transcribe", len(video_df))
     for i, video in enumerate(video_df.itertuples(), 1):
         log.info("Processing (%d/%d): %s", i, len(video_df), video.id)
         text = pipeline.transcribe(BASE_VIDEO_PATH / video.relative_file_path)

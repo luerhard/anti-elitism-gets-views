@@ -29,12 +29,9 @@ def main():
     cleaner = TranscriptCleaner()
     log.info("Processor loaded.")
 
-    transcripts_df = (
-        table_transcripts.anti_join(
-            table_sentences, table_transcripts.video_id == table_sentences.video_id,
-        )
-        .to_pandas()
-    )
+    transcripts_df = table_transcripts.filter(
+        table_transcripts.video_id.notin(table_sentences.video_id),
+    ).to_pandas()
     for i, transcript in enumerate(transcripts_df.itertuples(), 1):
         log.info("Processing (%d/%d): %s", i, len(transcripts_df), transcript.video_id)
         sentences = cleaner.tokenize(transcript.text)

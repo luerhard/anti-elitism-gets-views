@@ -1,41 +1,39 @@
 """Transcribe all the videos."""
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+import ibis
 
 import src
 from src.asr import WhisperPipeline
-from src.data.models import Base
-from src.data.models import Transcript
-from src.data.models import Video
 from src.logging import logger as log
 
-BASE_VIDEO_PATH = src.PATH / "data/yt/"
-
-
-def iter_videos(session) -> Video:
-    query = session.query(Video).outerjoin(Transcript).filter(Transcript.id == None) # noqa: E711
-    yield from query
+BASE_VIDEO_PATH = src.PATH / "data/raw/yt/"
+DB_PATH = src.TMP / "transcripts.duckdb"
 
 
 def main():
-    engine = create_engine(src.PS_ENGINE)
-    Base.metadata.create_all(engine)
-    log.info("DB Connection established.")
-    pipeline = WhisperPipeline(model_type="large-v3")
-    log.info("Pipeline loaded.")
-    with Session(engine, expire_on_commit=False) as s:
-        for video in iter_videos(s):
-            log.debug("Video [%s]: %s", video.id, video.title)
-            transcript = Transcript(
-                id=video.id,
-                model_type=pipeline.model_type,
-            )
-            text = pipeline.transcribe(BASE_VIDEO_PATH / video.relative_file_path)
-            transcript.text = text
-            video.transcript = transcript
-            s.add(video)
-            s.commit()
+    con = ibis.connect(f"duckdb://{DB_PATH}")
+    if "videos" not in con.list_tables():
+        videos = con.read_parquet(src.PATH / "data/raw/yt_metadata/videos.parquet.gzip")
+    else:
+        videos = con.table("videos")
+
+    if "transcripts" not in con.list_tables():
+        schema = ibis.schema({"video_id": "string", "text": "string"})
+        transcripts = con.create_table(name="transcripts", schema=schema)
+    else:
+        transcripts = con.table("transcripts")
+    log.warn("DB Connection established.")
+    pipeline = WhisperPipeline(model_type="tiny")
+    log.warn("Pipeline loaded.")
+
+    video_df = videos.anti_join(transcripts, videos.id == transcripts.video_id).to_pandas()
+    for i, video in enumerate(video_df.itertuples(), 1):
+        log.info("Processing (%d/%d): %s", i, len(video_df), video.id)
+        text = pipeline.transcribe(BASE_VIDEO_PATH / video.relative_file_path)
+        transcript = {"video_id": video.id, "text": text}
+        con.insert("transcripts", transcript)
+
+    transcripts.to_parquet(src.PATH / "interim/audio_transcripts_v3_large.parquet.gzip")
 
 
 if __name__ == "__main__":

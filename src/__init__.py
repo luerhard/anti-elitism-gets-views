@@ -7,6 +7,9 @@ import pandas as pd
 
 PATH = Path(__file__).parent.parent
 
+TMP = PATH / "tmp"
+TMP.mkdir(exist_ok=True)
+
 config = ConfigParser()
 config.read(PATH / "config.ini")
 

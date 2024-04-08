@@ -1,9 +1,0 @@
-stages:
-  automatic-speech-recognition:
-    cmd: poetry run python pipeline/02-run_asr.py
-    deps:
-      - data/raw
-      - src/asr
-      - pipeline/02-run_asr.py
-    outs:
-      - interim/

@@ -167,4 +167,3 @@ config.ini
 .Rproj.user
 **/.Rhistory
 slurm-*.out
-tmp/**

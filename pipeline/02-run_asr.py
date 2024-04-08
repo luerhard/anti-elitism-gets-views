@@ -34,7 +34,6 @@ def main():
             & (videos.datetime_upload <= "2024-01-20"),
         )
         .anti_join(transcripts, videos.id == transcripts.video_id)
-        .limit(3)
         .to_pandas()
     )
     for i, video in enumerate(video_df.itertuples(), 1):

@@ -33,7 +33,6 @@ def main():
         table_transcripts.anti_join(
             table_sentences, table_transcripts.video_id == table_sentences.video_id,
         )
-        .limit(2)
         .to_pandas()
     )
     for i, transcript in enumerate(transcripts_df.itertuples(), 1):

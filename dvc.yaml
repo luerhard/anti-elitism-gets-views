@@ -1,0 +1,8 @@
+stages:
+  run_asr:
+    cmd: poetry run python pipeline/02-run_asr.py
+    deps:
+      - data/raw/yt
+      - src/asr
+    outs:
+      - data/interim/audio_transcripts_v3_large.parquet.gzip

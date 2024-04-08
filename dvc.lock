@@ -1,0 +1,20 @@
+schema: '2.0'
+stages:
+  run_asr:
+    cmd: poetry run python pipeline/02-run_asr.py
+    deps:
+    - path: data/raw/yt
+      hash: md5
+      md5: ef3d1e4ae48aa830e66483c67456677b.dir
+      size: 159235219362
+      nfiles: 17296
+    - path: src/asr
+      hash: md5
+      md5: 8c2067759131fad1de7d3d34eba12657.dir
+      size: 5537
+      nfiles: 4
+    outs:
+    - path: data/interim/audio_transcripts_v3_large.parquet.gzip
+      hash: md5
+      md5: 58564590a7dd074139ac3e6d84545a14
+      size: 50684

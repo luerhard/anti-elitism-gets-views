@@ -1,0 +1,5 @@
+outs:
+- md5: bffab41a67e4d360382d4283c60627de
+  size: 8863
+  hash: md5
+  path: channels.parquet.gzip

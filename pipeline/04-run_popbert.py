@@ -20,8 +20,7 @@ def main():
     if "popbert" not in con.list_tables():
         schema = ibis.schema(
             {
-                "video_id": "string",
-                "sentence_no": "int32",
+                "sentence_id": "int32",
                 "elite": "float64",
                 "pplcentr": "float64",
                 "left": "float64",
@@ -37,21 +36,21 @@ def main():
     log.info("PopBERT loaded.")
 
     sentences_df = table_sentences.filter(
-        table_sentences.video_id.notin(table_popbert.video_id),
+        table_sentences.sentence_id.notin(table_popbert.sentence_id),
     ).to_pandas()
 
     i = 0
+    total_sents = len(sentences_df)
     for video_id, video_df in sentences_df.groupby("video_id"):
         i += len(video_df)
-        log.info("Processing (%d/%d): %s", i, len(sentences_df), video_id)
+        log.info("Processing (%d/%d): %s", i, total_sents, video_id)
         cache = []
         tokens = video_df.tokens.to_list()
-        sentence_numbers = video_df.sentence_no.to_list()
+        sentence_ids = video_df.sentence_id.to_list()
         predictions = popbert.predict(tokens, chunksize=CHUNKSIZE)
-        for sentence_no, prediction in zip(sentence_numbers, predictions, strict=True):
+        for sent_id, prediction in zip(sentence_ids, predictions, strict=True):
             row = {
-                "video_id": video_id,
-                "sentence_no": sentence_no,
+                "sentence_id": sent_id,
                 "elite": prediction[0],
                 "pplcentr": prediction[1],
                 "left": prediction[2],

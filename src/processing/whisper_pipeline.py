@@ -60,7 +60,6 @@ class WhisperPipeline:
             generate_kwargs={
                 "task": "transcribe",
                 "language": "<|de|>",
-                "compression_ratio_threshold": 1.35,
             },
         )
 

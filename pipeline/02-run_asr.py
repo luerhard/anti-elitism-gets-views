@@ -24,7 +24,7 @@ def main():
     else:
         transcripts = con.table("transcripts")
     log.warn("DB Connection established.")
-    pipeline = WhisperPipeline(model_type="tiny")
+    pipeline = WhisperPipeline(model_type="large-v3")
     log.warn("Pipeline loaded.")
 
     video_df = videos.filter(

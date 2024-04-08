@@ -13,18 +13,23 @@ TMP.mkdir(exist_ok=True)
 config = ConfigParser()
 config.read(PATH / "config.ini")
 
-credentials = f"{config['DB']['username']}:{config['DB']['password']}"
+try:
+    credentials = f"{config['DB']['username']}:{config['DB']['password']}"
+    db = f"{config['DB']['ip']}:{config['DB']['port']}/{config['DB']['database']}"
+    PS_ENGINE = f"postgresql+psycopg://{credentials}@{db}"
 
-db = f"{config['DB']['ip']}:{config['DB']['port']}/{config['DB']['database']}"
-PS_ENGINE = f"postgresql+psycopg://{credentials}@{db}"
+    test_db = f"{config['DB']['ip']}:{config['DB']['port']}/test_{config['DB']['database']}"
+    PS_TEST_ENGINE = f"postgresql+psycopg://{credentials}@{test_db}"
+except KeyError:
+    pass
 
-test_db = f"{config['DB']['ip']}:{config['DB']['port']}/test_{config['DB']['database']}"
-PS_TEST_ENGINE = f"postgresql+psycopg://{credentials}@{test_db}"
-
-db_section = config["DB_doccano"]
-db_doccano_credentials = f"{db_section['username']}:{db_section['password']}"
-db = f"{db_section['ip']}:{db_section['port']}/{db_section['database']}"
-DOCCANO_ENGINE = f"postgresql+psycopg://{credentials}@{db}"
+try:
+    db_section = config["DB_doccano"]
+    db_doccano_credentials = f"{db_section['username']}:{db_section['password']}"
+    db = f"{db_section['ip']}:{db_section['port']}/{db_section['database']}"
+    DOCCANO_ENGINE = f"postgresql+psycopg://{credentials}@{db}"
+except KeyError:
+    pass
 
 colormap = {
     "CDU": "#000000",

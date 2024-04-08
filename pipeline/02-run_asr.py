@@ -8,6 +8,7 @@ from src.logging import logger as log
 
 BASE_VIDEO_PATH = src.PATH / "data/raw/yt/"
 DB_PATH = src.TMP / "transcripts.duckdb"
+OUT_FILE = src.PATH / "data/interim/audio_transcripts_v3_large.parquet.gzip"
 
 
 def main():
@@ -26,16 +27,24 @@ def main():
     pipeline = WhisperPipeline(model_type="tiny")
     log.warn("Pipeline loaded.")
 
-    video_df = videos.anti_join(transcripts, videos.id == transcripts.video_id).limit(3).to_pandas()
+    video_df = (
+        videos.filter(
+            (videos.format == "videos")
+            & (videos.datetime_upload >= "2017-12-06")
+            & (videos.datetime_upload <= "2024-01-20"),
+        )
+        .anti_join(transcripts, videos.id == transcripts.video_id)
+        .limit(3)
+        .to_pandas()
+    )
     for i, video in enumerate(video_df.itertuples(), 1):
         log.info("Processing (%d/%d): %s", i, len(video_df), video.id)
         text = pipeline.transcribe(BASE_VIDEO_PATH / video.relative_file_path)
         transcript = {"video_id": video.id, "text": text}
         con.insert("transcripts", transcript)
 
-    transcripts.to_parquet(
-        src.PATH / "data/interim/audio_transcripts_v3_large.parquet.gzip", compression="gzip",
-    )
+    transcripts.to_parquet(OUT_FILE, compression="gzip")
+    DB_PATH.unlink(missing_ok=False)
 
 
 if __name__ == "__main__":

@@ -1,57 +1,54 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+import ibis
 
 import src
-from src.data.models import Base
-from src.data.models import Sentence
-from src.data.models import Transcript
-from src.data.processors import TranscriptCleaner
+from src.data.transcript_cleaner import TranscriptCleaner
 from src.logging import logger as log
 
-ENGINE = create_engine(src.PS_ENGINE)
-DROP_TABLES = True
-
-
-def iter_transcripts(session):
-    transcripts = session.query(Transcript).execution_options(
-        stream_results=True,
-        max_row_buffer=5000,
-    )
-    yield from transcripts
+DB_PATH = src.TMP / "transcript_cleaner.duckdb"
+TRANSCRIPT_PATH = src.PATH / "data/interim/audio_transcripts_v3_large.parquet.gzip"
+OUT_FILE = src.PATH / "data/interim/sentences.parquet.gzip"
 
 
 def main():
-    if DROP_TABLES:
-        log.warn("Dropping tables")
-        Base.metadata.drop_all(ENGINE, tables=[Sentence.__table__])
-        Base.metadata.create_all(ENGINE, tables=[Sentence.__table__])
-        log.info("created all tables.")
 
+    con = ibis.connect(DB_PATH)
+    if "transcripts" not in con.list_tables():
+        table_transcripts = con.read_parquet(TRANSCRIPT_PATH)
+    else:
+        table_transcripts = con.table("transcripts")
+
+    if "sentences" not in con.list_tables():
+        schema = ibis.schema(
+            {"video_id": "string", "sentence_no": "int32", "tokens": "array<string>"},
+        )
+        table_sentences = con.create_table("sentences", schema=schema)
+    else:
+        table_sentences = con.table("sentences")
+
+    log.info("DB loaded.")
     cleaner = TranscriptCleaner()
     log.info("Processor loaded.")
 
-    session = Session(bind=ENGINE, expire_on_commit=False)
-    cache = []
-    for transcript_no, transcript in enumerate(iter_transcripts(session)):
-        log.debug("Processing transcript (%d): %s", transcript_no, transcript.id)
-        text = transcript.text
-        sentences = cleaner.tokenize(text)
+    transcripts_df = (
+        table_transcripts.anti_join(
+            table_sentences, table_transcripts.video_id == table_sentences.video_id,
+        )
+        .limit(2)
+        .to_pandas()
+    )
+    for i, transcript in enumerate(transcripts_df.itertuples(), 1):
+        log.info("Processing (%d/%d): %s", i, len(transcripts_df), transcript.video_id)
+        sentences = cleaner.tokenize(transcript.text)
+        cache = []
         for sentence_no, sentence in enumerate(sentences, 1):
             if not sentence:
                 continue
-            row = Sentence(
-                video_id=transcript.id,
-                sentence_no=sentence_no,
-                tokens=sentence,
-            )
+            row = {"video_id": transcript.video_id, "tokens": sentence, "sentence_no": sentence_no}
             cache.append(row)
-        if not transcript_no % 500:
-            session.add_all(cache)
-            cache = []
-            session.commit()
-    session.add_all(cache)
-    session.commit()
-    ENGINE.dispose()
+        con.insert("sentences", cache)
+
+    table_sentences.to_parquet(OUT_FILE, compression="gzip")
+    DB_PATH.unlink(missing_ok=False)
 
 
 if __name__ == "__main__":

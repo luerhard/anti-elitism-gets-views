@@ -5,6 +5,7 @@ from typing import Literal
 
 import torch
 from transformers import pipeline
+
 from src.logging import logger as log
 
 WHISPER_MODELS = Literal["tiny", "small", "medium", "large", "large-v2" "large-v3"]
@@ -54,7 +55,8 @@ class WhisperPipeline:
             return_timestamps=False,
             chunk_length_s=30,
             stride_length_s=(6, 2),
-            batch_size=4,
+            batch_size=8,
+            compression_ratio_threshold=1.8,
             generate_kwargs={"language": "<|de|>"},
         )
 

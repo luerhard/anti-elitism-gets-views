@@ -2,7 +2,6 @@ stages:
   run_asr:
     cmd: poetry run python pipeline/02-run_asr.py
     deps:
-      - data/raw/yt
       - data/raw/yt_metadata
       - src/processing/whisper_pipeline.py
     outs:

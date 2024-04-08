@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #SBATCH --job-name=dvc_pipeline
 #SBATCH --partition=single

@@ -19,7 +19,12 @@ def main():
 
     if "sentences" not in con.list_tables():
         schema = ibis.schema(
-            {"video_id": "string", "sentence_no": "int32", "tokens": "array<string>"},
+            {
+                "sentence_id": "int32",
+                "video_id": "string",
+                "sentence_no": "int32",
+                "tokens": "array<string>",
+            },
         )
         table_sentences = con.create_table("sentences", schema=schema)
     else:
@@ -32,6 +37,7 @@ def main():
     transcripts_df = table_transcripts.filter(
         table_transcripts.video_id.notin(table_sentences.video_id),
     ).to_pandas()
+    sentence_id = 0
     for i, transcript in enumerate(transcripts_df.itertuples(), 1):
         log.info("Processing (%d/%d): %s", i, len(transcripts_df), transcript.video_id)
         sentences = cleaner.tokenize(transcript.text)
@@ -39,7 +45,13 @@ def main():
         for sentence_no, sentence in enumerate(sentences, 1):
             if not sentence:
                 continue
-            row = {"video_id": transcript.video_id, "tokens": sentence, "sentence_no": sentence_no}
+            sentence_id += 1
+            row = {
+                "sentence_id": sentence_id,
+                "video_id": transcript.video_id,
+                "tokens": sentence,
+                "sentence_no": sentence_no,
+            }
             cache.append(row)
         con.insert("sentences", cache)
 

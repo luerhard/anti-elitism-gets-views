@@ -3,8 +3,8 @@
 import ibis
 
 import src
-from src.asr import WhisperPipeline
 from src.logging import logger as log
+from src.processing.whisper_pipeline import WhisperPipeline
 
 BASE_VIDEO_PATH = src.PATH / "data/raw/yt/"
 DB_PATH = src.TMP / "transcripts.duckdb"

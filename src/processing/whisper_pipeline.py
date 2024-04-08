@@ -34,6 +34,7 @@ class WhisperPipeline:
             "automatic-speech-recognition",
             model=self.model_name,
             device=self.device,
+            framework="pt",
         )
 
     def transcribe(self, speech_file: str | Path):
@@ -54,10 +55,13 @@ class WhisperPipeline:
             str(speech_file),
             return_timestamps=False,
             chunk_length_s=30,
-            stride_length_s=(6, 2),
+            stride_length_s=(6, 0),
             batch_size=8,
-            compression_ratio_threshold=1.8,
-            generate_kwargs={"language": "<|de|>"},
+            generate_kwargs={
+                "task": "transcribe",
+                "language": "<|de|>",
+                "compression_ratio_threshold": 1.35,
+            },
         )
 
         text = out["text"]

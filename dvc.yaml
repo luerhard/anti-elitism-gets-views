@@ -3,13 +3,14 @@ stages:
     cmd: poetry run python pipeline/02-run_asr.py
     deps:
       - data/raw/yt
-      - src/asr
+      - data/raw/yt_metadata
+      - src/processing/whisper_pipeline.py
     outs:
       - data/interim/audio_transcripts_v3_large.parquet.gzip
   tokenize_transcripts:
     cmd: poetry run python pipeline/03-tokenize_transcripts.py
     deps:
       - data/interim/audio_transcripts_v3_large.parquet.gzip
-      - src/data/transcript_cleaner.py
+      - src/processing/transcript_cleaner.py
     outs:
       - data/interim/sentences.parquet.gzip

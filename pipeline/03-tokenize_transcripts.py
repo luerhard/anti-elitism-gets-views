@@ -1,8 +1,8 @@
 import ibis
 
 import src
-from src.data.transcript_cleaner import TranscriptCleaner
 from src.logging import logger as log
+from src.processing.transcript_cleaner import TranscriptCleaner
 
 DB_PATH = src.TMP / "transcript_cleaner.duckdb"
 TRANSCRIPT_PATH = src.PATH / "data/interim/audio_transcripts_v3_large.parquet.gzip"

@@ -8,13 +8,33 @@ stages:
       md5: ef3d1e4ae48aa830e66483c67456677b.dir
       size: 159235219362
       nfiles: 17296
-    - path: src/asr
+    - path: data/raw/yt_metadata
       hash: md5
-      md5: 8c2067759131fad1de7d3d34eba12657.dir
-      size: 5537
-      nfiles: 4
+      md5: e4f5a8c9396cda5019654633eb294499.dir
+      size: 251169430
+      nfiles: 3
+    - path: src/processing/whisper_pipeline.py
+      hash: md5
+      md5: 41edccecb557f1efd906b5cb6df8a11a
+      size: 2236
     outs:
     - path: data/interim/audio_transcripts_v3_large.parquet.gzip
       hash: md5
-      md5: 58564590a7dd074139ac3e6d84545a14
-      size: 50684
+      md5: cc9f777ae150564ac41ab35ed2b15ac9
+      size: 786
+  tokenize_transcripts:
+    cmd: poetry run python pipeline/03-tokenize_transcripts.py
+    deps:
+    - path: data/interim/audio_transcripts_v3_large.parquet.gzip
+      hash: md5
+      md5: cc9f777ae150564ac41ab35ed2b15ac9
+      size: 786
+    - path: src/processing/transcript_cleaner.py
+      hash: md5
+      md5: e636eb2e109503c8eb588b21ba70d1de
+      size: 3928
+    outs:
+    - path: data/interim/sentences.parquet.gzip
+      hash: md5
+      md5: c5741aca03ff31fad96e321a61b93b0d
+      size: 750

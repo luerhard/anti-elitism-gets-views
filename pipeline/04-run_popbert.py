@@ -62,5 +62,6 @@ def main():
     table_popbert.to_parquet(OUT_FILE, compression="gzip")
     DB_PATH.unlink(missing_ok=False)
 
+
 if __name__ == "__main__":
     main()

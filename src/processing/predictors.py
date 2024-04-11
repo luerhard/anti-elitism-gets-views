@@ -62,7 +62,9 @@ class PopBERTPredictor(TransformerPredictor):
     @property
     def model(self):
         if not self._model:
-            self._model = AutoModelForSequenceClassification.from_pretrained("luerhard/PopBERT").to(
+            self._model = AutoModelForSequenceClassification.from_pretrained(
+                "luerhard/PopBERT",
+            ).to(
                 self.device,
             )
         return self._model

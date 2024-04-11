@@ -41,3 +41,23 @@ stages:
       hash: md5
       md5: 8406669a97e71bb2f6741cbca36f6b40
       size: 35887187
+  run_popbert:
+    cmd: poetry run python pipeline/04-run_popbert.py
+    deps:
+    - path: data/interim/sentences.parquet.gzip
+      hash: md5
+      md5: 8406669a97e71bb2f6741cbca36f6b40
+      size: 35887187
+    - path: pipeline/04-run_popbert.py
+      hash: md5
+      md5: 0cc7073a30fea3c11c8106aa071021d2
+      size: 2062
+    - path: src/processing/predictors.py
+      hash: md5
+      md5: 80e04fc120d11292629ba44abbad71d9
+      size: 6223
+    outs:
+    - path: data/interim/popbert.parquet.gzip
+      hash: md5
+      md5: a93cb2f584efbc0c346c1e1c2afbeb93
+      size: 1235764

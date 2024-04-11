@@ -3,32 +3,35 @@ stages:
   run_asr:
     cmd: poetry run python pipeline/02-run_asr.py
     deps:
-    - path: data/raw/yt
-      hash: md5
-      md5: ef3d1e4ae48aa830e66483c67456677b.dir
-      size: 159235219362
-      nfiles: 17296
     - path: data/raw/yt_metadata
       hash: md5
       md5: e4f5a8c9396cda5019654633eb294499.dir
       size: 251169430
       nfiles: 3
+    - path: pipeline/02-run_asr.py
+      hash: md5
+      md5: 115e5fa8f1c3ab590cca64a9f11214ab
+      size: 1707
     - path: src/processing/whisper_pipeline.py
       hash: md5
-      md5: 41edccecb557f1efd906b5cb6df8a11a
-      size: 2236
+      md5: b501d5598edb3fc036f791ab0e315d75
+      size: 2183
     outs:
     - path: data/interim/audio_transcripts_v3_large.parquet.gzip
       hash: md5
-      md5: cc9f777ae150564ac41ab35ed2b15ac9
-      size: 786
+      md5: fb7d0412ce272653da59ec8871afbe93
+      size: 26357641
   tokenize_transcripts:
     cmd: poetry run python pipeline/03-tokenize_transcripts.py
     deps:
     - path: data/interim/audio_transcripts_v3_large.parquet.gzip
       hash: md5
-      md5: cc9f777ae150564ac41ab35ed2b15ac9
-      size: 786
+      md5: fb7d0412ce272653da59ec8871afbe93
+      size: 26357641
+    - path: pipeline/03-tokenize_transcripts.py
+      hash: md5
+      md5: fb5d9214e0057ec276e8639df9c2c6ed
+      size: 1983
     - path: src/processing/transcript_cleaner.py
       hash: md5
       md5: e636eb2e109503c8eb588b21ba70d1de
@@ -36,5 +39,5 @@ stages:
     outs:
     - path: data/interim/sentences.parquet.gzip
       hash: md5
-      md5: c5741aca03ff31fad96e321a61b93b0d
-      size: 750
+      md5: 8406669a97e71bb2f6741cbca36f6b40
+      size: 35887187

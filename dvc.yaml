@@ -23,3 +23,11 @@ stages:
       - pipeline/04-run_popbert.py
     outs:
       - data/interim/popbert.parquet.gzip
+  run_manifesto_roberta:
+    cmd: poetry run python pipeline/05-run_manifesto_roberta.py
+    deps:
+      - data/interim/sentences.parquet.gzip
+      - src/processing/predictors.py
+      - pipeline/05-run_manifesto_roberta.py
+    outs:
+      - data/interim/manifesto_roberta.parquet.gzip

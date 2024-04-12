@@ -61,3 +61,23 @@ stages:
       hash: md5
       md5: a93cb2f584efbc0c346c1e1c2afbeb93
       size: 1235764
+  run_manifesto_roberta:
+    cmd: poetry run python pipeline/05-run_manifesto_roberta.py
+    deps:
+    - path: data/interim/sentences.parquet.gzip
+      hash: md5
+      md5: 8406669a97e71bb2f6741cbca36f6b40
+      size: 35887187
+    - path: pipeline/05-run_manifesto_roberta.py
+      hash: md5
+      md5: a6f72feda6ac61d5c07474b931d594ce
+      size: 2507
+    - path: src/processing/predictors.py
+      hash: md5
+      md5: 80e04fc120d11292629ba44abbad71d9
+      size: 6223
+    outs:
+    - path: data/interim/manifesto_roberta.parquet.gzip
+      hash: md5
+      md5: c65497e8d4e9577744d758f7fbde237a
+      size: 4352558

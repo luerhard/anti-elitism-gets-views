@@ -1,3 +1,4 @@
 /audio_transcripts_v3_large.parquet.gzip
 /sentences.parquet.gzip
 /popbert.parquet.gzip
+/manifesto_roberta.parquet.gzip

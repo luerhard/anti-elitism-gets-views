@@ -145,6 +145,7 @@ Table XX shows the top-5 most associated content categories for either anti-elit
 
 = Discussion <discussion>
 
+
 #pagebreak()
 #set par(leading: 0.65em)
 #show par: set block(below: 0em, above: 0em)

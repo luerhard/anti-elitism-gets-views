@@ -50,17 +50,17 @@ stages:
       size: 35887187
     - path: pipeline/04-run_popbert.py
       hash: md5
-      md5: 0cc7073a30fea3c11c8106aa071021d2
-      size: 2062
-    - path: src/processing/predictors.py
+      md5: c0e067f1ee0e5756cafcac6c7b71edfd
+      size: 2069
+    - path: src/processing/popbert_predictor.py
       hash: md5
-      md5: 80e04fc120d11292629ba44abbad71d9
-      size: 6223
+      md5: 2d75e89af67d95a035359924acc4e909
+      size: 2070
     outs:
     - path: data/interim/popbert.parquet.gzip
       hash: md5
-      md5: a93cb2f584efbc0c346c1e1c2afbeb93
-      size: 1235764
+      md5: 1fa0f6af6cdf39fdf8a275d8390045e5
+      size: 13111387
   run_manifesto_roberta:
     cmd: poetry run python pipeline/05-run_manifesto_roberta.py
     deps:

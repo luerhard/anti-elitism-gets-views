@@ -1,0 +1,33 @@
+stages:
+  run_asr:
+    cmd: poetry run python pipeline/02-run_asr.py
+    deps:
+      - data/raw/yt_metadata
+      - src/processing/whisper_pipeline.py
+      - pipeline/02-run_asr.py
+    outs:
+      - data/interim/audio_transcripts_v3_large.parquet.gzip
+  tokenize_transcripts:
+    cmd: poetry run python pipeline/03-tokenize_transcripts.py
+    deps:
+      - data/interim/audio_transcripts_v3_large.parquet.gzip
+      - src/processing/transcript_cleaner.py
+      - pipeline/03-tokenize_transcripts.py
+    outs:
+      - data/interim/sentences.parquet.gzip
+  run_popbert:
+    cmd: poetry run python pipeline/04-run_popbert.py
+    deps:
+      - data/interim/sentences.parquet.gzip
+      - src/processing/predictors.py
+      - pipeline/04-run_popbert.py
+    outs:
+      - data/interim/popbert.parquet.gzip
+  run_manifesto_roberta:
+    cmd: poetry run python pipeline/05-run_manifesto_roberta.py
+    deps:
+      - data/interim/sentences.parquet.gzip
+      - src/processing/predictors.py
+      - pipeline/05-run_manifesto_roberta.py
+    outs:
+      - data/interim/manifesto_roberta.parquet.gzip

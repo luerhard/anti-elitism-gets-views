@@ -1,41 +1,58 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
-from sqlalchemy.orm import subqueryload
+import ibis
 
 import src
-from src.data.models import Video
-from src.data.predictors import ManifestorPredictor
 from src.logging import logger as log
+from src.processing.predictors import ManifestorPredictor
 from src.utils.iterate import flatten_list
 
 CHUNKSIZE = 32
 CONTEXT_WINDOW = 2
-
-ENGINE = create_engine(src.PS_ENGINE)
-
-
-def iter_sentences(session):
-    videos = (
-        session.query(Video)
-        .options(subqueryload(Video.sentences))
-        .execution_options(stream_results=True, max_row_buffer=500)
-    )
-    yield from videos
+DB_PATH = src.PATH / "tmp/manifesto_roberta.duckdb"
+SENTENCE_PATH = src.PATH / "data/interim/sentences.parquet.gzip"
+OUT_FILE = src.PATH / "data/interim/manifesto_roberta.parquet.gzip"
 
 
 def main():
+    con = ibis.connect(DB_PATH)
+    if "sentences" not in con.list_tables():
+        table_sentences = con.read_parquet(SENTENCE_PATH)
+    else:
+        table_sentences = con.table("sentences")
+
+    if "manifesto" not in con.list_tables():
+        schema = ibis.schema(
+            {
+                "sentence_id": "int32",
+                "label": "string",
+                "confidence": "float64",
+            },
+        )
+        table_manifesto = con.create_table("manifesto", schema=schema)
+    else:
+        table_manifesto = con.table("manifesto")
+    log.info("DB loaded.")
+
     manifesto = ManifestorPredictor()
 
-    session = Session(bind=ENGINE, expire_on_commit=False)
-    for chunk_no, video in enumerate(iter_sentences(session), 1):
-        log.info("Processing video: %d", video.id)
-        sentences = sorted(video.sentences, key=lambda x: x.sentence_no)
+    sentences_df = table_sentences.filter(
+        table_sentences.sentence_id.notin(table_manifesto.sentence_id),
+    ).to_pandas()
 
-        token_sents = [sent.tokens for sent in sentences]
+    log.info("Starting Process.")
+    progress_counter = 0
+    total_sents = len(sentences_df)
+    for video_id, video_df in sentences_df.groupby("video_id"):
+        progress_counter += len(video_df)
+        log.info("Processing (%d/%d): %s", progress_counter, total_sents, video_id)
+
+        video_df = video_df.sort_values("sentence_no")
+        token_sents = video_df.tokens.to_list()
+        sentence_ids = video_df.sentence_id.to_list()
+
         sents = []
         contexts = []
-        for i, sent in enumerate(sentences, 0):
-            sents.append(sent.tokens)
+        for i, sent in enumerate(token_sents, 0):
+            sents.append(sent)
             if i < CONTEXT_WINDOW:
                 ctx = flatten_list(token_sents[:i])
             else:
@@ -43,27 +60,20 @@ def main():
             contexts.append(ctx)
 
         predictions = manifesto.predict(sents, contexts, chunksize=CHUNKSIZE)
-        try:
-            assert len(predictions) == len(sentences)
-        except Exception as e:
-            log.exception(
-                "Len predictions != len sentences... \n preds: %d, sents: %d\npreds:%s\nsents:%s",
-                len(predictions),
-                len(sentences),
-                predictions,
-                sentences,
-            )
-            raise e
-        for sentence, pred in zip(sentences, predictions, strict=True):
-            label, confidence = pred
-            sentence.manifesto_class = label
-            sentence.manifesto_confidence = float(confidence)
 
-        session.add_all(sentences)
-        if not chunk_no % 10:
-            session.commit()
-    session.commit()
-    ENGINE.dispose()
+        cache = []
+        for sent_id, prediction in zip(sentence_ids, predictions, strict=True):
+            label, confidence = prediction
+            row = {
+                "sentence_id": sent_id,
+                "label": label,
+                "confidence": confidence,
+            }
+            cache.append(row)
+        con.insert("manifesto", cache)
+
+    table_manifesto.to_parquet(OUT_FILE, compression="gzip")
+    DB_PATH.unlink(missing_ok=False)
 
 
 if __name__ == "__main__":

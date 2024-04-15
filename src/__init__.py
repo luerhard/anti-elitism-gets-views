@@ -7,6 +7,8 @@ import pandas as pd
 
 PATH = Path(__file__).parent.parent
 
+DATA = PATH / "data"
+
 TMP = PATH / "tmp"
 TMP.mkdir(exist_ok=True)
 

@@ -10,6 +10,7 @@ from src.utils.iterate import flatten_list
 
 class ManifestoPredictor:
     def __init__(self) -> None:
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self._tokenizer = None
         self._model = None
         self._max_length = None

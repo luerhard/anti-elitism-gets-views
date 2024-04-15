@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 
 import src
 from src.crawl.yt_crawler import YTChannelCrawler
-from src.data.models import Base, Video
-
+from src.data.models import Base
+from src.data.models import Video
 
 class TestDB:
     @classmethod

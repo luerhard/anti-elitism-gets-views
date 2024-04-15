@@ -5,6 +5,7 @@ from typing import Literal
 
 import torch
 from transformers import pipeline
+
 from src.logging import logger as log
 
 WHISPER_MODELS = Literal["tiny", "small", "medium", "large", "large-v2" "large-v3"]
@@ -33,6 +34,7 @@ class WhisperPipeline:
             "automatic-speech-recognition",
             model=self.model_name,
             device=self.device,
+            framework="pt",
         )
 
     def transcribe(self, speech_file: str | Path):
@@ -53,9 +55,12 @@ class WhisperPipeline:
             str(speech_file),
             return_timestamps=False,
             chunk_length_s=30,
-            stride_length_s=(6, 2),
-            batch_size=4,
-            generate_kwargs={"language": "<|de|>"},
+            stride_length_s=(6, 0),
+            batch_size=8,
+            generate_kwargs={
+                "task": "transcribe",
+                "language": "<|de|>",
+            },
         )
 
         text = out["text"]

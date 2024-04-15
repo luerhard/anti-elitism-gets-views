@@ -1,0 +1,83 @@
+schema: '2.0'
+stages:
+  run_asr:
+    cmd: poetry run python pipeline/02-run_asr.py
+    deps:
+    - path: data/raw/yt_metadata
+      hash: md5
+      md5: e4f5a8c9396cda5019654633eb294499.dir
+      size: 251169430
+      nfiles: 3
+    - path: pipeline/02-run_asr.py
+      hash: md5
+      md5: 115e5fa8f1c3ab590cca64a9f11214ab
+      size: 1707
+    - path: src/processing/whisper_pipeline.py
+      hash: md5
+      md5: b501d5598edb3fc036f791ab0e315d75
+      size: 2183
+    outs:
+    - path: data/interim/audio_transcripts_v3_large.parquet.gzip
+      hash: md5
+      md5: fb7d0412ce272653da59ec8871afbe93
+      size: 26357641
+  tokenize_transcripts:
+    cmd: poetry run python pipeline/03-tokenize_transcripts.py
+    deps:
+    - path: data/interim/audio_transcripts_v3_large.parquet.gzip
+      hash: md5
+      md5: fb7d0412ce272653da59ec8871afbe93
+      size: 26357641
+    - path: pipeline/03-tokenize_transcripts.py
+      hash: md5
+      md5: fb5d9214e0057ec276e8639df9c2c6ed
+      size: 1983
+    - path: src/processing/transcript_cleaner.py
+      hash: md5
+      md5: e636eb2e109503c8eb588b21ba70d1de
+      size: 3928
+    outs:
+    - path: data/interim/sentences.parquet.gzip
+      hash: md5
+      md5: 8406669a97e71bb2f6741cbca36f6b40
+      size: 35887187
+  run_popbert:
+    cmd: poetry run python pipeline/04-run_popbert.py
+    deps:
+    - path: data/interim/sentences.parquet.gzip
+      hash: md5
+      md5: 8406669a97e71bb2f6741cbca36f6b40
+      size: 35887187
+    - path: pipeline/04-run_popbert.py
+      hash: md5
+      md5: 0cc7073a30fea3c11c8106aa071021d2
+      size: 2062
+    - path: src/processing/predictors.py
+      hash: md5
+      md5: 80e04fc120d11292629ba44abbad71d9
+      size: 6223
+    outs:
+    - path: data/interim/popbert.parquet.gzip
+      hash: md5
+      md5: a93cb2f584efbc0c346c1e1c2afbeb93
+      size: 1235764
+  run_manifesto_roberta:
+    cmd: poetry run python pipeline/05-run_manifesto_roberta.py
+    deps:
+    - path: data/interim/sentences.parquet.gzip
+      hash: md5
+      md5: 8406669a97e71bb2f6741cbca36f6b40
+      size: 35887187
+    - path: pipeline/05-run_manifesto_roberta.py
+      hash: md5
+      md5: a6f72feda6ac61d5c07474b931d594ce
+      size: 2507
+    - path: src/processing/predictors.py
+      hash: md5
+      md5: 80e04fc120d11292629ba44abbad71d9
+      size: 6223
+    outs:
+    - path: data/interim/manifesto_roberta.parquet.gzip
+      hash: md5
+      md5: c65497e8d4e9577744d758f7fbde237a
+      size: 4352558

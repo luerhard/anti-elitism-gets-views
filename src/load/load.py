@@ -23,6 +23,8 @@ def channels():
             "title": "channel_title",
             "description": "channel_description",
             "uploader_id": "channel_uploader_id",
+            "playlist_count": "channel_playlists",
+            "channel_follower_count": "channel_followers",
         },
         axis=1,
     )
@@ -45,7 +47,7 @@ def comments(filter_videos: bool = True):
             "text": "comment_text",
             "author": "comment_author",
             "parent": "comment_parent",
-            "like_count": "comment_like_count",
+            "like_count": "comment_likes",
         },
         axis=1,
     )
@@ -71,19 +73,26 @@ def videos(filter_period: bool = True, filter_format: bool = True, filter_senten
             "title": "video_title",
             "description": "video_description",
             "duration": "video_duration",
+            "like_count": "video_likes",
+            "view_count": "video_views",
+            "datetime_upload": "video_uploadtime",
+            "format": "video_format",
+            "comment_count": "video_comments",
+            "was_live": "video_live",
+            "relative_file_path": "video_file",
         },
         axis=1,
     )
     df = df.astype(
         {
             "channel_id": "category",
-            "format": "category",
+            "video_format": "category",
         },
     )
     if filter_period:
-        df = df.loc[(df.datetime_upload >= PERIOD_START) & (df.datetime_upload <= PERIOD_END)]
+        df = df.loc[(df.video_uploadtime >= PERIOD_START) & (df.video_uploadtime <= PERIOD_END)]
     if filter_format:
-        df = df.loc[df.format == "videos", :]
+        df = df.loc[df.video_format == "videos"]
     if filter_sentences:
         sent_df = sentences(filter_short=True, filter_n_sents=True, filter_video=False)
         unique_video_ids = sent_df.video_id.unique()

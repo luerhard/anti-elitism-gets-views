@@ -1,6 +1,7 @@
 #set text(
   font: "Times New Roman",
-  size: 12pt
+  size: 12pt,
+  lang: "en"
 )
 
 #set page(
@@ -30,7 +31,7 @@ With the rise of YouTube as one of the most important social media networks on t
 But YouTube is not "just" a social media platform.
 Even without the direct interaction of content creators and viewers, this platform allows for an easy way to create and share content for just about everybody.
 The German parties naturally also take the opportunity to be represented on it, albeit with very different degrees of success.
-While the viewership is behind some of the more influential accounts on this platform, investigating the content shared on YouTube allows us to examine the parties’ self-representation in more detail.
+While the viewership is behind some of the more influential accounts on this platform, investigating the content shared on YouTube allows us to examine the parties' self-representation in more detail.
 #footnote[There are some successful channels of German politicians like Sarah Wagenknecht (with 664,000 followers) or Alice Weidel (with 189,000 followers) with personal channels.
 Still, we focus on the party channels in this study.] This research aims to take a closer look at the use and dissemination of populism on YouTube by German political parties.
 
@@ -93,10 +94,11 @@ The dataset is restricted to the period from December 6, 2017 (the final channel
 
 #figure(
   align(center)[
-    #set text(size: 9.5pt)
+    #set text(size: 10.2pt)
     #table(
       columns: (1fr, ..(auto,) * (header.len() - 1)),
       align: (left, ..(right,) * (header.len() - 1)),
+      inset: 4pt,
       stroke: none,
       table.hline(),
       table.header(..header),
@@ -111,18 +113,19 @@ The dataset is restricted to the period from December 6, 2017 (the final channel
 ) <tab:descriptives>
 
 It is particularly striking that each of the two AfD channels, \@AfDFraktionimBundestag (388,000 followers), herein after referred to as AfD BT, and \@AfDTV (250,000), has more than twice as many followers as all the other analyzed channels combined (219,670).
-While all parties have some successful videos (see Figure Xfig:view_count), average views and likes per video diverge up to a factor of 10 between the AfD channels and all others.
+While all parties have some successful videos (see @fig:view_count), average views and likes per video diverge up to a factor of 10 between the AfD channels and all others.
 Notably, the FDP consistently disables the like/dislike functionality across most of their videos, excluding them from upcoming like-based analyses.
 
 The videos' content was transcribed using OpenAI's state-of-the-art speech-to-text model, whisper-large-v3 @radfordRobustSpeechRecognition2022.
 Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of SoMaJo @proislSoMaJoStateoftheartTokenization2016 tokenizer and sentence-splitter.
 After removing sentences with less than 5 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises 9,394 videos, totaling 1,485 hours and featuring 708,549 sentences.
-Summary statistics per channel are presented in Table @tab:descriptives.
-Figure @fig:view_count depicts the distributions of likes and views.
+Summary statistics per channel are presented in @tab:descriptives.
+@fig:view_count depicts the distributions of likes and views.
 While all parties have some successful videos, these numbers indicate that each of the AfD's channels has more than double the followers, views, and likes of all other parties combined.
 Notably, the FDP consistently disables the like/dislike functionality across most of their videos and, in conjunction with the Greens (Grüne), opts to disable comments.
 
-#figure(image("figures/figure_1.svg", width: 100%),
+#figure(
+  image("figures/figure_1.svg", width: 100%),
   caption: [
     Distribution of logged view and like counts per channel.
   ]
@@ -132,9 +135,9 @@ Notably, the FDP consistently disables the like/dislike functionality across mos
 
 To detect populist dimensions in the viewos, we used PopBERT @erhardPopBERTDetectingPopulism2023, a BERT-based transformer model.
 
-fine-tuned on German political speech.
+- fine-tuned on German political speech.
 
-to detect populist dimensions in all sentences, classifying the two central dimensions of populism: anti-elitism and people-centrism.
+- to detect populist dimensions in all sentences, classifying the two central dimensions of populism: anti-elitism and people-centrism.
 
 == Content Classification <content-classification>
 
@@ -150,7 +153,6 @@ We thus omit this category from further analysis as it does not reveal any infor
 
 = Results <results>
 /*
-<results>
 #figure(image("img/populism_over_time.pdf", width: 100%),
   caption: [
     Populism over time.
@@ -170,14 +172,12 @@ A key finding here is that only the populist parties (both AfD channels and the 
 This suggests that people who watch videos from populist parties do so deliberately and in search of anti-elitist content.
 This effect is not seen for people-centrism.
 
-/*
-#figure(image("img/nb_regression_like_count.pdf", width: 100%),
+#figure(
+  image("figures/figure_2.svg", width: 100%),
   caption: [
     Negative Binomial Regression on Number of Likes per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
   ]
-)
-<fig:nb_reg>
-*/
+) <fig:nb_reg>
 
 == Populism and Content <populism-and-content>
 

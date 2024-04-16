@@ -31,3 +31,17 @@ stages:
       - pipeline/05-run_manifesto_roberta.py
     outs:
       - data/interim/manifesto_roberta.parquet.gzip
+  basic_descriptives:
+    cmd: poetry run papermill pipeline/06-basic_descriptives.ipynb reports/notebooks/06-basic_descriptives.ipynb
+    deps:
+      - src/load/
+      - data/interim/popbert.parquet.gzip
+      - data/interim/sentences.parquet.gzip
+      - data/raw/yt_metadata/
+    outs:
+      - reports/notebooks/06-basic_descriptives.ipynb
+      - reports/tables/dataset_summary.csv
+      - reports/figures/view_count_violin_vertical.pdf
+      - reports/figures/view_count_violin_vertical.svg
+      - reports/figures/view_count_violin.pdf
+      - reports/figures/view_count_violin.svg

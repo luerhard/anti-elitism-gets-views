@@ -99,13 +99,13 @@ stages:
       nfiles: 3
     - path: src/load/
       hash: md5
-      md5: c3f8db383e2b12577d01162cffda73af.dir
+      md5: dd1cd1858b60c851c9e43ca657609078.dir
       size: 10870
       nfiles: 4
     outs:
     - path: reports/figures/view_count_violin.pdf
       hash: md5
-      md5: 5f86be842a59ff8c1f39607d77ce1942
+      md5: e3bbcca026a1f58a52f5f7f621fb332a
       size: 16823
     - path: reports/figures/view_count_violin.svg
       hash: md5
@@ -113,7 +113,7 @@ stages:
       size: 67220
     - path: reports/figures/view_count_violin_vertical.pdf
       hash: md5
-      md5: b277269a1b69a6caa3aabd1fe0835734
+      md5: 62572d332f8284dafdeb91218c60dea5
       size: 16761
     - path: reports/figures/view_count_violin_vertical.svg
       hash: md5
@@ -121,9 +121,52 @@ stages:
       size: 67214
     - path: reports/notebooks/06-basic_descriptives.ipynb
       hash: md5
-      md5: 6b2fe0458a3d34c2d7658e0cd61e20bb
-      size: 29863
+      md5: 60db810c801c1fa2bdcb4b2dfb2d121f
+      size: 30247
     - path: reports/tables/dataset_summary.csv
       hash: md5
       md5: 78139ebba95f7a391405eedce0fdbbe1
       size: 1012
+  nb_regression:
+    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
+      '../reports/notebooks/07-nb_regression.html')"
+    deps:
+    - path: data/interim/popbert.parquet.gzip
+      hash: md5
+      md5: 1fa0f6af6cdf39fdf8a275d8390045e5
+      size: 13111387
+    - path: data/interim/sentences.parquet.gzip
+      hash: md5
+      md5: 8406669a97e71bb2f6741cbca36f6b40
+      size: 35887187
+    - path: data/raw/yt_metadata/
+      hash: md5
+      md5: e4f5a8c9396cda5019654633eb294499.dir
+      size: 251169430
+      nfiles: 3
+    - path: src/load/
+      hash: md5
+      md5: dd1cd1858b60c851c9e43ca657609078.dir
+      size: 10870
+      nfiles: 4
+    outs:
+    - path: reports/figures/nb_regression_like_count.pdf
+      hash: md5
+      md5: 2c566d64d5aa676d0af1fdac9cc9b823
+      size: 6728
+    - path: reports/figures/nb_regression_like_count.svg
+      hash: md5
+      md5: 55480002882b74b54c11a7ee778362b9
+      size: 17526
+    - path: reports/figures/nb_regression_like_count_vertical.pdf
+      hash: md5
+      md5: aa307f8d396f61d846d715cd7f0fa3c1
+      size: 6733
+    - path: reports/figures/nb_regression_like_count_vertical.svg
+      hash: md5
+      md5: 025f641255c9d571bfb63eee485e34aa
+      size: 17524
+    - path: reports/notebooks/07-nb_regression.html
+      hash: md5
+      md5: 778a0dfd92013676b1eeddfaa65941e8
+      size: 843710

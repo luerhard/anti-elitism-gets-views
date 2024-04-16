@@ -45,3 +45,16 @@ stages:
       - reports/figures/view_count_violin_vertical.svg
       - reports/figures/view_count_violin.pdf
       - reports/figures/view_count_violin.svg
+  nb_regression:
+    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document', '../reports/notebooks/07-nb_regression.html')"
+    deps:
+      - src/load/
+      - data/interim/popbert.parquet.gzip
+      - data/interim/sentences.parquet.gzip
+      - data/raw/yt_metadata/
+    outs:
+      - reports/notebooks/07-nb_regression.html
+      - reports/figures/nb_regression_like_count.pdf
+      - reports/figures/nb_regression_like_count.svg
+      - reports/figures/nb_regression_like_count_vertical.pdf
+      - reports/figures/nb_regression_like_count_vertical.svg

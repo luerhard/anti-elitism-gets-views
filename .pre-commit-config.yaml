@@ -42,3 +42,4 @@ repos:
   hooks:
     - id: nbstripout
       types_or: [jupyter]
+      exclude: ^reports/notebooks

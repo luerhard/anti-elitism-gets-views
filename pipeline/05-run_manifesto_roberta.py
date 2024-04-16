@@ -2,7 +2,7 @@ import ibis
 
 import src
 from src.logging import logger as log
-from src.processing.predictors import ManifestorPredictor
+from src.processing.manifesto_predictor import ManifestoPredictor
 from src.utils.iterate import flatten_list
 
 CHUNKSIZE = 32
@@ -32,7 +32,7 @@ def main():
         table_manifesto = con.table("manifesto")
     log.info("DB loaded.")
 
-    manifesto = ManifestorPredictor()
+    manifesto = ManifestoPredictor()
 
     sentences_df = table_sentences.filter(
         table_sentences.sentence_id.notin(table_manifesto.sentence_id),

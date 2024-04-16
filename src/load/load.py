@@ -33,6 +33,7 @@ def channels():
             "channel_uploader_id": "category",
         },
     )
+    df.channel = df.channel.cat.rename_categories(src.party_names)
     return df
 
 
@@ -100,7 +101,7 @@ def sentences(filter_short: bool = True, filter_n_sents: bool = True, filter_vid
     if filter_short:
         df = df.loc[df.tokens.str.len() >= MIN_TOKENS_PER_SENT]
     if filter_n_sents:
-        df = df.groupby("video_id").filter(lambda x: len(x) >= MIN_SENTS_PER_VIDEO)
+        df = df.groupby("video_id", observed=True).filter(lambda x: len(x) >= MIN_SENTS_PER_VIDEO)
     if filter_video:
         video_df = videos(filter_period=True, filter_format=True, filter_sentences=False)
         unique_video_ids = video_df.video_id.unique()

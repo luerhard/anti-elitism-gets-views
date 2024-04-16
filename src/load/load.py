@@ -1,4 +1,3 @@
-
 import pandas as pd
 
 import src
@@ -16,8 +15,70 @@ POPBERT_THRESHOLDS = {
 }
 
 
+def channels():
+    df = pd.read_parquet(src.DATA / "raw/yt_metadata/channels.parquet.gzip")
+    df = df.rename(
+        {
+            "id": "channel_id",
+            "title": "channel_title",
+            "description": "channel_description",
+            "uploader_id": "channel_uploader_id",
+        },
+        axis=1,
+    )
+    df = df.astype(
+        {
+            "channel_id": "category",
+            "channel": "category",
+            "channel_uploader_id": "category",
+        },
+    )
+    return df
+
+
+def comments(filter_videos: bool = True):
+    df = pd.read_parquet(src.DATA / "raw/yt_metadata/comments.parquet.gzip")
+    df = df.rename(
+        {
+            "id": "comment_id",
+            "text": "comment_text",
+            "author": "comment_author",
+            "parent": "comment_parent",
+            "like_count": "comment_like_count",
+        },
+        axis=1,
+    )
+    df = df.astype(
+        {
+            "video_id": "category",
+            "comment_author": "category",
+            "comment_parent": "category",
+        },
+    )
+    if filter_videos:
+        video_df = videos(filter_period=True, filter_format=True, filter_sentences=False)
+        unique_video_ids = video_df.video_id.unique()
+        df = df.loc[df.video_id.isin(unique_video_ids)]
+    return df
+
+
 def videos(filter_period: bool = True, filter_format: bool = True, filter_sentences: bool = True):
     df = pd.read_parquet(src.DATA / "raw/yt_metadata/videos.parquet.gzip")
+    df = df.rename(
+        {
+            "id": "video_id",
+            "title": "video_title",
+            "description": "video_description",
+            "duration": "video_duration",
+        },
+        axis=1,
+    )
+    df = df.astype(
+        {
+            "channel_id": "category",
+            "format": "category",
+        },
+    )
     if filter_period:
         df = df.loc[(df.datetime_upload >= PERIOD_START) & (df.datetime_upload <= PERIOD_END)]
     if filter_format:
@@ -25,19 +86,24 @@ def videos(filter_period: bool = True, filter_format: bool = True, filter_senten
     if filter_sentences:
         sent_df = sentences(filter_short=True, filter_n_sents=True, filter_video=False)
         unique_video_ids = sent_df.video_id.unique()
-        df = df.loc[df["id"].isin(unique_video_ids)]
+        df = df.loc[df.video_id.isin(unique_video_ids)]
     return df
 
 
 def sentences(filter_short: bool = True, filter_n_sents: bool = True, filter_video: bool = True):
     df = pd.read_parquet(src.DATA / "interim/sentences.parquet.gzip")
+    df = df.astype(
+        {
+            "video_id": "category",
+        },
+    )
     if filter_short:
         df = df.loc[df.tokens.str.len() >= MIN_TOKENS_PER_SENT]
     if filter_n_sents:
         df = df.groupby("video_id").filter(lambda x: len(x) >= MIN_SENTS_PER_VIDEO)
     if filter_video:
         video_df = videos(filter_period=True, filter_format=True, filter_sentences=False)
-        unique_video_ids = video_df.id.unique()
+        unique_video_ids = video_df.video_id.unique()
         df = df.loc[df.video_id.isin(unique_video_ids)]
 
     return df

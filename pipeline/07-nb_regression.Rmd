@@ -23,7 +23,22 @@ library(ggeffects)
 
 theme_set(theme_minimal())
 
-df <- load$video_dataset()
+videos <- load$videos()
+channels <- load$channels()
+sentences <- load$sentences()
+popbert <- load$popbert()
+
+df_sents <- sentences |>
+    left_join(popbert, by="sentence_id") |>
+    group_by(video_id) |>
+    summarize(
+      elite = mean(elite),
+      pplcentr = mean(pplcentr)
+    )
+
+df <- channels |>
+  left_join(videos, by="channel_id") |>
+  left_join(df_sents, by="video_id")
 ```
 
 ```{r}
@@ -32,7 +47,7 @@ z_transform <- function(x) as.vector(scale(x))
 df <- df %>%
   filter(channel != "FDP") %>%
   mutate(
-    year = as_factor(year)
+    year = video_uploadtime |> lubridate::year() |> as_factor()
     # populism = elite * pplcentr,
     # populism = z_transform(populism),
   ) %>%
@@ -47,7 +62,7 @@ df <- df %>%
 
 ```{r}
 form <- formula(
-  like_count ~ channel + elite + channel * elite + year + duration
+  video_likes ~ channel + elite + channel * elite + year + video_duration
 )
 
 model <- glm.nb(form, data = df)
@@ -65,8 +80,8 @@ sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite [-1,0,1]")) 
   ) +
   theme_ggeffects(base_family = "serif")
 
-ggsave(here("overleaf", "img", "nb_regression_like_count.pdf"), width = 7, height = 5)
-ggsave(here("overleaf", "img", "nb_regression_like_count.svg"), width = 7, height = 5)
+ggsave(here("reports", "figures", "nb_regression_like_count.pdf"), width = 7, height = 5)
+ggsave(here("reports", "figures", "nb_regression_like_count.svg"), width = 7, height = 5)
 ```
 
 ```{r}
@@ -81,6 +96,6 @@ sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite [-1,0,1]")) 
   theme_ggeffects(base_family = "serif") +
   theme(legend.position = "bottom")
 
-ggsave(here("overleaf", "img", "nb_regression_like_count_vertical.pdf"), width = 5, height = 5.5)
-ggsave(here("overleaf", "img", "nb_regression_like_count_vertical.svg"), width = 5, height = 5.5)
+ggsave(here("reports", "figures", "nb_regression_like_count_vertical.pdf"), width = 5, height = 5.5)
+ggsave(here("reports", "figures", "nb_regression_like_count_vertical.svg"), width = 5, height = 5.5)
 ```

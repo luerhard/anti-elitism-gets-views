@@ -168,3 +168,4 @@ config.ini
 **/.Rhistory
 slurm-*.out
 tmp/**
+reports/manuscript/main.pdf

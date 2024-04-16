@@ -7,6 +7,13 @@ import pandas as pd
 
 PATH = Path(__file__).parent.parent
 
+DATA = PATH / "data"
+
+OUT = PATH / "reports"
+OUT.mkdir(exist_ok=True)
+(OUT / "tables").mkdir(exist_ok=True)
+(OUT / "figures").mkdir(exist_ok=True)
+
 TMP = PATH / "tmp"
 TMP.mkdir(exist_ok=True)
 

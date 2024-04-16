@@ -2,7 +2,7 @@ import ibis
 
 import src
 from src.logging import logger as log
-from src.processing.predictors import PopBERTPredictor
+from src.processing.popbert_predictor import PopBERTPredictor
 
 CHUNKSIZE = 64
 DB_PATH = src.PATH / "tmp/popbert.duckdb"

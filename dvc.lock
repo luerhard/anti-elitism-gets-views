@@ -50,17 +50,17 @@ stages:
       size: 35887187
     - path: pipeline/04-run_popbert.py
       hash: md5
-      md5: 0cc7073a30fea3c11c8106aa071021d2
-      size: 2062
-    - path: src/processing/predictors.py
+      md5: c0e067f1ee0e5756cafcac6c7b71edfd
+      size: 2069
+    - path: src/processing/popbert_predictor.py
       hash: md5
-      md5: 80e04fc120d11292629ba44abbad71d9
-      size: 6223
+      md5: 2d75e89af67d95a035359924acc4e909
+      size: 2070
     outs:
     - path: data/interim/popbert.parquet.gzip
       hash: md5
-      md5: a93cb2f584efbc0c346c1e1c2afbeb93
-      size: 1235764
+      md5: 1fa0f6af6cdf39fdf8a275d8390045e5
+      size: 13111387
   run_manifesto_roberta:
     cmd: poetry run python pipeline/05-run_manifesto_roberta.py
     deps:
@@ -70,14 +70,60 @@ stages:
       size: 35887187
     - path: pipeline/05-run_manifesto_roberta.py
       hash: md5
-      md5: a6f72feda6ac61d5c07474b931d594ce
-      size: 2507
-    - path: src/processing/predictors.py
+      md5: e5f48e4884904ed388906b28d24d30fc
+      size: 2514
+    - path: src/processing/manifesto_predictor.py
       hash: md5
-      md5: 80e04fc120d11292629ba44abbad71d9
-      size: 6223
+      md5: dff138a1c91c969b39678c68a9035995
+      size: 3349
     outs:
     - path: data/interim/manifesto_roberta.parquet.gzip
       hash: md5
       md5: c65497e8d4e9577744d758f7fbde237a
       size: 4352558
+  basic_descriptives:
+    cmd: poetry run papermill pipeline/06-basic_descriptives.ipynb reports/notebooks/06-basic_descriptives.ipynb
+    deps:
+    - path: data/interim/popbert.parquet.gzip
+      hash: md5
+      md5: 1fa0f6af6cdf39fdf8a275d8390045e5
+      size: 13111387
+    - path: data/interim/sentences.parquet.gzip
+      hash: md5
+      md5: 8406669a97e71bb2f6741cbca36f6b40
+      size: 35887187
+    - path: data/raw/yt_metadata/
+      hash: md5
+      md5: e4f5a8c9396cda5019654633eb294499.dir
+      size: 251169430
+      nfiles: 3
+    - path: src/load/
+      hash: md5
+      md5: c3f8db383e2b12577d01162cffda73af.dir
+      size: 10870
+      nfiles: 4
+    outs:
+    - path: reports/figures/view_count_violin.pdf
+      hash: md5
+      md5: 5f86be842a59ff8c1f39607d77ce1942
+      size: 16823
+    - path: reports/figures/view_count_violin.svg
+      hash: md5
+      md5: 8f3eb973d4e8446c70748c8ee83634d3
+      size: 67220
+    - path: reports/figures/view_count_violin_vertical.pdf
+      hash: md5
+      md5: b277269a1b69a6caa3aabd1fe0835734
+      size: 16761
+    - path: reports/figures/view_count_violin_vertical.svg
+      hash: md5
+      md5: ca807c9bbe9c5b88c3226b315ed27c20
+      size: 67214
+    - path: reports/notebooks/06-basic_descriptives.ipynb
+      hash: md5
+      md5: 6b2fe0458a3d34c2d7658e0cd61e20bb
+      size: 29863
+    - path: reports/tables/dataset_summary.csv
+      hash: md5
+      md5: 78139ebba95f7a391405eedce0fdbbe1
+      size: 1012

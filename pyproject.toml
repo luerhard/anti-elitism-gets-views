@@ -33,6 +33,7 @@ scikit-learn = "^1.4.0"
 matplotlib = "^3.8.2"
 imblearn = "^0.0"
 ibis-framework = {extras = ["duckdb"], version = "^8.0.0"}
+papermill = "^2.5.0"
 
 [tool.pytest.ini_options]
 markers = [

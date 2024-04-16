@@ -70,12 +70,12 @@ stages:
       size: 35887187
     - path: pipeline/05-run_manifesto_roberta.py
       hash: md5
-      md5: a6f72feda6ac61d5c07474b931d594ce
-      size: 2507
-    - path: src/processing/predictors.py
+      md5: e5f48e4884904ed388906b28d24d30fc
+      size: 2514
+    - path: src/processing/manifesto_predictor.py
       hash: md5
-      md5: 80e04fc120d11292629ba44abbad71d9
-      size: 6223
+      md5: dff138a1c91c969b39678c68a9035995
+      size: 3349
     outs:
     - path: data/interim/manifesto_roberta.parquet.gzip
       hash: md5

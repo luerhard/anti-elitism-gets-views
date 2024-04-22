@@ -133,11 +133,10 @@ Notably, the FDP consistently disables the like/dislike functionality across mos
 
 == Detection of Populism <detection-of-populism>
 
-To detect populist dimensions in the viewos, we used PopBERT @erhardPopBERTDetectingPopulism2023, a BERT-based transformer model.
-
-- fine-tuned on German political speech.
-
-- to detect populist dimensions in all sentences, classifying the two central dimensions of populism: anti-elitism and people-centrism.
+In a subsequent article, I have applied the PopBERT @erhardPopBERTDetectingPopulism2023, a BERT-based transformer model, initially developed to analyze German parliamentary speeches, to study populism in transcripts of YouTube videos from the official channels of the German parties in the Bundestag.
+This adaptation involves using the model to detect populist rhetoric within these videos, identifying patterns of language that align with anti-elitism and people-centrism, and examining how these elements are associated with broader political ideologies.
+The analysis focuses on the official communications from these parties, providing insights into how established political entities engage with and propagate populist narratives through online video content.
+This approach highlights the versatility of the PopBERT model for examining populist discourse across different media and political contexts.
 
 == Content Classification <content-classification>
 

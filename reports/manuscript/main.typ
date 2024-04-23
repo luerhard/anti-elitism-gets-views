@@ -207,6 +207,9 @@ A connection is displayed as the number of distinct users that have commented at
 A key finding here is that only the populist parties (both AfD channels and the Left) show a clear correlation between the number of likes of a video and populist dimensions.
 This suggests that people who watch videos from populist parties do so deliberately and in search of anti-elitist content.
 This effect is not seen for people-centrism.
+As illustrated in @tab:descriptives, the FDP has received an almost negligible number of likes on their videos.
+A review of their YouTube content reveals that the FDP has disabled the like feature on nearly all of their videos.
+Consequently, we will exclude the FDP from the subsequent analysis.
 
 #figure(
   image("figures/figure_2.svg", width: 100%),

@@ -48,6 +48,7 @@ stages:
     cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document', '../reports/notebooks/07-nb_regression.html')"
     deps:
       - src/load/
+      - r/load.R
       - data/interim/popbert.parquet.gzip
       - data/interim/sentences.parquet.gzip
       - data/raw/yt_metadata/

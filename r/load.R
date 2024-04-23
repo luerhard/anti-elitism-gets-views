@@ -12,23 +12,23 @@ channels <- function() {
   return(df)
 }
 
-videos <- function() {
+videos <- function(filtered=TRUE) {
   data_load <- reticulate::import("src.load")
   loader = data_load$DataLoader()
-  df <- loader$videos()$to_pandas()
+  df <- loader$videos(filtered=filtered)$to_pandas()
   return(df)
 }
 
-sentences <- function() {
+sentences <- function(filtered=TRUE) {
   data_load <- reticulate::import("src.load")
   loader = data_load$DataLoader()
-  df <- loader$sentences()$to_pandas()
+  df <- loader$sentences(filtered=filtered)$to_pandas()
   return(df)
 }
 
-popbert <- function() {
+popbert <- function(filtered=TRUE) {
   data_load <- reticulate::import("src.load")
   loader = data_load$DataLoader()
-  df <- loader$popbert()$to_pandas()
+  df <- loader$popbert(filtered=filtered)$to_pandas()
   return(df)
 }

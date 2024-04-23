@@ -99,34 +99,26 @@ stages:
       nfiles: 3
     - path: src/load/
       hash: md5
-      md5: 54a07e79a430249c6e193c016baee523.dir
-      size: 11297
+      md5: ba75b09afa2125e43483ec85213f4cb5.dir
+      size: 12578
       nfiles: 4
     outs:
-    - path: reports/figures/view_count_violin.pdf
-      hash: md5
-      md5: e5115152e3a981f4e924c9cf1a17e5b9
-      size: 16640
     - path: reports/figures/view_count_violin.svg
       hash: md5
-      md5: 8a78d4a42e0985487ad7c3c53a95d51d
-      size: 66490
-    - path: reports/figures/view_count_violin_vertical.pdf
-      hash: md5
-      md5: 49033c3ab9ef32cc8ad4890aaf005f0f
-      size: 16596
+      md5: c5f05e6207a6c74afba2b1635a097103
+      size: 71161
     - path: reports/figures/view_count_violin_vertical.svg
       hash: md5
-      md5: b4c83e8f30482e18916c3a9fff40ab5b
-      size: 66484
+      md5: 2c2c8aae447cce0621c16bc9cf7dea39
+      size: 71155
     - path: reports/notebooks/06-basic_descriptives.ipynb
       hash: md5
-      md5: 9490f03bad991392659d8b42c4f65430
-      size: 29954
+      md5: e55db650b540a3331a872fbdb95dc5eb
+      size: 29958
     - path: reports/tables/dataset_summary.csv
       hash: md5
-      md5: 697bef599c573989b50dee97608fa503
-      size: 1018
+      md5: 8c25ac1eded9785058b9c6c8392c8666
+      size: 1007
   nb_regression:
     cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
       '../reports/notebooks/07-nb_regression.html')"
@@ -146,27 +138,45 @@ stages:
       nfiles: 3
     - path: src/load/
       hash: md5
-      md5: 54a07e79a430249c6e193c016baee523.dir
-      size: 11297
+      md5: ba75b09afa2125e43483ec85213f4cb5.dir
+      size: 12578
       nfiles: 4
     outs:
-    - path: reports/figures/nb_regression_like_count.pdf
-      hash: md5
-      md5: 1830179314b49a16972c5b894f977941
-      size: 6711
     - path: reports/figures/nb_regression_like_count.svg
       hash: md5
-      md5: 91fb890d01f8ed0f25403f96a89ec583
-      size: 17526
-    - path: reports/figures/nb_regression_like_count_vertical.pdf
-      hash: md5
-      md5: 1179b2e3e34f56a3311cba8e2187daa4
-      size: 6720
+      md5: b8f883585ef2b588bc454ba6f7430304
+      size: 17232
     - path: reports/figures/nb_regression_like_count_vertical.svg
       hash: md5
-      md5: de1e851570e89ea4b37dd75a47ceb999
-      size: 17524
+      md5: 3a953ced83a963fddd13f7ab4a8925c4
+      size: 17230
     - path: reports/notebooks/07-nb_regression.html
       hash: md5
-      md5: 43b56d66dc78bc1a39995122c958212f
-      size: 844585
+      md5: 0bcd01f392a4be386b6d024501420c28
+      size: 841010
+  comment_analysis:
+    cmd: poetry run papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
+    deps:
+    - path: data/raw/yt_metadata/
+      hash: md5
+      md5: e4f5a8c9396cda5019654633eb294499.dir
+      size: 251169430
+      nfiles: 3
+    - path: src/load/
+      hash: md5
+      md5: ba75b09afa2125e43483ec85213f4cb5.dir
+      size: 12578
+      nfiles: 4
+    outs:
+    - path: reports/figures/co_commenter_network.svg
+      hash: md5
+      md5: 4f27802458dd4561b3914490ae03a475
+      size: 39235
+    - path: reports/notebooks/08-comment_analysis.ipynb
+      hash: md5
+      md5: 381b23734dc50f32dd0df7f597e296f3
+      size: 144857
+    - path: reports/tables/n_commenters_per_channel.csv
+      hash: md5
+      md5: 0fa1ecfdd457ac01b473113d9834376a
+      size: 104

@@ -23,10 +23,10 @@ library(ggeffects)
 
 theme_set(theme_minimal())
 
-videos <- load$videos()
 channels <- load$channels()
-sentences <- load$sentences()
-popbert <- load$popbert()
+videos <- load$videos(filtered=TRUE)
+sentences <- load$sentences(filtered=TRUE)
+popbert <- load$popbert(filtered=TRUE)
 
 df_sents <- sentences |>
     left_join(popbert, by="sentence_id") |>
@@ -40,6 +40,7 @@ df <- channels |>
   left_join(videos, by="channel_id") |>
   left_join(df_sents, by="video_id")
 ```
+
 
 ```{r}
 z_transform <- function(x) as.vector(scale(x))

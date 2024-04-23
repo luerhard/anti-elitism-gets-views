@@ -38,6 +38,7 @@ stages:
       - data/interim/popbert.parquet.gzip
       - data/interim/sentences.parquet.gzip
       - data/raw/yt_metadata/
+      - pipeline/06-basic_descriptives.ipynb
     outs:
       - reports/notebooks/06-basic_descriptives.ipynb
       - reports/tables/dataset_summary.csv
@@ -50,6 +51,7 @@ stages:
       - data/interim/popbert.parquet.gzip
       - data/interim/sentences.parquet.gzip
       - data/raw/yt_metadata/
+      - pipeline/07-nb_regression.Rmd
     outs:
       - reports/notebooks/07-nb_regression.html
       - reports/figures/nb_regression_like_count.svg
@@ -59,6 +61,7 @@ stages:
     deps:
       - src/load/
       - data/raw/yt_metadata/
+      - pipeline/08-comment_analysis.ipynb
     outs:
       - reports/notebooks/08-comment_analysis.ipynb
       - reports/tables/n_commenters_per_channel.csv

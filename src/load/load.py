@@ -19,9 +19,7 @@ class DataLoader:
 
     def __init__(self) -> None:
 
-        self.db_path = src.TMP / "test.duckdb"
-        self.con = ibis.connect(self.db_path, threads=4, memory_limit="10GB")
-
+        self.con = ibis.connect("duckdb://:memory:", threads=4, memory_limit="10GB")
         self.con.read_parquet(src.DATA / "raw/yt_metadata/channels.parquet.gzip", "channels")
         self.con.read_parquet(src.DATA / "raw/yt_metadata/videos.parquet.gzip", "videos")
         self.con.read_parquet(src.DATA / "raw/yt_metadata/comments.parquet.gzip", "comments")
@@ -92,8 +90,9 @@ class DataLoader:
 
             # filter by sentence criteria
             if not _ignore_sentence_filter:
-                sents = self.sentences(_ignore_video_filter=True)
-                filtered_table = table.join(sents.alias("filtered_sentences"), "video_id")
+                sents = self.sentences(filtered=True, _ignore_video_filter=True)
+                remaining_videos = sents[["video_id"]].distinct()
+                filtered_table = table.filter(_.video_id.isin(remaining_videos.video_id))
                 table = filtered_table[table]
 
         return table

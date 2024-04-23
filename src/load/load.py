@@ -17,10 +17,10 @@ class DataLoader:
     MIN_TOKENS_PER_SENT = 5
     MIN_SENTS_PER_VIDEO = 5
 
-    def __init__(self, filtered: bool = True) -> None:
-        self.filtered = filtered
+    def __init__(self) -> None:
 
-        self.con = ibis.connect("duckdb://:memory:", threads=4, memory_limit="6GB")
+        self.db_path = src.TMP / "test.duckdb"
+        self.con = ibis.connect(self.db_path, threads=4, memory_limit="10GB")
 
         self.con.read_parquet(src.DATA / "raw/yt_metadata/channels.parquet.gzip", "channels")
         self.con.read_parquet(src.DATA / "raw/yt_metadata/videos.parquet.gzip", "videos")
@@ -43,7 +43,7 @@ class DataLoader:
         table = table.rename(**col_names).mutate(channel=_.channel.substitute(src.party_names))
         return table
 
-    def comments(self):
+    def comments(self, filtered: bool = False):
         table = self.con.tables["comments"]
         col_names = {
             "comment_id": "id",
@@ -54,9 +54,15 @@ class DataLoader:
         }
 
         table = table.rename(**col_names)
+
+        if filtered:
+            valid_videos = self.videos()
+            filtered_table = table.join(valid_videos, "video_id")
+            table = filtered_table[table]
+
         return table
 
-    def videos(self):
+    def videos(self, filtered: bool = False, _ignore_sentence_filter: bool = False):
         table = self.con.tables["videos"]
         col_names = {
             "video_id": "id",
@@ -74,7 +80,8 @@ class DataLoader:
 
         table = table.rename(**col_names)
 
-        if self.filtered:
+        if filtered:
+            # filter by time and type
             table = table.filter(
                 [
                     _.video_format == "videos",
@@ -82,37 +89,55 @@ class DataLoader:
                     _.video_uploadtime <= self.PERIOD_END,
                 ],
             )
+
+            # filter by sentence criteria
+            if not _ignore_sentence_filter:
+                sents = self.sentences(_ignore_video_filter=True)
+                filtered_table = table.join(sents, "video_id")
+                table = filtered_table[table]
+
         return table
 
-    def sentences(self):
+    def sentences(self, filtered: bool = False, _ignore_video_filter: bool = False):
         table = self.con.tables["sentences"]
 
-        if self.filtered:
-            valid_videos = (
-                self.videos()
-                .join(table, "video_id")
-                .group_by("video_id")
-                .agg(n_sentences=_.sentence_id.count())
-                .filter(_.n_sentences > self.MIN_SENTS_PER_VIDEO)
+        if filtered:
+            # remove sentences from invalid videos (only if not called from videos)
+            if not _ignore_video_filter:
+                table = table.filter(
+                    _.video_id.isin(self.videos(_ignore_sentence_filter=True).video_id),
+                )
+
+            # remove sentences with too few tokens
+            table = table.filter(_.tokens.length() >= self.MIN_TOKENS_PER_SENT)
+
+            # remove videos with less too few sentences
+            counts = (
+                table.group_by("video_id").agg(n_sents=_.sentence_id.count()).filter(_.n_sents > 5)
             )
-            table = table.filter(
-                [
-                    _.video_id.isin(valid_videos.video_id),
-                    _.tokens.length() >= self.MIN_SENTS_PER_VIDEO,
-                ],
-            )
+            filtered_table = table.join(counts, "video_id")
+            table = filtered_table[table]
+
         return table
 
-    def popbert(self, binarize_predictions: bool = True):
+    def popbert(self, filtered: bool = False, binarize_predictions: bool = True):
         table = self.con.tables["popbert"]
+
         if binarize_predictions:
+
+            def apply_threshold(col, thresh):
+                return case().when(col > thresh, 1).else_(0).end()
+
             table = table.mutate(
-                elite=case().when(_.elite > self.POPBERT_THRESH["elite"], 1).else_(0).end(),
-                pplcentr=case()
-                .when(_.pplcentr > self.POPBERT_THRESH["pplcentr"], 1)
-                .else_(0)
-                .end(),
-                left=case().when(_.left > self.POPBERT_THRESH["left"], 1).else_(0).end(),
-                right=case().when(_.right > self.POPBERT_THRESH["right"], 1).else_(0).end(),
+                elite=apply_threshold(_.elite, self.POPBERT_THRESH["elite"]),
+                pplcentr=apply_threshold(_.pplcentr, self.POPBERT_THRESH["pplcentr"]),
+                left=apply_threshold(_.left, self.POPBERT_THRESH["left"]),
+                right=apply_threshold(_.right, self.POPBERT_THRESH["right"]),
             )
+
+        if filtered:
+            sents = self.sentences()
+            filtered_table = table.join(sents, "sentence_id")
+            table = filtered_table[table]
+
         return table

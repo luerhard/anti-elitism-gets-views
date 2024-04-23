@@ -20,11 +20,7 @@ class DataLoader:
     def __init__(self, filtered: bool = True) -> None:
         self.filtered = filtered
 
-        self.db_path = src.TMP / "ytpop.duckdb"
-        if self.db_path.is_file():
-            self.db_path.unlink()
-
-        self.con = ibis.connect(self.db_path, threads=4, memory_limit="6GB")
+        self.con = ibis.connect("duckdb://:memory:", threads=4, memory_limit="6GB")
 
         self.con.read_parquet(src.DATA / "raw/yt_metadata/channels.parquet.gzip", "channels")
         self.con.read_parquet(src.DATA / "raw/yt_metadata/videos.parquet.gzip", "videos")

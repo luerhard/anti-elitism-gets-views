@@ -56,8 +56,8 @@ class DataLoader:
         table = table.rename(**col_names)
 
         if filtered:
-            valid_videos = self.videos()
-            filtered_table = table.join(valid_videos, "video_id")
+            valid_videos = self.videos(filtered=True)
+            filtered_table = table.join(valid_videos.alias("filtered_videos"), "video_id")
             table = filtered_table[table]
 
         return table
@@ -93,7 +93,7 @@ class DataLoader:
             # filter by sentence criteria
             if not _ignore_sentence_filter:
                 sents = self.sentences(_ignore_video_filter=True)
-                filtered_table = table.join(sents, "video_id")
+                filtered_table = table.join(sents.alias("filtered_sentences"), "video_id")
                 table = filtered_table[table]
 
         return table

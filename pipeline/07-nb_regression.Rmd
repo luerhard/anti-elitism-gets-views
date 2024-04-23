@@ -80,7 +80,6 @@ sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite [-1,0,1]")) 
   ) +
   theme_ggeffects(base_family = "serif")
 
-ggsave(here("reports", "figures", "nb_regression_like_count.pdf"), width = 7, height = 5)
 ggsave(here("reports", "figures", "nb_regression_like_count.svg"), width = 7, height = 5)
 ```
 
@@ -96,6 +95,5 @@ sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite [-1,0,1]")) 
   theme_ggeffects(base_family = "serif") +
   theme(legend.position = "bottom")
 
-ggsave(here("reports", "figures", "nb_regression_like_count_vertical.pdf"), width = 5, height = 5.5)
 ggsave(here("reports", "figures", "nb_regression_like_count_vertical.svg"), width = 5, height = 5.5)
 ```

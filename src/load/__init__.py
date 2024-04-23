@@ -1,8 +1,3 @@
-from .load import channels
-from .load import comments
-from .load import manifesto_roberta
-from .load import popbert
-from .load import sentences
-from .load import videos
+from .load import DataLoader
 
-__all__ = ["channels", "comments", "manifesto_roberta", "popbert", "sentences", "videos"]
+__all__ = ["DataLoader"]

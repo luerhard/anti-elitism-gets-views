@@ -1,132 +1,143 @@
-import pandas as pd
+import ibis
+from ibis import _
+from ibis.expr.api import case
 
 import src
 
-PERIOD_START = "2017-12-06"
-PERIOD_END = "2024-01-20"
-MIN_TOKENS_PER_SENT = 5
-MIN_SENTS_PER_VIDEO = 5
+class DataLoader:
+    POPBERT_THRESH = {
+        "elite": 0.415961,
+        "pplcentr": 0.295400,
+        "left": 0.429109,
+        "right": 0.302714,
+    }
 
-POPBERT_THRESHOLDS = {
-    "elite": 0.415961,
-    "pplcentr": 0.295400,
-    "left": 0.429109,
-    "right": 0.302714,
-}
+    PERIOD_START = "2017-12-06"
+    PERIOD_END = "2024-01-20"
+    MIN_TOKENS_PER_SENT = 5
+    MIN_SENTS_PER_VIDEO = 5
 
+    def __init__(self) -> None:
 
-def channels():
-    df = pd.read_parquet(src.DATA / "raw/yt_metadata/channels.parquet.gzip")
-    df = df.rename(
-        {
-            "id": "channel_id",
-            "title": "channel_title",
-            "description": "channel_description",
-            "uploader_id": "channel_uploader_id",
-            "playlist_count": "channel_playlists",
-            "channel_follower_count": "channel_followers",
-        },
-        axis=1,
-    )
-    df = df.astype(
-        {
-            "channel_id": "category",
-            "channel": "category",
-            "channel_uploader_id": "category",
-        },
-    )
-    df.channel = df.channel.cat.rename_categories(src.party_names)
-    return df
+        self.db_path = src.TMP / "test.duckdb"
+        self.con = ibis.connect(self.db_path, threads=4, memory_limit="10GB")
 
+        self.con.read_parquet(src.DATA / "raw/yt_metadata/channels.parquet.gzip", "channels")
+        self.con.read_parquet(src.DATA / "raw/yt_metadata/videos.parquet.gzip", "videos")
+        self.con.read_parquet(src.DATA / "raw/yt_metadata/comments.parquet.gzip", "comments")
+        self.con.read_parquet(src.DATA / "interim/sentences.parquet.gzip", "sentences")
+        self.con.read_parquet(src.DATA / "interim/popbert.parquet.gzip", "popbert")
+        self.con.read_parquet(src.DATA / "interim/manifesto_roberta.parquet.gzip", "manifesto")
 
-def comments(filter_videos: bool = True):
-    df = pd.read_parquet(src.DATA / "raw/yt_metadata/comments.parquet.gzip")
-    df = df.rename(
-        {
-            "id": "comment_id",
-            "text": "comment_text",
-            "author": "comment_author",
-            "parent": "comment_parent",
-            "like_count": "comment_likes",
-        },
-        axis=1,
-    )
-    df = df.astype(
-        {
-            "video_id": "category",
-            "comment_author": "category",
-            "comment_parent": "category",
-        },
-    )
-    if filter_videos:
-        video_df = videos(filter_period=True, filter_format=True, filter_sentences=False)
-        unique_video_ids = video_df.video_id.unique()
-        df = df.loc[df.video_id.isin(unique_video_ids)]
-    return df
+    def channels(self):
+        table = self.con.tables["channels"]
+        col_names = {
+            "channel_id": "id",
+            "channel_title": "title",
+            "channel_description": "description",
+            "channel_uploader_id": "uploader_id",
+            "channel_playlists": "playlist_count",
+            "channel_followers": "channel_follower_count",
+        }
 
+        table = table.rename(**col_names).mutate(channel=_.channel.substitute(src.party_names))
+        return table
 
-def videos(filter_period: bool = True, filter_format: bool = True, filter_sentences: bool = True):
-    df = pd.read_parquet(src.DATA / "raw/yt_metadata/videos.parquet.gzip")
-    df = df.rename(
-        {
-            "id": "video_id",
-            "title": "video_title",
-            "description": "video_description",
-            "duration": "video_duration",
-            "like_count": "video_likes",
-            "view_count": "video_views",
-            "datetime_upload": "video_uploadtime",
-            "format": "video_format",
-            "comment_count": "video_comments",
-            "was_live": "video_live",
-            "relative_file_path": "video_file",
-        },
-        axis=1,
-    )
-    df = df.astype(
-        {
-            "channel_id": "category",
-            "video_format": "category",
-        },
-    )
-    if filter_period:
-        df = df.loc[(df.video_uploadtime >= PERIOD_START) & (df.video_uploadtime <= PERIOD_END)]
-    if filter_format:
-        df = df.loc[df.video_format == "videos"]
-    if filter_sentences:
-        sent_df = sentences(filter_short=True, filter_n_sents=True, filter_video=False)
-        unique_video_ids = sent_df.video_id.unique()
-        df = df.loc[df.video_id.isin(unique_video_ids)]
-    return df
+    def comments(self, filtered: bool = False):
+        table = self.con.tables["comments"]
+        col_names = {
+            "comment_id": "id",
+            "comment_text": "text",
+            "comment_author": "author",
+            "comment_parent": "parent",
+            "comment_likes": "like_count",
+        }
 
+        table = table.rename(**col_names)
 
-def sentences(filter_short: bool = True, filter_n_sents: bool = True, filter_video: bool = True):
-    df = pd.read_parquet(src.DATA / "interim/sentences.parquet.gzip")
-    df = df.astype(
-        {
-            "video_id": "category",
-        },
-    )
-    if filter_short:
-        df = df.loc[df.tokens.str.len() >= MIN_TOKENS_PER_SENT]
-    if filter_n_sents:
-        df = df.groupby("video_id", observed=True).filter(lambda x: len(x) >= MIN_SENTS_PER_VIDEO)
-    if filter_video:
-        video_df = videos(filter_period=True, filter_format=True, filter_sentences=False)
-        unique_video_ids = video_df.video_id.unique()
-        df = df.loc[df.video_id.isin(unique_video_ids)]
+        if filtered:
+            valid_videos = self.videos()
+            filtered_table = table.join(valid_videos, "video_id")
+            table = filtered_table[table]
 
-    return df
+        return table
 
+    def videos(self, filtered: bool = False, _ignore_sentence_filter: bool = False):
+        table = self.con.tables["videos"]
+        col_names = {
+            "video_id": "id",
+            "video_title": "title",
+            "video_description": "description",
+            "video_duration": "duration",
+            "video_likes": "like_count",
+            "video_views": "view_count",
+            "video_uploadtime": "datetime_upload",
+            "video_format": "format",
+            "video_comments": "comment_count",
+            "video_live": "was_live",
+            "video_file": "relative_file_path",
+        }
 
-def popbert(binarize_predictions: bool = True):
-    df = pd.read_parquet(src.DATA / "interim/popbert.parquet.gzip")
-    if binarize_predictions:
-        for col in ["elite", "pplcentr", "left", "right"]:
-            df[col] = df[col].apply(lambda x, col=col: 1 if x > POPBERT_THRESHOLDS[col] else 0)
-    return df
+        table = table.rename(**col_names)
 
+        if filtered:
+            # filter by time and type
+            table = table.filter(
+                [
+                    _.video_format == "videos",
+                    _.video_uploadtime >= self.PERIOD_START,
+                    _.video_uploadtime <= self.PERIOD_END,
+                ],
+            )
 
-def manifesto_roberta():
-    df = pd.read_parquet(src.DATA / "interim/manifesto_roberta.parquet.gzip")
-    return df
+            # filter by sentence criteria
+            if not _ignore_sentence_filter:
+                sents = self.sentences(_ignore_video_filter=True)
+                filtered_table = table.join(sents, "video_id")
+                table = filtered_table[table]
+
+        return table
+
+    def sentences(self, filtered: bool = False, _ignore_video_filter: bool = False):
+        table = self.con.tables["sentences"]
+
+        if filtered:
+            # remove sentences from invalid videos (only if not called from videos)
+            if not _ignore_video_filter:
+                table = table.filter(
+                    _.video_id.isin(self.videos(_ignore_sentence_filter=True).video_id),
+                )
+
+            # remove sentences with too few tokens
+            table = table.filter(_.tokens.length() >= self.MIN_TOKENS_PER_SENT)
+
+            # remove videos with less too few sentences
+            counts = (
+                table.group_by("video_id").agg(n_sents=_.sentence_id.count()).filter(_.n_sents > 5)
+            )
+            filtered_table = table.join(counts, "video_id")
+            table = filtered_table[table]
+
+        return table
+
+    def popbert(self, filtered: bool = False, binarize_predictions: bool = True):
+        table = self.con.tables["popbert"]
+
+        if binarize_predictions:
+
+            def apply_threshold(col, thresh):
+                return case().when(col > thresh, 1).else_(0).end()
+
+            table = table.mutate(
+                elite=apply_threshold(_.elite, self.POPBERT_THRESH["elite"]),
+                pplcentr=apply_threshold(_.pplcentr, self.POPBERT_THRESH["pplcentr"]),
+                left=apply_threshold(_.left, self.POPBERT_THRESH["left"]),
+                right=apply_threshold(_.right, self.POPBERT_THRESH["right"]),
+            )
+
+        if filtered:
+            sents = self.sentences()
+            filtered_table = table.join(sents, "sentence_id")
+            table = filtered_table[table]
+
+        return table

@@ -34,6 +34,7 @@ matplotlib = "^3.8.2"
 imblearn = "^0.0"
 ibis-framework = {extras = ["duckdb"], version = "^8.0.0"}
 papermill = "^2.5.0"
+networkx = "^3.3"
 
 [tool.pytest.ini_options]
 markers = [
@@ -47,6 +48,12 @@ pythonpath = [
 [tool.ruff]
 fix = true
 include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+ignore = ["D107", "E712"]
+ignore-init-module-imports = true
 select = [
 "ARG", # flake8-unused-arguments
 "B", # flake8-bugbear
@@ -62,12 +69,8 @@ select = [
 "Q", # flake8-quotes
 "UP", # pyupgrade
 ]
-ignore = ["D107", "E712"]
-target-version = "py311"
-line-length = 100
-ignore-init-module-imports = true
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402"]
 "docs/**" = ["D"]
 "tests/**" = ["D"]
@@ -75,10 +78,10 @@ ignore-init-module-imports = true
 "pipeline/**" = ["D103"]
 "notebooks/01-playground/**" = ["D103", "E402", "E501"]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 force-single-line = true
 force-sort-within-sections = true
 lines-after-imports = 1

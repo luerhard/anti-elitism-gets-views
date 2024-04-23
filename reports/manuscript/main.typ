@@ -78,8 +78,8 @@ Both channels, exhibiting comparable follower counts, were incorporated into our
 Consequently, our dataset encompasses a total of eight channels.
 The dataset is restricted to the period from December 6, 2017 (the final channel's inaugural video publication) to January 20, 2024 (a week before data collection) to give all videos time to accumulate views and likes.
 
-#let csv = csv("tables/table_1.csv", row-type: array)
-#let header = csv.first()
+#let table_array = csv("tables/table_1.csv", row-type: array)
+#let header = table_array.first()
 
 #let convert-to-float(val) = {
   let check = val.find(regex("^\d+[\.,]?\d*$"))
@@ -90,7 +90,7 @@ The dataset is restricted to the period from December 6, 2017 (the final channel
   }
 }
 
-#let table_content = csv.slice(1).map(m => m.map(convert-to-float))
+#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
 
 #figure(
   align(center)[
@@ -159,6 +159,43 @@ We thus omit this category from further analysis as it does not reveal any infor
 )
 <fig:populism_over_time>
 */
+
+== Commenting Behavior <commenting-behavior>
+
+If one sees YouTube as a social media platform, interaction with users and between users are of importance.
+@tab:commenters shows the distinct number of commenters in our investigation per channel.
+
+#let table_array = csv("tables/table_2.csv", row-type: array)
+#let table_content = table_array.slice(1)
+
+#figure(
+  align(center)[
+    #set text(size: 10.2pt)
+    #table(
+      columns: (auto, auto),
+      align: (left, ..(right,) * (header.len() - 1)),
+      inset: 4pt,
+      stroke: none,
+      table.hline(),
+      table.header([Channel], [N Commenters]),
+      table.hline(),
+      ..table_content.flatten(),
+      table.hline(),
+    )
+  ]
+  , caption: [Number of commenters per channel.]
+  , kind: table
+) <tab:commenters>
+
+
+A common way to look at the connectivity of YouTube channels is to look an co-commenting behavior of users.
+A connection is displayed as the number of distinct users that have commented at least once in both channels.
+@fig:co_commenting_network shows the number of co-commentors for all channels.
+
+#figure(image("figures/figure_3.svg", width: 100%),
+  caption: [Co-Commenting Network. Edges with less than 10 co-commentors are hidden.]
+) <fig:co_commenting_network>
+
 
 == Videos by type <videos-by-type>
 

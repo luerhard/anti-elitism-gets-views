@@ -28,7 +28,13 @@ Social media, especially YouTube as one of the largest platforms, is an importan
 
 While in the past years, TV was "considered to be the most important advertising medium and televised political advertising a leading way of communication between candidates voters" @vesnic-alujevicYouTubePoliticalAdvertising2014[199] and it probably still is, its place at the top is heavily contested by emergent players on the web.
 With the rise of YouTube as one of the most important social media networks on the internet, it still lacks a thorough investigation @rauchfleischGermanFarrightYouTube2020.
+This article aims to take a closer look at the usage patterns YouTube by German political parties.
+Just having a glance at the likes and number of followers for the parties' channels reveals that the populist Alternative for Germany (AfD) has a massively bigger followership on this platform than any other party.
+
+
 But YouTube is not "just" a social media platform.
+Im Gegensatz zu vielen anderen social media Plattformen, ist die Interaktivität hier stark eingeschränkt.
+
 Even without the direct interaction of content creators and viewers, this platform allows for an easy way to create and share content for just about everybody.
 The German parties naturally also take the opportunity to be represented on it, albeit with very different degrees of success.
 While the viewership is behind some of the more influential accounts on this platform, investigating the content shared on YouTube allows us to examine the parties' self-representation in more detail.

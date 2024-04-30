@@ -46,7 +46,14 @@ Still, we focus on the party channels in this study.] This research aims to take
 Additionally, does the element of populism contribute to the popularity of certain content?
 ]
 
-== Populism and the Bundestag <populism-and-the-bundestag>
+= Populism and the Bundestag <populism-and-the-bundestag>
+
+While populism research is covers a variety of different approaches to its core concept @hungerWhatBuzzwordSystematic2022, the literature increasingly converges to a single definition: the ideational approach @muddePopulistZeitgeist2004 @bonikowskiPoliticsUsualMeasuring2022.
+This approach frames populism pimarily as a conflict between the corrupt elite and the virtuous people and therefore focuses on two key notions: anti-elitism and people-centrism.
+Populism in this context emphasizes the homogeneous nature of the people, often depicted as a cultural or economic entity, and defines the elite variably depending on context @muddeStudyingPopulismComparative2018.
+It is seen as a "thin-centered ideology" with a narrow scope compared to broader ideologies like nativism or socialism, which it can accompany @muddePopulistZeitgeist2004 @hawkinsIdeationalApproachPopulism2019.
+
+Despite debates on the role of moralistic language in populism, recent scholarship suggests that combining moral, anti-elitist, and people-centric elements is essential to classify a statement as populist (Stavrakakis and Jäger 2018; Dai and Kustov 2022). Thus, populism is characterized by these three intertwined attributes.
 
 There are currently two parties in the German Bundestag that are considered populist, the AfD and the Left @rooduijnPopuListDatabasePopulist2023.
 
@@ -246,8 +253,8 @@ Even the non-populist parties follow this pattern: The neo-liberal Free Democrat
 
 = Discussion <discussion>
 
-
 #pagebreak()
 #set par(leading: 0.65em)
 #show par: set block(below: 0em, above: 0em)
+
 #bibliography("references.bib", style: "apa")

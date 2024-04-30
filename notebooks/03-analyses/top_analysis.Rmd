@@ -1,0 +1,57 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-04-26"
+---
+
+```{r setup, include=FALSE}
+library(here)
+library(tidyverse)
+
+
+knitr::opts_chunk$set(echo = TRUE)
+options(box.path = here())
+
+box::use(
+  r / load
+)
+box::reload(load)
+
+channels <- load$channels()
+videos <- load$videos()
+
+sentences <- load$sentences() |>
+  left_join(load$popbert(), by="sentence_id")
+
+video_pop <- sentences |>
+  group_by(video_id) |>
+  summarize(
+    elite = mean(elite),
+    pplcentr = mean(pplcentr)
+  )
+
+```
+
+```{r}
+df <- channels |>
+  filter(channel != "FDP") |>
+  left_join(videos, by="channel_id") |>
+  left_join(video_pop, by="video_id") |>
+  group_by(channel) |>
+  mutate(
+    quantile = percent_rank(video_likes),
+    top_1p = ifelse(quantile > 0.75, 1, 0)
+  ) |>
+  arrange(desc(quantile)) |>
+  ungroup()
+```
+
+```{r}
+model <- glm(top_1p ~ channel + elite, family = binomial(), data = df)
+
+sjPlot::plot_model(model, type = "eff", terms = c("channel", "elite")) +
+  coord_flip() +
+  theme(legend.position = "bottom")
+
+summary(model)
+```

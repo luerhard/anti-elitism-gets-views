@@ -42,11 +42,17 @@ While the viewership is behind some of the more influential accounts on this pla
 Still, we focus on the party channels in this study.] This research aims to take a closer look at the use and dissemination of populism on YouTube by German political parties.
 
 #quote(block: true)[
-#strong[Research Questions:] What type of content do German political parties share on YouTube, and which content tends to gain the most traction or success?
-Additionally, does the element of populism contribute to the popularity of certain content?
+    #strong[Research Questions:]
+    What type of content do German political parties share on YouTube, and which content tends to gain the most traction or success?
+    Additionally, does the element of populism contribute to the popularity of certain content?
 ]
 
-= Populism and the Bundestag <populism-and-the-bundestag>
+= Theory
+
+== Populism and the Bundestag <populism-and-the-bundestag>
+
+*TODO*
+- Cite some populism research
 
 While populism research is covers a variety of different approaches to its core concept @hungerWhatBuzzwordSystematic2022, the literature increasingly converges to a single definition: the ideational approach @muddePopulistZeitgeist2004 @bonikowskiPoliticsUsualMeasuring2022.
 This approach frames populism pimarily as a conflict between the corrupt elite and the virtuous people and therefore focuses on two key notions: anti-elitism and people-centrism.
@@ -60,14 +66,18 @@ There are currently two parties in the German Bundestag that are considered popu
 Populism, seen as a thin ideology, describes a worldview that is characterized above all by the antagonistic relationship between the virtuous people and the corrupt elite, which is linked to a thick ideology @muddePopulistZeitgeist2004.
 Understanding populist rhetoric and claims that support this antagonism is thereby key to explaining their electoral success @devreesePopulismExpressionPolitical2018.
 
-= YouTube as a research platform <youtube-as-a-research-platform>
+== YouTube as a research platform <youtube-as-a-research-platform>
+
+YouTube is very popular in Germany @allgaierRezoGermanClimate2020.
+A fairly recent representative study among young Germans reports that 60% used the site daily or at least several times a week @feierabendJIMstudie2018Jugend2018.
+The study also shows that YouTube is the second most important site for respondents to obtain news and information, trailing only Google.
 
 YouTube is the only major social media network more popular among right-leaning users @mungerRightWingYouTubeSupply2022.
 Additionally, and in contrast to other parties, populists prefer social media over talk shows @ernstPopulistsPreferSocial2019.
 As #cite(<engesserPopulismSocialMedia2017>, form: "prose", supplement: [1123]) indicate, the logic of social media platforms gives them more freedom to use strong language when attacking elites or ostracizing others.
 
-While data on Germany specifically are scarce, a study from 2016 investigating a sample of Americans reported that around 90% of youth and young adults have used YouTube at least once in the past three months @costelloWhoViewsOnline2016[315];.
-Motivated by these discoveries, we recognize the importance of examining parties' YouTube videos, particularly emphasizing the effects of populist content.
+// While data on Germany specifically are scarce, a study from 2016 investigating a sample of Americans reported that around 90% of youth and young adults have used YouTube at least once in the past three months @costelloWhoViewsOnline2016[315].
+// Motivated by these discoveries, we recognize the importance of examining parties' YouTube videos, particularly emphasizing the effects of populist content.
 
 YouTube can be seen as a social media platform.
 Since everybody can publish content on this platform with very few hurdles, and viewers can self-select what content they are willing to watch, it is natural to view YouTube as a social network between people that is centered around sharing video content—in a way like Instagram is a social network centered around images.
@@ -75,7 +85,8 @@ Studies that take such an approach might see YouTube from a supply-and-demand pe
 While investigating YouTube through such a lens is a worthwhile endeavor, it might not be suitable to investigate politicians' content.
 Many scholars have proposed theories on why politicians, particularly populists, choose social media platforms over traditional hierarchical media.
 Nevertheless, populist leaders mostly utilize social media as a supplementary one-way broadcasting system, instead of interacting with citizens as #cite(<jungherrTwitterUseElection2016>, form: "prose") shows in a systematic literature review on twitter use in election campaigns.
-They might argue the social media facilitates personal and interactive conversations compared to the more traditional broadcasts through legacy media. #cite(<waisbordPopulistCommunicationDigital2017>, form: "prose");, for instance, have shown remarkably low interaction between Latin American politicians, populist and non-populist, on Twitter.
+They might argue the social media facilitates personal and interactive conversations compared to the more traditional broadcasts through legacy media.
+#cite(<waisbordPopulistCommunicationDigital2017>, form: "prose"), for instance, have shown remarkably low interaction between Latin American politicians, populist and non-populist, on Twitter.
 
 This leds to believe, that videos on YouTube are best viewed from content delivery perspective first.
 
@@ -86,10 +97,16 @@ The FDP (Free Democratic Party) with \@FDP, the Greens with \@DieGruenen, the SP
 The CDU (Christian Democratic Union) and CSU (Christian Social Union) are two separate political parties in Germany that operate as sister parties.
 The CDU is active in all German states except Bavaria, where the CSU operates exclusively.
 For this reason, both parties also maintain separate YouTube channels with \@cdutv and \@csumedia, although they are regarded as a single party within the Bundestag.
-Conversely, the AfD’s (Alternative for Germany) official channel (\@AfDTV) is distinct from the parliamentary group’s channel (\@AfDFraktionimBundestag).
+Conversely, the AfD's (Alternative for Germany) official channel (\@AfDTV) is distinct from the parliamentary group's channel (\@AfDFraktionimBundestag).
 Both channels, exhibiting comparable follower counts, were incorporated into our analysis.
 Consequently, our dataset encompasses a total of eight channels.
 The dataset is restricted to the period from December 6, 2017 (the final channel's inaugural video publication) to January 20, 2024 (a week before data collection) to give all videos time to accumulate views and likes.
+
+The analysis of video material is very challenging, we therefore follow #cite(<schwemmerSocialMediaSellout2018>, form: "prose") and focus our analysis on the audio material.
+The audio data of all videos and their accompanying metadata were downloaded using _yt-dlp_.
+In contrast to the abovementioned article, who use the pre-generated transcripts provided by YouTube, we use a state-of-the-art speech-to-text model to transcribe the audio material ourselves.
+This procedure ensures a massively enhanced quality of the transcripts, including correct punctuation and music recognition.
+
 
 #let table_array = csv("tables/table_1.csv", row-type: array)
 #let header = table_array.first()
@@ -212,8 +229,12 @@ A connection is displayed as the number of distinct users that have commented at
 
 == Videos by type <videos-by-type>
 
+
+*IDEAS*
 - We investigate the broad types of video content published by each party to connect this with popularity and hopefully see some differences between AfD and the rest.
-- Potential types are: politische Rede (mostly Bundestag), Demo-Rede, Diskussionsrunde, Promo-Video, Fernsehbeitrag?,
+  - Potential types are: politische Rede (mostly Bundestag), Demo-Rede, Diskussionsrunde, Promo-Video, Fernsehbeitrag?,
+- Just cluster the videos and hand-annotate the clusters. There are probably not that many different recurring video types.
+  - but on what would we cluster? Video length, Video title, ...
 
 == Populism and Popularity <populism-and-popularity>
 
@@ -243,13 +264,53 @@ Even the non-populist parties follow this pattern: The neo-liberal Free Democrat
 
 == The most successful videos <the-most-successful-videos>
 
+*IDEAS*
 - We could do a superstar analysis, investigating the most successful videos per channel
 
+
+#let table_array = csv("tables/table_3.csv", row-type: array)
+#let header = table_array.first()
+
+#let convert-to-float(val) = {
+  let check = val.find(regex("^\d+[\.,]?\d*$"))
+  if check != none {
+    str(calc.round(float(val), digits: 2))
+  } else {
+    val
+  }
+}
+
+#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
+#show figure: set block(breakable: true)
+#figure(
+  align(center)[
+    #set par(leading: 0.65em)
+    #set text(size: 10.2pt)
+    #table(
+      columns: (auto, ..(auto,) * (header.len() - 1)),
+      align: (left, ..(right,) * (header.len() - 1)),
+      inset: 4pt,
+      stroke: none,
+      table.hline(),
+      table.header(..header),
+      table.vline(x: 1, start: 1, end: table_content.len() + 1),
+      table.hline(),
+      ..table_content.flatten(),
+      table.hline()
+    )
+  ]
+  , caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. ]
+  , kind: table
+) <tab:top_videos>
 == Sentiment in comments <sentiment-in-comments>
 
+*IDEAS*
 - We could check the sentiment in comments for the videos (probably mostly interesting for the AfD channels) to check user engagement and positioning towards topics.
-
+  - But how would we detect the topics?
 - Also, test how often the channel accounts respond to comments. It could be a nice indicator of engagement.
+  - -> Almost never...
+- Negative sentiment in comments: Are there any trolls on the platform that spam other party channels?
+  - We could detect the "main channel" of a specific user and see if they also comment on other channels using a negative sentiment.
 
 = Discussion <discussion>
 

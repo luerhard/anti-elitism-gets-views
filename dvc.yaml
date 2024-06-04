@@ -67,3 +67,10 @@ stages:
       - reports/notebooks/08-comment_analysis.ipynb
       - reports/tables/n_commenters_per_channel.csv
       - reports/figures/co_commenter_network.svg
+  collect_manifestors:
+    cmd: poetry run python pipeline/09-collect_manifestos.py
+    deps:
+      - src/crawl/manifesto_crawler.py
+      - pipeline/09-collect_manifestos.py
+    outs:
+      - data/raw/manifestos

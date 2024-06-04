@@ -1,3 +1,5 @@
+#import "@preview/drafting:0.2.0": *
+
 #set text(
   font: "Times New Roman",
   size: 12pt,
@@ -19,11 +21,43 @@
 
 #set heading(numbering: "1.1.1")
 
+
+#let inote(body) = {
+  set align(center)
+  set par(leading: 0.45em, justify: false)
+  let mybody = {
+    set align(left)
+    body
+  }
+  let default-rect = rect.with(inset: 1em, radius: 0.5em, fill: orange.lighten(70%))
+  inline-note(mybody, rect: default-rect)
+}
+
+#let mnote(body) = {
+  let mybody = {
+    set align(left)
+    set par(leading: 0.45em, justify: false)
+    body
+  }
+  let default-rect = rect.with(inset: 0.4em, radius: 0.3em, fill: orange.lighten(70%))
+  margin-note(mybody, rect: default-rect, side:right)
+}
+
+#place(set-page-properties())
+
 = Introduction <introduction>
 
 Populist parties threaten democratic values and contribute to ideological polarization @robertsPopulismPolarizationComparative2022.
 Populism, seen as a thin ideology, describes a worldview that is characterized above all by the antagonistic relationship between the virtuous people and the corrupt elite, which is linked to a thick ideology @muddePopulistZeitgeist2004.
 Understanding populist rhetoric and claims that support this antagonism is thereby key to explaining their electoral success @devreesePopulismExpressionPolitical2018.
+
+#inote[
+  add more about why YouTube is important. The storyline should be about:
+
+  1. Facebook / Twitter is researched a lot.
+  2. Arguments from "rise of insta" paper on how insta is not research as much, but video and audio is superimportant.
+]
+
 Social media, especially YouTube as one of the largest platforms, is an important but under-researched place where populism is spread.
 
 While in the past years, TV was "considered to be the most important advertising medium and televised political advertising a leading way of communication between candidates voters" @vesnic-alujevicYouTubePoliticalAdvertising2014[199] and it probably still is, its place at the top is heavily contested by emergent players on the web.
@@ -39,20 +73,26 @@ Even without the direct interaction of content creators and viewers, this platfo
 The German parties naturally also take the opportunity to be represented on it, albeit with very different degrees of success.
 While the viewership is behind some of the more influential accounts on this platform, investigating the content shared on YouTube allows us to examine the parties' self-representation in more detail.
 #footnote[There are some successful channels of German politicians like Sarah Wagenknecht (with 664,000 followers) or Alice Weidel (with 189,000 followers) with personal channels.
-Still, we focus on the party channels in this study.] This research aims to take a closer look at the use and dissemination of populism on YouTube by German political parties.
+Still, we focus on the party channels in this study.]
+This research aims to take a closer look at the use and dissemination of populism on YouTube by German political parties.
 
 #quote(block: true)[
-    #strong[Research Questions:]
-    What type of content do German political parties share on YouTube, and which content tends to gain the most traction or success?
-    Additionally, does the element of populism contribute to the popularity of certain content?
+    #strong[Research Question:]
+    How do German political parties utilize YouTube differently, and to what extent does populism influence the popularity of their content?
 ]
 
 = Theory
 
 == Populism and the Bundestag <populism-and-the-bundestag>
 
+#inote[
 *TODO*
 - Cite some populism research
+]
+
+Populism can be defined in a lot of different ways, with the two main approaches being "actor-centered" and "communication-centered" (larsson et al, the rise of instagram).
+While the former approach sees populism as a property of some political entity, be it a politician or a party, the latter considers populism as a style of communication (e.g. Jacobs et al or Stanyer et al.-- see larson).
+We combine both approaches in classifying the parties, based on a actor-centered approach (using PopuList) and identifying populist dimensions in the commnunication that is shared on the parties' YouTube channel.
 
 While populism research is covers a variety of different approaches to its core concept @hungerWhatBuzzwordSystematic2022, the literature increasingly converges to a single definition: the ideational approach @muddePopulistZeitgeist2004 @bonikowskiPoliticsUsualMeasuring2022.
 This approach frames populism pimarily as a conflict between the corrupt elite and the virtuous people and therefore focuses on two key notions: anti-elitism and people-centrism.
@@ -183,7 +223,7 @@ We thus omit this category from further analysis as it does not reveal any infor
 = Results <results>
 /*
 #figure(image("img/populism_over_time.pdf", width: 100%),
-  caption: [
+  caption: e
     Populism over time.
   ]
 )
@@ -229,12 +269,13 @@ A connection is displayed as the number of distinct users that have commented at
 
 == Videos by type <videos-by-type>
 
-
+#inote[
 *IDEAS*
 - We investigate the broad types of video content published by each party to connect this with popularity and hopefully see some differences between AfD and the rest.
   - Potential types are: politische Rede (mostly Bundestag), Demo-Rede, Diskussionsrunde, Promo-Video, Fernsehbeitrag?,
 - Just cluster the videos and hand-annotate the clusters. There are probably not that many different recurring video types.
   - but on what would we cluster? Video length, Video title, ...
+]
 
 == Populism and Popularity <populism-and-popularity>
 
@@ -264,9 +305,10 @@ Even the non-populist parties follow this pattern: The neo-liberal Free Democrat
 
 == The most successful videos <the-most-successful-videos>
 
+#inote[
 *IDEAS*
 - We could do a superstar analysis, investigating the most successful videos per channel
-
+]
 
 #let table_array = csv("tables/table_3.csv", row-type: array)
 #let header = table_array.first()
@@ -304,6 +346,7 @@ Even the non-populist parties follow this pattern: The neo-liberal Free Democrat
 ) <tab:top_videos>
 == Sentiment in comments <sentiment-in-comments>
 
+#inote[
 *IDEAS*
 - We could check the sentiment in comments for the videos (probably mostly interesting for the AfD channels) to check user engagement and positioning towards topics.
   - But how would we detect the topics?
@@ -311,7 +354,7 @@ Even the non-populist parties follow this pattern: The neo-liberal Free Democrat
   - -> Almost never...
 - Negative sentiment in comments: Are there any trolls on the platform that spam other party channels?
   - We could detect the "main channel" of a specific user and see if they also comment on other channels using a negative sentiment.
-
+]
 = Discussion <discussion>
 
 #pagebreak()

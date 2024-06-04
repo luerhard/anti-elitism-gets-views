@@ -3194,13 +3194,13 @@ files = [
 
 [[package]]
 name = "requests"
-version = "2.31.0"
+version = "2.32.3"
 description = "Python HTTP for Humans."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "requests-2.31.0-py3-none-any.whl", hash = "sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f"},
-    {file = "requests-2.31.0.tar.gz", hash = "sha256:942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"},
+    {file = "requests-2.32.3-py3-none-any.whl", hash = "sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6"},
+    {file = "requests-2.32.3.tar.gz", hash = "sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"},
 ]
 
 [package.dependencies]
@@ -4583,4 +4583,4 @@ websockets = ">=12.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "0ef4b1e0bf98c29188748ab632e828dc5896331e81d062e839795ea65eac05f0"
+content-hash = "b5e3f021de456dedfabbd7e0b320f5d0b06921bc1397622570dc3014f5b5fada"

@@ -35,6 +35,7 @@ imblearn = "^0.0"
 ibis-framework = {extras = ["duckdb"], version = "^8.0.0"}
 papermill = "^2.5.0"
 networkx = "^3.3"
+requests = "^2.32.3"
 
 [tool.pytest.ini_options]
 markers = [

@@ -213,3 +213,20 @@ stages:
       md5: 444a27d9a85d0ccfdcff1aa6f92b1e2c.dir
       size: 1300907
       nfiles: 6
+  collect_manifestos:
+    cmd: poetry run python pipeline/09-collect_manifestos.py
+    deps:
+    - path: pipeline/09-collect_manifestos.py
+      hash: md5
+      md5: f5bed59e7c0f8e1a7eff361b75ce6a0e
+      size: 833
+    - path: src/crawl/manifesto_crawler.py
+      hash: md5
+      md5: 07eaba786483381093426afd8c500b14
+      size: 2045
+    outs:
+    - path: data/raw/manifestos
+      hash: md5
+      md5: 444a27d9a85d0ccfdcff1aa6f92b1e2c.dir
+      size: 1300907
+      nfiles: 6

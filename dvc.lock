@@ -99,12 +99,12 @@ stages:
       nfiles: 3
     - path: pipeline/06-basic_descriptives.ipynb
       hash: md5
-      md5: d23d6a1887c18fff2b778cad04e04e66
-      size: 8208
+      md5: c60eaf18858f9830c5eed9d28106ca14
+      size: 8093
     - path: src/load/
       hash: md5
-      md5: 652de719b3c6d199efbb7192d64f3788.dir
-      size: 15387
+      md5: ebb9de3e41f669e2fd54ea8b85bcdb6b.dir
+      size: 15428
       nfiles: 6
     outs:
     - path: reports/figures/view_count_violin.svg
@@ -117,8 +117,8 @@ stages:
       size: 65462
     - path: reports/notebooks/06-basic_descriptives.ipynb
       hash: md5
-      md5: 5240f29dc30b8ecf399c97bd53b243dc
-      size: 30145
+      md5: 213103d1cc4e0952977bc72c937607d9
+      size: 29370
     - path: reports/tables/dataset_summary.csv
       hash: md5
       md5: 3bdb2c14f5c01e8bb05d8c6c7347b459
@@ -150,8 +150,8 @@ stages:
       size: 811
     - path: src/load/
       hash: md5
-      md5: 652de719b3c6d199efbb7192d64f3788.dir
-      size: 15387
+      md5: ebb9de3e41f669e2fd54ea8b85bcdb6b.dir
+      size: 15428
       nfiles: 6
     outs:
     - path: reports/figures/nb_regression_like_count.svg
@@ -180,18 +180,18 @@ stages:
       size: 3756
     - path: src/load/
       hash: md5
-      md5: 652de719b3c6d199efbb7192d64f3788.dir
-      size: 15387
+      md5: ebb9de3e41f669e2fd54ea8b85bcdb6b.dir
+      size: 15428
       nfiles: 6
     outs:
     - path: reports/figures/co_commenter_network.svg
       hash: md5
-      md5: d05566594f65f0437c43dcd1d95166cd
+      md5: 6e72446e100d07d32c8495949dc2f903
       size: 39235
     - path: reports/notebooks/08-comment_analysis.ipynb
       hash: md5
-      md5: 98dd6589ac90660b7ca46cf3bb6ff8af
-      size: 141226
+      md5: 457ea6ee2f5defcc6f1e3ec95084445d
+      size: 141228
     - path: reports/tables/n_commenters_per_channel.csv
       hash: md5
       md5: c9d87aa6c01cdc761013ead30ab3f4a7
@@ -218,7 +218,7 @@ stages:
     deps:
     - path: pipeline/09-collect_manifestos.py
       hash: md5
-      md5: f5bed59e7c0f8e1a7eff361b75ce6a0e
+      md5: 75fbbdebecf2b5595c0ab7b4209045f8
       size: 833
     - path: src/crawl/manifesto_crawler.py
       hash: md5

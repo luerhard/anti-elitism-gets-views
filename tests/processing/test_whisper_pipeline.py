@@ -5,6 +5,7 @@ from pytest_cases import parametrize_with_cases
 import src
 from src.processing.whisper_pipeline import WhisperPipeline
 
+
 class LoadWrapper:
     data = src.PATH / "tests/testdata"
 

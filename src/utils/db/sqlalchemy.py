@@ -7,6 +7,7 @@ from tqdm.auto import tqdm
 from ..iterate import chunks
 from src.logging import logger as log
 
+
 def set_fast_sqlite_pragmas(dbapi_connection, connection_record):  # noqa: ARG001
     cursor = dbapi_connection.cursor()
     cursor.execute("PRAGMA synchronous=OFF")

@@ -3,6 +3,7 @@
 - YTCHANNELS should be a list of channel urls that are to be crawled.
 - Subfolders for channels will be created automatically.
 """
+
 from sqlalchemy import create_engine
 
 import src

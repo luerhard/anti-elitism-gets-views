@@ -1,6 +1,5 @@
 """Crawl specific YT channels and download the matches."""
 
-
 from collections.abc import Iterable
 import datetime as dt
 from pathlib import Path
@@ -21,6 +20,7 @@ from src.data.models import Channel
 from src.data.models import Comment
 from src.data.models import Video
 from src.logging import logger as log
+
 
 class YTChannelCrawler:
     """YT Downloader."""

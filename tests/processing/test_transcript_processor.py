@@ -9,6 +9,7 @@ from src.processing.predictors import PopBERTPredictor
 from src.processing.transcript_cleaner import TranscriptCleaner
 from src.utils.iterate import flatten_list
 
+
 class Cases:
     def case_first(self):
         text = (

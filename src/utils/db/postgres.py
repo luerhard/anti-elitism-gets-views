@@ -6,10 +6,10 @@ from typing import Protocol
 
 from sqlalchemy.engine import Engine
 
+
 class TableClass(Protocol):
     @property
-    def __tablename__(self) -> str:
-        ...
+    def __tablename__(self) -> str: ...
 
 
 @contextlib.contextmanager

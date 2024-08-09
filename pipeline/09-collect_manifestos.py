@@ -7,8 +7,8 @@ from src.logging import logger as log
 OUT_DIR = src.DATA / "raw/manifestos"
 OUT_DIR.mkdir(exist_ok=True, parents=True)
 
-def main():
 
+def main():
     api = ManifestoAPI()
     log.info("Getting parties")
     parties = api.get_german_parties()

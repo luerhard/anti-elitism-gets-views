@@ -11,6 +11,7 @@ from src.data.models import Channel
 from src.data.models import Sentence
 from src.data.models import Video
 
+
 def video_dataset():
     """Load all videos with predictions and metadata."""
     engine = create_engine(src.PS_ENGINE)

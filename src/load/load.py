@@ -4,6 +4,7 @@ from ibis.expr.api import case
 
 import src
 
+
 class DataLoader:
     POPBERT_THRESH = {
         "elite": 0.415961,
@@ -18,14 +19,16 @@ class DataLoader:
     MIN_SENTS_PER_VIDEO = 5
 
     def __init__(self) -> None:
-
         self.con = ibis.connect("duckdb://:memory:", threads=4, memory_limit="10GB")
         self.con.read_parquet(src.DATA / "raw/yt_metadata/channels.parquet.gzip", "channels")
         self.con.read_parquet(src.DATA / "raw/yt_metadata/videos.parquet.gzip", "videos")
         self.con.read_parquet(src.DATA / "raw/yt_metadata/comments.parquet.gzip", "comments")
         self.con.read_parquet(src.DATA / "interim/sentences.parquet.gzip", "sentences")
         self.con.read_parquet(src.DATA / "interim/popbert.parquet.gzip", "popbert")
-        self.con.read_parquet(src.DATA / "interim/manifesto_roberta.parquet.gzip", "manifesto")
+        self.con.read_parquet(
+            src.DATA / "interim/manifesto_roberta.parquet.gzip",
+            "manifesto_roberta",
+        )
 
     def channels(self):
         table = self.con.tables["channels"]
@@ -135,7 +138,17 @@ class DataLoader:
             )
 
         if filtered:
-            sents = self.sentences()
+            sents = self.sentences(filtered=True)
+            filtered_table = table.join(sents, "sentence_id")
+            table = filtered_table[table]
+
+        return table
+
+    def manifesto_roberta(self, filtered: bool = False):
+        table = self.con.tables["manifesto_roberta"]
+
+        if filtered:
+            sents = self.sentences(filtered=True)
             filtered_table = table.join(sents, "sentence_id")
             table = filtered_table[table]
 

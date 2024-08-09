@@ -1,6 +1,7 @@
 """Analysis on populism on YouTube based on PopBERT."""
 
 from configparser import ConfigParser
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -19,6 +20,12 @@ TMP.mkdir(exist_ok=True)
 
 config = ConfigParser()
 config.read(PATH / "config.ini")
+
+try:
+    os.environ["R_HOME"] = config["R"]["R_HOME"]
+    os.environ["R_LIBS_USER"] = str(PATH / config["R"]["R_LIBS_USER"])
+except KeyError:
+    print("NO R_HOME FOUND")
 
 try:
     credentials = f"{config['DB']['username']}:{config['DB']['password']}"
@@ -59,4 +66,15 @@ party_names = {
     "BÜNDNIS 90/DIE GRÜNEN": "Greens",
     "AfD-Fraktion Bundestag": "AfD BT",
     "DIE LINKE": "Left",
+}
+
+channel_to_party = {
+    "AfD BT": "AfD",
+    "AfD TV": "AfD",
+    "CDU": "CDU/CSU",
+    "CSU": "CDU/CSU",
+    "FDP": "FDP",
+    "Greens": "Greens",
+    "Left": "Left",
+    "SPD": "SPD",
 }

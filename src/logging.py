@@ -33,7 +33,7 @@ def setup_logging(
     log.setLevel(logging.DEBUG)
 
     if filelevel is not None:
-        file_fmt = "[%(asctime)s.%(msecs)03d] (%(process)d) %(filename)s [%(lineno)d] %(levelname)s - %(message)s" #noqa: E501
+        file_fmt = "[%(asctime)s.%(msecs)03d] (%(process)d) %(filename)s [%(lineno)d] %(levelname)s - %(message)s"  # noqa: E501
         file_formatter = logging.Formatter(fmt=file_fmt, datefmt=datefmt)
 
         file_handler = logging.FileHandler(filename=filename, mode=filemode)

@@ -2,6 +2,7 @@ import pandas as pd
 
 import src
 
+
 def manifestos():
     party_names = {
         "linke": "Left",

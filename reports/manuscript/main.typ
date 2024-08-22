@@ -31,6 +31,7 @@
   }
   let default-rect = rect.with(inset: 1em, radius: 0.5em, fill: orange.lighten(70%))
   inline-note(mybody, rect: default-rect)
+
 }
 
 #let mnote(body) = {
@@ -45,6 +46,16 @@
 
 #place(set-page-properties())
 
+/* emergency workaround for filed bug*/
+#show cite: it => {
+  show "Vreese": "de Vreese"
+  it
+}
+#show bibliography: it => {
+  show regex("Vreese, C. H. de"): "de Vreese, C. H."
+  it
+}
+
 = Introduction <introduction>
 
 Populist parties threaten democratic values and contribute to ideological polarization @robertsPopulismPolarizationComparative2022.
@@ -53,7 +64,6 @@ Understanding populist rhetoric and claims that support this antagonism is there
 
 #inote[
   add more about why YouTube is important. The storyline should be about:
-
   1. Facebook / Twitter is researched a lot.
   2. Arguments from "rise of insta" paper on how insta is not research as much, but video and audio is superimportant.
 ]
@@ -64,7 +74,6 @@ While in the past years, TV was "considered to be the most important advertising
 With the rise of YouTube as one of the most important social media networks on the internet, it still lacks a thorough investigation @rauchfleischGermanFarrightYouTube2020.
 This article aims to take a closer look at the usage patterns YouTube by German political parties.
 Just having a glance at the likes and number of followers for the parties' channels reveals that the populist Alternative for Germany (AfD) has a massively bigger followership on this platform than any other party.
-
 
 But YouTube is not "just" a social media platform.
 Im Gegensatz zu vielen anderen social media Plattformen, ist die Interaktivität hier stark eingeschränkt.
@@ -83,7 +92,7 @@ This research aims to take a closer look at the use and dissemination of populis
 
 = Theory
 
-== Populism and the Bundestag <populism-and-the-bundestag>
+== Populism and the Bundestag <sec-populism-and-the-bundestag>
 
 #inote[
 *TODO*
@@ -228,7 +237,6 @@ We thus omit this category from further analysis as it does not reveal any infor
   ]
 )
 <fig:populism_over_time>
-*/
 
 == Commenting Behavior <commenting-behavior>
 
@@ -267,13 +275,14 @@ A connection is displayed as the number of distinct users that have commented at
 ) <fig:co_commenting_network>
 
 
+*/
 == Videos by type <videos-by-type>
 
 #inote[
 *IDEAS*
-- We investigate the broad types of video content published by each party to connect this with popularity and hopefully see some differences between AfD and the rest.
-  - Potential types are: politische Rede (mostly Bundestag), Demo-Rede, Diskussionsrunde, Promo-Video, Fernsehbeitrag?,
-- Just cluster the videos and hand-annotate the clusters. There are probably not that many different recurring video types.
+  - We investigate the broad types of video content published by each party to connect this with popularity and hopefully see some differences between AfD and the rest.
+    - Potential types are: politische Rede (mostly Bundestag), Demo-Rede, Diskussionsrunde, Promo-Video, Fernsehbeitrag?,
+  - Just cluster the videos and hand-annotate the clusters. There are probably not that many different recurring video types.
   - but on what would we cluster? Video length, Video title, ...
 ]
 
@@ -306,8 +315,8 @@ Even the non-populist parties follow this pattern: The neo-liberal Free Democrat
 == The most successful videos <the-most-successful-videos>
 
 #inote[
-*IDEAS*
-- We could do a superstar analysis, investigating the most successful videos per channel
+  *IDEAS*
+  - We could do a superstar analysis, investigating the most successful videos per channel
 ]
 
 #let table_array = csv("tables/table_3.csv", row-type: array)
@@ -323,6 +332,7 @@ Even the non-populist parties follow this pattern: The neo-liberal Free Democrat
 }
 
 #let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
+
 #show figure: set block(breakable: true)
 #figure(
   align(center)[
@@ -360,5 +370,6 @@ Even the non-populist parties follow this pattern: The neo-liberal Free Democrat
 #pagebreak()
 #set par(leading: 0.65em)
 #show par: set block(below: 0em, above: 0em)
+
 
 #bibliography("references.bib", style: "apa")

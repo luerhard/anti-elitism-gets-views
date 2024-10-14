@@ -65,7 +65,9 @@ Understanding populist rhetoric and claims that support this antagonism is there
 /*
   add more about why YouTube is important. The storyline should be about:
   1. Facebook / Twitter is researched a lot.
+    - 
   2. Arguments from "rise of insta" paper on how insta is not research as much, but video and audio is superimportant.
+  3. SM is important for populists. TikTok study: gonzalez-aguilarPopulistRightParties2023  
 */
 
 Social media, especially YouTube as one of the largest platforms, is an important but under-researched place where populism is spread.
@@ -129,8 +131,13 @@ Secondly, we see populism less as an attribute of political actors but rather se
 
 // people centrism
 The concept of "the people" plays an uncontested central role in all theoretical strands of populism, yet there is no complete consensus on how this term is defined.
-While proponents of the ideological approach assume that "the people" is perceived as "pure" and "homogeneous," this paper leans more towards a conception of "the people" as found in the works self-defined "post-Laclauian" #cite(<ostiguyIntroduction2021>, supplement: [p.~2]) scholars.
-#cite(<panizzaPopulismHegemonyPolitical2021>, form: "prose") contend that '"[t]he people", as a unified (but not necessarily "pure" or homogeneous) #cite(<muddePopulismLiberalDemocracy2012>, supplement: [p.~8]) political agent, is the outcome of particular political appeals and not a pre-existing social category" (p.~26).
+Proponents of the ideological approach assume that "the people" is perceived as "pure" and "homogeneous", while scholars self-identifying as "post-Laclauian" #cite(<ostiguyIntroduction2021>, supplement: [p.~2]) contend that '"[t]he people", as a unified (but not necessarily "pure" or homogeneous) #cite(<muddePopulismLiberalDemocracy2012>, supplement: [p.~8]) political agent, is the outcome of particular political appeals and not a pre-existing social category" #cite(<panizzaPopulismHegemonyPolitical2021>, supplement: [p.~26]).
+We argue that these two stands are not contradictory but can exist side-by-side.
+Populists use Social Media to engage with specific segments of the population in a way, that almost everyone can find appeals they can identify with.
+By spreading these appeals very widely and addressing many different subgroups, they create a sense of belonging with which a broad mass can identify.
+In this way, they create the feeling of a unified people.
+This argument, originally stated by Laclau as the fact that "the people" is an "empty signifier" is a construction, nowadays also appears to be shared by Mudde and Rovira Kaltwasser @muddePopulismVeryShort2017. They state that, 'given that populism has the capacity to frame "the people" in a way that appeals to different constitutencies and articulate their demands, it can generate a shared identity between different groups and facilitate their support for a common cause' (p.~9).
+
 
 === The Elite (or Anti-Elitism)
 

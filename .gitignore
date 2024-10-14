@@ -170,3 +170,5 @@ slurm-*.out
 tmp/**
 reports/manuscript/main.pdf
 .envrc
+overleaf
+.RData

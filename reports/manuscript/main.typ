@@ -15,12 +15,14 @@
 #set par(
   leading: 1.3em,
   justify: true,
-  linebreaks: "optimized"
+  linebreaks: "optimized",
+  spacing: 2em
 )
-#show par: set block(below: 1em, above: 2em)
 
 #set heading(numbering: "1.1.1")
-#set quote(block: true, )
+#show heading: set block(above: 2em, below: 2em)
+
+#set quote(block: true)
 
 #let inote(body) = {
   set align(center)
@@ -145,7 +147,7 @@ This argument, originally stated by Laclau as the fact that "the people" is an "
 
 Populism reasearch is mostly divided into to different parts.
 There is one strain that detects populism in political actors or parts of discourse like speeches.
-And there is another strain that is concerned with measuring populist attitudes among populations (CITE Akkerman, Mudde, Zaslove 2014; Hawkings, Rovira Kaltwasser and Andreadis 2018). // from Moffit 2020, p. 21 in PDF
+And there is another strain that is concerned with measuring populist attitudes among populations @akkermanHowPopulistAre2014 @hawkinsActivationPopulistAttitudes2020.
 
 A notable aspect of analysing populist communication on Social Media is that we are able to analyze direct feedback in terms of views, likes and comments on very specific bits of populist communication.
 According to #cite(<keffordPopulistAttitudesBringing2022>) they are the first to try to bridge this gap and try link populist communcation can populist attitudes in terms of voting behavior.
@@ -266,7 +268,7 @@ Notably, the FDP consistently disables the like/dislike functionality across mos
 
 == Detection of Populism <detection-of-populism>
 
-In a subsequent article, I have applied the PopBERT @erhardPopBERTDetectingPopulism2023, a BERT-based transformer model, initially developed to analyze German parliamentary speeches, to study populism in transcripts of YouTube videos from the official channels of the German parties in the Bundestag.
+In a subsequent article, I have applied the PopBERT @erhardPopBERTDetectingPopulism2024, a BERT-based transformer model, initially developed to analyze German parliamentary speeches, to study populism in transcripts of YouTube videos from the official channels of the German parties in the Bundestag.
 This adaptation involves using the model to detect populist rhetoric within these videos, identifying patterns of language that align with anti-elitism and people-centrism, and examining how these elements are associated with broader political ideologies.
 The analysis focuses on the official communications from these parties, providing insights into how established political entities engage with and propagate populist narratives through online video content.
 This approach highlights the versatility of the PopBERT model for examining populist discourse across different media and political contexts.
@@ -412,8 +414,7 @@ Even the non-populist parties follow this pattern: The neo-liberal Free Democrat
 = Discussion <discussion>
 
 #pagebreak()
-#set par(leading: 0.65em)
-#show par: set block(below: 0em, above: 0em)
+#set par(leading: 0.65em, spacing: 0em)
 
 
 #bibliography("references.bib", style: "apa")

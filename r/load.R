@@ -3,8 +3,6 @@ box::use(
   reticulate
 )
 
-reticulate::use_python(here(".venv/bin/python"))
-
 channels <- function() {
   data_load <- reticulate::import("src.load")
   loader = data_load$DataLoader()

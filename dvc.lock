@@ -82,7 +82,7 @@ stages:
       md5: c65497e8d4e9577744d758f7fbde237a
       size: 4352558
   basic_descriptives:
-    cmd: poetry run papermill pipeline/06-basic_descriptives.ipynb reports/notebooks/06-basic_descriptives.ipynb
+    cmd: papermill pipeline/06-basic_descriptives.ipynb reports/notebooks/06-basic_descriptives.ipynb
     deps:
     - path: data/interim/popbert.parquet.gzip
       hash: md5
@@ -103,28 +103,28 @@ stages:
       size: 8093
     - path: src/load/
       hash: md5
-      md5: ebb9de3e41f669e2fd54ea8b85bcdb6b.dir
-      size: 15428
-      nfiles: 6
+      md5: f68de4bc6da15127fef0e9d15819b392.dir
+      size: 24246
+      nfiles: 9
     outs:
     - path: reports/figures/view_count_violin.svg
       hash: md5
-      md5: be05d140d2c1fefbc7c7a528fbde95ef
-      size: 65467
+      md5: 3a6e71474aa773395588406c89263f5b
+      size: 65775
     - path: reports/figures/view_count_violin_vertical.svg
       hash: md5
-      md5: 4873332018f41502fcbc5b7f00cf814f
-      size: 65462
+      md5: 27dd190b4162655cfa4f0e7315400967
+      size: 65793
     - path: reports/notebooks/06-basic_descriptives.ipynb
       hash: md5
-      md5: 213103d1cc4e0952977bc72c937607d9
-      size: 29370
+      md5: ff6a665023f89f8df2ae86d9de72fe25
+      size: 29906
     - path: reports/tables/dataset_summary.csv
       hash: md5
       md5: 3bdb2c14f5c01e8bb05d8c6c7347b459
       size: 1017
   nb_regression:
-    cmd: rig run -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
+    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
       '../reports/notebooks/07-nb_regression.html')"
     deps:
     - path: data/interim/popbert.parquet.gzip
@@ -142,32 +142,32 @@ stages:
       nfiles: 3
     - path: pipeline/07-nb_regression.Rmd
       hash: md5
-      md5: 707729db0caeced69b374f2df8c76bb6
+      md5: f54bc5a4cdeff74ad0fea082cb8a6c59
       size: 2130
     - path: r/load.R
       hash: md5
-      md5: 52ac1a4f918c02aff57656e98031041d
-      size: 811
+      md5: 332aa72d314d0dc68a0617d43026fa43
+      size: 761
     - path: src/load/
       hash: md5
-      md5: ebb9de3e41f669e2fd54ea8b85bcdb6b.dir
-      size: 15428
-      nfiles: 6
+      md5: f68de4bc6da15127fef0e9d15819b392.dir
+      size: 24246
+      nfiles: 9
     outs:
     - path: reports/figures/nb_regression_like_count.svg
       hash: md5
-      md5: 445c673d7368363605a390e489fd4e1c
-      size: 17526
+      md5: e860be55ce73b3df9e5d264b8c439035
+      size: 17746
     - path: reports/figures/nb_regression_like_count_vertical.svg
       hash: md5
-      md5: 7751f24640f9521fd9dcaf2e2a224295
-      size: 17524
+      md5: 3c1261ca60b4bcd62f29df17217db215
+      size: 17744
     - path: reports/notebooks/07-nb_regression.html
       hash: md5
-      md5: 93c9e3ae54ce78421f8f552cea9d9e0c
-      size: 843397
+      md5: 4ecd100f2cd6bdbfde8cd6efa9eca061
+      size: 762719
   comment_analysis:
-    cmd: poetry run papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
+    cmd: papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
     deps:
     - path: data/raw/yt_metadata/
       hash: md5
@@ -180,9 +180,9 @@ stages:
       size: 3756
     - path: src/load/
       hash: md5
-      md5: ebb9de3e41f669e2fd54ea8b85bcdb6b.dir
-      size: 15428
-      nfiles: 6
+      md5: f68de4bc6da15127fef0e9d15819b392.dir
+      size: 24246
+      nfiles: 9
     outs:
     - path: reports/figures/co_commenter_network.svg
       hash: md5
@@ -214,7 +214,7 @@ stages:
       size: 1300907
       nfiles: 6
   collect_manifestos:
-    cmd: poetry run python pipeline/09-collect_manifestos.py
+    cmd: python pipeline/09-collect_manifestos.py
     deps:
     - path: pipeline/09-collect_manifestos.py
       hash: md5

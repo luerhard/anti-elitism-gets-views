@@ -32,7 +32,7 @@ stages:
     outs:
       - data/interim/manifesto_roberta.parquet.gzip
   basic_descriptives:
-    cmd: poetry run papermill pipeline/06-basic_descriptives.ipynb reports/notebooks/06-basic_descriptives.ipynb
+    cmd: papermill pipeline/06-basic_descriptives.ipynb reports/notebooks/06-basic_descriptives.ipynb
     deps:
       - src/load/
       - data/interim/popbert.parquet.gzip
@@ -45,7 +45,7 @@ stages:
       - reports/figures/view_count_violin_vertical.svg
       - reports/figures/view_count_violin.svg
   nb_regression:
-    cmd: rig run -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document', '../reports/notebooks/07-nb_regression.html')"
+    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document', '../reports/notebooks/07-nb_regression.html')"
     deps:
       - src/load/
       - r/load.R
@@ -58,7 +58,7 @@ stages:
       - reports/figures/nb_regression_like_count.svg
       - reports/figures/nb_regression_like_count_vertical.svg
   comment_analysis:
-    cmd: poetry run papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
+    cmd: papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
     deps:
       - src/load/
       - data/raw/yt_metadata/
@@ -68,7 +68,7 @@ stages:
       - reports/tables/n_commenters_per_channel.csv
       - reports/figures/co_commenter_network.svg
   collect_manifestos:
-    cmd: poetry run python pipeline/09-collect_manifestos.py
+    cmd: python pipeline/09-collect_manifestos.py
     deps:
       - src/crawl/manifesto_crawler.py
       - pipeline/09-collect_manifestos.py

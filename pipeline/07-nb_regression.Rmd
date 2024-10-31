@@ -24,21 +24,21 @@ library(ggeffects)
 theme_set(theme_minimal())
 
 channels <- load$channels()
-videos <- load$videos(filtered=TRUE)
-sentences <- load$sentences(filtered=TRUE)
-popbert <- load$popbert(filtered=TRUE)
+videos <- load$videos(filtered = TRUE)
+sentences <- load$sentences(filtered = TRUE)
+popbert <- load$popbert(filtered = TRUE)
 
 df_sents <- sentences |>
-    left_join(popbert, by="sentence_id") |>
-    group_by(video_id) |>
-    summarize(
-      elite = mean(elite),
-      pplcentr = mean(pplcentr)
-    )
+  left_join(popbert, by = "sentence_id") |>
+  group_by(video_id) |>
+  summarize(
+    elite = mean(elite),
+    pplcentr = mean(pplcentr)
+  )
 
 df <- channels |>
-  left_join(videos, by="channel_id") |>
-  left_join(df_sents, by="video_id")
+  left_join(videos, by = "channel_id") |>
+  left_join(df_sents, by = "video_id")
 ```
 
 

@@ -2,7 +2,7 @@
     remote = minio
     autostage = true
 [cache]
-    type = "reflink,symlink"
+    type = "reflink,hardlink,symlink"
 ['remote "minio"']
     url = s3://ytpop
     endpointurl = http://193.196.53.63

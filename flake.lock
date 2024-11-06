@@ -52,17 +52,17 @@
     },
     "platformdirspkgs": {
       "locked": {
-        "lastModified": 1690235791,
-        "narHash": "sha256-QkPVQ859F0wXyd74A7UPYbmi4B5xYN4Ns7AQ0pvM0Wo=",
+        "lastModified": 1702508050,
+        "narHash": "sha256-imn+/Rj+bqagOSm7GmRDbrqkxtc7QnjY3Cu85gv46BU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "dfcffbd74fd6f0419370d8240e445252a39f4d10",
+        "rev": "fd04bea4cbf76f86f244b9e2549fca066db8ddff",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "dfcffbd74fd6f0419370d8240e445252a39f4d10",
+        "rev": "fd04bea4cbf76f86f244b9e2549fca066db8ddff",
         "type": "github"
       }
     },

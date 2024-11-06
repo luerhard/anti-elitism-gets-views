@@ -19,7 +19,6 @@
 
     # platformdirs should be <4.0 for dvc - otherwise a permission denied error on /var/cache/dvc occurs
     # https://github.com/iterative/dvc/issues/9184
-    platformdirspkgs.url = "github:NixOS/nixpkgs/fd04bea4cbf76f86f244b9e2549fca066db8ddff"; # v 3.10.0
   };
 
   outputs =
@@ -30,7 +29,6 @@
       spacypkgs,
       torchpkgs,
       ibispkgs,
-      platformdirspkgs,
       ...
     }:
     flake-utils.lib.eachSystem [ "aarch64-darwin" "x86_64-linux" ] (
@@ -45,7 +43,6 @@
         };
         spacy = import spacypkgs { inherit system; };
         ibis = import ibispkgs { inherit system; };
-        pdirs = import platformdirspkgs { inherit system; };
         torch = import torchpkgs {
           inherit system;
           config = {
@@ -55,6 +52,7 @@
         };
 
         system_deps = with pkgs; [
+          git
           glibcLocales # get rid of error msgs "unable to set locale -- default to 'C'"
           R
           pandoc
@@ -77,6 +75,7 @@
           box
           effects
           ggeffects
+          ggpubr
           here
           irr
           jsonlite
@@ -89,23 +88,15 @@
         ];
 
         python_env = with pkgs.python311Packages; [
+          ipykernel
+          matplotlib
           levenshtein
           pandas
+          papermill
           pip # important for reticulate
           rpy2
           transformers
           tqdm
-        ];
-
-        # these are weird ones.
-        # dvc needs platformdirs<4.0
-        # all these packages depend on platformdirs and therefore have to be pulled from on old commit
-        # that only has platformdirs 3.10 if any are pulled from a newer commit, the platformdirs version
-        # always > 4
-        old_pdirs_deps = with pdirs.python311Packages; [
-          ipykernel
-          papermill
-          dvc
         ];
 
         # weird work around to due ibis-framework packaging in python "extras"
@@ -142,7 +133,6 @@
             python_env
             python_pytorch
             python_ibis_framework
-            old_pdirs_deps
           ];
 
           ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";

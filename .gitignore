@@ -172,3 +172,4 @@ reports/manuscript/main.pdf
 .envrc
 overleaf
 .RData
+.direnv/

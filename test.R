@@ -1,0 +1,5 @@
+data_load <- reticulate::import("src.load")
+loader <- data_load$DataLoader()
+reticulate::py_last_error()
+df <- loader$channels()$to_pandas()
+duck_load <- reticulate::import("duckdb")

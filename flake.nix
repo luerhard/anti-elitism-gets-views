@@ -92,10 +92,10 @@
         python_env = with pkgs.python311Packages; [
           ipykernel
           levenshtein
-          openai
           pandas
-          pip
+          pip # important for reticulate
           rpy2
+	  transformers
           tqdm
         ];
       in

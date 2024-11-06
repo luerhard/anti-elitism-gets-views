@@ -23,6 +23,10 @@
     # dependencies could not be satisfied
     # ibispkgs.url = "github:NixOS/nixpkgs/189e5f171b163feb7791a9118afa778d9a1db81f"; # v 9.1.0
     ibispkgs.url = "github:NixOS/nixpkgs/4a4ecb0ab415c9fccfb005567a215e6a9564cdf5"; # v 9.0.0
+
+    # platformdirs should be <4.0 for dvc - otherwise a permission denied error on /var/cache/dvc occurs
+    # https://github.com/iterative/dvc/issues/9184
+    platformdirspkgs.url = "github:NixOS/nixpkgs/dfcffbd74fd6f0419370d8240e445252a39f4d10"; # v 3.9.1
   };
 
   outputs =
@@ -33,6 +37,7 @@
       spacypkgs,
       torchpkgs,
       ibispkgs,
+      platformdirspkgs,
       ...
     }:
     flake-utils.lib.eachSystem [ "aarch64-darwin" "x86_64-linux" ] (
@@ -43,14 +48,24 @@
           config = {
             allowUnfree = true;
           };
+          overlays = [
+            (self: super: { python311Packages.platformdirs = pdirs.python311Packages.platformdirs; })
+          ]
         };
         spacy = import spacypkgs { inherit system; };
         ibis = import ibispkgs { inherit system; };
+        pdirs = import platformdirspkgs { inherit system; };
         torch = import torchpkgs {
           inherit system;
           config = {
             allowUnfree = true;
             cudaSupport = true;
+          };
+        };
+
+        pythonpkgs = pkgs.python311.override {
+          packageOverrides = self: super: {
+            platformdirs = pdirs.python311Packages.platformdirs;
           };
         };
 
@@ -90,42 +105,57 @@
         ];
 
         python_env = with pkgs.python311Packages; [
+          # cannot do that, python version mismatch 3.11.10 for dvc and 3.11.6 for platformdirs
+          # (dvc.override { platformdirs = platformdirs.python311Packages.platformdirs; })
           ipykernel
           levenshtein
           pandas
+          papermill
           pip # important for reticulate
           rpy2
-	  transformers
+          transformers
           tqdm
         ];
+
+        # weird work around to due ibis-framework packaging in python "extras"
+        # normal command would be pip install 'ibis-framework[duckdb]'
+        python_ibis_framework = (
+          ibis.python311Packages.ibis-framework.overrideAttrs (old: {
+            propagatedBuildInputs = (
+              old.propagatedBuildInputs
+              ++ [
+                ibis.python311Packages.pyarrow
+                ibis.python311Packages.pyarrow-hotfix
+                ibis.python311Packages.duckdb
+                ibis.python311Packages.datafusion
+              ]
+            );
+            doCheck = false;
+            doInstallCheck = false;
+          })
+        );
+
+        # torch has a series of problems.
+        python_pytorch = torch.python311Packages.torch-bin;
+        # spacy needs to be installed from another commit to use a version that works on darwin..
+        python_spacy = spacy.python311Packages.spacy;
+        # old version of dvc necessary bc misspecified dependency. (works only with platformdirs<4 -- currently)
+        python_dvc = pythonpkgs.pandas;
+        # python_dvc = with platformdirs.python311Packages; [
+        #   platformdirs
+        # ];
+
       in
       {
         defaultPackage = pkgs.mkShell {
           buildInputs = [
             system_deps
+            linux_cuda_deps
             r_env
             python_env
-            torch.python311Packages.torch-bin
-            linux_cuda_deps
-            # spacy needs to be installed from another commit to use a version that works on darwin..
-            spacy.python311Packages.spacy
-            # reticulate seems to have a problem with openssl in 1.38.0?
-            # openssl.openssl_3_3
-
-            # weird work around to due ibis-framework packaging in python "extras"
-            (ibis.python311Packages.ibis-framework.overrideAttrs (old: {
-              propagatedBuildInputs = (
-                old.propagatedBuildInputs
-                ++ [
-                  ibis.python311Packages.pyarrow
-                  ibis.python311Packages.pyarrow-hotfix
-                  ibis.python311Packages.duckdb
-                  ibis.python311Packages.datafusion
-                ]
-              );
-              doCheck = false;
-              doInstallCheck = false;
-            }))
+            python_pytorch
+            python_ibis_framework
+            python_dvc
           ];
 
           ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";

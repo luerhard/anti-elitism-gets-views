@@ -12,21 +12,14 @@
     # torchpkgs.url = "github:NixOS/nixpkgs/ca30f584e18024baf39c395001262ed936f27ebd"; # v 2.4.1
     torchpkgs.url = "github:NixOS/nixpkgs/5ed627539ac84809c78b2dd6d26a5cebeb5ae269"; # v 2.4.0
 
-    # reticulate could not find openSSL 3.3.0 to load duckdb (dependency for ibis)
-    # reticulatepkgs.url = "github:NixOS/nixpkgs/38d3352a65ac9d621b0cd3074d3bef27199ff78f"; # v 1.35.0
-    # reticulatepkgs.url = "github:NixOS/nixpkgs/080a4a27f206d07724b88da096e27ef63401a504"; # v 1.34.0
-    # reticulatepkgs.url = "github:NixOS/nixpkgs/52dc75a4fee3fdbcb792cb6fba009876b912bfe0"; # v 1.24.0
-    # opensslpkgs.url = "github:NixOS/nixpkgs/2d2a9ddbe3f2c00747398f3dc9b05f7f2ebb0f53"; # v 3.3.2
-
     # try to fix reticulate openSSL problem with different ibis version?
-
-    # dependencies could not be satisfied
+    # ibis works fine in python but breaks with "could not find OPENSSL_3_0_0" if called from reticulate
     # ibispkgs.url = "github:NixOS/nixpkgs/189e5f171b163feb7791a9118afa778d9a1db81f"; # v 9.1.0
     ibispkgs.url = "github:NixOS/nixpkgs/4a4ecb0ab415c9fccfb005567a215e6a9564cdf5"; # v 9.0.0
 
     # platformdirs should be <4.0 for dvc - otherwise a permission denied error on /var/cache/dvc occurs
     # https://github.com/iterative/dvc/issues/9184
-    platformdirspkgs.url = "github:NixOS/nixpkgs/dfcffbd74fd6f0419370d8240e445252a39f4d10"; # v 3.9.1
+    platformdirspkgs.url = "github:NixOS/nixpkgs/fd04bea4cbf76f86f244b9e2549fca066db8ddff"; # v 3.10.0
   };
 
   outputs =
@@ -43,14 +36,12 @@
     flake-utils.lib.eachSystem [ "aarch64-darwin" "x86_64-linux" ] (
       system:
       let
+
         pkgs = import nixpkgs {
           inherit system;
           config = {
             allowUnfree = true;
           };
-          overlays = [
-            (self: super: { python311Packages.platformdirs = pdirs.python311Packages.platformdirs; })
-          ]
         };
         spacy = import spacypkgs { inherit system; };
         ibis = import ibispkgs { inherit system; };
@@ -63,15 +54,8 @@
           };
         };
 
-        pythonpkgs = pkgs.python311.override {
-          packageOverrides = self: super: {
-            platformdirs = pdirs.python311Packages.platformdirs;
-          };
-        };
-
         system_deps = with pkgs; [
-          # trying to get rid of error msgs "unable to set locale -- default to 'C'"
-          glibcLocales
+          glibcLocales # get rid of error msgs "unable to set locale -- default to 'C'"
           R
           pandoc
           python311
@@ -105,16 +89,23 @@
         ];
 
         python_env = with pkgs.python311Packages; [
-          # cannot do that, python version mismatch 3.11.10 for dvc and 3.11.6 for platformdirs
-          # (dvc.override { platformdirs = platformdirs.python311Packages.platformdirs; })
-          ipykernel
           levenshtein
           pandas
-          papermill
           pip # important for reticulate
           rpy2
           transformers
           tqdm
+        ];
+
+        # these are weird ones.
+        # dvc needs platformdirs<4.0
+        # all these packages depend on platformdirs and therefore have to be pulled from on old commit
+        # that only has platformdirs 3.10 if any are pulled from a newer commit, the platformdirs version
+        # always > 4
+        old_pdirs_deps = with pdirs.python311Packages; [
+          ipykernel
+          papermill
+          dvc
         ];
 
         # weird work around to due ibis-framework packaging in python "extras"
@@ -140,10 +131,6 @@
         # spacy needs to be installed from another commit to use a version that works on darwin..
         python_spacy = spacy.python311Packages.spacy;
         # old version of dvc necessary bc misspecified dependency. (works only with platformdirs<4 -- currently)
-        python_dvc = pythonpkgs.pandas;
-        # python_dvc = with platformdirs.python311Packages; [
-        #   platformdirs
-        # ];
 
       in
       {
@@ -155,7 +142,7 @@
             python_env
             python_pytorch
             python_ibis_framework
-            python_dvc
+            old_pdirs_deps
           ];
 
           ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";

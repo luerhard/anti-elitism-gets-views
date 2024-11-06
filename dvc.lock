@@ -103,22 +103,22 @@ stages:
       size: 8093
     - path: src/load/
       hash: md5
-      md5: f68de4bc6da15127fef0e9d15819b392.dir
-      size: 24246
+      md5: c7f5837d0512f5af76ad65a32b605a00.dir
+      size: 24235
       nfiles: 9
     outs:
     - path: reports/figures/view_count_violin.svg
       hash: md5
-      md5: 3a6e71474aa773395588406c89263f5b
-      size: 65775
+      md5: be05d140d2c1fefbc7c7a528fbde95ef
+      size: 65467
     - path: reports/figures/view_count_violin_vertical.svg
       hash: md5
-      md5: 27dd190b4162655cfa4f0e7315400967
-      size: 65793
+      md5: 4873332018f41502fcbc5b7f00cf814f
+      size: 65462
     - path: reports/notebooks/06-basic_descriptives.ipynb
       hash: md5
-      md5: ff6a665023f89f8df2ae86d9de72fe25
-      size: 29906
+      md5: ffa9c4a609192e176c0a32f61e1fd772
+      size: 29477
     - path: reports/tables/dataset_summary.csv
       hash: md5
       md5: 3bdb2c14f5c01e8bb05d8c6c7347b459
@@ -146,26 +146,26 @@ stages:
       size: 2130
     - path: r/load.R
       hash: md5
-      md5: 332aa72d314d0dc68a0617d43026fa43
-      size: 761
+      md5: 7fb1f7f5cf47402c3a0fe97f8837d072
+      size: 747
     - path: src/load/
       hash: md5
-      md5: f68de4bc6da15127fef0e9d15819b392.dir
-      size: 24246
+      md5: c7f5837d0512f5af76ad65a32b605a00.dir
+      size: 24235
       nfiles: 9
     outs:
     - path: reports/figures/nb_regression_like_count.svg
       hash: md5
-      md5: e860be55ce73b3df9e5d264b8c439035
-      size: 17746
+      md5: 445c673d7368363605a390e489fd4e1c
+      size: 17526
     - path: reports/figures/nb_regression_like_count_vertical.svg
       hash: md5
-      md5: 3c1261ca60b4bcd62f29df17217db215
-      size: 17744
+      md5: 7751f24640f9521fd9dcaf2e2a224295
+      size: 17524
     - path: reports/notebooks/07-nb_regression.html
       hash: md5
-      md5: 4ecd100f2cd6bdbfde8cd6efa9eca061
-      size: 762719
+      md5: b4d3561838f347fcaaf66acb841d1111
+      size: 843249
   comment_analysis:
     cmd: papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
     deps:
@@ -180,18 +180,18 @@ stages:
       size: 3756
     - path: src/load/
       hash: md5
-      md5: f68de4bc6da15127fef0e9d15819b392.dir
-      size: 24246
+      md5: c7f5837d0512f5af76ad65a32b605a00.dir
+      size: 24235
       nfiles: 9
     outs:
     - path: reports/figures/co_commenter_network.svg
       hash: md5
-      md5: 6e72446e100d07d32c8495949dc2f903
-      size: 39235
+      md5: 8b4d9520bde72827a3248b7f3cf7d564
+      size: 39234
     - path: reports/notebooks/08-comment_analysis.ipynb
       hash: md5
-      md5: 457ea6ee2f5defcc6f1e3ec95084445d
-      size: 141228
+      md5: 8674941e4a33515b22b87f9f2275e361
+      size: 140684
     - path: reports/tables/n_commenters_per_channel.csv
       hash: md5
       md5: c9d87aa6c01cdc761013ead30ab3f4a7

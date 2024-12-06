@@ -1,5 +1,7 @@
 #import "@preview/drafting:0.2.0": *
+#import "template.typ": *
 
+// TITLE PAGE
 #set text(
   font: "Times New Roman",
   size: 12pt,
@@ -8,8 +10,7 @@
 
 #set page(
   paper: "a4",
-  margin: (x: 3cm, y: 3cm),
-  numbering: "1"
+  margin: (x: 3cm, y: 3cm)
 )
 
 #set par(
@@ -18,6 +19,28 @@
   linebreaks: "optimized",
   spacing: 2em
 )
+
+#page[
+  #set par(leading: 1em, spacing: 1em)
+  #show: article.with(
+    title: "Populism on YouTube. How German Parties Utilize New Social Media Platforms.",
+    authors: (
+      "Lukas Erhard": author-meta(
+        "UniS", "IRIS",
+        email: "lukas.erhard@sowi.uni-stuttgart.de",
+        address: "University of Stuttgart, Seidenstraße 36, 70174 Stuttgart, Germany"
+      ),
+    ),
+    affiliations: (
+      "UniS": "University of Stuttgart, Institute for Social Sciences, Germany",
+      "IRIS": "Research Forum for Reflecting on Intelligent Systems",
+    ),
+    abstract: [#lorem(100)],
+    keywords: ("Populism", "YouTube", "LLM")
+  )
+]
+#counter(page).update(1)
+#set page(numbering: "1")
 
 #set heading(numbering: "1.1.1")
 #show heading: set block(above: 2em, below: 2em)
@@ -58,36 +81,42 @@
   it
 }
 
+
 = Introduction <introduction>
 
+
 Populist parties threaten democratic values and contribute to ideological polarization @robertsPopulismPolarizationComparative2022.
+Yet it has been heavily on the rise in Western countries for decades.
+Germany had its populist surge with rise of the Alternative for Germany (AfD).
+While originally founded as a Euroskeptic response to the problems of the 2008 financial crisis, the party was quickly overtaken by right-wing anti-immigrant sentiment.
+A sudden influx of migrants during the summer of 2015 gave the AfD's numbers and additional boost.
+Despite mostly lacking a substantial agenda other than harsh criticism of the established and governing parties, they gained traction across all voter demographics.
+Some attribute part of this success to social media, which is used far more by populist actors than non-populist ones (CITE?).
+Although there exist research on populism on other social media platforms, such as TikTok @gonzalez-aguilarPopulistRightParties2023, Twitter @ernstExtremePartiesPopulism2017, Instagram @oloflarssonRiseInstagramTool2023, or Facebook @schurmannYellingSidelinesHow2022, research on YouTube is still lacking.
+While in previous years TV was "considered to be the most important advertising medium and televised political advertising a leading way of communication between candidates voters" @vesnic-alujevicYouTubePoliticalAdvertising2014[199] and it probably still is, its place at the top is being fiercely contested by emerging players on the web.
+Social media, especially YouTube as one of the largest platforms, is an important but understudied place where populism is being spread.
+
+/*
 Populism, seen as a thin ideology, describes a worldview that is characterized above all by the antagonistic relationship between the virtuous people and the corrupt elite, which is linked to a thick ideology @muddePopulistZeitgeist2004.
 Understanding populist rhetoric and claims that support this antagonism is thereby key to explaining their electoral success @devreesePopulismExpressionPolitical2018.
 
-/*
-  add more about why YouTube is important. The storyline should be about:
-  1. Facebook / Twitter is researched a lot.
-    - 
   2. Arguments from "rise of insta" paper on how insta is not research as much, but video and audio is superimportant.
-  3. SM is important for populists. TikTok study: gonzalez-aguilarPopulistRightParties2023  
 */
 
-Social media, especially YouTube as one of the largest platforms, is an important but under-researched place where populism is spread.
 
-While in the past years, TV was "considered to be the most important advertising medium and televised political advertising a leading way of communication between candidates voters" @vesnic-alujevicYouTubePoliticalAdvertising2014[199] and it probably still is, its place at the top is heavily contested by emergent players on the web.
-With the rise of YouTube as one of the most important social media networks on the internet, it still lacks a thorough investigation @rauchfleischGermanFarrightYouTube2020.
+With the rise of YouTube as one of the most important social media networks on the Internet, it still lacks a thorough investigation @rauchfleischGermanFarrightYouTube2020.
 This article aims to take a closer look at the usage patterns YouTube by German political parties.
-Just having a glance at the likes and number of followers for the parties' channels reveals that the populist Alternative for Germany (AfD) has a massively bigger followership on this platform than any other party.
+A glance at the number of likes and followers for the parties' channels shows that the populist Alternative for Germany (AfD) has a massively larger followership on this platform than any other party.
 
-But YouTube is not "just" a social media platform.
-Im Gegensatz zu vielen anderen social media Plattformen, ist die Interaktivität hier stark eingeschränkt.
+// But YouTube is not "just" a social media platform.
+// Im Gegensatz zu vielen anderen social media Plattformen, ist die Interaktivität hier stark eingeschränkt.
 
-Even without the direct interaction of content creators and viewers, this platform allows for an easy way to create and share content for just about everybody.
-The German parties naturally also take the opportunity to be represented on it, albeit with very different degrees of success.
-While the viewership is behind some of the more influential accounts on this platform, investigating the content shared on YouTube allows us to examine the parties' self-representation in more detail.
+Even without the direct interaction between content creators and viewers, this platform provieds an easy way for almost everyone to create and share content.
+Of course, the German parties are also taking the opportunity to be represented on the platform, albeit with varying degrees of success.
+While the audience is behind some of the more influential accounts on this platform, an examination of the content shared on YouTube allows us to examine the parties' self-representation in more detail.
 #footnote[There are some successful channels of German politicians like Sarah Wagenknecht (with 664,000 followers) or Alice Weidel (with 189,000 followers) with personal channels.
-Still, we focus on the party channels in this study.]
-This research aims to take a closer look at the use and dissemination of populism on YouTube by German political parties.
+Nevertheless, in this study we focus on the party channels.]
+This research aims to take a closer look at the use and spread of populism on YouTube by German political parties.
 
 #quote(block: true)[
     #strong[Research Question:]
@@ -98,22 +127,22 @@ This research aims to take a closer look at the use and dissemination of populis
 
 == Populism
 
-There are multiple key approaches in the literature on populism, the ideational, the strategic, and the discursive-performative approach @moffittPopulism2020, or as a style of communcation @jagersPopulismPoliticalCommunication2007.
-Although scholars have had a lively discussion about what the "right" definition is @aslanidisPopulismIdeologyRefutation2016, we will follow #cite(<engesserPopulistOnlineCommunication2017>, form: "prose") and see these approaches not as mutally exclusive but contend that all definitions shed light on different aspects of populism @engesserPopulismSocialMedia2017[p.~1280].
+There are several key approaches in the literature on populism, the ideational, the strategic, and the discursive-performative approach @moffittPopulism2020, or as a style of communication @jagersPopulismPoliticalCommunication2007.
+Although scholars have had a lively discussion about what the "correct" definition is @aslanidisPopulismIdeologyRefutation2016, we will follow #cite(<engesserPopulistOnlineCommunication2017>, form: "prose") and see these approaches not as mutually exclusive, but argue that all definitions shed light on different aspects of populism @engesserPopulismSocialMedia2017[p.~1280].
 Another scholar puts this aspect of the scholarly discussion as:
 #quote()[
   There is actually a fair degree of agreement among academics: most specialists are of the view that populism revolves around a central division between "the people" and "the elite".
   In other words, there is considerable consensus about the core features of populism. @moffittPopulism2020
 ]
 
-What all approaches on populism share, is a common understanding that at its core, populism is about a 
+What all approaches on populism share, is a common understanding that at its core, populism is about a
 
 // -----------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------
 
 Another prominent approach to populism is the discursive-perfomative one.
-Rooted in the work of Ernesto Laclau, it is by far the most common approach by political theorists.// (CITE Moffitt 2020, S. ~60 von 360, Beginn "The Discursive-Performative Approach")
-While this approach is less popular in the empirical literature due to being "extremely abstract" that "it has serious problems when it comes to analysing populism in more conrete terms" (CITE) /*(CITE Mudde + Rovira Kaltwasser 2012a, 6f. -- from Moffitt 2020 ~ p. 67 of 360)*/, it has some very handy properties that we implement in this work.
+Rooted in the work of Ernesto Laclau, it is by far the most common approach by political theorists @moffittPopulism2020.// (S. ~60 von 360, Beginn "The Discursive-Performative Approach")
+While this approach is less popular in the empirical literature due to being "extremely abstract" that "it has serious problems when it comes to analysing populism in more conrete terms" #cite(<muddePopulismEuropeAmericas2012>, supplement: "p. 6"), it has some very handy properties that we implement in this work.
 
 This approach frames populism pimarily as a conflict between the corrupt elite and the virtuous people and therefore focuses on two key notions: anti-elitism and people-centrism.
 Populism in this context emphasizes the homogeneous nature of the people, often depicted as a cultural or economic entity, and defines the elite variably depending on context @muddeStudyingPopulismComparative2018.
@@ -414,7 +443,5 @@ Even the non-populist parties follow this pattern: The neo-liberal Free Democrat
 = Discussion <discussion>
 
 #pagebreak()
-#set par(leading: 0.65em, spacing: 0em)
-
-
+#set par(leading: 1em, spacing: 1.7em)
 #bibliography("references.bib", style: "apa")

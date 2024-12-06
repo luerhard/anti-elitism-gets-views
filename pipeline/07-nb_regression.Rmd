@@ -49,8 +49,6 @@ df <- df %>%
   filter(channel != "FDP") %>%
   mutate(
     year = video_uploadtime |> lubridate::year() |> as_factor()
-    # populism = elite * pplcentr,
-    # populism = z_transform(populism),
   ) %>%
   group_by(channel) %>%
   mutate(

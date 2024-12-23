@@ -120,7 +120,7 @@ This research aims to take a closer look at the use and spread of populism on Yo
 
 #quote(block: true)[
     #strong[Research Question:]
-    How do German political parties utilize YouTube differently, and to what extent does populism influence the popularity of their content?
+    How do German political parties utilize YouTube and to what extent does populism influence the popularity of their content?
 ]
 
 = Theory
@@ -130,49 +130,47 @@ This research aims to take a closer look at the use and spread of populism on Yo
 There are several key approaches in the literature on populism, the ideational, the strategic, and the discursive-performative approach @moffittPopulism2020, or as a style of communication @jagersPopulismPoliticalCommunication2007.
 Although scholars have had a lively discussion about what the "correct" definition is @aslanidisPopulismIdeologyRefutation2016, we will follow #cite(<engesserPopulistOnlineCommunication2017>, form: "prose") and see these approaches not as mutually exclusive, but argue that all definitions shed light on different aspects of populism @engesserPopulismSocialMedia2017[p.~1280].
 Another scholar puts this aspect of the scholarly discussion as:
+
 #quote()[
   There is actually a fair degree of agreement among academics: most specialists are of the view that populism revolves around a central division between "the people" and "the elite".
   In other words, there is considerable consensus about the core features of populism. @moffittPopulism2020
 ]
 
-What all approaches on populism share, is a common understanding that at its core, populism is about a
+// What all approaches on populism share, is a common understanding that at its core, populism is about a
 
 // -----------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------
-
-Another prominent approach to populism is the discursive-perfomative one.
-Rooted in the work of Ernesto Laclau, it is by far the most common approach by political theorists @moffittPopulism2020.// (S. ~60 von 360, Beginn "The Discursive-Performative Approach")
-While this approach is less popular in the empirical literature due to being "extremely abstract" that "it has serious problems when it comes to analysing populism in more conrete terms" #cite(<muddePopulismEuropeAmericas2012>, supplement: "p. 6"), it has some very handy properties that we implement in this work.
-
+The most popular definition of populism in the empirical literature is given by Cas #cite(<muddePopulistZeitgeist2004>, form: "prose").
 This approach frames populism pimarily as a conflict between the corrupt elite and the virtuous people and therefore focuses on two key notions: anti-elitism and people-centrism.
 Populism in this context emphasizes the homogeneous nature of the people, often depicted as a cultural or economic entity, and defines the elite variably depending on context @muddeStudyingPopulismComparative2018.
 It is seen as a "thin-centered ideology" with a narrow scope compared to broader ideologies like nativism or socialism, which it can accompany @muddePopulistZeitgeist2004 @hawkinsIdeationalApproachPopulism2019.
 Populism, seen as a thin ideology, describes a worldview that is characterized above all by the antagonistic relationship between the virtuous people and the corrupt elite, which is linked to a thick ideology @muddePopulistZeitgeist2004.
 Understanding populist rhetoric and claims that support this antagonism is thereby key to explaining their electoral success @devreesePopulismExpressionPolitical2018.
 
-//DRAFT --
-
+Another notable perspective on populism is the discursive-performative approach.
+Rooted in the work of Ernesto Laclau, it is by far the most common approach by political theorists @moffittPopulism2020.// (S. ~60 von 360, Beginn "The Discursive-Performative Approach")
+Although this approach is less prevalent in the empirical literature, as it is considered "extremely abstract" and faces "serious problems when it comes to analysing populism in more concrete terms" #cite(<muddePopulismEuropeAmericas2012>, supplement: "p. 6"), it offers several valuable features that are applied in the in this work.
 While #cite(<moffittPopulism2020>, form: "prose", supplement: "Table 2.1") makes a clear distinction in that the ideational approach views populism as a purely binary attribute of political actors, Mudde recognizes a gradual "more or less populism" and merely qualifies that it makes little sense to speak of "weak populists" in the case of non-populist actors who use some populist phrases @muddePopulismIdeatioalApproach2017.
 
 // First, we follow the discursive-perfomative approach in that we define populism as a gradational concept, in contrast to a binary approach which is commonly used in research using the ideational defintion. (CITE) // (CITE Moffit 2020, Table 2.1 -- roughly)
 This allows us to detect 'more or less' populism in specific texts.
 Secondly, we see populism less as an attribute of political actors but rather see it as a practice that political actors consciously choose to employ to convey an ideology to the audience.
 
-=== What are "The People"? (or People-Centrism)
+// === What are "The People"? (or People-Centrism)
 
-// people centrism
-The concept of "the people" plays an uncontested central role in all theoretical strands of populism, yet there is no complete consensus on how this term is defined.
-Proponents of the ideological approach assume that "the people" is perceived as "pure" and "homogeneous", while scholars self-identifying as "post-Laclauian" #cite(<ostiguyIntroduction2021>, supplement: [p.~2]) contend that '"[t]he people", as a unified (but not necessarily "pure" or homogeneous) #cite(<muddePopulismLiberalDemocracy2012>, supplement: [p.~8]) political agent, is the outcome of particular political appeals and not a pre-existing social category" #cite(<panizzaPopulismHegemonyPolitical2021>, supplement: [p.~26]).
-We argue that these two stands are not contradictory but can exist side-by-side.
-Populists use Social Media to engage with specific segments of the population in a way, that almost everyone can find appeals they can identify with.
-By spreading these appeals very widely and addressing many different subgroups, they create a sense of belonging with which a broad mass can identify.
-In this way, they create the feeling of a unified people.
-This argument, originally stated by Laclau as the fact that "the people" is an "empty signifier" is a construction, nowadays also appears to be shared by Mudde and Rovira Kaltwasser @muddePopulismVeryShort2017. They state that, 'given that populism has the capacity to frame "the people" in a way that appeals to different constitutencies and articulate their demands, it can generate a shared identity between different groups and facilitate their support for a common cause' (p.~9).
+// // people centrism
+// The concept of "the people" plays an uncontested central role in all theoretical strands of populism, yet there is no complete consensus on how this term is defined.
+// Proponents of the ideological approach assume that "the people" is perceived as "pure" and "homogeneous", while scholars self-identifying as "post-Laclauian" #cite(<ostiguyIntroduction2021>, supplement: [p.~2]) contend that '"[t]he people", as a unified (but not necessarily "pure" or homogeneous) #cite(<muddePopulismLiberalDemocracy2012>, supplement: [p.~8]) political agent, is the outcome of particular political appeals and not a pre-existing social category" #cite(<panizzaPopulismHegemonyPolitical2021>, supplement: [p.~26]).
+// We argue that these two stands are not contradictory but can exist side-by-side.
+// Populists use Social Media to engage with specific segments of the population in a way, that almost everyone can find appeals they can identify with.
+// By spreading these appeals very widely and addressing many different subgroups, they create a sense of belonging with which a broad mass can identify.
+// In this way, they create the feeling of a unified people.
+// This argument, originally stated by Laclau as the fact that "the people" is an "empty signifier" is a construction, nowadays also appears to be shared by Mudde and Rovira Kaltwasser @muddePopulismVeryShort2017. They state that, 'given that populism has the capacity to frame "the people" in a way that appeals to different constitutencies and articulate their demands, it can generate a shared identity between different groups and facilitate their support for a common cause' (p.~9).
 
 
-=== The Elite (or Anti-Elitism)
+// === The Elite (or Anti-Elitism)
 
-=== Populism and populist attitudes (?)
+== Populist attitudes
 
 Populism reasearch is mostly divided into to different parts.
 There is one strain that detects populism in political actors or parts of discourse like speeches.
@@ -188,16 +186,16 @@ This process not only involves detecting populist content published by political
 While the audiences on these platforms are often partisan and vary across different channels, comparing how distinct publics (i.e. viewers, followers, or subscribers) engage with content---whether it leans towards populism or not---offers valuable insights into broader public sentiment and interaction patterns.
 
 
-== Populism in the German Bundestag <sec:pop_in_bundestag>
+// == Populism in the German Bundestag <sec:pop_in_bundestag>
 
 
-// Populism can be defined in a lot of different ways, with the two main approaches being "actor-centered" and "communication-centered" (larsson et al, the rise of instagram).
-// While the former approach sees populism as a property of some political entity, be it a politician or a party, the latter considers populism as a style of communication (e.g. Jacobs et al or Stanyer et al.-- see larson).
-// We combine both approaches in classifying the parties, based on a actor-centered approach (using PopuList) and identifying populist dimensions in the commnunication that is shared on the parties' YouTube channel.
+// // Populism can be defined in a lot of different ways, with the two main approaches being "actor-centered" and "communication-centered" (larsson et al, the rise of instagram).
+// // While the former approach sees populism as a property of some political entity, be it a politician or a party, the latter considers populism as a style of communication (e.g. Jacobs et al or Stanyer et al.-- see larson).
+// // We combine both approaches in classifying the parties, based on a actor-centered approach (using PopuList) and identifying populist dimensions in the commnunication that is shared on the parties' YouTube channel.
 
-Despite debates on the role of moralistic language in populism, recent scholarship suggests that combining moral, anti-elitist, and people-centric elements is essential to classify a statement as populist (Stavrakakis and Jäger 2018; Dai and Kustov 2022). Thus, populism is characterized by these three intertwined attributes.
+// Despite debates on the role of moralistic language in populism, recent scholarship suggests that combining moral, anti-elitist, and people-centric elements is essential to classify a statement as populist (Stavrakakis and Jäger 2018; Dai and Kustov 2022). Thus, populism is characterized by these three intertwined attributes.
 
-There are currently two parties in the German Bundestag that are considered populist, the AfD and the Left @rooduijnPopuListDatabasePopulist2023.
+// There are currently two parties in the German Bundestag that are considered populist, the AfD and the Left @rooduijnPopuListDatabasePopulist2023.
 
 
 == YouTube as a Research Platform <youtube-as-a-research-platform>
@@ -226,6 +224,8 @@ This leds to believe, that videos on YouTube are best viewed from content delive
 
 = Data & Methods <data-methods>
 
+== YouTube Data
+
 Using their official channels, we collected a dataset comprising YouTube videos from all six political parties within the German Bundestag.
 The FDP (Free Democratic Party) with \@FDP, the Greens with \@DieGruenen, the SPD (Social Democratic Party) with \@spdde and the Left with \@DIELINKE have easily identifiable main official party channels.
 The CDU (Christian Democratic Union) and CSU (Christian Social Union) are two separate political parties in Germany that operate as sister parties.
@@ -239,8 +239,33 @@ The dataset is restricted to the period from December 6, 2017 (the final channel
 The analysis of video material is very challenging, we therefore follow #cite(<schwemmerSocialMediaSellout2018>, form: "prose") and focus our analysis on the audio material.
 The audio data of all videos and their accompanying metadata were downloaded using _yt-dlp_.
 In contrast to the abovementioned article, who use the pre-generated transcripts provided by YouTube, we use a state-of-the-art speech-to-text model to transcribe the audio material ourselves.
-This procedure ensures a massively enhanced quality of the transcripts, including correct punctuation and music recognition.
+This procedure ensures a enhanced quality of the transcripts, including correct punctuation and music recognition.
 
+The videos' content was transcribed using OpenAI's state-of-the-art speech-to-text model, whisper-large-v3 @radfordRobustSpeechRecognition2022.
+Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of SoMaJo @proislSoMaJoStateoftheartTokenization2016 tokenizer and sentence-splitter.
+After removing sentences with less than 5 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises 9,394 videos, totaling 1,485 hours and featuring 708,549 sentences.
+
+== Populism Detection <detection-of-populism>
+
+In a subsequent article, I have applied the PopBERT @erhardPopBERTDetectingPopulism2024, a BERT-based transformer model, initially developed to analyze German parliamentary speeches, to study populism in transcripts of YouTube videos from the official channels of the German parties in the Bundestag.
+This adaptation involves using the model to detect populist rhetoric within these videos, identifying patterns of language that align with anti-elitism and people-centrism, and examining how these elements are associated with broader political ideologies.
+The analysis focuses on the official communications from these parties, providing insights into how established political entities engage with and propagate populist narratives through online video content.
+This approach highlights the versatility of the PopBERT model for examining populist discourse across different media and political contexts.
+
+
+= Results <results>
+
+The analysis begins with an examination of the descriptive statistics across all channels.
+Subsequently, the focus shifts to exploring the relationship between populism and the popularity of videos.
+
+== German Parties on YouTube
+
+Summary statistics per channel are presented in @tab:descriptives.
+The most immediately apparent observation is that each of the two AfD channels, \@AfDFraktionimBundestag (388,000 followers), herein after referred to as AfD BT, and \@AfDTV (250,000), has more than twice as many followers as all the other analyzed channels combined (219,670).
+The number of videos paints a similar picture.
+The two AfD channels are significantly more productive in terms of their video output.
+The average length of their videos is comparable to that of the CDU, CSU and FDP.
+The Greens, the Left Party and the SPD, on the other hand, tend to produce significantly longer videos than the aforementioned parties.
 
 #let table_array = csv("tables/table_1.csv", row-type: array)
 #let header = table_array.first()
@@ -276,45 +301,39 @@ This procedure ensures a massively enhanced quality of the transcripts, includin
   , kind: table
 ) <tab:descriptives>
 
-It is particularly striking that each of the two AfD channels, \@AfDFraktionimBundestag (388,000 followers), herein after referred to as AfD BT, and \@AfDTV (250,000), has more than twice as many followers as all the other analyzed channels combined (219,670).
-While all parties have some successful videos (see @fig:view_count), average views and likes per video diverge up to a factor of 10 between the AfD channels and all others.
-Notably, the FDP consistently disables the like/dislike functionality across most of their videos, excluding them from upcoming like-based analyses.
+It is also evident that the number of comments on FDP and Green Party videos is almost zero.
+The FDP also has hardly any likes associated with their videos.
+A review of some of these parties' videos on the platform suggests that these functionalities were deactivated by the parties for most of the videos.
+Unfortunately, it was not possible to determine whether this was due to a lack of engagement on the part of users or because the corresponding function had been deactivated on the platform at the time the data was collected.
+While the number of comments is not relevant to the further course of the investigation, the number of likes per video is, and only the FDP is excluded from these further analyses.
 
-The videos' content was transcribed using OpenAI's state-of-the-art speech-to-text model, whisper-large-v3 @radfordRobustSpeechRecognition2022.
-Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of SoMaJo @proislSoMaJoStateoftheartTokenization2016 tokenizer and sentence-splitter.
-After removing sentences with less than 5 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises 9,394 videos, totaling 1,485 hours and featuring 708,549 sentences.
-Summary statistics per channel are presented in @tab:descriptives.
-@fig:view_count depicts the distributions of likes and views.
-While all parties have some successful videos, these numbers indicate that each of the AfD's channels has more than double the followers, views, and likes of all other parties combined.
-Notably, the FDP consistently disables the like/dislike functionality across most of their videos and, in conjunction with the Greens (Grüne), opts to disable comments.
+@fig:view_count shows the distribution of views and likes in order to take a closer look at the numbers.
+Since these figures differ greatly between the channels, both are shown in logarithmic form.
+It is clear that all parties produce some successful videos, but the AfD stands out clearly here as well.
+While the median of the views with values between 777 (Greens) and 1,613 (Left Party) is quite similar for the other parties, it is significantly higher for AfD BT with 14,547 and AfD TV with 17,767.
+This picture becomes even clearer when looking at the number of likes.
+While no other party reaches a median like count of 100---the Left achieves the highest count with 86---the AfD reaches 1,808 with AfD BT and as much as 2,233 with AfD TV.
+
 
 #figure(
   image("figures/figure_1.svg", width: 100%),
   caption: [
-    Distribution of logged view and like counts per channel.
-  ]
+    Distribution of likes and views per channel. All values are logged. The box describes the .25, .5 and.75 quantiles. Outliers are represented by dots. Violin plots were superimposed on the boxplot to better visualize the distribution.  ]
 ) <fig:view_count>
 
-== Detection of Populism <detection-of-populism>
 
-In a subsequent article, I have applied the PopBERT @erhardPopBERTDetectingPopulism2024, a BERT-based transformer model, initially developed to analyze German parliamentary speeches, to study populism in transcripts of YouTube videos from the official channels of the German parties in the Bundestag.
-This adaptation involves using the model to detect populist rhetoric within these videos, identifying patterns of language that align with anti-elitism and people-centrism, and examining how these elements are associated with broader political ideologies.
-The analysis focuses on the official communications from these parties, providing insights into how established political entities engage with and propagate populist narratives through online video content.
-This approach highlights the versatility of the PopBERT model for examining populist discourse across different media and political contexts.
+// == Content Classification <content-classification>
 
-== Content Classification <content-classification>
+// We use a coding scheme for content classification with 56 categories created by the Manifesto Project @volkensManifestoProjectDataset2020.
+// It is hierarchically organized and was created while annotating 4582 election programs from 1154 parties in 56 countries.
 
-We use a coding scheme for content classification with 56 categories created by the Manifesto Project @volkensManifestoProjectDataset2020.
-It is hierarchically organized and was created while annotating 4582 election programs from 1154 parties in 56 countries.
+// Additionally, the manifestoroberta model— an xlm-roberta-large based model fine-tuned on sentences from party manifestos to categorize content into 56 distinct categories @burstManifestoberta2023—was applied to all sentences.
 
-Additionally, the manifestoroberta model— an xlm-roberta-large based model fine-tuned on sentences from party manifestos to categorize content into 56 distinct categories @burstManifestoberta2023—was applied to all sentences.
+// Despite not being fine-tuned on German specifically, the multilingual capacity of the underlying xlm-roberta-large ensured effective classification.
+// Classifications of the manifesto classifier were only kept if the probability for the most probable class was higher than $0.$.
+// Nevertheless, class #emph[305 - Political Authority] appears to be some default category when analyzing transcripts from political YouTube videos as they span 37.8% of all classifications.
+// We thus omit this category from further analysis as it does not reveal any information to us.
 
-Despite not being fine-tuned on German specifically, the multilingual capacity of the underlying xlm-roberta-large ensured effective classification.
-Classifications of the manifesto classifier were only kept if the probability for the most probable class was higher than $0.$.
-Nevertheless, class #emph[305 - Political Authority] appears to be some default category when analyzing transcripts from political YouTube videos as they span 37.8% of all classifications.
-We thus omit this category from further analysis as it does not reveal any information to us.
-
-= Results <results>
 /*
 #figure(image("img/populism_over_time.pdf", width: 100%),
   caption: e
@@ -361,15 +380,15 @@ A connection is displayed as the number of distinct users that have commented at
 
 
 */
-== Videos by type <videos-by-type>
+// == Videos by type <videos-by-type>
 
-#inote[
-*IDEAS*
-  - We investigate the broad types of video content published by each party to connect this with popularity and hopefully see some differences between AfD and the rest.
-    - Potential types are: politische Rede (mostly Bundestag), Demo-Rede, Diskussionsrunde, Promo-Video, Fernsehbeitrag?,
-  - Just cluster the videos and hand-annotate the clusters. There are probably not that many different recurring video types.
-  - but on what would we cluster? Video length, Video title, ...
-]
+// #inote[
+// *IDEAS*
+//   - We investigate the broad types of video content published by each party to connect this with popularity and hopefully see some differences between AfD and the rest.
+//     - Potential types are: politische Rede (mostly Bundestag), Demo-Rede, Diskussionsrunde, Promo-Video, Fernsehbeitrag?,
+//   - Just cluster the videos and hand-annotate the clusters. There are probably not that many different recurring video types.
+//   - but on what would we cluster? Video length, Video title, ...
+// ]
 
 == Populism and Popularity <populism-and-popularity>
 
@@ -387,58 +406,58 @@ Consequently, we will exclude the FDP from the subsequent analysis.
   ]
 ) <fig:nb_reg>
 
-== Populism and Content <populism-and-content>
+// == Populism and Content <populism-and-content>
 
-Table XX shows the top-5 most associated content categories for either anti-elitist or people-centric sentences.
-The top categories for the AfD are almost identical for both channels, indicating similar populist content.
-They tend to focus, among others, the populist statements on the need to eliminate political corruption (304), appeals to pride of citizenship, patriotism and natonalism (601), and negative references of the European Union (110), all known topics from the AfD electoral program @afdAfDWahlprogramm20232023.
-Other parties also show topics in their top 5 that they are known for.
-They are populist when talking about the concept of social justice and the need of fair treatment for all people (503), favorable references to all labor groups, good working conditions, and fair wages (701), topics like child/elder care and social housing (504) or during negative references to the military (105).
-All these are topics the Left is known for @dielinkeLINKEWahlprogramm2023.
-Even the non-populist parties follow this pattern: The neo-liberal Free Democratic Party (FDP) focuses on favorable mentions of the importance of personal freedom and civil rights (201), the employee-friendly Social Democratic Party (SPD) on the abovementioned good working conditions (701).
+// Table XX shows the top-5 most associated content categories for either anti-elitist or people-centric sentences.
+// The top categories for the AfD are almost identical for both channels, indicating similar populist content.
+// They tend to focus, among others, the populist statements on the need to eliminate political corruption (304), appeals to pride of citizenship, patriotism and natonalism (601), and negative references of the European Union (110), all known topics from the AfD electoral program @afdAfDWahlprogramm20232023.
+// Other parties also show topics in their top 5 that they are known for.
+// They are populist when talking about the concept of social justice and the need of fair treatment for all people (503), favorable references to all labor groups, good working conditions, and fair wages (701), topics like child/elder care and social housing (504) or during negative references to the military (105).
+// All these are topics the Left is known for @dielinkeLINKEWahlprogramm2023.
+// Even the non-populist parties follow this pattern: The neo-liberal Free Democratic Party (FDP) focuses on favorable mentions of the importance of personal freedom and civil rights (201), the employee-friendly Social Democratic Party (SPD) on the abovementioned good working conditions (701).
 
-== The most successful videos <the-most-successful-videos>
+// == The most successful videos <the-most-successful-videos>
 
-#inote[
-  *IDEAS*
-  - We could do a superstar analysis, investigating the most successful videos per channel
-]
+// #inote[
+//   *IDEAS*
+//   - We could do a superstar analysis, investigating the most successful videos per channel
+// ]
 
-#let table_array = csv("tables/table_3.csv", row-type: array)
-#let header = table_array.first()
+// #let table_array = csv("tables/table_3.csv", row-type: array)
+// #let header = table_array.first()
 
-#let convert-to-float(val) = {
-  let check = val.find(regex("^\d+[\.,]?\d*$"))
-  if check != none {
-    str(calc.round(float(val), digits: 2))
-  } else {
-    val
-  }
-}
+// #let convert-to-float(val) = {
+//   let check = val.find(regex("^\d+[\.,]?\d*$"))
+//   if check != none {
+//     str(calc.round(float(val), digits: 2))
+//   } else {
+//     val
+//   }
+// }
 
-#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
+// #let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
 
-#show figure: set block(breakable: true)
-#figure(
-  align(center)[
-    #set par(leading: 0.65em)
-    #set text(size: 10.2pt)
-    #table(
-      columns: (auto, ..(auto,) * (header.len() - 1)),
-      align: (left, ..(right,) * (header.len() - 1)),
-      inset: 4pt,
-      stroke: none,
-      table.hline(),
-      table.header(..header),
-      table.vline(x: 1, start: 1, end: table_content.len() + 1),
-      table.hline(),
-      ..table_content.flatten(),
-      table.hline()
-    )
-  ]
-  , caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. ]
-  , kind: table
-) <tab:top_videos>
+// #show figure: set block(breakable: true)
+// #figure(
+//   align(center)[
+//     #set par(leading: 0.65em)
+//     #set text(size: 10.2pt)
+//     #table(
+//       columns: (auto, ..(auto,) * (header.len() - 1)),
+//       align: (left, ..(right,) * (header.len() - 1)),
+//       inset: 4pt,
+//       stroke: none,
+//       table.hline(),
+//       table.header(..header),
+//       table.vline(x: 1, start: 1, end: table_content.len() + 1),
+//       table.hline(),
+//       ..table_content.flatten(),
+//       table.hline()
+//     )
+//   ]
+//   , caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. ]
+//   , kind: table
+// ) <tab:top_videos>
 
 = Discussion <discussion>
 

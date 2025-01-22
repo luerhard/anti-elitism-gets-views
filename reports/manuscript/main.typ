@@ -401,6 +401,7 @@ Consequently, we will exclude the FDP from the subsequent analysis.
 
 #figure(
   image("figures/figure_2.svg", width: 100%),
+  placement: auto,
   caption: [
     Negative Binomial Regression on Number of Likes per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
   ]

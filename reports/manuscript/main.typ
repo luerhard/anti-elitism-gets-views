@@ -392,6 +392,14 @@ A connection is displayed as the number of distinct users that have commented at
 
 == Populism and Popularity <populism-and-popularity>
 
+#figure(
+  image("figures/figure_2.svg", width: 100%),
+  // placement: auto,
+  caption: [
+    Negative Binomial Regression on Number of Likes per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
+  ]
+) <fig:populism_dimensions>
+
 A key finding here is that only the populist parties (both AfD channels and the Left) show a clear correlation between the number of likes of a video and populist dimensions.
 This suggests that people who watch videos from populist parties do so deliberately and in search of anti-elitist content.
 This effect is not seen for people-centrism.
@@ -400,8 +408,8 @@ A review of their YouTube content reveals that the FDP has disabled the like fea
 Consequently, we will exclude the FDP from the subsequent analysis.
 
 #figure(
-  image("figures/figure_2.svg", width: 100%),
-  placement: auto,
+  image("figures/figure_3.svg", width: 100%),
+  // placement: auto,
   caption: [
     Negative Binomial Regression on Number of Likes per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
   ]

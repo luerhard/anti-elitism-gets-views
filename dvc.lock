@@ -99,8 +99,8 @@ stages:
       nfiles: 3
     - path: pipeline/06-basic_descriptives.ipynb
       hash: md5
-      md5: 8b075e1feaae54edfab907b2139b5466
-      size: 21716
+      md5: c6567eb517538162398e4fe8adf2d761
+      size: 21726
     - path: src/load/
       hash: md5
       md5: c7f5837d0512f5af76ad65a32b605a00.dir
@@ -117,8 +117,8 @@ stages:
       size: 297276
     - path: reports/notebooks/06-basic_descriptives.ipynb
       hash: md5
-      md5: e8a0a37b056265b3662627d87112a8fc
-      size: 30038
+      md5: 9df6a9472fe6a5d89dd07e6e8ef7b78f
+      size: 30047
     - path: reports/tables/dataset_summary.csv
       hash: md5
       md5: 3bdb2c14f5c01e8bb05d8c6c7347b459

@@ -99,22 +99,26 @@ stages:
       nfiles: 3
     - path: pipeline/06-basic_descriptives.ipynb
       hash: md5
-      md5: 59c3dd4dc88dc21e446286754b9234e7
-      size: 201651
+      md5: 8b075e1feaae54edfab907b2139b5466
+      size: 21716
     - path: src/load/
       hash: md5
       md5: c7f5837d0512f5af76ad65a32b605a00.dir
       size: 24235
       nfiles: 9
     outs:
+    - path: reports/figures/populism_per_party.svg
+      hash: md5
+      md5: 5e7314412fa82fd31c19c9c482761be3
+      size: 21792
     - path: reports/figures/view_count_violin.svg
       hash: md5
       md5: 2ff8e351ad8623661653dec0ed5eb0c5
       size: 297276
     - path: reports/notebooks/06-basic_descriptives.ipynb
       hash: md5
-      md5: f8948c829ad378d872a2929734d05aa5
-      size: 27119
+      md5: e8a0a37b056265b3662627d87112a8fc
+      size: 30038
     - path: reports/tables/dataset_summary.csv
       hash: md5
       md5: 3bdb2c14f5c01e8bb05d8c6c7347b459

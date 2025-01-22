@@ -99,8 +99,8 @@ stages:
       nfiles: 3
     - path: pipeline/06-basic_descriptives.ipynb
       hash: md5
-      md5: 209f9362bff41425ad326320a19fb0fe
-      size: 21721
+      md5: 03512a7c31cf5acf357cc7fb6935b282
+      size: 21773
     - path: src/load/
       hash: md5
       md5: c7f5837d0512f5af76ad65a32b605a00.dir
@@ -113,12 +113,12 @@ stages:
       size: 21792
     - path: reports/figures/view_count.svg
       hash: md5
-      md5: 2ff8e351ad8623661653dec0ed5eb0c5
-      size: 297276
+      md5: 9661ff1e36e2f347f607f24f38a1edf9
+      size: 297300
     - path: reports/notebooks/06-basic_descriptives.ipynb
       hash: md5
-      md5: 5b44efa891aafa66ea5e14dd7a7a9dbe
-      size: 30041
+      md5: 035582fd2f3064a3a9d54f7b667520aa
+      size: 30335
     - path: reports/tables/dataset_summary.csv
       hash: md5
       md5: 3bdb2c14f5c01e8bb05d8c6c7347b459

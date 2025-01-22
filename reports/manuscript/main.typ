@@ -389,16 +389,17 @@ A connection is displayed as the number of distinct users that have commented at
 //   - Just cluster the videos and hand-annotate the clusters. There are probably not that many different recurring video types.
 //   - but on what would we cluster? Video length, Video title, ...
 // ]
-
-== Populism and Popularity <populism-and-popularity>
+== Use of Populism
 
 #figure(
   image("figures/figure_2.svg", width: 100%),
   // placement: auto,
   caption: [
-    Negative Binomial Regression on Number of Likes per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
+    Each case in this figure is a video; the values represent the relative proportion of sentences for each populist dimension that.
   ]
 ) <fig:populism_dimensions>
+
+== Populism and Popularity <populism-and-popularity>
 
 A key finding here is that only the populist parties (both AfD channels and the Left) show a clear correlation between the number of likes of a video and populist dimensions.
 This suggests that people who watch videos from populist parties do so deliberately and in search of anti-elitist content.

@@ -23,14 +23,14 @@ stages:
       - pipeline/04-run_popbert.py
     outs:
       - data/interim/popbert.parquet.gzip
-  run_manifesto_roberta:
-    cmd: poetry run python pipeline/05-run_manifesto_roberta.py
-    deps:
-      - data/interim/sentences.parquet.gzip
-      - src/processing/manifesto_predictor.py
-      - pipeline/05-run_manifesto_roberta.py
-    outs:
-      - data/interim/manifesto_roberta.parquet.gzip
+  # run_manifesto_roberta:
+  #   cmd: poetry run python pipeline/05-run_manifesto_roberta.py
+  #   deps:
+  #     - data/interim/sentences.parquet.gzip
+  #     - src/processing/manifesto_predictor.py
+  #     - pipeline/05-run_manifesto_roberta.py
+  #   outs:
+  #     - data/interim/manifesto_roberta.parquet.gzip
   basic_descriptives:
     cmd: papermill pipeline/06-basic_descriptives.ipynb reports/notebooks/06-basic_descriptives.ipynb
     deps:
@@ -42,7 +42,7 @@ stages:
     outs:
       - reports/notebooks/06-basic_descriptives.ipynb
       - reports/tables/dataset_summary.csv
-      - reports/figures/view_count_violin_vertical.svg
+      # - reports/figures/view_count_violin_vertical.svg
       - reports/figures/view_count_violin.svg
   nb_regression:
     cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document', '../reports/notebooks/07-nb_regression.html')"
@@ -57,20 +57,20 @@ stages:
       - reports/notebooks/07-nb_regression.html
       - reports/figures/nb_regression_like_count.svg
       - reports/figures/nb_regression_like_count_vertical.svg
-  comment_analysis:
-    cmd: papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
-    deps:
-      - src/load/
-      - data/raw/yt_metadata/
-      - pipeline/08-comment_analysis.ipynb
-    outs:
-      - reports/notebooks/08-comment_analysis.ipynb
-      - reports/tables/n_commenters_per_channel.csv
-      - reports/figures/co_commenter_network.svg
-  collect_manifestos:
-    cmd: python pipeline/09-collect_manifestos.py
-    deps:
-      - src/crawl/manifesto_crawler.py
-      - pipeline/09-collect_manifestos.py
-    outs:
-      - data/raw/manifestos
+  # comment_analysis:
+  #   cmd: papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
+  #   deps:
+  #     - src/load/
+  #     - data/raw/yt_metadata/
+  #     - pipeline/08-comment_analysis.ipynb
+  #   outs:
+  #     - reports/notebooks/08-comment_analysis.ipynb
+  #     - reports/tables/n_commenters_per_channel.csv
+  #     - reports/figures/co_commenter_network.svg
+  # collect_manifestos:
+  #   cmd: python pipeline/09-collect_manifestos.py
+  #   deps:
+  #     - src/crawl/manifesto_crawler.py
+  #     - pipeline/09-collect_manifestos.py
+  #   outs:
+  #     - data/raw/manifestos

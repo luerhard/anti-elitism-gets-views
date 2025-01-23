@@ -25,10 +25,6 @@ class DataLoader:
         self.con.read_parquet(src.DATA / "raw/yt_metadata/comments.parquet.gzip", "comments")
         self.con.read_parquet(src.DATA / "interim/sentences.parquet.gzip", "sentences")
         self.con.read_parquet(src.DATA / "interim/popbert.parquet.gzip", "popbert")
-        self.con.read_parquet(
-            src.DATA / "interim/manifesto_roberta.parquet.gzip",
-            "manifesto_roberta",
-        )
 
     def channels(self):
         table = self.con.tables["channels"]
@@ -136,16 +132,6 @@ class DataLoader:
                 left=apply_threshold(_.left, self.POPBERT_THRESH["left"]),
                 right=apply_threshold(_.right, self.POPBERT_THRESH["right"]),
             )
-
-        if filtered:
-            sents = self.sentences(filtered=True)
-            filtered_table = table.join(sents, "sentence_id")
-            table = filtered_table[table]
-
-        return table
-
-    def manifesto_roberta(self, filtered: bool = False):
-        table = self.con.tables["manifesto_roberta"]
 
         if filtered:
             sents = self.sentences(filtered=True)

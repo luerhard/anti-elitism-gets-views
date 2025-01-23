@@ -138,8 +138,6 @@ Another scholar puts this aspect of the scholarly discussion as:
 
 // What all approaches on populism share, is a common understanding that at its core, populism is about a
 
-// -----------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------
 The most popular definition of populism in the empirical literature is given by Cas #cite(<muddePopulistZeitgeist2004>, form: "prose").
 This approach frames populism pimarily as a conflict between the corrupt elite and the virtuous people and therefore focuses on two key notions: anti-elitism and people-centrism.
 Populism in this context emphasizes the homogeneous nature of the people, often depicted as a cultural or economic entity, and defines the elite variably depending on context @muddeStudyingPopulismComparative2018.
@@ -307,6 +305,12 @@ A review of some of these parties' videos on the platform suggests that these fu
 Unfortunately, it was not possible to determine whether this was due to a lack of engagement on the part of users or because the corresponding function had been deactivated on the platform at the time the data was collected.
 While the number of comments is not relevant to the further course of the investigation, the number of likes per video is, and only the FDP is excluded from these further analyses.
 
+#figure(
+  image("figures/figure_1.svg", width: 100%),
+  caption: [
+    Distribution of likes and views per channel. All values are logged. The box describes the .25, .5 and.75 quantiles. Outliers are represented by dots. Violin plots were superimposed on the boxplot to better visualize the distribution.  ]
+) <fig:view_count>
+
 @fig:view_count shows the distribution of views and likes in order to take a closer look at the numbers.
 Since these figures differ greatly between the channels, both are shown in logarithmic form.
 It is clear that all parties produce some successful videos, but the AfD stands out clearly here as well.
@@ -314,88 +318,16 @@ While the median of the views with values between 777 (Greens) and 1,613 (Left P
 This picture becomes even clearer when looking at the number of likes.
 While no other party reaches a median like count of 100---the Left achieves the highest count with 86---the AfD reaches 1,808 with AfD BT and as much as 2,233 with AfD TV.
 
+== Populist Language in Videos
 
-#figure(
-  image("figures/figure_1.svg", width: 100%),
-  caption: [
-    Distribution of likes and views per channel. All values are logged. The box describes the .25, .5 and.75 quantiles. Outliers are represented by dots. Violin plots were superimposed on the boxplot to better visualize the distribution.  ]
-) <fig:view_count>
+@fig:populism_dimensions shows the relative proportion of sentences marked by PopBERT as either anti-elitist or people-centred in each video.
 
-
-// == Content Classification <content-classification>
-
-// We use a coding scheme for content classification with 56 categories created by the Manifesto Project @volkensManifestoProjectDataset2020.
-// It is hierarchically organized and was created while annotating 4582 election programs from 1154 parties in 56 countries.
-
-// Additionally, the manifestoroberta model— an xlm-roberta-large based model fine-tuned on sentences from party manifestos to categorize content into 56 distinct categories @burstManifestoberta2023—was applied to all sentences.
-
-// Despite not being fine-tuned on German specifically, the multilingual capacity of the underlying xlm-roberta-large ensured effective classification.
-// Classifications of the manifesto classifier were only kept if the probability for the most probable class was higher than $0.$.
-// Nevertheless, class #emph[305 - Political Authority] appears to be some default category when analyzing transcripts from political YouTube videos as they span 37.8% of all classifications.
-// We thus omit this category from further analysis as it does not reveal any information to us.
-
-/*
-#figure(image("img/populism_over_time.pdf", width: 100%),
-  caption: e
-    Populism over time.
-  ]
-)
-<fig:populism_over_time>
-
-== Commenting Behavior <commenting-behavior>
-
-If one sees YouTube as a social media platform, interaction with users and between users are of importance.
-@tab:commenters shows the distinct number of commenters in our investigation per channel.
-
-#let table_array = csv("tables/table_2.csv", row-type: array)
-#let table_content = table_array.slice(1)
-
-#figure(
-  align(center)[
-    #set text(size: 10.2pt)
-    #table(
-      columns: (auto, auto),
-      align: (left, ..(right,) * (header.len() - 1)),
-      inset: 4pt,
-      stroke: none,
-      table.hline(),
-      table.header([Channel], [N Commenters]),
-      table.hline(),
-      ..table_content.flatten(),
-      table.hline(),
-    )
-  ]
-  , caption: [Number of commenters per channel.]
-  , kind: table
-) <tab:commenters>
-
-
-A common way to look at the connectivity of YouTube channels is to look an co-commenting behavior of users.
-A connection is displayed as the number of distinct users that have commented at least once in both channels.
-@fig:co_commenting_network shows the number of co-commentors for all channels.
-
-#figure(image("figures/figure_3.svg", width: 100%),
-  caption: [Co-Commenting Network. Edges with less than 10 co-commentors are hidden.]
-) <fig:co_commenting_network>
-
-
-*/
-// == Videos by type <videos-by-type>
-
-// #inote[
-// *IDEAS*
-//   - We investigate the broad types of video content published by each party to connect this with popularity and hopefully see some differences between AfD and the rest.
-//     - Potential types are: politische Rede (mostly Bundestag), Demo-Rede, Diskussionsrunde, Promo-Video, Fernsehbeitrag?,
-//   - Just cluster the videos and hand-annotate the clusters. There are probably not that many different recurring video types.
-//   - but on what would we cluster? Video length, Video title, ...
-// ]
-== Use of Populism
 
 #figure(
   image("figures/figure_2.svg", width: 100%),
   // placement: auto,
   caption: [
-    Each case in this figure is a video; the values represent the relative proportion of sentences for each populist dimension that.
+    Each case in this figure is a video; the values represent the relative proportion of sentences that are flagged with the respective populst dimension.
   ]
 ) <fig:populism_dimensions>
 
@@ -424,61 +356,67 @@ Consequently, we will exclude the FDP from the subsequent analysis.
   ]
 ) <fig:nb_reg_views>
 
-// == Populism and Content <populism-and-content>
-
-// Table XX shows the top-5 most associated content categories for either anti-elitist or people-centric sentences.
-// The top categories for the AfD are almost identical for both channels, indicating similar populist content.
-// They tend to focus, among others, the populist statements on the need to eliminate political corruption (304), appeals to pride of citizenship, patriotism and natonalism (601), and negative references of the European Union (110), all known topics from the AfD electoral program @afdAfDWahlprogramm20232023.
-// Other parties also show topics in their top 5 that they are known for.
-// They are populist when talking about the concept of social justice and the need of fair treatment for all people (503), favorable references to all labor groups, good working conditions, and fair wages (701), topics like child/elder care and social housing (504) or during negative references to the military (105).
-// All these are topics the Left is known for @dielinkeLINKEWahlprogramm2023.
-// Even the non-populist parties follow this pattern: The neo-liberal Free Democratic Party (FDP) focuses on favorable mentions of the importance of personal freedom and civil rights (201), the employee-friendly Social Democratic Party (SPD) on the abovementioned good working conditions (701).
-
-// == The most successful videos <the-most-successful-videos>
-
-// #inote[
-//   *IDEAS*
-//   - We could do a superstar analysis, investigating the most successful videos per channel
-// ]
-
-// #let table_array = csv("tables/table_3.csv", row-type: array)
-// #let header = table_array.first()
-
-// #let convert-to-float(val) = {
-//   let check = val.find(regex("^\d+[\.,]?\d*$"))
-//   if check != none {
-//     str(calc.round(float(val), digits: 2))
-//   } else {
-//     val
-//   }
-// }
-
-// #let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
-
-// #show figure: set block(breakable: true)
-// #figure(
-//   align(center)[
-//     #set par(leading: 0.65em)
-//     #set text(size: 10.2pt)
-//     #table(
-//       columns: (auto, ..(auto,) * (header.len() - 1)),
-//       align: (left, ..(right,) * (header.len() - 1)),
-//       inset: 4pt,
-//       stroke: none,
-//       table.hline(),
-//       table.header(..header),
-//       table.vline(x: 1, start: 1, end: table_content.len() + 1),
-//       table.hline(),
-//       ..table_content.flatten(),
-//       table.hline()
-//     )
-//   ]
-//   , caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. ]
-//   , kind: table
-// ) <tab:top_videos>
 
 = Discussion <discussion>
 
 #pagebreak()
 #set par(leading: 1em, spacing: 1.7em)
 #bibliography("references.bib", style: "apa")
+
+#set heading(numbering: none)
+= Appendix <appendix>
+
+#show heading: it => {
+  if it.level == 1 and it.numbering != none {
+    [#it.supplement #counter(heading).display():]
+  } else if it.numbering != none {
+    [#counter(heading).display().]
+  }
+
+  h(0.3em)
+  it.body
+  parbreak()
+}
+
+#counter(heading).update(0)
+#set heading(numbering: "A.1", supplement: [Appendix])
+
+= Top 10 most liked videos per channel
+
+#let table_array = csv("../tables/.csv", row-type: array)
+#let header = ([Channel], [N Likes], [N Views], [Title])
+// 
+#let convert-to-float(val) = {
+  let check = val.find(regex("^\d+[\.,]?\d*$"))
+  if check != none {
+    str(calc.round(float(val), digits: 2))
+  } else {
+    val
+  }
+}
+// 
+#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
+// 
+#show figure: set block(breakable: true)
+#figure(
+  align(center)[
+    #set par(leading: 0.65em, justify: false)
+    #set text(size: 10.2pt)
+    #table(
+      columns: (auto, ..(auto,) * (header.len() - 1)),
+      align: (left, ..(right,) * (header.len() - 2), left),
+      inset: 4pt,
+      stroke: (x, y) => (
+        top: if calc.rem(y - 1, 10) == 0 { 1pt }
+      ),
+      table.hline(),
+      table.header(..header),
+      table.vline(x: 1, start: 1, end: table_content.len() + 1),
+      table.hline(),
+      ..table_content.flatten(),
+      table.hline()
+    )
+  ]
+  , caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. The FDP is excluded due to their videos having basically no likes.]
+  , kind: table
+) <tab:top_videos>

@@ -143,7 +143,7 @@ summary(pplcentr_model)
 ```{r}
 elite_plot <- sjPlot::plot_model(
     elite_model,
-    type = "emm",
+    type = "eff",
     terms = c("channel", "elite [-1,0,1]")
   ) +
   coord_flip() +
@@ -157,7 +157,7 @@ elite_plot <- sjPlot::plot_model(
 
 pplcentr_plot <- sjPlot::plot_model(
     pplcentr_model,
-    type = "emm",
+    type = "eff",
     terms = c("channel", "pplcentr [-1,0,1]")
   ) +
   coord_flip() +

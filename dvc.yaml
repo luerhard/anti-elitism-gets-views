@@ -58,5 +58,5 @@ stages:
       - data/raw/yt_metadata/
       - pipeline/08-top_videos.ipynb
     outs:
-      - reports/tables/most_like_videos_per_channel.csv
+      - reports/tables/most_liked_videos_per_channel.csv
       - reports/tables/most_antielitism_videos_per_channel.csv

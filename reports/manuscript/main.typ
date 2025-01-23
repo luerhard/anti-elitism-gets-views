@@ -414,7 +414,15 @@ Consequently, we will exclude the FDP from the subsequent analysis.
   caption: [
     Negative Binomial Regression on Number of Likes per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
   ]
-) <fig:nb_reg>
+) <fig:nb_reg_likes>
+
+#figure(
+  image("figures/figure_4.svg", width: 100%),
+  // placement: auto,
+  caption: [
+    Negative Binomial Regression on Number of Views per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
+  ]
+) <fig:nb_reg_views>
 
 // == Populism and Content <populism-and-content>
 

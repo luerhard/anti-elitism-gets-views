@@ -73,17 +73,16 @@
 
         r_env = with pkgs.rPackages; [
           box
-          effects
           ggeffects
           ggpubr
           here
           irr
           jsonlite
           languageserver
+          marginaleffects
           MASS
           reticulate
           svglite
-          sjPlot
           tidyverse
         ];
 

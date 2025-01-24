@@ -325,6 +325,9 @@ While no other party reaches a median like count of 100---the Left achieves the 
 // Hier wird unnmittelbar deutlich, dass die Kanäle der AfD
 
 
+// m
+
+
 #figure(
   image("figures/figure_2.svg", width: 100%),
   // placement: auto,

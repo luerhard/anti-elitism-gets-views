@@ -318,9 +318,11 @@ While the median of the views with values between 777 (Greens) and 1,613 (Left P
 This picture becomes even clearer when looking at the number of likes.
 While no other party reaches a median like count of 100---the Left achieves the highest count with 86---the AfD reaches 1,808 with AfD BT and as much as 2,233 with AfD TV.
 
-== Populist Language in Videos
+== Populism by German Parties on YouTube
 
 @fig:populism_dimensions shows the relative proportion of sentences marked by PopBERT as either anti-elitist or people-centred in each video.
+
+// Hier wird unnmittelbar deutlich, dass die Kanäle der AfD
 
 
 #figure(

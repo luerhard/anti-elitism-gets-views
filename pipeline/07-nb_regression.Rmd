@@ -49,17 +49,20 @@ df <- channels |>
 z_transform <- function(x) as.vector(scale(x))
 
 df <- df %>%
-  filter(channel != "FDP") %>%
   mutate(
     year = video_uploadtime |> lubridate::year() |> as_factor(),
-    channel = channel |> as_factor() |> fct_drop()
+    channel = channel |> as_factor()
   ) %>%
   group_by(channel) %>%
   mutate(
     elite = z_transform(elite),
-    pplcentr = z_transform(pplcentr),
+    pplcentr = z_transform(pplcentr)
   ) %>%
   ungroup()
+
+df_likes <- df |>
+  filter(channel != "FDP") |>
+  mutate(channel = channel |> as_factor() |> fct_drop())
 ```
 
 # NB Regression on Video Likes
@@ -69,7 +72,7 @@ elite_form <- formula(
   video_likes ~ channel + elite + channel:elite + year + video_duration
 )
 
-elite_model <- glm.nb(elite_form, data = df)
+elite_model <- glm.nb(elite_form, data = df_likes)
 summary(elite_model)
 ```
 
@@ -78,7 +81,7 @@ pplcentr_form <- formula(
   video_likes ~ channel + pplcentr + channel:pplcentr + year + video_duration
 )
 
-pplcentr_model <- glm.nb(pplcentr_form, data = df)
+pplcentr_model <- glm.nb(pplcentr_form, data = df_likes)
 summary(pplcentr_model)
 ```
 
@@ -98,6 +101,10 @@ pplcentr_plot <- marginaleffects::plot_predictions(
   theme_ggeffects(base_family = "serif")
 
 ggarrange(elite_plot, pplcentr_plot, ncol = 1)
+```
+
+```{r}
+ggsave(here("reports", "figures", "nb_regression_like_count.svg"), width = 7, height = 5)
 ```
 
 ```{r}
@@ -124,45 +131,6 @@ ggarrange(elite_plot, pplcentr_plot, ncol = 1)
 ```
 
 
-
-```{r}
-elite_plot <- sjPlot::plot_model(
-  elite_model,
-  type = "eff",
-  terms = c("channel", "elite [-1,0,1]")
-) +
-  coord_flip() +
-  labs(
-    title = "Marginal Effects of Anti-Elitism",
-    x = "Channel",
-    y = "Number of Likes",
-    color = "Anti-Elitism\n(standardized)"
-  ) +
-  theme_ggeffects(base_family = "serif")
-
-pplcentr_plot <- sjPlot::plot_model(
-  pplcentr_model,
-  type = "eff",
-  terms = c("channel", "pplcentr [-1,0,1]"),
-  jitter = 0.9
-) +
-  coord_flip() +
-  labs(
-    title = "Marginal Effects of People-Centrism",
-    x = "Channel",
-    y = "Number of Likes",
-    color = "People-Centrism\n(standardized)"
-  ) +
-  theme_ggeffects(base_family = "serif")
-
-ggarrange(elite_plot, pplcentr_plot, ncol = 1)
-```
-
-
-```{r}
-ggsave(here("reports", "figures", "nb_regression_like_count.svg"), width = 7, height = 5)
-```
-
 # NB Regression on Video Views
 
 ```{r}
@@ -181,10 +149,6 @@ pplcentr_form <- formula(
 
 pplcentr_model <- glm.nb(pplcentr_form, data = df)
 summary(pplcentr_model)
-```
-
-```{r}
-marginaleffects::comparisons(elite_model, variables = list(elite = c(-1, 0, 1)))
 ```
 
 ```{r}

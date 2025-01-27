@@ -142,8 +142,8 @@ stages:
       nfiles: 3
     - path: pipeline/07-nb_regression.Rmd
       hash: md5
-      md5: 2c2cf7723b39bba2cb298d5003423d07
-      size: 3645
+      md5: b408c7ec5c9a2b1a3031fc37f84e48d8
+      size: 4039
     - path: r/load.R
       hash: md5
       md5: 7fb1f7f5cf47402c3a0fe97f8837d072
@@ -156,16 +156,16 @@ stages:
     outs:
     - path: reports/figures/nb_regression_like_count.svg
       hash: md5
-      md5: 989a97faa634c8f71a52f67443bc36fb
-      size: 34368
+      md5: 7849d9539b203c5c69b8952103a2c2df
+      size: 23562
     - path: reports/figures/nb_regression_view_count.svg
       hash: md5
-      md5: bad65f11eeceb8ea34685ad0d9ac5e3a
-      size: 34537
+      md5: aed76ba1508c736eb83d712b03d3e78d
+      size: 38031
     - path: reports/notebooks/07-nb_regression.html
       hash: md5
-      md5: aa15a99f973fdfced7f9f1598742876c
-      size: 986905
+      md5: 485ac21e03fe7c8a5f5b06f93c81f276
+      size: 1100849
   comment_analysis:
     cmd: papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
     deps:

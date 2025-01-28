@@ -320,13 +320,11 @@ While no other party reaches a median like count of 100---the Left achieves the 
 
 == Populism by German Parties on YouTube
 
-@fig:populism_dimensions shows the relative proportion of sentences marked by PopBERT as either anti-elitist or people-centred in each video.
-
-// Hier wird unnmittelbar deutlich, dass die Kanäle der AfD
-
-
-// m
-
+@fig:populism_dimensions shows the relative proportion of sentences classified by PopBERT as anti-elitist and people-centrist by video.
+It becomes immediately apparent that both channels of the AfD exhibit a much higher proportion of anti-elitist statements than the channels of any other party.
+The second highest amount of anti-elitist statements, though exhibiting substantially lower numbers, is expressed by the Left; the other populist party in the Bundestag.
+People-Centrism, on the other hand, draws a different picture.
+The Greens, the Left and the SPD all show similar high amounts of this populist dimension, though, in contrast to the anti-elitism dimension, no party surpasses a relative proportion of 5%.
 
 #figure(
   image("figures/figure_2.svg", width: 100%),
@@ -343,15 +341,7 @@ This suggests that people who watch videos from populist parties do so deliberat
 This effect is not seen for people-centrism.
 As illustrated in @tab:descriptives, the FDP has received an almost negligible number of likes on their videos.
 A review of their YouTube content reveals that the FDP has disabled the like feature on nearly all of their videos.
-Consequently, we will exclude the FDP from the subsequent analysis.
-
-#figure(
-  image("figures/figure_3.svg", width: 100%),
-  // placement: auto,
-  caption: [
-    Negative Binomial Regression on Number of Likes per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
-  ]
-) <fig:nb_reg_likes>
+Consequently, we will exclude the FDP from the subsequent analysis relating to the number of likes.
 
 #figure(
   image("figures/figure_4.svg", width: 100%),
@@ -361,6 +351,15 @@ Consequently, we will exclude the FDP from the subsequent analysis.
   ]
 ) <fig:nb_reg_views>
 
+#figure(
+  image("figures/figure_3.svg", width: 100%),
+  // placement: auto,
+  caption: [
+    Negative Binomial Regression on Number of Likes per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
+  ]
+) <fig:nb_reg_likes>
+
+
 
 = Discussion <discussion>
 
@@ -369,6 +368,7 @@ Consequently, we will exclude the FDP from the subsequent analysis.
 #bibliography("references.bib", style: "apa")
 
 #set heading(numbering: none)
+#pagebreak()
 = Appendix <appendix>
 
 #show heading: it => {

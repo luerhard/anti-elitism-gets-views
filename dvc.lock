@@ -248,8 +248,8 @@ stages:
       nfiles: 3
     - path: pipeline/08-top_videos.ipynb
       hash: md5
-      md5: df9db758937b6e7d8bb40d50b106710b
-      size: 121116
+      md5: 8a56f3cd9ccb1ce5edbed2ce9c37af99
+      size: 5897
     - path: src/load/
       hash: md5
       md5: 9b6fe47a919a86249c780182987cd48d.dir
@@ -264,3 +264,7 @@ stages:
       hash: md5
       md5: d170e8904bdd17fadfc1292add21df4b
       size: 5611
+    - path: reports/tables/most_viewed_videos_per_channel.csv
+      hash: md5
+      md5: ec1c4d46929d6d2f46aa89d55a182142
+      size: 5398

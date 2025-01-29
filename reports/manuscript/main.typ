@@ -386,6 +386,46 @@ Consequently, we will exclude the FDP from the subsequent analysis relating to t
 #counter(heading).update(0)
 #set heading(numbering: "A.1", supplement: [Appendix])
 
+= Top 10 most viewed videos per channel
+
+#let table_array = csv("../tables/most_viewed_videos_per_channel.csv", row-type: array)
+#let header = ([Channel], [N Likes], [N Views], [Title])
+//
+#let convert-to-float(val) = {
+  let check = val.find(regex("^\d+[\.,]?\d*$"))
+  if check != none {
+    str(calc.round(float(val), digits: 2))
+  } else {
+    val
+  }
+}
+//
+#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
+//
+#show figure: set block(breakable: true)
+#figure(
+  align(center)[
+    #set par(leading: 0.65em, justify: false)
+    #set text(size: 10.2pt)
+    #table(
+      columns: (auto, ..(auto,) * (header.len() - 1)),
+      align: (left, ..(right,) * (header.len() - 2), left),
+      inset: 4pt,
+      stroke: (x, y) => (
+        top: if calc.rem(y - 1, 10) == 0 { 1pt }
+      ),
+      table.hline(),
+      table.header(..header),
+      table.vline(x: 1, start: 1, end: table_content.len() + 1),
+      table.hline(),
+      ..table_content.flatten(),
+      table.hline()
+    )
+  ]
+  , caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. The FDP is excluded due to their videos having basically no likes.]
+  , kind: table
+) <tab:most_viewed_videos>
+
 = Top 10 most liked videos per channel
 
 #let table_array = csv("../tables/most_liked_videos_per_channel.csv", row-type: array)
@@ -424,7 +464,7 @@ Consequently, we will exclude the FDP from the subsequent analysis relating to t
   ]
   , caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. The FDP is excluded due to their videos having basically no likes.]
   , kind: table
-) <tab:top_videos>
+) <tab:most_liked_videos>
 
 = Top 10 most anti-elitist videos per channel
 
@@ -464,4 +504,4 @@ Consequently, we will exclude the FDP from the subsequent analysis relating to t
   ]
   , caption: [This table shows the top 10 most anti-elitist videos per channel. Anti-Elite shows the fraction of sentences that are classified as anti-elitist in each video.]
   , kind: table
-) <tab:top_videos>
+) <tab:most_anti_elitism_videos>

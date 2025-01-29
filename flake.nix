@@ -56,6 +56,9 @@
           glibcLocales # get rid of error msgs "unable to set locale -- default to 'C'"
           R
           pandoc
+          ruff
+          dvc
+          pre-commit
         ];
 
         linux_cuda_deps =
@@ -129,21 +132,21 @@
 
       in
       {
-devShells = {
-
-}
         defaultPackage = pkgs.mkShell {
           packages = [
+            mypython
             system_deps
             linux_cuda_deps
             r_env
-            mypython
           ];
 
           ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
           env_python_path = mypython;
+          env_python_path_interpreter = mypython.interpreter;
 
           shellHook = ''
+
+            alias python="$env_python_path_interpreter"
             export work_dir=$(pwd)
             export LD_LIBRARY_PATH="$ld_lib_path:$LD_LIBRARY_PATH"
             export PYTHONPATH="$work_dir:$env_python_path"

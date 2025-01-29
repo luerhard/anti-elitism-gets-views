@@ -56,7 +56,6 @@
           glibcLocales # get rid of error msgs "unable to set locale -- default to 'C'"
           R
           pandoc
-          python311
         ];
 
         linux_cuda_deps =
@@ -86,18 +85,6 @@
           tidyverse
         ];
 
-        python_env = with pkgs.python311Packages; [
-          ipykernel
-          matplotlib
-          levenshtein
-          pandas
-          papermill
-          pip # important for reticulate
-          rpy2
-          transformers
-          tqdm
-        ];
-
         # weird work around to due ibis-framework packaging in python "extras"
         # normal command would be pip install 'ibis-framework[duckdb]'
         python_ibis_framework = (
@@ -116,6 +103,22 @@
           })
         );
 
+        mypython = pkgs.python311.withPackages (ppkgs: with ppkgs; [
+          ipykernel
+          matplotlib
+          levenshtein
+          pandas
+          papermill
+          pip # important for reticulate
+          rpy2
+          transformers
+          tqdm
+          python_ibis_framework
+          python_pytorch
+    ]);
+
+
+
         # torch has a series of problems.
         python_pytorch = torch.python311Packages.torch-bin;
         # spacy needs to be installed from another commit to use a version that works on darwin..
@@ -124,24 +127,24 @@
 
       in
       {
+devShells = {
+
+}
         defaultPackage = pkgs.mkShell {
-          buildInputs = [
+          packages = [
             system_deps
             linux_cuda_deps
             r_env
-            python_env
-            python_pytorch
-            python_ibis_framework
+            mypython
           ];
 
           ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
+          env_python_path = mypython;
 
           shellHook = ''
             export work_dir=$(pwd)
-
             export LD_LIBRARY_PATH="$ld_lib_path:$LD_LIBRARY_PATH"
-
-            export PYTHONPATH="$work_dir:$PYTHONPATH"
+            export PYTHONPATH="$work_dir:$env_python_path"
             export RETICULATE_PYTHON=$(which python)
 
           '';

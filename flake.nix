@@ -65,7 +65,6 @@
           if system == "x64_64-linux" then
             with torch;
             [
-              # all for CUDA
               cudatoolkit
               linuxPackages.nvidia_x11
               cudaPackages.cudnn
@@ -108,6 +107,11 @@
           })
         );
 
+        # torch has a series of problems.
+        python_pytorch = torch.python311Packages.torch-bin;
+        # spacy needs to be installed from another commit to use a version that works on darwin..
+        python_spacy = spacy.python311Packages.spacy;
+
         mypython = pkgs.python311.withPackages (ppkgs: with ppkgs; [
           ipykernel
           matplotlib
@@ -118,23 +122,16 @@
           rpy2
           transformers
           tqdm
-          python_ibis_framework
-          python_pytorch
     ]);
-
-
-
-        # torch has a series of problems.
-        python_pytorch = torch.python311Packages.torch-bin;
-        # spacy needs to be installed from another commit to use a version that works on darwin..
-        python_spacy = spacy.python311Packages.spacy;
-        # old version of dvc necessary bc misspecified dependency. (works only with platformdirs<4 -- currently)
 
       in
       {
         defaultPackage = pkgs.mkShell {
           packages = [
             mypython
+            python_ibis_framework
+            python_pytorch
+            python_spacy
             system_deps
             linux_cuda_deps
             r_env
@@ -142,11 +139,9 @@
 
           ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
           env_python_path = mypython;
-          env_python_path_interpreter = mypython.interpreter;
 
           shellHook = ''
 
-            alias python="$env_python_path_interpreter"
             export work_dir=$(pwd)
             export LD_LIBRARY_PATH="$ld_lib_path:$LD_LIBRARY_PATH"
             export PYTHONPATH="$work_dir:$env_python_path"

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 import src
 from src.data.models import Transcript
-from src.processing.predictors import ManifestorPredictor
+from src.processing.predictors import ManifestoPredictor
 from src.processing.predictors import PopBERTPredictor
 from src.processing.transcript_cleaner import TranscriptCleaner
 from src.utils.iterate import flatten_list
@@ -280,7 +280,7 @@ def test_uber_repetition():
 
 
 def test_manifesto_model():
-    manifesto = ManifestorPredictor()
+    manifesto = ManifestoPredictor()
     cleaner = TranscriptCleaner()
     sentence = "These principles are under threat."
     sentence = cleaner.tokenize(sentence)
@@ -299,7 +299,7 @@ def test_manifesto_model():
 
 
 def test_manifesto_batch():
-    manifesto = ManifestorPredictor()
+    manifesto = ManifestoPredictor()
     cleaner = TranscriptCleaner()
     sentences = ["These principles are under threat.", "Ausländer müssen raus."]
     sentences = [flatten_list(cleaner.tokenize(sent)) for sent in sentences]

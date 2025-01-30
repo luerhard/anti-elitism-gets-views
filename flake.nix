@@ -119,9 +119,13 @@
           pandas
           papermill
           pip # important for reticulate
+          pytest
+          pytest-cases
           rpy2
+          sqlalchemy
           transformers
           tqdm
+          yt-dlp
     ]);
 
       in

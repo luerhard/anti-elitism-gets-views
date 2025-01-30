@@ -1,4 +1,4 @@
-from levenshtein_distance import Levenshtein
+import Levenshtein
 import pytest
 from pytest_cases import parametrize_with_cases
 
@@ -40,20 +40,19 @@ class MusicCase(LoadWrapper):
         return file
 
 
-@pytest.mark.slow()
+@pytest.mark.slow
 @parametrize_with_cases("file, exp, max_distance", cases=Cases)
 def test_transcribe(file, exp, max_distance):
     model = WhisperPipeline(model_type="small")
 
     out = model.transcribe(speech_file=file)
 
-    levenshtein = Levenshtein(out, exp)
-    distance = levenshtein.distance()
+    distance = Levenshtein.distance(out, exp)
 
     assert distance <= max_distance, out
 
 
-@pytest.mark.slow()
+@pytest.mark.slow
 @parametrize_with_cases("file", cases=MusicCase)
 def test_transcribe_music(file):
     model = WhisperPipeline(model_type="small")

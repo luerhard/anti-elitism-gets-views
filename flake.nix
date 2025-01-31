@@ -26,7 +26,6 @@
       self,
       nixpkgs,
       flake-utils,
-      spacypkgs,
       torchpkgs,
       ibispkgs,
       ...
@@ -35,15 +34,8 @@
       system:
       let
 
-        pkgs = import nixpkgs {
-          inherit system;
-          config = {
-            allowUnfree = true;
-          };
-        };
-        spacy = import spacypkgs { inherit system; };
-        ibis = import ibispkgs { inherit system; };
-        torch = import torchpkgs {
+        pkgs_ibis = import ibispkgs { inherit system; };
+        pkgs_torch = import torchpkgs {
           inherit system;
           config = {
             allowUnfree = true;
@@ -51,104 +43,102 @@
           };
         };
 
-        system_deps = with pkgs; [
-          git
-          glibcLocales # get rid of error msgs "unable to set locale -- default to 'C'"
-          R
-          pandoc
-          ruff
-          dvc
-          pre-commit
-        ];
+        # spacyOverlay = final: prev: rec {
+        #   MyPython = prev.python311.override {
+        #     packageOverrides = pyfinal: pyprev: {
+        #       spacy = pyprev.spacy.overrideAttrs (_: rec {
+        #         version = "3.8.4";
+        #         pname = "spacy";
+        #         format = "wheel";
+        #         src = final.fetchPypi {
+        #           inherit pname version format;
+        #           dist = python;
+        #           python = "py3";
+        #           sha256 = "";
+        #         };
+        #       });
+        #     };
+        #   };
+        #   self = final.MyPython;
+        # };
 
-        linux_cuda_deps =
-          if system == "x64_64-linux" then
-            with torch;
-            [
-              cudatoolkit
-              linuxPackages.nvidia_x11
-              cudaPackages.cudnn
-            ]
-          else
-            [ ];
+        spacyOverlay = final: prev: rec {
+          python311 = prev.python311.override {
+            packageOverrides = pyfinal: pyprev: {
+              spacy = pyprev.buildPythonPackage {
+                version = "3.8.4";
+                pname = "spacy";
+                format = "wheel";
+                src = builtins.fetchurl {
+                  url = "https://files.pythonhosted.org/packages/f9/36/4f95922a22c32bd6fdda50ae5780c55b72d75ff76fd94cafa24950601330/spacy-3.8.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl";
+                  sha256 = "4540e4599df47e2d7525b8da1515d29da72db339ba8553b2f8d30842179806ea";
+                };
 
-        r_env = with pkgs.rPackages; [
-          box
-          effects
-          ggeffects
-          ggpubr
-          here
-          irr
-          jsonlite
-          languageserver
-          marginaleffects
-          sjPlot
-          MASS
-          reticulate
-          svglite
-          tidyverse
-        ];
+                propagatedBuildInputs = [
+                  prev.python311.pkgs.catalogue
+                  prev.python311.pkgs.cymem
+                  prev.python311.pkgs.jinja2
+                  prev.python311.pkgs.langcodes
+                  prev.python311.pkgs.murmurhash
+                  prev.python311.pkgs.numpy
+                  prev.python311.pkgs.packaging
+                  prev.python311.pkgs.preshed
+                  prev.python311.pkgs.pydantic
+                  prev.python311.pkgs.requests
+                  prev.python311.pkgs.setuptools
+                  prev.python311.pkgs.spacy-legacy
+                  prev.python311.pkgs.spacy-loggers
+                  prev.python311.pkgs.srsly
+                  prev.python311.pkgs.thinc
+                  prev.python311.pkgs.tqdm
+                  prev.python311.pkgs.typer
+                  prev.python311.pkgs.wasabi
+                  prev.python311.pkgs.weasel
+                ];
+              };
+            };
+          };
+        };
 
-        # weird work around to due ibis-framework packaging in python "extras"
-        # normal command would be pip install 'ibis-framework[duckdb]'
-        python_ibis_framework = (
-          ibis.python311Packages.ibis-framework.overrideAttrs (old: {
-            propagatedBuildInputs = (
-              old.propagatedBuildInputs
-              ++ [
-                ibis.python311Packages.pyarrow
-                ibis.python311Packages.pyarrow-hotfix
-                ibis.python311Packages.duckdb
-                ibis.python311Packages.datafusion
-              ]
-            );
-            doCheck = false;
-            doInstallCheck = false;
-          })
-        );
+        pkgs = import nixpkgs {
+          inherit system;
+          config = {
+            allowUnfree = true;
+          };
+          overlays = [ spacyOverlay ];
+        };
 
-        # torch has a series of problems.
-        python_pytorch = torch.python311Packages.torch-bin;
-        # spacy needs to be installed from another commit to use a version that works on darwin..
-        python_spacy = spacy.python311Packages.spacy;
-
-        mypython = pkgs.python311.withPackages (ppkgs: with ppkgs; [
-          ipykernel
-          matplotlib
-          levenshtein
-          pandas
-          papermill
-          pip # important for reticulate
-          pytest
-          pytest-cases
-          rpy2
-          sqlalchemy
-          transformers
-          tqdm
-          yt-dlp
-    ]);
+        mypython = pkgs.python311.withPackages (ppkgs: [
+          # ipykernel
+          # matplotlib
+          # levenshtein
+          # pandas
+          # papermill
+          ppkgs.pytest
+          ppkgs.spacy
+          # pytest-cases
+          # rpy2
+          # sqlalchemy
+          # pkgs_spacy.python311.pkgs.spacy
+          # transformers
+          # tqdm
+          # yt-dlp
+        ]);
 
       in
       {
         defaultPackage = pkgs.mkShell {
           packages = [
             mypython
-            python_ibis_framework
-            python_pytorch
-            python_spacy
-            system_deps
-            linux_cuda_deps
-            r_env
           ];
 
           ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
-          env_python_path = mypython;
 
           shellHook = ''
 
             export work_dir=$(pwd)
             export LD_LIBRARY_PATH="$ld_lib_path:$LD_LIBRARY_PATH"
-            export PYTHONPATH="$work_dir:$env_python_path"
+            # export PYTHONPATH="$work_dir:$env_python_path"
             export RETICULATE_PYTHON=$(which python)
 
           '';

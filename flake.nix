@@ -181,6 +181,7 @@
           ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
 
           shellHook = ''
+                      export PYTHONPATH="$(pwd):$PYTHONPATH"
                       export LD_LIBRARY_PATH="$ld_lib_path:$LD_LIBRARY_PATH"
                       export RETICULATE_PYTHON=$(which python)
             	  '';

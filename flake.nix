@@ -18,7 +18,7 @@
         # do all python overlays in one.
         # I did not get them to work if they are in different overlays
         # The first one seemst to get overridden by the second one.
-        python_overlay = (
+        pythonOverlay = (
           final: prev: rec {
             python311 = prev.python311.override {
               packageOverrides = pyfinal: pyprev: {
@@ -97,12 +97,12 @@
             allowUnfree = true; # necessary for CUDA
           };
           overlays = [
-            python_overlay
+            pythonOverlay
           ];
         };
 
         # general system dependencies
-        system_deps = with pkgs; [
+        systemDeps = with pkgs; [
           git # so git works in terminal
           glibcLocales # get rid of error msgs "unable to set locale -- default to 'C'" in R
           R # necessary, otherwise no package is found in R
@@ -114,7 +114,7 @@
 
         # Linux CUDA deps.
         # Currently broken for python312 (?) Mismatch in driver version.
-        linux_cuda_deps =
+        linuxCudaDeps =
           if system == "x86_64-linux" then
             with pkgs;
             [
@@ -126,7 +126,7 @@
             [ ];
 
         # all R packages go here
-        r_env = with pkgs.rPackages; [
+        rEnv = with pkgs.rPackages; [
           box
           effects
           ggeffects
@@ -144,7 +144,7 @@
         ];
 
         # all python packages go here
-        py_env = pkgs.python311.withPackages (
+        pyEnv = pkgs.python311.withPackages (
           ppkgs: with ppkgs; [
             ibis-framework
             ipykernel
@@ -172,17 +172,17 @@
       {
         defaultPackage = pkgs.mkShell {
           packages = [
-            py_env # needs to be @ top of list, so the correct python interpreter is exposed
-            r_env
-            linux_cuda_deps
-            system_deps
+            pyEnv # needs to be @ top of list, so the correct python interpreter is exposed
+            rEnv
+            linuxCudaDeps
+            systemDeps
           ];
 
-          ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
+          ldLibPath = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
 
           shellHook = ''
                       export PYTHONPATH="$(pwd):$PYTHONPATH"
-                      export LD_LIBRARY_PATH="$ld_lib_path:$LD_LIBRARY_PATH"
+                      export LD_LIBRARY_PATH="$ldLibPath:$LD_LIBRARY_PATH"
                       export RETICULATE_PYTHON=$(which python)
             	  '';
         };

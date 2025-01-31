@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 
 import src
 from src.data.models import Transcript
-from src.processing.predictors import ManifestoPredictor
-from src.processing.predictors import PopBERTPredictor
+from src.processing import ManifestoPredictor
+from src.processing import PopBERTPredictor
 from src.processing.transcript_cleaner import TranscriptCleaner
 from src.utils.iterate import flatten_list
 

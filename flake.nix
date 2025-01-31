@@ -108,7 +108,7 @@
           R # necessary, otherwise no package is found in R
           pandoc
           ruff
-          dvc
+          # dvc
           pre-commit
         ];
 

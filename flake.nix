@@ -1,9 +1,7 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/18cd1b9484ae394b3ce08bcbeab50895011f517c";
+    nixpkgs.url = "github:NixOS/nixpkgs/1bde3e8e37a72989d4d455adde764d45f45dc11c";
     flake-utils.url = "github:numtide/flake-utils";
-    # does not work although this version has MacOS support according to nixhub.io
-    # failing on dm-tree 0.1.8 / tensorflow-2.13.0 : marked as broken
   };
 
   outputs =
@@ -17,9 +15,14 @@
       system:
       let
 
-        wandb_overlay = final: prev: rec {
-          python312 = prev.python312.override {
+        # do all python overlays in one.
+        # I did not get them to work if they are in different overlays
+        # The first one seemst to get overridden by the second one.
+        python_overlay = (final: prev: rec {
+          python311 = prev.python311.override {
             packageOverrides = pyfinal: pyprev: {
+
+              # broken dependency of spacy, get newest version from PyPi
               wandb = pyprev.buildPythonPackage rec {
                 pname = "wandb";
                 version = "0.19.5";
@@ -29,68 +32,69 @@
                   sha256 = "0f8be456cbe819e8202009cf4ac10a5a28141c4c6370f34b3f8cbd640c2dc8f9";
                 };
                 propagatedBuildInputs = [
-                  prev.python312.pkgs.click
-                  prev.python312.pkgs.docker-pycreds
-                  prev.python312.pkgs.gitpython
-                  prev.python312.pkgs.platformdirs
-                  prev.python312.pkgs.protobuf
-                  prev.python312.pkgs.psutil
-                  prev.python312.pkgs.pyyaml
-                  prev.python312.pkgs.requests
-                  prev.python312.pkgs.sentry-sdk_2
-                  prev.python312.pkgs.setproctitle
-                  prev.python312.pkgs.setuptools
+                  prev.python311.pkgs.click
+                  prev.python311.pkgs.docker-pycreds
+                  prev.python311.pkgs.gitpython
+                  prev.python311.pkgs.platformdirs
+                  prev.python311.pkgs.protobuf
+                  prev.python311.pkgs.psutil
+                  prev.python311.pkgs.pyyaml
+                  prev.python311.pkgs.requests
+                  prev.python311.pkgs.sentry-sdk_2
+                  prev.python311.pkgs.setproctitle
+                  prev.python311.pkgs.setuptools
                 ];
               };
-            multiprocessing-logging = pyprev.buildPythonPackage rec {
-              pname = "multiprocessing-logging";
-              version = "0.3.4";
-              format = "wheel";
-              src = builtins.fetchurl {
-                url = "https://files.pythonhosted.org/packages/9e/fe/32bd864bcb604b0607924a4cf618ed267a0ef21ac9c3e255109256046e1f/multiprocessing_logging-0.3.4-py2.py3-none-any.whl";
-                sha256 = "8a5be02b02edbd6fa6e3e89499af7680db69db9e2d8707fcd28d445fa248f23e";
+
+              # package not on nix-store
+              multiprocessing-logging = pyprev.buildPythonPackage rec {
+                pname = "multiprocessing-logging";
+                version = "0.3.4";
+                format = "wheel";
+                src = builtins.fetchurl {
+                  url = "https://files.pythonhosted.org/packages/9e/fe/32bd864bcb604b0607924a4cf618ed267a0ef21ac9c3e255109256046e1f/multiprocessing_logging-0.3.4-py2.py3-none-any.whl";
+                  sha256 = "8a5be02b02edbd6fa6e3e89499af7680db69db9e2d8707fcd28d445fa248f23e";
+                };
+                propagatedBuildInputs = [ ];
               };
-              propagatedBuildInputs = [
-              ];
-            };
             };
           };
-        };
+        });
 
         pkgs = import nixpkgs {
           inherit system;
           config = {
-            allowUnfree = true;
-            allowBroken = true;
+            allowUnfree = true; # necessary for CUDA
           };
-           overlays = [
-            wandb_overlay
+          overlays = [
+            python_overlay
           ];
         };
 
+        # general system dependencies
         system_deps = with pkgs; [
-          git
-          glibcLocales # get rid of error msgs "unable to set locale -- default to 'C'"
-          R
+          git # so git works in terminal
+          glibcLocales # get rid of error msgs "unable to set locale -- default to 'C'" in R
+          R # necessary, otherwise no package is found in R
           pandoc
           ruff
           dvc
           pre-commit
         ];
 
-
+        # Linux CUDA deps.
+        # Currently broken for python312 (?) Mismatch in driver version.
         linux_cuda_deps =
-          if system == "x64_64-linux" then
+          if system == "x86_64-linux" then
             with pkgs;
             [
               cudatoolkit
               linuxPackages.nvidia_x11
               cudaPackages.cudnn
-            ]
-          else
-            [ ];
+            ] else [ ];
 
-          r_env = with pkgs.rPackages; [
+        # all R packages go here
+        r_env = with pkgs.rPackages; [
           box
           effects
           ggeffects
@@ -104,50 +108,50 @@
           MASS
           reticulate
           svglite
-          # tidyverse
+          tidyverse
         ];
 
-        py_env = pkgs.python312.withPackages (ppkgs: with ppkgs; [
-          ipykernel
-          matplotlib
-          multiprocessing-logging
-          levenshtein
-          pandas
-          papermill
-          pip
-          pytest
-          pytest-cases
-          wandb
-          rpy2
-          spacy
-          somajo
-          sqlalchemy
-          torch-bin
-          transformers
-          tqdm
-          yt-dlp
-        ]);
+        # all python packages go here
+        py_env = pkgs.python311.withPackages (
+          ppkgs: with ppkgs; [
+            ipykernel
+            matplotlib
+            multiprocessing-logging
+            levenshtein
+            pandas
+            papermill
+            pip # important for reticulate
+            pytest
+            pytest-cases
+            wandb
+            rpy2
+            spacy
+            somajo
+            sqlalchemy
+            torch-bin
+            transformers
+            tqdm
+            yt-dlp
+          ]
+        );
 
       in
       {
         defaultPackage = pkgs.mkShell {
           packages = [
-            py_env
+            py_env # needs to be @ top of list, so the correct python interpreter is exposed
             r_env
             linux_cuda_deps
             system_deps
           ];
 
-          ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
 
-          shellHook = ''
+        ld_lib_path = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
 
-            export work_dir=$(pwd)
-            export LD_LIBRARY_PATH="$ld_lib_path:$LD_LIBRARY_PATH"
-            # export PYTHONPATH="$work_dir:$env_python_path"
-            export RETICULATE_PYTHON=$(which python)
-
-          '';
+        shellHook = ''
+          export LD_LIBRARY_PATH="$ld_lib_path:$LD_LIBRARY_PATH"
+          export RETICULATE_PYTHON=$(which python)
+	  '';
         };
       }
     );

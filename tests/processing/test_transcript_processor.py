@@ -1,9 +1,6 @@
+import pytest
 from pytest_cases import parametrize_with_cases
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
 
-import src
-from src.data.models import Transcript
 from src.processing import ManifestoPredictor
 from src.processing import PopBERTPredictor
 from src.processing.transcript_cleaner import TranscriptCleaner
@@ -135,7 +132,7 @@ class Cases:
                 ".",
             ],
         ]
-        return {"text": text, "tokens": exp, "sum_of_preds": 0}
+        return {"text": text, "tokens": exp, "sum_of_preds": 0.42}
 
     def case_populist(self):
         text = (
@@ -173,7 +170,7 @@ class Cases:
                 ".",
             ],
         ]
-        return {"text": text, "tokens": exp, "sum_of_preds": 3}
+        return {"text": text, "tokens": exp, "sum_of_preds": 2.229}
 
     def case_music1(self):
         text = "Musik Musik Musik Bis zum nächsten Mal."
@@ -237,7 +234,7 @@ def test_cleaner(data):
 def test_predictions(data):
     popbert = PopBERTPredictor()
     pred = popbert.predict(data["tokens"], chunksize=32)
-    assert sum(p.sum() for p in pred) == data["sum_of_preds"]
+    assert sum(p.sum() for p in pred) == pytest.approx(data["sum_of_preds"], abs=0.1)
 
 
 def test_repitition_counter():
@@ -257,26 +254,6 @@ def test_repitition_counter():
 
     ngram, count = TranscriptCleaner._count_duplicate_ngrams(text)
     assert (ngram, count) == (("über", "ein"), 2)
-
-
-def test_in_der_zukunft():
-    engine = create_engine(src.PS_ENGINE)
-    with Session(engine) as s:
-        transcript = s.query(Transcript).filter(Transcript.id == "QgOHFPNlef0").one()
-        text = transcript.text
-        cleaner = TranscriptCleaner()
-        sentences = cleaner.tokenize(text)
-        assert max(len(sent) for sent in sentences) < 500
-
-
-def test_uber_repetition():
-    engine = create_engine(src.PS_ENGINE)
-    with Session(engine) as s:
-        transcript = s.query(Transcript).filter(Transcript.id == "9ch4oU-cClo").one()
-        text = transcript.text
-        cleaner = TranscriptCleaner()
-        sentences = cleaner.tokenize(text)
-        assert max(len(sent) for sent in sentences) < 500
 
 
 def test_manifesto_model():

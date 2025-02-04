@@ -56,12 +56,14 @@
           effects
           ggeffects
           ggpubr
+          lme4
           here
           irr
           jsonlite
           languageserver
           marginaleffects
           sjPlot
+          sjstats
           MASS
           reticulate
           svglite

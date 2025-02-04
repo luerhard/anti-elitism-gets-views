@@ -1,0 +1,85 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-02-06"
+---
+
+```{r setup, include=FALSE}
+library(here)
+
+knitr::opts_chunk$set(echo = TRUE)
+options(box.path = here())
+
+box::use(
+  r / load
+)
+box::reload(load)
+
+library(tidyverse)
+library(marginaleffects)
+library(ggeffects)
+library(ggpubr)
+
+library(lme4)
+library(sjstats)
+
+theme_set(theme_minimal())
+
+channels <- load$channels()
+videos <- load$videos(filtered = TRUE)
+sentences <- load$sentences(filtered = TRUE)
+popbert <- load$popbert(filtered = TRUE)
+
+df_sents <- sentences |>
+  left_join(popbert, by = "sentence_id") |>
+  group_by(video_id) |>
+  summarize(
+    elite = mean(elite),
+    pplcentr = mean(pplcentr)
+  )
+
+df <- channels |>
+  left_join(videos, by = "channel_id") |>
+  left_join(df_sents, by = "video_id") |>
+  mutate(
+    channel = factor(channel)
+  )
+```
+
+```{r}
+z_transform <- function(x) as.vector(scale(x))
+
+df <- df %>%
+  mutate(
+    year = video_uploadtime |> lubridate::year() |> as_factor(),
+    channel = channel |> as_factor()
+  ) %>%
+  group_by(channel) %>%
+  mutate(
+    # elite = z_transform(elite),
+    # pplcentr = z_transform(pplcentr),
+    video_likes = z_transform(video_likes)
+  ) %>%
+  ungroup()
+
+df_likes <- df |>
+  filter(channel != "FDP") |>
+  mutate(channel = channel |> as_factor() |> fct_drop())
+```
+
+
+# MultiLevel Regression
+
+## Model
+
+```{r}
+model <- lme4::lmer(
+  formula = video_likes ~ 1 + elite (1|channel),
+  data = df_likes
+)
+summary(model)
+```
+
+```{r}
+performance::icc(model)
+```

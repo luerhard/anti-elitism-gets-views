@@ -1,7 +1,9 @@
 ---
-title: "Untitled"
-output: html_document
-date: "2024-02-06"
+title: "Multi-level Regression"
+output:
+  html_document:
+    number_sections: true
+date: "2025-02-04"
 ---
 
 ```{r setup, include=FALSE}
@@ -16,11 +18,12 @@ box::use(
 box::reload(load)
 
 library(tidyverse)
-library(marginaleffects)
+library(texreg)
 library(ggeffects)
 library(ggpubr)
 
 library(lme4)
+library(marginaleffects)
 library(sjstats)
 
 theme_set(theme_minimal())
@@ -38,16 +41,17 @@ df_sents <- sentences |>
     pplcentr = mean(pplcentr)
   )
 
+```
+
+```{r}
+z_transform <- function(x) as.vector(scale(x))
+
 df <- channels |>
   left_join(videos, by = "channel_id") |>
   left_join(df_sents, by = "video_id") |>
   mutate(
     channel = factor(channel)
   )
-```
-
-```{r}
-z_transform <- function(x) as.vector(scale(x))
 
 df <- df %>%
   mutate(
@@ -58,26 +62,86 @@ df <- df %>%
   mutate(
     # elite = z_transform(elite),
     # pplcentr = z_transform(pplcentr),
-    video_likes = z_transform(video_likes)
   ) %>%
   ungroup()
 
 df_likes <- df |>
   filter(channel != "FDP") |>
   mutate(channel = channel |> as_factor() |> fct_drop())
+
+df_views <- df |>
+  mutate(channel = channel |> as_factor() |> fct_drop())
+```
+
+```{r}
+df_views |>
+  group_by(channel) |>
+  summarize(
+      n = n(),
+      mean_likes = mean(video_likes),
+      mean_views = mean(video_views),
+      std_views = sd(video_views)
+    )
+```
+
+# Video Views
+
+## Simplest linear model
+
+```{r}
+model <- lm(
+  formula = video_views ~ 1,
+  data = df_views
+)
+screenreg(model)
+```
+
+## Multlevel Null Model
+
+```{r}
+model <- lme4::lmer(
+  formula = video_views ~ 1 + (1 | channel),
+  data = df_views
+)
+screenreg(model)
+```
+
+```{r}
+performance::icc(model)
+```
+
+## Full Model
+
+```{r}
+model <- lme4::lmer(
+  formula = video_views ~ elite + video_duration + year + (year | channel),
+  data = df_views
+)
+screenreg(model)
+```
+
+```{r}
+fixef(model)
+```
+
+```{r}
+ranef(model)
 ```
 
 
-# MultiLevel Regression
+```{r}
+performance::icc(model)
+```
 
+# Video Likes
 ## Model
 
 ```{r}
 model <- lme4::lmer(
-  formula = video_likes ~ 1 + elite (1|channel),
+  formula = video_likes ~ 1 + (1 | channel),
   data = df_likes
 )
-summary(model)
+screenreg(model)
 ```
 
 ```{r}

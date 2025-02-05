@@ -38,6 +38,22 @@ final: prev: rec {
             propagatedBuildInputs = [ ];
         };
 
+        # package not on nix-store
+        silero-vad = pyprev.buildPythonPackage rec {
+            pname = "silero-vad";
+            version = "5.1.2";
+            format = "wheel";
+            src = builtins.fetchurl {
+            url = "https://files.pythonhosted.org/packages/98/f7/5ae11d13fbb733cd3bfd7ff1c3a3902e6f55437df4b72307c1f168146268/silero_vad-5.1.2-py3-none-any.whl";
+            sha256 = "93b41953d7774b165407fda6b533c119c5803864e367d5034dc626c82cfdf661";
+            };
+            propagatedBuildInputs = [
+                prev.python311.pkgs.torch-bin
+                prev.python311.pkgs.torchaudio-bin
+                prev.python311.pkgs.onnxruntime
+            ];
+        };
+
         # Fails to build from nix due to substrait v0.36.0 package
         ibis-framework = pyprev.buildPythonPackage rec {
             pname = "ibis-framework";

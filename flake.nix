@@ -15,7 +15,6 @@
       system:
       let
 
-
         pkgs = import nixpkgs {
           inherit system;
           config = {
@@ -32,6 +31,7 @@
           glibcLocales # get rid of error msgs "unable to set locale -- default to 'C'" in R
           R # necessary, otherwise no package is found in R
           pandoc
+          ffmpeg
         ];
 
         # Linux CUDA deps.
@@ -59,7 +59,7 @@
           jsonlite
           languageserver
           marginaleffects
-	  texreg
+          texreg
           sjPlot
           sjstats
           MASS
@@ -75,12 +75,14 @@
             ipykernel
             matplotlib
             multiprocessing-logging
+            librosa
             levenshtein
             pandas
             papermill
             pip # important for reticulate
             pytest
             pytest-cases
+            silero-vad
             wandb
             rpy2
             spacy

@@ -20,62 +20,18 @@ class DataLoader:
 
     def __init__(self) -> None:
         self.con = ibis.connect("duckdb://:memory:", threads=4, memory_limit="10GB")
-        self.con.read_parquet(src.DATA / "raw/yt_metadata/channels.parquet.gzip", "channels")
-        self.con.read_parquet(src.DATA / "raw/yt_metadata/videos.parquet.gzip", "videos")
-        self.con.read_parquet(src.DATA / "raw/yt_metadata/comments.parquet.gzip", "comments")
+        self.con.read_parquet(src.DATA / "yt_metadata/channels.parquet", "channels")
+        self.con.read_parquet(src.DATA / "yt_metadata/videos.parquet", "videos")
         self.con.read_parquet(src.DATA / "interim/sentences.parquet.gzip", "sentences")
         self.con.read_parquet(src.DATA / "interim/popbert.parquet.gzip", "popbert")
 
     def channels(self):
         table = self.con.tables["channels"]
-        col_names = {
-            "channel_id": "id",
-            "channel_title": "title",
-            "channel_description": "description",
-            "channel_uploader_id": "uploader_id",
-            "channel_playlists": "playlist_count",
-            "channel_followers": "channel_follower_count",
-        }
-
-        table = table.rename(**col_names).mutate(channel=_.channel.substitute(src.party_names))
-        return table
-
-    def comments(self, filtered: bool = False):
-        table = self.con.tables["comments"]
-        col_names = {
-            "comment_id": "id",
-            "comment_text": "text",
-            "comment_author": "author",
-            "comment_parent": "parent",
-            "comment_likes": "like_count",
-        }
-
-        table = table.rename(**col_names)
-
-        if filtered:
-            valid_videos = self.videos(filtered=True)
-            filtered_table = table.join(valid_videos.alias("filtered_videos"), "video_id")
-            table = filtered_table[table]
-
+        table = table.mutate(channel=_.channel.substitute(src.party_names))
         return table
 
     def videos(self, filtered: bool = False, _ignore_sentence_filter: bool = False):
         table = self.con.tables["videos"]
-        col_names = {
-            "video_id": "id",
-            "video_title": "title",
-            "video_description": "description",
-            "video_duration": "duration",
-            "video_likes": "like_count",
-            "video_views": "view_count",
-            "video_uploadtime": "datetime_upload",
-            "video_format": "format",
-            "video_comments": "comment_count",
-            "video_live": "was_live",
-            "video_file": "relative_file_path",
-        }
-
-        table = table.rename(**col_names)
 
         if filtered:
             # filter by time and type
@@ -90,7 +46,7 @@ class DataLoader:
             # filter by sentence criteria
             if not _ignore_sentence_filter:
                 sents = self.sentences(filtered=True, _ignore_video_filter=True)
-                remaining_videos = sents[["video_id"]].distinct()
+                remaining_videos = sents.select("video_id").distinct()
                 filtered_table = table.filter(_.video_id.isin(remaining_videos.video_id))
                 table = filtered_table[table]
 

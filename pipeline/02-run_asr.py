@@ -14,7 +14,7 @@ OUT_FILE = src.PATH / "data/interim/audio_transcripts_v3_large.parquet.gzip"
 def main():
     con = ibis.connect(f"duckdb://{DB_PATH}")
     if "videos" not in con.list_tables():
-        videos = con.read_parquet(src.PATH / "data/raw/yt_metadata/videos.parquet.gzip")
+        videos = con.read_parquet(src.PATH / "data/yt_metadata/videos.parquet")
     else:
         videos = con.table("videos")
 
@@ -23,19 +23,19 @@ def main():
         transcripts = con.create_table(name="transcripts", schema=schema)
     else:
         transcripts = con.table("transcripts")
-    log.warn("DB Connection established.")
+    log.warning("DB Connection established.")
+    # pipeline = WhisperPipeline(model_type="large-v3")
     pipeline = WhisperPipeline(model_type="large-v3")
-    log.warn("Pipeline loaded.")
+    log.warning("Pipeline loaded.")
 
     video_df = videos.filter(
         [
-            videos.format == "videos",
             videos.datetime_upload >= "2017-12-06",
-            videos.datetime_upload <= "2024-01-20",
+            videos.datetime_upload <= "2025-02-01",
             videos.id.notin(transcripts.video_id),
         ],
     ).to_pandas()
-    log.warn("%d videos left to transcribe", len(video_df))
+    log.warning("%d videos left to transcribe", len(video_df))
     for i, video in enumerate(video_df.itertuples(), 1):
         log.info("Processing (%d/%d): %s", i, len(video_df), video.id)
         text = pipeline.transcribe(BASE_VIDEO_PATH / video.relative_file_path)
@@ -43,7 +43,6 @@ def main():
         con.insert("transcripts", transcript)
 
     transcripts.to_parquet(OUT_FILE, compression="gzip")
-    DB_PATH.unlink(missing_ok=False)
 
 
 if __name__ == "__main__":

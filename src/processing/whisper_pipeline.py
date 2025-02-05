@@ -2,13 +2,26 @@
 
 from pathlib import Path
 from typing import Literal
+import warnings
 
+import librosa
+import numpy as np
+from silero_vad import get_speech_timestamps
+from silero_vad import load_silero_vad
 import torch
 from transformers import pipeline
 
 from src.logging import logger as log
 
-WHISPER_MODELS = Literal["tiny", "small", "medium", "large", "large-v2" "large-v3"]
+WHISPER_MODELS = Literal["tiny", "small", "medium", "large", "large-v2large-v3"]
+
+warnings.filterwarnings(
+    "ignore",
+    category=UserWarning,
+    message="PySoundFile failed*",
+)
+
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 class WhisperPipeline:
@@ -27,6 +40,8 @@ class WhisperPipeline:
             self.device = "cuda" if torch.cuda.is_available() else "cpu"
         else:
             self.device = device
+        self.speech_rec_model = load_silero_vad()
+        log.debug("Loaded Silero Speech Model")
         self.model_type = model_type
         self.model_name = f"openai/whisper-{self.model_type}"
         log.debug("Load transformers pipeline")
@@ -36,6 +51,9 @@ class WhisperPipeline:
             device=self.device,
             framework="pt",
         )
+
+        # force language to German:
+        # self.pipe.model.config.forced_decoder_ids[0][1] = 50261
 
     def transcribe(self, speech_file: str | Path):
         """Transcribe an audio file.
@@ -51,11 +69,32 @@ class WhisperPipeline:
         Returns:
             str: Transcript.
         """
+
+        audio, sr = librosa.load(speech_file, sr=16_000)
+        speech_timestamps = get_speech_timestamps(
+            audio,
+            self.speech_rec_model,
+            sampling_rate=16_000,
+            return_seconds=False,
+        )
+
+        segments = [audio[ts["start"] : ts["end"]] for ts in speech_timestamps]
+        only_speech_audio = np.concatenate(segments)
+
+        # inputs = self.processor.feature_extractor(
+        #     return_tensors="pt",
+        #     sampling_rate=16_000,
+        # ).input_features.to(self.device)
+
+        # predicted_ids = self.model.generate(inputs, language="<|de|>", task="transcribe")
+        # out = self.processor.tokenizer.batch_decode(predicted_ids, skip_special_tokens=True)
+        # return out[0]
+
         out = self.pipe(
-            str(speech_file),
+            {"raw": only_speech_audio, "sampling_rate": 16_000},
             return_timestamps=False,
             chunk_length_s=30,
-            stride_length_s=(6, 0),
+            stride_length_s=(4, 2),
             batch_size=8,
             generate_kwargs={
                 "task": "transcribe",
@@ -63,7 +102,5 @@ class WhisperPipeline:
             },
         )
 
-        text = out["text"]
-        text = text.strip()
-
+        text = out["text"].strip()
         return text

@@ -1,232 +1,158 @@
 """Crawl specific YT channels and download the matches."""
 
-from collections.abc import Iterable
-import datetime as dt
+import json
 from pathlib import Path
 import re
 import shutil
 import tempfile
 from typing import Any
 from urllib.parse import urlparse
+from zipfile import ZIP_DEFLATED
+from zipfile import ZipFile
 
-from sqlalchemy import or_
-from sqlalchemy.engine import Engine
-from sqlalchemy.orm import Session
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 
-from src.data.models import Base
-from src.data.models import Channel
-from src.data.models import Comment
-from src.data.models import Video
 from src.logging import logger as log
 
 
 class YTChannelCrawler:
     """YT Downloader."""
 
-    def __init__(self, channel_url: str, engine: Engine, output: Path) -> None:
+    def __init__(self, channel_url: str, output: Path) -> None:
         self.channel_url = channel_url
         self.output = output
 
-        self.engine = engine
-        Base.metadata.create_all(bind=engine)
-        self.s = Session(self.engine, expire_on_commit=False)
-
-        self.ydl = YTDownload(output=self.output)
-        self.info = self.ydl.extract_channel_info(channel_url, channel_only=True)
-        self.channel = self.get_channel_by_url(self.channel_url)
-
-        self.subfolder = self.output / str(self.channel.uploader_id)
+        self.uploader_id = self.get_uploader_id(self.channel_url)
+        self.subfolder = self.output / self.uploader_id
         self.subfolder.mkdir(parents=True, exist_ok=True)
+        self.channel_metadata_file = self.subfolder / "channel_metadata.json"
+
+        self.video_file_folder = self.subfolder / "videos"
+        self.video_file_folder.mkdir(parents=True, exist_ok=True)
+
+        self.meta_file_folder = self.subfolder / "metadata.zip"
+        if not self.meta_file_folder.is_file():
+            with ZipFile(self.meta_file_folder, "w", compression=ZIP_DEFLATED) as _:
+                pass
+
+        self.ydl = YTDownload(output=self.video_file_folder)
+        self.channel_info = self.get_channel_info(self.channel_url)
+
         log.info("init done.")
 
-    @staticmethod
-    def _extract_video_ids(info):
+    def get_channel_info(self, channel_url):
+        if not self.channel_metadata_file.is_file():
+            info = self.ydl.get_channel_info(channel_url, channel_only=False)
+            with self.channel_metadata_file.open("w") as file:
+                json.dump(info, file, ensure_ascii=False, indent=2)
+            return info
+        else:
+            with self.channel_metadata_file.open("r") as file:
+                info = json.load(file)
+                return info
+
+    def _all_video_ids(self):
         """Retuns a list of video ids from the info dict."""
-        ids = [entry["id"] for entry in info["entries"]]
-        return ids
+
+        video_ids = set()
+        if self.channel_info["_type"] == "playlist":
+            for entry in self.channel_info["entries"]:
+                if entry["_type"] == "url":
+                    video_ids.add(entry["id"])
+                elif entry["_type"] == "playlist":
+                    for video in entry["entries"]:
+                        video_ids.add(video["id"])
+        return video_ids
 
     def download_channel(self):
         """Download all channel videos. Wrapper around functions for videos and shorts."""
+
         log.warning("starting channel videos")
         self.download_channel_videos()
-        log.warning("starting channel shorts")
-        self.download_channel_shorts()
+        # log.warning("starting channel shorts")
+        # self.download_channel_shorts()
 
-    def download_channel_shorts(self):
-        """Starts the download process for the whole channel."""
-        video_url = f"{self.channel_url.rstrip('/')}/shorts"
-        info = self.ydl.extract_channel_info(video_url)
-        all_ids = self._extract_video_ids(info)
-        base_url = "https://www.youtube.com/shorts/"
-        for id_ in all_ids:
-            url = base_url + id_
-            if self._video_already_exists(id_):
-                log.debug("VideoID %s already exists. Skipping...", id_)
-                continue
-            try:
-                self._download_video(url=url, channel=self.channel, format="shorts")
-            except DownloadError:
-                log.warning("Having Download Error")
-                continue
+    # def download_channel_shorts(self):
+    #     """Starts the download process for the whole channel."""
+    #     video_url = f"{self.channel_url.rstrip('/')}/shorts"
+    #     info = self.ydl.extract_channel_info(video_url)
+    #     all_ids = self._extract_video_ids(info)
+    #     base_url = "https://www.youtube.com/shorts/"
+    #     for id_ in all_ids:
+    #         url = base_url + id_
+    #         if self._video_already_exists(id_):
+    #             log.debug("VideoID %s already exists. Skipping...", id_)
+    #             continue
+    #         try:
+    #             self._download_video(url=url, channel=self.channel, format="shorts")
+    #         except DownloadError:
+    #             log.warning("Having Download Error")
+    #             continue
 
     def download_channel_videos(self):
         """Starts the download process for the whole channel."""
-        video_url = f"{self.channel_url.rstrip('/')}/videos"
-        info = self.ydl.extract_channel_info(video_url)
-        all_ids = self._extract_video_ids(info)
+
         base_url = "https://www.youtube.com/watch?v="
-        for id_ in all_ids:
-            url = base_url + id_
-            if self._video_already_exists(id_):
-                log.debug("VideoID %s already exists. Skipping...", id_)
-                continue
-            try:
-                self._download_video(url=url, channel=self.channel, format="videos")
-            except DownloadError:
-                log.warning("Having Download Error")
-                continue
+        all_ids = self._all_video_ids()
 
-    def _download_video(self, url, channel, format):
-        info = self.ydl.extract_video_info(url)
-        video = self._parse_info_to_video(info)
-        if self._video_already_exists(video):
-            print("Video already exists!")
-            return
-        video.format = format
-        comments = self._parse_comments(info)
-        file_path = self.ydl.download(url=url, subfolder=self.subfolder / format)
-        video.relative_file_path = str(file_path.relative_to(self.output))
-        self.add_video(channel, video, comments)
+        for index, video_id in enumerate(all_ids, 1):
+            log.info("Starting (%d/%d) video: %s", index, len(all_ids), video_id)
+            url = base_url + video_id
 
-    def _video_already_exists(self, video: Video | str) -> bool:
-        if isinstance(video, Video):
-            video = self.s.query(Video).filter(Video.id == video.id).one_or_none()
-        elif isinstance(video, str):
-            video = self.s.query(Video).filter(Video.id == video).one_or_none()
-        else:
-            msg = "Undefined format for video!"
-            raise Exception(msg)
+            if not self._video_metadata_already_exists(video_id=video_id):
+                try:
+                    self._download_video_metadata(url=url, video_id=video_id)
+                except DownloadError:
+                    log.error("Download Error during Metadata File: %s", video_id)
+                    continue
+            else:
+                log.warning("Metadata for %s already exists. Skipping.", video_id)
 
-        if not video:
-            return False
-        return True
+            if not self._video_already_exists(video_id) and not self.was_a_livestream(video_id):
+                try:
+                    self._download_video(url=url)
+                except DownloadError:
+                    log.error("Download Error during Video File: %s", video_id)
+                    raise
+            else:
+                log.warning("Video %s already exists or was live. Skipping.", video_id)
 
-    def _comment_already_exists(self, comment: Comment) -> bool:
-        comment = self.s.query(Comment).filter(Comment.id == comment.id).one_or_none()
-        if comment:
+    def _download_video_metadata(self, url, video_id):
+        info = self.ydl.get_video_info(url)
+        with ZipFile(self.meta_file_folder, "a", compression=ZIP_DEFLATED) as archive:
+            content = json.dumps(info, ensure_ascii=False, indent=2)
+            archive.writestr(f"{video_id}.json", content)
+
+    def was_a_livestream(self, video_id):
+        filename = f"{video_id}.json"
+        with ZipFile(self.meta_file_folder, "r") as archive:
+            _bytes = archive.read(filename)
+            content = _bytes.decode("utf-8")
+            content = json.loads(content)
+
+        return content["is_live"] | content["was_live"]
+
+    def _download_video(self, url):
+        self.ydl.download(url=url)
+
+    def _video_already_exists(self, video_id: str) -> bool:
+        stems = {fn.stem for fn in self.video_file_folder.iterdir()}
+        if video_id in stems:
             return True
         return False
 
-    def get_channel_by_url(self, channel_url):
-        """Returns a Channel object of a channel url.
+    def _video_metadata_already_exists(self, video_id: str) -> bool:
+        filename = f"{video_id}.json"
+        with ZipFile(self.meta_file_folder, "r") as archive:
+            if filename in archive.namelist():
+                return True
+        return False
 
-        Adds to DB if the Channel does not already exist.
+    def get_uploader_id(self, channel_url):
+        """Returns a uploader_id from a channel url."""
 
-        Args:
-            channel_url: The URL of the Channel. Can be the @-id or the actual channel id.
-        """
-        name = re.match("/(@(.*?))(/|$)", urlparse(channel_url).path).group(1)
-
-        channel = (
-            self.s.query(Channel)
-            .filter(or_(Channel.uploader_id == name, Channel.id == name))
-            .one_or_none()
-        )
-
-        if channel:
-            return channel
-
-        channel = Channel(
-            id=self.info["channel_id"],
-            channel=self.info["channel"],
-            uploader_id=self.info["uploader_id"],
-            title=self.info["title"],
-            description=self.info["description"],
-            channel_follower_count=self.info["channel_follower_count"],
-            channel_url=self.info["uploader_url"],
-            playlist_count=self.info["playlist_count"],
-        )
-
-        self.s.add(channel)
-        self.s.commit()
-        return channel
-
-    def add_video(self, channel: Channel, video: Video, comments: Iterable[Comment] | None):
-        """Adds a video info dict to the database.
-
-        Args:
-            channel: Channel object the video belongs to.
-            video: Video object.
-            comments: An Iterable with all Comment object to that video.
-        """
-        log.debug("Adding Video: %s", video.title)
-        for comment in comments:
-            video.comments.append(comment)
-
-        video.channel = channel
-
-        self.s.add(video)
-        self.s.commit()
-
-    @staticmethod
-    def _copy_video_file(source: Path, destination_folder: Path):
-        filename = source.name
-        destination_file = destination_folder / filename
-
-        if not (destination_file).exists():
-            destination_file.replace(source)
-        else:
-            msg = f"File already exists in Storage Folder! {filename}"
-            raise Exception(msg)
-
-        return destination_file
-
-    @staticmethod
-    def _parse_info_to_video(info: dict[str, Any]) -> Video:
-        return Video(
-            id=info["id"],
-            title=info["title"],
-            description=info["description"],
-            channel_id=info["channel_id"],
-            duration=info["duration"],
-            view_count=0 if info.get("view_count") is None else info["view_count"],
-            like_count=0 if info.get("like_count") is None else info["like_count"],
-            comment_count=0 if info.get("comment_count") is None else info["comment_count"],
-            datetime_upload=dt.datetime.strptime(info["upload_date"], "%Y%m%d"),
-            was_live=info["was_live"],
-            relative_file_path=None,
-        )
-
-    @staticmethod
-    def _parse_single_comment(c_info: dict[str, Any]) -> Comment:
-        return Comment(
-            id=c_info["id"],
-            text=c_info["text"],
-            datetime_upload=dt.datetime.fromtimestamp(c_info["timestamp"]),
-            parent=c_info["parent"],
-            like_count=0 if c_info["like_count"] is None else c_info["like_count"],
-            author=c_info["author"],
-            author_is_uploader=c_info["author_is_uploader"],
-            is_favorited=c_info["is_favorited"],
-        )
-
-    def _parse_comments(self, info: dict[str, Any]) -> list[Comment]:
-        comments = []
-
-        # happens when comments are turned of on a video
-        if info["comments"] is None:
-            return comments
-
-        for c_info in info["comments"]:
-            comment = self._parse_single_comment(c_info)
-            comments.append(comment)
-
-        return comments
-
-    def _parse_channel_info(self, info: dict[str, Any]) -> Channel:
-        pass
+        return re.match("/(@(.*?))(/|$)", urlparse(channel_url).path).group(1)
 
 
 class YTDownload:
@@ -295,7 +221,7 @@ class YTDownload:
         with YoutubeDL(settings) as ydl:
             ydl.download([url])
 
-    def extract_channel_info(self, url: str, channel_only: bool = False) -> dict:
+    def get_channel_info(self, url: str, channel_only: bool = False) -> dict:
         """Get all videos of a channel.
 
         Args:
@@ -320,7 +246,7 @@ class YTDownload:
             info = ydl.sanitize_info(info)
         return info
 
-    def extract_video_info(self, url: str) -> dict:
+    def get_video_info(self, url: str) -> dict:
         """Get Info of a specific video. Includes comments.
 
         Args:

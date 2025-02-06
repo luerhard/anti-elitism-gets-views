@@ -1,6 +1,7 @@
 """Transcribe all the videos."""
 
 import ibis
+import pandas as pd
 
 import src
 from src.logging import logger as log
@@ -24,23 +25,24 @@ def main():
     else:
         transcripts = con.table("transcripts")
     log.warning("DB Connection established.")
-    # pipeline = WhisperPipeline(model_type="large-v3")
-    pipeline = WhisperPipeline(model_type="large-v3")
+    pipeline = WhisperPipeline(model_type="large-v3-turbo")
     log.warning("Pipeline loaded.")
 
     video_df = videos.filter(
         [
-            videos.datetime_upload >= "2017-12-06",
-            videos.datetime_upload <= "2025-02-01",
-            videos.id.notin(transcripts.video_id),
+            videos.video_was_live == False,
+            videos.video_datetime_upload >= "2017-12-06",
+            videos.video_datetime_upload <= "2025-02-01",
+            videos.video_id.notin(transcripts.video_id),
         ],
     ).to_pandas()
     log.warning("%d videos left to transcribe", len(video_df))
     for i, video in enumerate(video_df.itertuples(), 1):
-        log.info("Processing (%d/%d): %s", i, len(video_df), video.id)
-        text = pipeline.transcribe(BASE_VIDEO_PATH / video.relative_file_path)
-        transcript = {"video_id": video.id, "text": text}
-        con.insert("transcripts", transcript)
+        log.info("Processing (%d/%d): %s", i, len(video_df), video.video_id)
+        file_path = BASE_VIDEO_PATH / video.channel / "videos" / f"{video.video_id}.m4a"
+        text = pipeline.transcribe(file_path)
+        transcript = {"video_id": video.video_id, "text": text}
+        con.insert("transcripts", pd.DataFrame([transcript]))
 
     transcripts.to_parquet(OUT_FILE, compression="gzip")
 

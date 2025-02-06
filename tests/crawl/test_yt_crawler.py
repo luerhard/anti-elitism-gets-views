@@ -3,7 +3,6 @@ import zipfile
 
 import pytest
 
-import src
 from src.crawl.yt_crawler import YTChannelCrawler
 from src.crawl.yt_crawler import YTDownload
 
@@ -32,9 +31,9 @@ def test_extract_video_info(tmp_path: Path):
 
 @pytest.mark.online
 @pytest.mark.slow
-def test_channel_crawler():
+def test_channel_crawler(tmp_path: Path):
     channel = "https://www.youtube.com/@sonorityofficial9831"
-    yt_channel_crawler = YTChannelCrawler(channel_url=channel, output=src.PATH / "data/raw/yt")
+    yt_channel_crawler = YTChannelCrawler(channel_url=channel, output=tmp_path)
     yt_channel_crawler.download_channel_videos()
 
     with zipfile.ZipFile(yt_channel_crawler.meta_file_folder, "r") as archive:

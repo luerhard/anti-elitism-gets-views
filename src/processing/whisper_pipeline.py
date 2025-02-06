@@ -70,7 +70,7 @@ class WhisperPipeline:
         self.processor = WhisperProcessor.from_pretrained(self.model_name)
 
         # force language to German:
-        # self.pipe.model.config.forced_decoder_ids[0][1] = 50261
+        # self.model.config.forced_decoder_ids[0][1] = 50261
 
     def _transcribe_segment(self, segment):
         assert segment.shape[0] <= 30 * self.SAMPLING_RATE, "segment too long, will get cut off!"
@@ -79,9 +79,18 @@ class WhisperPipeline:
             segment,
             sampling_rate=self.SAMPLING_RATE,
             return_tensors="pt",
-        ).input_features.to(self.device)
+            return_attention_mask=True,
+        )
 
-        predicted_ids = self.model.generate(inputs, language="<|de|>", task="transcribe")
+        features = inputs.input_features.to(self.device)
+        attention_mask = inputs.attention_mask.to(self.device)
+
+        predicted_ids = self.model.generate(
+            features,
+            attention_mask=attention_mask,
+            language="<|de|>",
+            task="transcribe",
+        )
         out = self.processor.tokenizer.batch_decode(predicted_ids, skip_special_tokens=True)
 
         return out[0]

@@ -186,7 +186,7 @@ class YTDownload:
         self.output.mkdir(parents=True, exist_ok=True)
         self.filename = filename
         self.ydl_video_info_opts = {
-            "getcomments": True,
+            "getcomments": False,
             "writeinfojson": True,
         }
         self.ydl_video_info_opts.update(self.ydl_opts)

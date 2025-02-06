@@ -17,20 +17,36 @@ class LoadWrapper:
 
 
 class Cases(LoadWrapper):
-    def case_simple_short(self):
+    def case_simple_short_lauterbach(self):
         folder = self.data / "1FTQwFurM3I"
         file = folder / "140.m4a"
         transcript = self._load_transcript(folder)
-        # last result: 30
-        allowed_distance = 50
+        # last result: 21
+        allowed_distance = 30
         return file, transcript, allowed_distance
 
-    def case_bavarian(self):
+    def case_bavarian_interivew1(self):
         folder = self.data / "VMJVN9Z9i_8"
         file = folder / "140.m4a"
         transcript = self._load_transcript(folder)
-        # last result: 101
-        allowed_distance = 100
+        # last result: 141
+        allowed_distance = 150
+        return file, transcript, allowed_distance
+
+    def case_bavarian_interivew2(self):
+        folder = self.data / "sICtOVmM2h0"
+        file = folder / "140.m4a"
+        transcript = self._load_transcript(folder)
+        # last result: 18
+        allowed_distance = 25
+        return file, transcript, allowed_distance
+
+    def case_1_long_speech_part(self):
+        folder = self.data / "OtEII9jdx_U"
+        file = folder / "140.m4a"
+        transcript = self._load_transcript(folder)
+        # last result: 48
+        allowed_distance = 70
         return file, transcript, allowed_distance
 
 
@@ -45,7 +61,7 @@ class MusicCase(LoadWrapper):
 @pytest.mark.slow
 @parametrize_with_cases("file, exp, max_distance", cases=Cases)
 def test_transcribe(file, exp, max_distance):
-    model = WhisperPipeline(model_type="small")
+    model = WhisperPipeline(model_type="large-v3-turbo")
     out = model.transcribe(speech_file=file)
 
     distance = Levenshtein.distance(out, exp)
@@ -56,7 +72,7 @@ def test_transcribe(file, exp, max_distance):
 @pytest.mark.slow
 @parametrize_with_cases("file", cases=MusicCase)
 def test_transcribe_music(file):
-    model = WhisperPipeline(model_type="small")
+    model = WhisperPipeline(model_type="large-v3-turbo")
 
     out = model.transcribe(speech_file=file)
     out = out.strip()

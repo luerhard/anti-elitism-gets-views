@@ -239,7 +239,17 @@ The audio data of all videos and their accompanying metadata were downloaded usi
 In contrast to the abovementioned article, who use the pre-generated transcripts provided by YouTube, we use a state-of-the-art speech-to-text model to transcribe the audio material ourselves.
 This procedure ensures a enhanced quality of the transcripts, including correct punctuation and music recognition.
 
-The videos' content was transcribed using OpenAI's state-of-the-art speech-to-text model, whisper-large-v3 @radfordRobustSpeechRecognition2022.
+The videos' content was transcribed using OpenAI's state-of-the-art speech-to-text model, whisper-large-v3-turbo @radfordRobustSpeechRecognition2022.
+This model is significantly faster than whisper-large-v3 while retaining almost the same performance.
+Around this model, we built a custom pipeline.
+The whisper models have a tendency to hallucinate when the audio that is to be transcribed contains longer periods with noch speech.
+This, though, happens quite a lot in YouTube videos.
+To mitigate the problem, we used the a the Silero voice acitivity detector @silerovad2024 to only pass audio sequences to the whisper model that actually contain speech.
+
+
+Because all whisper models suffer from a problem of hallucination when longer sequences of audio are annotated in which no speech is present, a custom pipeline was built around the model.
+
+
 Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of SoMaJo @proislSoMaJoStateoftheartTokenization2016 tokenizer and sentence-splitter.
 After removing sentences with less than 5 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises 9,394 videos, totaling 1,485 hours and featuring 708,549 sentences.
 

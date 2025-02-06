@@ -7,8 +7,8 @@ from src.logging import logger as log
 from src.processing.whisper_pipeline import WhisperPipeline
 
 BASE_VIDEO_PATH = src.PATH / "data/raw/yt/"
-DB_PATH = src.TMP / "transcripts.duckdb"
-OUT_FILE = src.PATH / "data/interim/audio_transcripts_v3_large.parquet.gzip"
+DB_PATH = src.PATH / "data/interim/transcripts/v3_large_turbo.duckdb"
+OUT_FILE = src.PATH / "data/interim/transcripts/v3_large_turbo.parquet"
 
 
 def main():

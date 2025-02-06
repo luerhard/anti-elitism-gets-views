@@ -7,8 +7,9 @@ stages:
       - data/raw/yt_metadata/videos.parquet
     outs:
       - data/interim/transcripts/v3_large_turbo.parquet
+      - data/interim/transcripts/v3_large_turbo.duckdb
   tokenize_transcripts:
-    cmd: poetry run python pipeline/03-tokenize_transcripts.py
+    cmd: python pipeline/03-tokenize_transcripts.py
     deps:
       - pipeline/03-tokenize_transcripts.py
       - src/processing/transcript_cleaner.py
@@ -16,7 +17,7 @@ stages:
     outs:
       - data/yt_metadata/sentences.parquet
   run_popbert:
-    cmd: poetry run python pipeline/04-run_popbert.py
+    cmd: python pipeline/04-run_popbert.py
     deps:
       - data/interim/sentences.parquet.gzip
       - src/processing/popbert_predictor.py

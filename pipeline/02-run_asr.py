@@ -1,7 +1,6 @@
 """Transcribe all the videos."""
 
 import ibis
-import pandas as pd
 
 import src
 from src.logging import logger as log
@@ -42,7 +41,7 @@ def main():
         file_path = BASE_VIDEO_PATH / video.channel / "videos" / f"{video.video_id}.m4a"
         text = pipeline.transcribe(file_path)
         transcript = {"video_id": video.video_id, "text": text}
-        con.insert("transcripts", pd.DataFrame([transcript]))
+        con.insert("transcripts", [transcript])
 
     transcripts.to_parquet(OUT_FILE, compression="gzip")
 

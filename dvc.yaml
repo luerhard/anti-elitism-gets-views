@@ -16,14 +16,15 @@ stages:
       - data/interim/transcripts/v3_large_turbo.parquet
     outs:
       - data/yt_metadata/sentences.parquet
+      - data/yt_metadata/broken_transcripts.parquet
   run_popbert:
     cmd: python pipeline/04-run_popbert.py
     deps:
-      - data/interim/sentences.parquet.gzip
-      - src/processing/popbert_predictor.py
       - pipeline/04-run_popbert.py
+      - src/processing/popbert_predictor.py
+      - data/interim/sentences.parquet
     outs:
-      - data/interim/popbert.parquet.gzip
+      - data/yt_metadata/popbert.parquet
   basic_descriptives:
     cmd: papermill pipeline/06-basic_descriptives.ipynb reports/notebooks/06-basic_descriptives.ipynb
     deps:

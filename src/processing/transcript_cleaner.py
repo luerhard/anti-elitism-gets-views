@@ -4,6 +4,11 @@ from somajo import SoMaJo
 
 from src.logging import logger as log
 
+
+class BrokenTranscriptError(Exception):
+    pass
+
+
 class TranscriptCleaner:
     """Processes transcripts. Tokenizes them and uses PopBERT to predict populism dimensions."""
 
@@ -69,25 +74,21 @@ class TranscriptCleaner:
 
         return tuple(best_ngram), best_count
 
-    def _remove_duplicate_ngrams(self, sentence) -> list[str]:
-        """Not used anymore. We just remove the sentences completely. They don't make much sense
-        anyhow.
+    def skip_sentence_duplicate_ngrams(self, sentence):
+        """This should be resolved by Silero VAD, but just to be sure, still check for
+        heavily repeating ngrams.
+
+        Experience has shown: If such an error occurs in a transcript, the whole script is mostly
+        garbage. Therefore, we just throw an error, catch it, and ignore the transcript entirely.
         """
         common_gram, common_n = self._count_duplicate_ngrams(sentence)
         if common_n > 10:
             log.error("n gram faulty -- occured %d times: %s", common_n, common_gram)
-            sentence = self._remove_ngram(sentence, common_gram)
-            return self._remove_duplicate_ngrams(sentence)
-        return sentence
-
-    def skip_sentence_duplicate_ngrams(self, sentence):
-        common_gram, common_n = self._count_duplicate_ngrams(sentence)
-        if common_n > 10:
-            log.error("n gram faulty -- occured %d times: %s", common_n, common_gram)
-            return True
+            raise BrokenTranscriptError()
         return False
 
     def _clean_sentence(self, sentence) -> list[str]:
+        """If there are still music tokens in the text, remove them."""
         sentence = [tok for tok in sentence if tok != "Musik"]
         return sentence
 

@@ -1,13 +1,18 @@
+import gc
+
 import ibis
+import pandas as pd
+import torch
 
 import src
 from src.logging import logger as log
 from src.processing.popbert_predictor import PopBERTPredictor
 
 CHUNKSIZE = 64
+LOG_EVERY = 50
 DB_PATH = src.PATH / "tmp/popbert.duckdb"
-SENTENCE_PATH = src.PATH / "data/interim/sentences.parquet.gzip"
-OUT_FILE = src.PATH / "data/interim/popbert.parquet.gzip"
+SENTENCE_PATH = src.PATH / "data/yt_metadata/sentences.parquet"
+OUT_FILE = src.PATH / "data/yt_metadata/popbert.parquet"
 
 
 def main():
@@ -20,11 +25,11 @@ def main():
     if "popbert" not in con.list_tables():
         schema = ibis.schema(
             {
-                "sentence_id": "int32",
-                "elite": "float64",
-                "pplcentr": "float64",
-                "left": "float64",
-                "right": "float64",
+                "sentence_id": "int",
+                "elite": "float",
+                "pplcentr": "float",
+                "left": "float",
+                "right": "float",
             },
         )
         table_popbert = con.create_table("popbert", schema=schema)
@@ -35,29 +40,37 @@ def main():
     popbert = PopBERTPredictor()
     log.info("PopBERT loaded.")
 
-    sentences_df = table_sentences.filter(
-        table_sentences.sentence_id.notin(table_popbert.sentence_id),
-    ).to_pandas()
+    data = table_sentences.anti_join(table_popbert, ["sentence_id"]).select(
+        table_sentences.sentence_id,
+        table_sentences.tokens,
+    )
 
-    i = 0
-    total_sents = len(sentences_df)
-    for video_id, video_df in sentences_df.groupby("video_id"):
-        i += len(video_df)
-        log.info("Processing (%d/%d): %s", i, total_sents, video_id)
-        cache = []
-        tokens = video_df.tokens.to_list()
-        sentence_ids = video_df.sentence_id.to_list()
-        predictions = popbert.predict(tokens, chunksize=CHUNKSIZE)
-        for sent_id, prediction in zip(sentence_ids, predictions, strict=True):
-            row = {
-                "sentence_id": sent_id,
-                "elite": prediction[0],
-                "pplcentr": prediction[1],
-                "left": prediction[2],
-                "right": prediction[3],
-            }
-            cache.append(row)
-        con.insert("popbert", cache)
+    done = 0
+    n_total = data.count().execute()
+    while True:
+        chunk = data.limit(CHUNKSIZE).to_pandas()
+        if chunk.empty:
+            break
+
+        text = chunk.tokens.to_list()
+        predictions = popbert.predict(text, chunksize=CHUNKSIZE)
+        predictions = pd.DataFrame(predictions, columns=["elite", "pplcentr", "left", "right"])
+
+        chunk_result = pd.concat([chunk[["sentence_id"]], predictions], axis=1)
+        con.insert("popbert", chunk_result)
+
+        done += len(chunk)
+        if not (done % LOG_EVERY):
+            free, total = torch.cuda.mem_get_info()
+            log.info(
+                "%.2f%% (%d/%d) done. VRAM used: %.2f%%",
+                (done / n_total) * 100,
+                done,
+                n_total,
+                ((total - free) / total) * 100,
+            )
+            gc.collect()
+            torch.cuda.empty_cache()
 
     table_popbert.to_parquet(OUT_FILE, compression="gzip")
     DB_PATH.unlink(missing_ok=False)

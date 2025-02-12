@@ -22,7 +22,7 @@ stages:
     deps:
       - pipeline/04-run_popbert.py
       - src/processing/popbert_predictor.py
-      - data/interim/sentences.parquet
+      - data/yt_metadata/sentences.parquet
     outs:
       - data/yt_metadata/popbert.parquet
   basic_descriptives:

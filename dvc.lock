@@ -1,26 +1,29 @@
 schema: '2.0'
 stages:
   run_asr:
-    cmd: poetry run python pipeline/02-run_asr.py
+    cmd: python pipeline/02-run_asr.py
     deps:
-    - path: data/raw/yt_metadata
+    - path: data/yt_metadata/videos.parquet
       hash: md5
-      md5: e4f5a8c9396cda5019654633eb294499.dir
-      size: 251169430
-      nfiles: 3
+      md5: 5800bf2ebdf3a71e7034ddc8ee3c70bd
+      size: 3486201
     - path: pipeline/02-run_asr.py
       hash: md5
-      md5: 115e5fa8f1c3ab590cca64a9f11214ab
-      size: 1707
+      md5: 9f21f9b993a8b33ad23204ff3a0ecf78
+      size: 1827
     - path: src/processing/whisper_pipeline.py
       hash: md5
-      md5: b501d5598edb3fc036f791ab0e315d75
-      size: 2183
+      md5: 18e7b31ac1eee8c9ccc4c86c9b139c60
+      size: 6304
     outs:
-    - path: data/interim/audio_transcripts_v3_large.parquet.gzip
+    - path: data/interim/transcripts/v3_large_turbo.duckdb
       hash: md5
-      md5: fb7d0412ce272653da59ec8871afbe93
-      size: 26357641
+      md5: b97e194f2ff22f84433de93e9ce27ff1
+      size: 192950272
+    - path: data/interim/transcripts/v3_large_turbo.parquet
+      hash: md5
+      md5: b9f003d548e5d861cb6d1de72ddf9910
+      size: 33068675
   tokenize_transcripts:
     cmd: poetry run python pipeline/03-tokenize_transcripts.py
     deps:

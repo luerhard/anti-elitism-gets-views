@@ -49,25 +49,25 @@ stages:
       md5: f13c34679629e7691c1920d70658ae26
       size: 43230148
   run_popbert:
-    cmd: poetry run python pipeline/04-run_popbert.py
+    cmd: python pipeline/04-run_popbert.py
     deps:
-    - path: data/interim/sentences.parquet.gzip
+    - path: data/yt_metadata/sentences.parquet
       hash: md5
-      md5: 8406669a97e71bb2f6741cbca36f6b40
-      size: 35887187
+      md5: f13c34679629e7691c1920d70658ae26
+      size: 43230148
     - path: pipeline/04-run_popbert.py
       hash: md5
-      md5: c0e067f1ee0e5756cafcac6c7b71edfd
-      size: 2069
+      md5: eee70a7b3611ccc12b7f600d22b802cc
+      size: 2254
     - path: src/processing/popbert_predictor.py
       hash: md5
       md5: 2d75e89af67d95a035359924acc4e909
       size: 2070
     outs:
-    - path: data/interim/popbert.parquet.gzip
+    - path: data/yt_metadata/popbert.parquet
       hash: md5
-      md5: 1fa0f6af6cdf39fdf8a275d8390045e5
-      size: 13111387
+      md5: 261c7386907a2792e9318955fc20eea1
+      size: 15047676
   run_manifesto_roberta:
     cmd: poetry run python pipeline/05-run_manifesto_roberta.py
     deps:

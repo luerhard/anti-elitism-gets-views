@@ -9,8 +9,8 @@ stages:
       size: 3486201
     - path: pipeline/02-run_asr.py
       hash: md5
-      md5: 9f21f9b993a8b33ad23204ff3a0ecf78
-      size: 1827
+      md5: 2760079e27e50f12ec7ae72e8b13c3bd
+      size: 1793
     - path: src/processing/whisper_pipeline.py
       hash: md5
       md5: 18e7b31ac1eee8c9ccc4c86c9b139c60

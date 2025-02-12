@@ -11,7 +11,7 @@ OUT_PATH = src.PATH / "data/yt_metadata"
 
 
 def main():
-    con = ibis.connect(DB_PATH)
+    con = ibis.connect(f"duckdb://{DB_PATH}")
     if "transcripts" not in con.list_tables():
         table_transcripts = con.read_parquet(TRANSCRIPT_PATH)
     else:
@@ -71,7 +71,8 @@ def main():
                 "sentence_no": sentence_no,
             }
             cache.append(row)
-        con.insert("sentences", cache)
+        if cache:
+            con.insert("sentences", cache)
 
     table_broken_transcripts.to_parquet(OUT_PATH / "broken_transcripts.parquet", compression="gzip")
     table_sentences.to_parquet(OUT_PATH / "sentences.parquet", compression="gzip")

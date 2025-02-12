@@ -1,2 +1,4 @@
 /channels.parquet
 /videos.parquet
+/sentences.parquet
+/broken_transcripts.parquet

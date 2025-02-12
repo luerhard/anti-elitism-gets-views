@@ -4,7 +4,7 @@ stages:
     deps:
       - pipeline/02-run_asr.py
       - src/processing/whisper_pipeline.py
-      - data/raw/yt_metadata/videos.parquet
+      - data/yt_metadata/videos.parquet
     outs:
       - data/interim/transcripts/v3_large_turbo.parquet
       - data/interim/transcripts/v3_large_turbo.duckdb

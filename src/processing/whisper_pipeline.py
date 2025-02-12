@@ -59,11 +59,12 @@ class WhisperPipeline:
             self.device = "cuda" if torch.cuda.is_available() else "cpu"
         else:
             self.device = device
+        log.warning("Running pipeline on: %s", self.device)
         self.speech_rec_model = load_silero_vad()
-        log.debug("Loaded Silero Speech Model")
+        log.info("Loaded Silero Speech Model")
         self.model_type = model_type
         self.model_name = f"openai/whisper-{self.model_type}"
-        log.debug("Load transformers pipeline")
+        log.info("Load transformers pipeline")
         self.model = WhisperForConditionalGeneration.from_pretrained(self.model_name).to(
             self.device,
         )

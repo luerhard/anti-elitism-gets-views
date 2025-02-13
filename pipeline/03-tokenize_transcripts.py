@@ -7,22 +7,33 @@ from src.processing.transcript_cleaner import TranscriptCleaner
 
 DB_PATH = src.TMP / "transcript_cleaner.duckdb"
 TRANSCRIPT_PATH = src.PATH / "data/interim/transcripts/v3_large_turbo.parquet"
-OUT_PATH = src.PATH / "data/yt_metadata"
+OUT_FILE_SENTS = src.PATH / "data/yt_metadata/sentences.parquet"
+OUT_FILE_BROKEN = src.PATH / "data/yt_metadata/broken_transcripts.parquet"
 
 
 def main():
-    con = ibis.connect(f"duckdb://{DB_PATH}")
+    con = ibis.connect(f"duckdb://{DB_PATH}", threads=4, memory_limit="10GB")
+
+    if "skipped" not in con.list_tables():
+        schema = ibis.schema({"video_id": "string"})
+        table_skipped = con.create_table("skipped", schema=schema)
+    else:
+        table_skipped = con.table("skipped")
+
     if "transcripts" not in con.list_tables():
         table_transcripts = con.read_parquet(TRANSCRIPT_PATH)
     else:
         table_transcripts = con.table("transcripts")
 
-    if "sentences" not in con.list_tables():
+    if "sentences" not in con.list_tables() and OUT_FILE_SENTS.is_file():
+        expr = con.read_parquet(OUT_FILE_SENTS)
+        table_sentences = con.create_table("sentences", expr)
+    elif "sentences" not in con.list_tables():
         schema = ibis.schema(
             {
-                "sentence_id": "int32",
+                "sentence_id": "int",
                 "video_id": "string",
-                "sentence_no": "int32",
+                "sentence_no": "int",
                 "tokens": "array<string>",
             },
         )
@@ -30,7 +41,10 @@ def main():
     else:
         table_sentences = con.table("sentences")
 
-    if "broken_transcripts" not in con.list_tables():
+    if "broken_transcripts" not in con.list_tables() and OUT_FILE_BROKEN.is_file():
+        expr = con.read_parquet(OUT_FILE_BROKEN)
+        table_broken_transcripts = con.create_table("broken_transcripts", expr)
+    elif "broken_transcripts" not in con.list_tables():
         schema = ibis.schema({"video_id": "string"})
         table_broken_transcripts = con.create_table("broken_transcripts", schema=schema)
     else:
@@ -40,16 +54,33 @@ def main():
     cleaner = TranscriptCleaner()
     log.info("Processor loaded.")
 
-    transcripts_df = table_transcripts.filter(
-        table_transcripts.video_id.notin(table_sentences.video_id),
-    ).to_pandas()
+    # data = table_transcripts.filter(
+    #     table_transcripts.video_id.notin(table_sentences.video_id),
+    # )
+    data = (
+        table_transcripts.anti_join(table_sentences, ["video_id"])
+        .anti_join(
+            table_broken_transcripts,
+            ["video_id"],
+        )
+        .anti_join(table_skipped, ["video_id"])
+    )
+    n_total = data.count().execute()
+    done = 0
 
     sentence_id = 0
-    for i, transcript in enumerate(transcripts_df.itertuples(), 1):
-        log.info("Processing (%d/%d): %s", i, len(transcripts_df), transcript.video_id)
+    while True:
+        transcript_df = data.limit(1).to_pandas()
+        if transcript_df.empty:
+            break
+        done += 1
+        transcript = transcript_df.iloc[0]
+        log.info("Processing (%d/%d): %s", done, n_total, transcript.video_id)
+
         # some transcript can be empty and should be skipped
         if not transcript.text:
-            continue
+            log.debug("Skipping empty: %s", transcript.video_id)
+            con.insert("skipped", [{"video_id": transcript.video_id}])
 
         # catch broken transcripts and ignore them. Write their IDs to broken_transcripts.
         try:
@@ -73,9 +104,12 @@ def main():
             cache.append(row)
         if cache:
             con.insert("sentences", cache)
+        else:
+            log.debug("Skipping empty sents: %s", transcript.video_id)
+            con.insert("skipped", [{"video_id": transcript.video_id}])
 
-    table_broken_transcripts.to_parquet(OUT_PATH / "broken_transcripts.parquet", compression="gzip")
-    table_sentences.to_parquet(OUT_PATH / "sentences.parquet", compression="gzip")
+    table_broken_transcripts.to_parquet(OUT_FILE_BROKEN, compression="gzip")
+    table_sentences.to_parquet(OUT_FILE_SENTS, compression="gzip")
     DB_PATH.unlink(missing_ok=False)
 
 

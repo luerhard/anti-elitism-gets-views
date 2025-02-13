@@ -2,65 +2,67 @@ stages:
   run_asr:
     cmd: python pipeline/02-run_asr.py
     deps:
-      - pipeline/02-run_asr.py
-      - src/processing/whisper_pipeline.py
-      - data/yt_metadata/videos.parquet
+    - pipeline/02-run_asr.py
+    - src/processing/whisper_pipeline.py
+    - data/yt_metadata/videos.parquet
     outs:
-      - data/interim/transcripts/v3_large_turbo.parquet
-      - data/interim/transcripts/v3_large_turbo.duckdb
+    - data/interim/transcripts/v3_large_turbo.parquet:
+        persist: true
   tokenize_transcripts:
     cmd: python pipeline/03-tokenize_transcripts.py
     deps:
-      - pipeline/03-tokenize_transcripts.py
-      - src/processing/transcript_cleaner.py
-      - data/interim/transcripts/v3_large_turbo.parquet
+    - pipeline/03-tokenize_transcripts.py
+    - src/processing/transcript_cleaner.py
+    - data/interim/transcripts/v3_large_turbo.parquet
     outs:
-      - data/yt_metadata/sentences.parquet
-      - data/yt_metadata/broken_transcripts.parquet
+    - data/yt_metadata/sentences.parquet:
+        persist: true
+    - data/yt_metadata/broken_transcripts.parquet:
+        persist: true
   run_popbert:
     cmd: python pipeline/04-run_popbert.py
     deps:
-      - pipeline/04-run_popbert.py
-      - src/processing/popbert_predictor.py
-      - data/yt_metadata/sentences.parquet
+    - pipeline/04-run_popbert.py
+    - src/processing/popbert_predictor.py
+    - data/yt_metadata/sentences.parquet
     outs:
-      - data/yt_metadata/popbert.parquet
+    - data/yt_metadata/popbert.parquet:
+        persist: true
   basic_descriptives:
     cmd: papermill pipeline/06-basic_descriptives.ipynb reports/notebooks/06-basic_descriptives.ipynb
     deps:
-      - src/load/
-      - data/interim/popbert.parquet.gzip
-      - data/interim/sentences.parquet.gzip
-      - data/raw/yt_metadata/
-      - pipeline/06-basic_descriptives.ipynb
+    - src/load/
+    - data/yt_metadata/
+    - pipeline/06-basic_descriptives.ipynb
     outs:
-      - reports/notebooks/06-basic_descriptives.ipynb
-      - reports/tables/dataset_summary.csv
-      - reports/figures/view_count.svg
-      - reports/figures/populism_per_party.svg
+    - reports/notebooks/06-basic_descriptives.ipynb
+    - reports/tables/dataset_summary.csv
+    - reports/figures/view_count.svg
+    - reports/figures/populism_per_party.svg
   nb_regression:
-    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document', '../reports/notebooks/07-nb_regression.html')"
+    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
+      '../reports/notebooks/07-nb_regression.html')"
     deps:
-      - src/load/
-      - r/load.R
-      - data/interim/popbert.parquet.gzip
-      - data/interim/sentences.parquet.gzip
-      - data/raw/yt_metadata/
-      - pipeline/07-nb_regression.Rmd
+    - src/load/
+    - r/load.R
+    - data/interim/popbert.parquet.gzip
+    - data/interim/sentences.parquet.gzip
+    - data/raw/yt_metadata/
+    - pipeline/07-nb_regression.Rmd
     outs:
-      - reports/notebooks/07-nb_regression.html
-      - reports/figures/nb_regression_like_count.svg
-      - reports/figures/nb_regression_view_count.svg
+    - reports/notebooks/07-nb_regression.html
+    - reports/figures/nb_regression_like_count.svg
+    - reports/figures/nb_regression_view_count.svg
   top_videos:
     cmd: papermill pipeline/08-top_videos.ipynb reports/notebooks/08-top_videos.ipynb
     deps:
-      - src/load/
-      - data/interim/popbert.parquet.gzip
-      - data/interim/sentences.parquet.gzip
-      - data/raw/yt_metadata/
-      - pipeline/08-top_videos.ipynb
+    - src/load/
+    - data/interim/popbert.parquet.gzip
+    - data/interim/sentences.parquet.gzip
+    - data/raw/yt_metadata/
+    - pipeline/08-top_videos.ipynb
     outs:
-      - reports/notebooks/08-top_videos.ipynb
-      - reports/tables/most_liked_videos_per_channel.csv
-      - reports/tables/most_viewed_videos_per_channel.csv
-      - reports/tables/most_antielitism_videos_per_channel.csv
+    - reports/notebooks/08-top_videos.ipynb
+    - reports/tables/most_liked_videos_per_channel.csv
+    - reports/tables/most_viewed_videos_per_channel.csv
+    - reports/tables/most_antielitism_videos_per_channel.csv

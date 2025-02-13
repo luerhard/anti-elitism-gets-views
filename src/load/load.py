@@ -14,53 +14,53 @@ class DataLoader:
     }
 
     PERIOD_START = "2017-12-06"
-    PERIOD_END = "2024-01-20"
+    PERIOD_END = "2025-02-05"
     MIN_TOKENS_PER_SENT = 5
     MIN_SENTS_PER_VIDEO = 5
 
     def __init__(self) -> None:
-        self.con = ibis.connect("duckdb://:memory:", threads=4, memory_limit="10GB")
-        self.con.read_parquet(src.DATA / "yt_metadata/channels.parquet", "channels")
-        self.con.read_parquet(src.DATA / "yt_metadata/videos.parquet", "videos")
-        self.con.read_parquet(src.DATA / "interim/sentences.parquet.gzip", "sentences")
-        self.con.read_parquet(src.DATA / "interim/popbert.parquet.gzip", "popbert")
+        ytdata = src.DATA / "yt_metadata"
+        self.con = ibis.duckdb.connect(threads=6, memory_limit="10GB")
+        self.con.read_parquet(ytdata / "channels.parquet", "channels")
+        self.con.read_parquet(ytdata / "videos.parquet", "videos")
+        self.con.read_parquet(ytdata / "broken_transcripts.parquet", "broken_transcripts")
+        self.con.read_parquet(ytdata / "sentences.parquet", "sentences")
+        self.con.read_parquet(ytdata / "popbert.parquet", "popbert")
 
     def channels(self):
-        table = self.con.tables["channels"]
+        table = self.con.table("channels")
         table = table.mutate(channel=_.channel.substitute(src.party_names))
         return table
 
-    def videos(self, filtered: bool = False, _ignore_sentence_filter: bool = False):
-        table = self.con.tables["videos"]
+    def videos(self, filtered: bool = True, _ignore_sentence_filter: bool = False):
+        table = self.con.table("videos")
+        broken_table = self.con.table("broken_transcripts")
 
         if filtered:
             # filter by time and type
             table = table.filter(
                 [
-                    _.video_format == "videos",
-                    _.video_uploadtime >= self.PERIOD_START,
-                    _.video_uploadtime <= self.PERIOD_END,
+                    _.video_datetime_upload >= self.PERIOD_START,
+                    _.video_datetime_upload <= self.PERIOD_END,
                 ],
-            )
+            ).anti_join(broken_table, ["video_id"])
 
-            # filter by sentence criteria
             if not _ignore_sentence_filter:
-                sents = self.sentences(filtered=True, _ignore_video_filter=True)
-                remaining_videos = sents.select("video_id").distinct()
-                filtered_table = table.filter(_.video_id.isin(remaining_videos.video_id))
-                table = filtered_table[table]
+                # necessary to avoid possible infinite recursion
+                sents = self.sentences(_ignore_video_filter=True)
+                table = table.semi_join(sents, "video_id")
 
         return table
 
-    def sentences(self, filtered: bool = False, _ignore_video_filter: bool = False):
-        table = self.con.tables["sentences"]
+    def sentences(self, filtered: bool = True, _ignore_video_filter: bool = False):
+        table = self.con.table("sentences")
 
         if filtered:
             # remove sentences from invalid videos (only if not called from videos)
             if not _ignore_video_filter:
-                table = table.filter(
-                    _.video_id.isin(self.videos(_ignore_sentence_filter=True).video_id),
-                )
+                # necessary to avoid possible infinite recursion
+                videos = self.videos(_ignore_sentence_filter=True)
+                table = table.semi_join(videos, "video_id")
 
             # remove sentences with too few tokens
             table = table.filter(_.tokens.length() >= self.MIN_TOKENS_PER_SENT)
@@ -69,13 +69,12 @@ class DataLoader:
             counts = (
                 table.group_by("video_id").agg(n_sents=_.sentence_id.count()).filter(_.n_sents > 5)
             )
-            filtered_table = table.join(counts, "video_id")
-            table = filtered_table[table]
+            table = table.semi_join(counts, "video_id")
 
         return table
 
-    def popbert(self, filtered: bool = False, binarize_predictions: bool = True):
-        table = self.con.tables["popbert"]
+    def popbert(self, filtered: bool = True, binarize_predictions: bool = True):
+        table = self.con.table("popbert")
 
         if binarize_predictions:
 
@@ -91,7 +90,6 @@ class DataLoader:
 
         if filtered:
             sents = self.sentences(filtered=True)
-            filtered_table = table.join(sents, "sentence_id")
-            table = filtered_table[table]
+            table = table.semi_join(sents, "sentence_id")
 
         return table

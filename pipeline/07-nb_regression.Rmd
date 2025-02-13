@@ -104,7 +104,9 @@ ggarrange(elite_plot, pplcentr_plot, ncol = 1)
 ```
 
 ```{r}
-ggsave(here("reports", "figures", "nb_regression_like_count.svg"), width = 7, height = 5)
+p <- here("reports", "figures", "nb_regression_like_count.svg")
+if (file.exists(p)) file.remove(p)
+ggsave(p, width = 7, height = 5)
 ```
 
 ```{r}

@@ -1,10 +1,8 @@
 import pytest
 from pytest_cases import parametrize_with_cases
 
-from src.processing import ManifestoPredictor
-from src.processing import PopBERTPredictor
+from src.processing.popbert_predictor import PopBERTPredictor
 from src.processing.transcript_cleaner import TranscriptCleaner
-from src.utils.iterate import flatten_list
 
 
 class Cases:
@@ -254,40 +252,3 @@ def test_repitition_counter():
 
     ngram, count = TranscriptCleaner._count_duplicate_ngrams(text)
     assert (ngram, count) == (("über", "ein"), 2)
-
-
-def test_manifesto_model():
-    manifesto = ManifestoPredictor()
-    cleaner = TranscriptCleaner()
-    sentence = "These principles are under threat."
-    sentence = cleaner.tokenize(sentence)
-    # prediction = manifesto.predict(sentence, sentence)
-    # labels, probs = list(zip(*prediction, strict=False))
-    # assert labels == ("501 - Environmental Protection: Positive",)
-
-    context = (
-        "Human rights and international humanitarian law are fundamental pillars "
-        "of a secure global system."
-    )
-    context = cleaner.tokenize(context)
-    prediction = manifesto.predict(sentence, context)
-    labels, probs = list(zip(*prediction, strict=False))
-    assert labels == ("201 - Freedom and Human Rights",)
-
-
-def test_manifesto_batch():
-    manifesto = ManifestoPredictor()
-    cleaner = TranscriptCleaner()
-    sentences = ["These principles are under threat.", "Ausländer müssen raus."]
-    sentences = [flatten_list(cleaner.tokenize(sent)) for sent in sentences]
-    contexts = [
-        (
-            "Human rights and international humanitarian law are fundamental pillars "
-            "of a secure global system. And i love sports."
-        ),
-        "Das Boot ist voll.",
-    ]
-    contexts = [cleaner.tokenize(ctx) for ctx in contexts]
-    prediction = manifesto.predict(sentences, contexts)
-    labels, probs = list(zip(*prediction, strict=False))
-    assert labels == ("201 - Freedom and Human Rights", "608 - Multiculturalism: Negative")

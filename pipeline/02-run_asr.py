@@ -34,7 +34,7 @@ def main():
         [
             videos.video_was_live == False,
             videos.video_datetime_upload >= "2017-12-06",
-            videos.video_datetime_upload <= "2025-02-01",
+            videos.video_datetime_upload <= "2025-02-05",
         ],
     ).anti_join(transcripts, ["video_id"])
     n_total = data.count().execute()

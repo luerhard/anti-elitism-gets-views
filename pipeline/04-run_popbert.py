@@ -75,6 +75,7 @@ def main():
             gc.collect()
             torch.cuda.empty_cache()
 
+    log.info("%d sentences processed. Exporting file.", done)
     table_popbert.to_parquet(OUT_FILE, compression="gzip")
     DB_PATH.unlink(missing_ok=False)
 

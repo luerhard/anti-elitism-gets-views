@@ -5,6 +5,7 @@ from src.logging import logger as log
 from src.processing.transcript_cleaner import BrokenTranscriptError
 from src.processing.transcript_cleaner import TranscriptCleaner
 
+CHUNKSIZE = 100
 DB_PATH = src.TMP / "transcript_cleaner.duckdb"
 TRANSCRIPT_PATH = src.PATH / "data/interim/transcripts/v3_large_turbo.parquet"
 OUT_FILE_SENTS = src.PATH / "data/yt_metadata/sentences.parquet"
@@ -68,45 +69,50 @@ def main():
     n_total = data.count().execute()
     done = 0
 
-    sentence_id = 0
+    sentence_id = table_sentences.sentence_id.max().execute()
+    if sentence_id is None:
+        sentence_id = 0
     while True:
-        transcript_df = data.limit(1).to_pandas()
+        transcript_df = data.limit(CHUNKSIZE).to_pandas()
         if transcript_df.empty:
             break
-        done += 1
-        transcript = transcript_df.iloc[0]
-        log.info("Processing (%d/%d): %s", done, n_total, transcript.video_id)
 
-        # some transcript can be empty and should be skipped
-        if not transcript.text:
-            log.debug("Skipping empty: %s", transcript.video_id)
-            con.insert("skipped", [{"video_id": transcript.video_id}])
+        done += CHUNKSIZE
+        log.info("Processing (%d/%d)", done, n_total)
+        insert_cache = []
+        for transcript in transcript_df.itertuples():
+            log.debug("Processing: %s", transcript.video_id)
+            # some transcript can be empty and should be skipped
+            if not transcript.text:
+                log.debug("Skipping empty: %s", transcript.video_id)
+                con.insert("skipped", [{"video_id": transcript.video_id}])
 
-        # catch broken transcripts and ignore them. Write their IDs to broken_transcripts.
-        try:
-            sentences = cleaner.tokenize(transcript.text)
-        except BrokenTranscriptError:
-            log.error("Transcript with ID: %s broken. Skipping.", transcript.video_id)
-            con.insert("broken_transcripts", [{"video_id": transcript.video_id}])
-            continue
-
-        cache = []
-        for sentence_no, sentence in enumerate(sentences, 1):
-            if not sentence:
+            # catch broken transcripts and ignore them. Write their IDs to broken_transcripts.
+            try:
+                sentences = cleaner.tokenize(transcript.text)
+            except BrokenTranscriptError:
+                log.error("Transcript with ID: %s broken. Skipping.", transcript.video_id)
+                con.insert("broken_transcripts", [{"video_id": transcript.video_id}])
                 continue
-            sentence_id += 1
-            row = {
-                "sentence_id": sentence_id,
-                "video_id": transcript.video_id,
-                "tokens": sentence,
-                "sentence_no": sentence_no,
-            }
-            cache.append(row)
-        if cache:
-            con.insert("sentences", cache)
-        else:
-            log.debug("Skipping empty sents: %s", transcript.video_id)
-            con.insert("skipped", [{"video_id": transcript.video_id}])
+
+            cache = []
+            for sentence_no, sentence in enumerate(sentences, 1):
+                if not sentence:
+                    continue
+                sentence_id += 1
+                row = {
+                    "sentence_id": sentence_id,
+                    "video_id": transcript.video_id,
+                    "tokens": sentence,
+                    "sentence_no": sentence_no,
+                }
+                cache.append(row)
+            if cache:
+                insert_cache += cache
+            else:
+                log.debug("Skipping empty sents: %s", transcript.video_id)
+                con.insert("skipped", [{"video_id": transcript.video_id}])
+        con.insert("sentences", insert_cache)
 
     table_broken_transcripts.to_parquet(OUT_FILE_BROKEN, compression="gzip")
     table_sentences.to_parquet(OUT_FILE_SENTS, compression="gzip")

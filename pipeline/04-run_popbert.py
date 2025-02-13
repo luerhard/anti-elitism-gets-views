@@ -1,6 +1,7 @@
 import gc
 
 import ibis
+import numpy as np
 import pandas as pd
 import torch
 
@@ -51,29 +52,30 @@ def main():
     done = 0
     n_total = data.count().execute()
     while True:
-        chunk = data.limit(CHUNKSIZE).to_pandas()
-        if chunk.empty:
+        subset = data.limit(CHUNKSIZE * 50).to_pandas()
+        if subset.empty:
             break
 
-        text = chunk.tokens.to_list()
-        predictions = popbert.predict(text, chunksize=CHUNKSIZE)
-        predictions = pd.DataFrame(predictions, columns=["elite", "pplcentr", "left", "right"])
+        for chunk in np.array_split(subset, 50):
+            text = chunk.tokens.to_list()
+            predictions = popbert.predict(text, chunksize=CHUNKSIZE)
+            predictions = pd.DataFrame(predictions, columns=["elite", "pplcentr", "left", "right"])
 
-        chunk_result = pd.concat([chunk[["sentence_id"]], predictions], axis=1)
-        con.insert("popbert", chunk_result)
+            chunk_result = pd.concat([chunk[["sentence_id"]], predictions], axis=1)
+            con.insert("popbert", chunk_result)
 
-        done += len(chunk)
-        if not (done % LOG_EVERY):
-            free, total = torch.cuda.mem_get_info()
-            log.info(
-                "%.2f%% (%d/%d) done. VRAM used: %.2f%%",
-                (done / n_total) * 100,
-                done,
-                n_total,
-                ((total - free) / total) * 100,
-            )
-            gc.collect()
-            torch.cuda.empty_cache()
+            done += len(chunk)
+            if not (done % LOG_EVERY):
+                free, total = torch.cuda.mem_get_info()
+                log.info(
+                    "%.2f%% (%d/%d) done. VRAM used: %.2f%%",
+                    (done / n_total) * 100,
+                    done,
+                    n_total,
+                    ((total - free) / total) * 100,
+                )
+                gc.collect()
+                torch.cuda.empty_cache()
 
     log.info("%d sentences processed. Exporting file.", done)
     table_popbert.to_parquet(OUT_FILE, compression="gzip")

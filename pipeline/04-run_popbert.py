@@ -22,7 +22,10 @@ def main():
     else:
         table_sentences = con.table("sentences")
 
-    if "popbert" not in con.list_tables():
+    if "popbert" not in con.list_tables() and OUT_FILE.is_file():
+        expr = con.read_parquet(OUT_FILE)
+        table_popbert = con.create_table("popbert", expr)
+    elif "popbert" not in con.list_tables():
         schema = ibis.schema(
             {
                 "sentence_id": "int",

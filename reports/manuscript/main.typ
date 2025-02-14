@@ -318,7 +318,7 @@ While the number of comments is not relevant to the further course of the invest
 #figure(
   image("figures/figure_1.svg", width: 100%),
   caption: [
-    Distribution of likes and views per channel. All values are logged. The box describes the .25, .5 and.75 quantiles. Outliers are represented by dots. Violin plots were superimposed on the boxplot to better visualize the distribution.  ]
+    Distribution of likes and views per channel. All values are logged. The rectangle describes the .25, .5 and.75 quantiles. Outliers are represented by dots. Violin plots were superimposed on the boxplot to better visualize the distribution.  ]
 ) <fig:view_count>
 
 @fig:view_count shows the distribution of views and likes in order to take a closer look at the numbers.
@@ -353,13 +353,13 @@ As illustrated in @tab:descriptives, the FDP has received an almost negligible n
 A review of their YouTube content reveals that the FDP has disabled the like feature on nearly all of their videos.
 Consequently, we will exclude the FDP from the subsequent analysis relating to the number of likes.
 
-#figure(
-  image("figures/figure_4.svg", width: 100%),
-  // placement: auto,
-  caption: [
-    Negative Binomial Regression on Number of Views per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
-  ]
-) <fig:nb_reg_views>
+// #figure(
+//   image("figures/figure_4.svg", width: 100%),
+//   // placement: auto,
+//   caption: [
+//     Negative Binomial Regression on Number of Views per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
+//   ]
+// ) <fig:nb_reg_views>
 
 #figure(
   image("figures/figure_3.svg", width: 100%),

@@ -47,7 +47,7 @@ stages:
     - r/load.R
     - data/interim/popbert.parquet.gzip
     - data/interim/sentences.parquet.gzip
-    - data/raw/yt_metadata/
+    - data/yt_metadata/
     - pipeline/07-nb_regression.Rmd
     outs:
     - reports/notebooks/07-nb_regression.html
@@ -59,7 +59,7 @@ stages:
     - src/load/
     - data/interim/popbert.parquet.gzip
     - data/interim/sentences.parquet.gzip
-    - data/raw/yt_metadata/
+    - data/yt_metadata/
     - pipeline/08-top_videos.ipynb
     outs:
     - reports/notebooks/08-top_videos.ipynb

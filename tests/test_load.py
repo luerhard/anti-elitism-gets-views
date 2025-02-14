@@ -29,10 +29,18 @@ class TestDataLoader:
     def test_uniqueness_index(self):
         sents = self.dl.sentences()
         assert sents.sentence_id.nunique().execute() == sents.count().execute()
+        assert sents.filter(sents.sentence_id.isnull()).count().execute() == 0
         videos = self.dl.videos()
         assert videos.video_id.nunique().execute() == videos.count().execute()
+        assert videos.filter(videos.video_id.isnull()).count().execute() == 0
         popbert = self.dl.popbert()
         assert popbert.sentence_id.nunique().execute() == popbert.count().execute()
+        assert popbert.filter(popbert.sentence_id.isnull()).count().execute() == 0
+
+    def test_each_sent_has_popbert(self):
+        popbert = self.dl.popbert(binarize_predictions=False)
+        sents = self.dl.sentences()
+        assert popbert.sentence_id.nunique().execute() == sents.sentence_id.nunique().execute()
 
     def test_equal_lengths(self):
         videos = self.dl.videos()
@@ -41,5 +49,9 @@ class TestDataLoader:
 
     def test_popbert(self):
         sents = self.dl.sentences()
-        popbert = self.dl.popbert()
-        assert sents.sentence_id.nunique().execute() == popbert.count().execute()
+        popbert = self.dl.popbert(binarize_predictions=False).semi_join(sents, ["sentence_id"])
+        assert popbert.count().execute() == sents.count().execute()
+        assert popbert.filter(popbert.elite.isnull()).count().execute() == 0
+        assert popbert.filter(popbert.pplcentr.isnull()).count().execute() == 0
+        assert popbert.filter(popbert.left.isnull()).count().execute() == 0
+        assert popbert.filter(popbert.right.isnull()).count().execute() == 0

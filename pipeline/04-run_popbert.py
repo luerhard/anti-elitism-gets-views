@@ -59,9 +59,15 @@ def main():
         for chunk in np.array_split(subset, 50):
             text = chunk.tokens.to_list()
             predictions = popbert.predict(text, chunksize=CHUNKSIZE)
-            predictions = pd.DataFrame(predictions, columns=["elite", "pplcentr", "left", "right"])
+            predictions = pd.DataFrame(
+                predictions,
+                columns=["elite", "pplcentr", "left", "right"],
+            )
 
-            chunk_result = pd.concat([chunk[["sentence_id"]], predictions], axis=1)
+            chunk_result = pd.concat(
+                [chunk[["sentence_id"]].reset_index(drop=True), predictions],
+                axis=1,
+            )
             con.insert("popbert", chunk_result)
 
             done += len(chunk)

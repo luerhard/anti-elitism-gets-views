@@ -34,6 +34,7 @@ class DataLoader:
 
     def videos(self, filtered: bool = True, _ignore_sentence_filter: bool = False):
         table = self.con.table("videos")
+        table = table.mutate(channel=_.channel.substitute(src.party_names))
         broken_table = self.con.table("broken_transcripts")
 
         if filtered:

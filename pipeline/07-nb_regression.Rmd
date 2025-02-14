@@ -38,18 +38,19 @@ df_sents <- sentences |>
     pplcentr = mean(pplcentr)
   )
 
-df <- channels |>
+df_videos <- channels |>
   left_join(videos, by = "channel_id" )|>
   left_join(df_sents, by = "video_id") |>
+  filter(channel != "FDP") |>
   mutate(
-    channel = factor(channel)
+    channel = channel |> as_factor()
   )
+```
 
-
-df <- df %>%
+```{r}
+df <- df_videos %>%
   mutate(
     year = video_datetime_upload |> lubridate::year() |> as_factor(),
-    channel = channel |> as_factor()
   ) %>%
   group_by(channel) %>%
   mutate(
@@ -57,17 +58,29 @@ df <- df %>%
     pplcentr = z_transform(pplcentr)
   ) %>%
   ungroup()
+```
 
-df_likes <- df |>
-  filter(channel != "FDP") |>
-  mutate(channel = channel |> as_factor() |> fct_drop())
+```{r}
+df |>
+  group_by(channel) |>
+  summarize(n())
+```
+
+```{r}
+df_likes <- df |> filter(!is.na(video_likes))
+```
+
+```{r}
+df_likes |>
+  group_by(channel) |>
+  summarize(n())
 ```
 
 # NB Regression on Video Likes
 
 ```{r}
 elite_form <- formula(
-  video_likes~ channel + elite + channel:elite + year + video_duration
+  video_likes ~ channel + elite + channel:elite + year + video_duration
 )
 
 elite_model <- glm.nb(elite_form, data = df_likes)
@@ -79,7 +92,7 @@ pplcentr_form <- formula(
   video_likes ~ channel + pplcentr + channel:pplcentr + year + video_duration
 )
 
-pplcentr_model <- glm.nb(pplcentr_form, data = df_likes)
+pplcentr_model <- glm.nb(pplcentr_form, data = df)
 summary(pplcentr_model)
 ```
 
@@ -107,82 +120,65 @@ if (file.exists(p)) file.remove(p)
 ggsave(p, width = 7, height = 5)
 ```
 
-```{r}
-elite_plot <- marginaleffects::plot_slopes(
-    elite_model,
-    variables = "elite",
-    condition = list("channel", "elite" = "threenum")
-  ) +
-  coord_flip() +
-  theme_ggeffects(base_family = "serif")
-
-pplcentr_plot <- marginaleffects::plot_slopes(
-    pplcentr_model,
-    variables = "pplcentr",
-    condition = list("channel", "pplcentr" = "threenum")
-  ) +
-  coord_flip() +
-  theme_ggeffects(base_family = "serif")
-
-ggarrange(elite_plot, pplcentr_plot, ncol = 1)
-
-# OLS rechnen, wobei die AV vorher in Ränge übersetzt ist. Könnte den Einfluss von Ausreißern minimieren. (Wollen wir das, though?)
-
-```
-
 
 # NB Regression on Video Views
 
 ```{r}
-elite_form <- formula(
-  video_views ~ channel + elite + channel:elite + year + video_duration
-)
+# df |>
+#   select(video_views, channel, elite, year, video_duration) |>
+#   group_by(channel) |>
+#   summarize(across(everything(), ~ is.na(.) |> sum()))
+```
+```{r}
+# elite_form <- formula(
+#   video_views ~ channel + elite + channel*elite + year + video_duration
+# )
 
-elite_model <- glm.nb(elite_form, data = df)
-summary(elite_model)
+# elite_model <- glm.nb(elite_form, data = df)
+# summary(elite_model)
 ```
 
 ```{r}
-pplcentr_form <- formula(
-  video_views ~ channel + pplcentr + channel:pplcentr + year + video_duration
-)
+# pplcentr_form <- formula(
+#   video_views ~ channel + pplcentr + channel:pplcentr + year + video_duration
+# )
 
-pplcentr_model <- glm.nb(pplcentr_form, data = df)
-summary(pplcentr_model)
+# pplcentr_model <- glm.nb(pplcentr_form, data = df)
+# summary(pplcentr_model)
 ```
 
 ```{r}
-elite_plot <- sjPlot::plot_model(
-  elite_model,
-  type = "eff",
-  terms = c("channel", "elite [-1,0,1]")
-) +
-  coord_flip() +
-  labs(
-    title = "Marginal Effects of Anti-Elitism",
-    x = "Channel",
-    y = "Number of Views",
-    color = "Anti-Elitism\n(standardized)"
-  ) +
-  theme_ggeffects(base_family = "serif")
+# elite_plot <- sjPlot::plot_model(
+#   elite_model,
+#   type = "eff",
+#   terms = c("channel", "elite [-1,0,1]")
+# ) +
+#   coord_flip() +
+#   labs(
+#     title = "Marginal Effects of Anti-Elitism",
+#     x = "Channel",
+#     y = "Number of Views",
+#     color = "Anti-Elitism\n(standardized)"
+#   ) +
+#   theme_ggeffects(base_family = "serif")
 
-pplcentr_plot <- sjPlot::plot_model(
-  pplcentr_model,
-  type = "eff",
-  terms = c("channel", "pplcentr [-1,0,1]")
-) +
-  coord_flip() +
-  labs(
-    title = "Marginal Effects of People-Centrism",
-    x = "Channel",
-    y = "Number of Views",
-    color = "People-Centrism\n(standardized)"
-  ) +
-  theme_ggeffects(base_family = "serif")
+# pplcentr_plot <- sjPlot::plot_model(
+#   pplcentr_model,
+#   type = "eff",
+#   terms = c("channel", "pplcentr [-1,0,1]")
+# ) +
+#   coord_flip() +
+#   labs(
+#     title = "Marginal Effects of People-Centrism",
+#     x = "Channel",
+#     y = "Number of Views",
+#     color = "People-Centrism\n(standardized)"
+#   ) +
+#   theme_ggeffects(base_family = "serif")
 
-ggarrange(elite_plot, pplcentr_plot, ncol = 1)
+# ggarrange(elite_plot, pplcentr_plot, ncol = 1)
 ```
 
 ```{r}
-ggsave(here("reports", "figures", "nb_regression_view_count.svg"), width = 7, height = 5)
+# ggsave(here("reports", "figures", "nb_regression_view_count.svg"), width = 7, height = 5)
 ```

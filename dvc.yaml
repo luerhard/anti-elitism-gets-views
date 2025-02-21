@@ -2,7 +2,7 @@ stages:
   run_asr:
     cmd: python pipeline/02-run_asr.py
     deps:
-    - data/raw/yt/@AfdFraktionimBundestag
+    - data/raw/yt/@AfDFraktionimBundestag
     - data/raw/yt/@AfDTV
     - data/raw/yt/@DIELINKE
     - data/raw/yt/@DieGruenen

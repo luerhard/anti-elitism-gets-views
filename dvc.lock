@@ -3,6 +3,11 @@ stages:
   run_asr:
     cmd: python pipeline/02-run_asr.py
     deps:
+    - path: data/raw
+      hash: md5
+      md5: 311ca98e2d7b6dfdfbf659f168bb9022.dir
+      size: 174201953181
+      nfiles: 19945
     - path: data/yt_metadata/videos.parquet
       hash: md5
       md5: 3e33558c8b7e379a161f4fe3be6afe51

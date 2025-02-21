@@ -2,6 +2,7 @@ stages:
   run_asr:
     cmd: python pipeline/02-run_asr.py
     deps:
+    - data/raw
     - pipeline/02-run_asr.py
     - src/processing/whisper_pipeline.py
     - data/yt_metadata/videos.parquet

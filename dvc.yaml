@@ -2,7 +2,14 @@ stages:
   run_asr:
     cmd: python pipeline/02-run_asr.py
     deps:
-    - data/raw
+    - data/raw/yt/@AfdFraktionimBundestag
+    - data/raw/yt/@AfDTV
+    - data/raw/yt/@DIELINKE
+    - data/raw/yt/@DieGruenen
+    - data/raw/yt/@FDP
+    - data/raw/yt/@cdutv
+    - data/raw/yt/@csumedia
+    - data/raw/yt/@spdde
     - pipeline/02-run_asr.py
     - src/processing/whisper_pipeline.py
     - data/yt_metadata/videos.parquet

@@ -3,16 +3,16 @@ stages:
   run_asr:
     cmd: python pipeline/02-run_asr.py
     deps:
+    - path: data/raw/yt/@AfDFraktionimBundestag
+      hash: md5
+      md5: c29d6d126a6aee26cdd971067b7a67c5.dir
+      size: 44031412360
+      nfiles: 6255
     - path: data/raw/yt/@AfDTV
       hash: md5
       md5: fd4314d30c72b5339819ab22c4839e04.dir
       size: 17668215486
       nfiles: 2323
-    - path: data/raw/yt/@AfdFraktionimBundestag
-      hash: md5
-      md5: c29d6d126a6aee26cdd971067b7a67c5.dir
-      size: 44031412360
-      nfiles: 6255
     - path: data/raw/yt/@DIELINKE
       hash: md5
       md5: 29dfe3dabacecdd27cbd45a255d4a36a.dir

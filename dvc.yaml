@@ -45,8 +45,6 @@ stages:
     deps:
     - src/load/
     - r/load.R
-    - data/interim/popbert.parquet.gzip
-    - data/interim/sentences.parquet.gzip
     - data/yt_metadata/
     - pipeline/07-nb_regression.Rmd
     outs:
@@ -56,8 +54,6 @@ stages:
     cmd: papermill pipeline/08-top_videos.ipynb reports/notebooks/08-top_videos.ipynb
     deps:
     - src/load/
-    - data/interim/popbert.parquet.gzip
-    - data/interim/sentences.parquet.gzip
     - data/yt_metadata/
     - pipeline/08-top_videos.ipynb
     outs:

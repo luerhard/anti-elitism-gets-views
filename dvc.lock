@@ -5,9 +5,9 @@ stages:
     deps:
     - path: data/raw
       hash: md5
-      md5: 311ca98e2d7b6dfdfbf659f168bb9022.dir
-      size: 174201953181
-      nfiles: 19945
+      md5: 555447869cc1e661c4581cd774c9c6ba.dir
+      size: 174200639978
+      nfiles: 19937
     - path: data/yt_metadata/videos.parquet
       hash: md5
       md5: 3e33558c8b7e379a161f4fe3be6afe51

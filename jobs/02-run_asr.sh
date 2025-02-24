@@ -4,8 +4,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=3
 #SBATCH --gres=gpu:1
-#SBATCH --time=48:00:00
-#SBATCH --mem=45gb
+#SBATCH --time=12:00:00
+#SBATCH --mem=15gb
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=lukas.erhard@sowi.uni-stuttgart.de
 

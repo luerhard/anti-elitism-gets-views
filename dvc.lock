@@ -5,48 +5,48 @@ stages:
     deps:
     - path: data/raw/yt/@AfDFraktionimBundestag
       hash: md5
-      md5: 2b5a43b0fc96e729731f83a6de6d0649.dir
-      size: 43521859735
-      nfiles: 6253
+      md5: 9ac79db605bee1b0514534a96c4bcd59.dir
+      size: 43741077037
+      nfiles: 6266
     - path: data/raw/yt/@AfDTV
       hash: md5
-      md5: 6920460ec2c048e15d02ae5cc5674ec2.dir
-      size: 17452591887
-      nfiles: 2059
+      md5: c6809b403cbaa785188146057668502a.dir
+      size: 17653928862
+      nfiles: 2076
     - path: data/raw/yt/@DIELINKE
       hash: md5
-      md5: 5b8a6b0e93684d3d4c724832357fc3cc.dir
-      size: 21870963542
-      nfiles: 1819
+      md5: 9e20a409d3f9816fa5ebf1b4ed115d7f.dir
+      size: 22276215396
+      nfiles: 1880
     - path: data/raw/yt/@DieGruenen
       hash: md5
-      md5: a3242dae12b2954bd51c282c491c054b.dir
-      size: 17088496491
-      nfiles: 1813
+      md5: 85d4a12bba61aa6b48e7fb79e5297856.dir
+      size: 17316498425
+      nfiles: 1859
     - path: data/raw/yt/@FDP
       hash: md5
-      md5: cd021693fb0123d081e56f55f1a8b893.dir
-      size: 21389975361
-      nfiles: 2267
+      md5: 344bbf40fc3d2c7cc15474e098d6be00.dir
+      size: 21649388363
+      nfiles: 2312
     - path: data/raw/yt/@cdutv
       hash: md5
-      md5: b4cfa8f37da6a4f8247811852e58bebd.dir
-      size: 19200067597
-      nfiles: 2398
+      md5: 814a63cd301f361afc7b5f6200b9b074.dir
+      size: 19301366716
+      nfiles: 2413
     - path: data/raw/yt/@csumedia
       hash: md5
-      md5: f763de3e462117b127e648ae3f29c71c.dir
-      size: 5500250750
-      nfiles: 799
+      md5: d31dfee3e9e0604a433e8296cb7db820.dir
+      size: 5530389606
+      nfiles: 805
     - path: data/raw/yt/@spdde
       hash: md5
-      md5: 8be4498db8db1c84d368e253fbd6e072.dir
-      size: 27160023644
-      nfiles: 2241
+      md5: fc1e1fd1eae80c74a4b2ec94298e5acb.dir
+      size: 27348727119
+      nfiles: 2309
     - path: data/yt_metadata/videos.parquet
       hash: md5
-      md5: 3e33558c8b7e379a161f4fe3be6afe51
-      size: 3486062
+      md5: b6f1681374cc51785098f814853f24ab
+      size: 3505625
     - path: pipeline/02-run_asr.py
       hash: md5
       md5: fc7c60c6549b08dcd4b4bb3f0c1a2182

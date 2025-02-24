@@ -14,7 +14,7 @@ class DataLoader:
     }
 
     PERIOD_START = "2017-12-06"
-    PERIOD_END = "2025-02-05"
+    PERIOD_END = "2025-02-25"
     MIN_TOKENS_PER_SENT = 5
     MIN_SENTS_PER_VIDEO = 5
 

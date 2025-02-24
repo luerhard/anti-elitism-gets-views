@@ -5,44 +5,44 @@ stages:
     deps:
     - path: data/raw/yt/@AfDFraktionimBundestag
       hash: md5
-      md5: c29d6d126a6aee26cdd971067b7a67c5.dir
-      size: 44031412360
-      nfiles: 6255
+      md5: 2b5a43b0fc96e729731f83a6de6d0649.dir
+      size: 43521859735
+      nfiles: 6253
     - path: data/raw/yt/@AfDTV
       hash: md5
-      md5: fd4314d30c72b5339819ab22c4839e04.dir
-      size: 17668215486
-      nfiles: 2323
+      md5: 6920460ec2c048e15d02ae5cc5674ec2.dir
+      size: 17452591887
+      nfiles: 2059
     - path: data/raw/yt/@DIELINKE
       hash: md5
-      md5: 29dfe3dabacecdd27cbd45a255d4a36a.dir
-      size: 21919701617
-      nfiles: 1821
+      md5: 5b8a6b0e93684d3d4c724832357fc3cc.dir
+      size: 21870963542
+      nfiles: 1819
     - path: data/raw/yt/@DieGruenen
       hash: md5
-      md5: d54f5534091de2ae0f5278708d747c9d.dir
-      size: 17129871435
-      nfiles: 1815
+      md5: a3242dae12b2954bd51c282c491c054b.dir
+      size: 17088496491
+      nfiles: 1813
     - path: data/raw/yt/@FDP
       hash: md5
-      md5: 6be935cad5960b092f9741387fdd107a.dir
-      size: 21441006596
-      nfiles: 2269
+      md5: cd021693fb0123d081e56f55f1a8b893.dir
+      size: 21389975361
+      nfiles: 2267
     - path: data/raw/yt/@cdutv
       hash: md5
-      md5: 5fa7d2794a7fdeef2b2b1636252098ca.dir
-      size: 19264742539
-      nfiles: 2400
+      md5: b4cfa8f37da6a4f8247811852e58bebd.dir
+      size: 19200067597
+      nfiles: 2398
     - path: data/raw/yt/@csumedia
       hash: md5
-      md5: 66b692abd6878059871c0727e7e9d468.dir
-      size: 5522118649
-      nfiles: 801
+      md5: f763de3e462117b127e648ae3f29c71c.dir
+      size: 5500250750
+      nfiles: 799
     - path: data/raw/yt/@spdde
       hash: md5
-      md5: e57173e78946ea5aada89faa383eedd2.dir
-      size: 27223570078
-      nfiles: 2243
+      md5: 8be4498db8db1c84d368e253fbd6e072.dir
+      size: 27160023644
+      nfiles: 2241
     - path: data/yt_metadata/videos.parquet
       hash: md5
       md5: 3e33558c8b7e379a161f4fe3be6afe51

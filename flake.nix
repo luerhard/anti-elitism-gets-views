@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/1bde3e8e37a72989d4d455adde764d45f45dc11c";
     flake-utils.url = "github:numtide/flake-utils";
+    nixgl.url = "github:nix-community/nixGL";
   };
 
   outputs =
@@ -9,6 +10,7 @@
       self,
       nixpkgs,
       flake-utils,
+      nixgl,
       ...
     }:
     flake-utils.lib.eachSystem [ "aarch64-darwin" "x86_64-linux" ] (
@@ -22,6 +24,7 @@
           };
           overlays = [
             (import ./nix/python-overlay.nix)
+            nixgl.overlay
           ];
         };
 
@@ -102,9 +105,15 @@
           packages = [
             pyEnv # needs to be @ top of list, so the correct python interpreter is exposed
             rEnv
-            linuxCudaDeps
+            # Did disable this as we are likely to pick up the required drivers
+            # through NixGL.
+            # linuxCudaDeps
             systemDeps
+
+          ] ++ pkgs.lib.lists.optionals (system == "x86_64-linux") [
+            pkgs.nixgl.nixGLNvidia
           ];
+
 
           ldLibPath = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
 

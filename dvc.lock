@@ -49,8 +49,8 @@ stages:
       size: 3505625
     - path: pipeline/02-run_asr.py
       hash: md5
-      md5: fc7c60c6549b08dcd4b4bb3f0c1a2182
-      size: 2085
+      md5: 1ae95f48ff4da5b4259b2aa2f1b6119b
+      size: 2027
     - path: src/processing/whisper_pipeline.py
       hash: md5
       md5: 18e7b31ac1eee8c9ccc4c86c9b139c60
@@ -58,8 +58,8 @@ stages:
     outs:
     - path: data/interim/transcripts/v3_large_turbo.parquet
       hash: md5
-      md5: ab32c696b232c819f1481e2e1899b654
-      size: 33156851
+      md5: dc1210e9582253a842d65535b8baed41
+      size: 33576131
   tokenize_transcripts:
     cmd: python pipeline/03-tokenize_transcripts.py
     deps:

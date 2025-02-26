@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/1bde3e8e37a72989d4d455adde764d45f45dc11c";
     flake-utils.url = "github:numtide/flake-utils";
+    nix-gl-host.url = "github:numtide/nix-gl-host";
   };
 
   outputs =
@@ -9,6 +10,7 @@
       self,
       nixpkgs,
       flake-utils,
+      nix-gl-host,
       ...
     }:
     flake-utils.lib.eachSystem [ "aarch64-darwin" "x86_64-linux" ] (
@@ -102,15 +104,16 @@
           packages = [
             pyEnv # needs to be @ top of list, so the correct python interpreter is exposed
             rEnv
-            linuxCudaDeps
+            # linuxCudaDeps
             systemDeps
+          ] ++ pkgs.lib.lists.optional pkgs.stdenv.isLinux [
+            nix-gl-host.defaultPackage.${system}
           ];
 
-          ldLibPath = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
+          # ldLibPath = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
 
           shellHook = ''
                       export PYTHONPATH="$(pwd):$PYTHONPATH"
-                      export LD_LIBRARY_PATH="$ldLibPath:$LD_LIBRARY_PATH"
                       export RETICULATE_PYTHON=$(which python)
             	  '';
         };

@@ -111,7 +111,7 @@
             systemDeps
 
           ] ++ pkgs.lib.lists.optionals (system == "x86_64-linux") [
-            pkgs.nixgl.nixGLNvidia
+            pkgs.nixgl.auto.nixGLNvidia
           ];
 
 

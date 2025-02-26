@@ -11,4 +11,4 @@
 
 cd /home/st/st_st/st_ac138201/workspaces/gpfs/st_ac138201-ytpop/ytpop
 
-env -u LD_LIBRARY_PATH ~/nix-portable nix develop --command python pipeline/02-run_asr.py
+~/nix-portable nix develop --impure --command nixglhost python pipeline/02-run_asr.py

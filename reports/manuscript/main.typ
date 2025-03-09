@@ -92,7 +92,7 @@ While originally founded as a Euroskeptic response to the problems of the 2008 f
 A sudden influx of migrants during the summer of 2015 gave the AfD's numbers and additional boost.
 Despite mostly lacking a substantial agenda other than harsh criticism of the established and governing parties, they gained traction across all voter demographics.
 Some attribute part of this success to social media, which is used far more by populist actors than non-populist ones (CITE?).
-Although there exist research on populism on other social media platforms, such as TikTok @gonzalez-aguilarPopulistRightParties2023, Twitter @ernstExtremePartiesPopulism2017, Instagram @oloflarssonRiseInstagramTool2023, or Facebook @schurmannYellingSidelinesHow2022, research on YouTube is still lacking.
+Although there exist research on populism on other social media platforms, such as TikTok @gonzalez-aguilarPopulistRightParties2023, Twitter @ernstExtremePartiesPopulism2017, Instagram @oloflarssonRiseInstagramTool2023, or Facebook @schurmannYellingSidelinesHow2022, research on YouTube is still lacking @mungerPressingPlayPolitics2025.
 While in previous years TV was "considered to be the most important advertising medium and televised political advertising a leading way of communication between candidates voters" @vesnic-alujevicYouTubePoliticalAdvertising2014[199] and it probably still is, its place at the top is being fiercely contested by emerging players on the web.
 Social media, especially YouTube as one of the largest platforms, is an important but understudied place where populism is being spread.
 
@@ -111,10 +111,10 @@ A glance at the number of likes and followers for the parties' channels shows th
 // But YouTube is not "just" a social media platform.
 // Im Gegensatz zu vielen anderen social media Plattformen, ist die Interaktivität hier stark eingeschränkt.
 
-Even without the direct interaction between content creators and viewers, this platform provieds an easy way for almost everyone to create and share content.
+Even without the direct interaction between content creators and viewers, this platform provides an easy way for almost everyone to create and share content.
 Of course, the German parties are also taking the opportunity to be represented on the platform, albeit with varying degrees of success.
 While the audience is behind some of the more influential accounts on this platform, an examination of the content shared on YouTube allows us to examine the parties' self-representation in more detail.
-#footnote[There are some successful channels of German politicians like Sarah Wagenknecht (with 664,000 followers) or Alice Weidel (with 189,000 followers) with personal channels.
+#footnote[There are some successful channels of German politicians like Sarah Wagenknecht (with 673,000 followers) or Alice Weidel (with 292,000 followers) with personal channels (checked on February 26, 2025).
 Nevertheless, in this study we focus on the party channels.]
 This research aims to take a closer look at the use and spread of populism on YouTube by German political parties.
 
@@ -124,6 +124,32 @@ This research aims to take a closer look at the use and spread of populism on Yo
 ]
 
 = Theory
+
+== YouTube as a Research Platform <youtube-as-a-research-platform>
+
+YouTube is very popular in Germany @allgaierRezoGermanClimate2020.
+A fairly recent representative study among young Germans reports that 60% used the site daily or at least several times a week @feierabendJIMstudie2018Jugend2018.
+The study also shows that YouTube is the second most important site for respondents to obtain news and information, trailing only Google.
+
+While the YouTube is still dramatically understudied compared to other social media platforms @mungerPressingPlayPolitics2025, increasing effort is undertaken to systematically analyze content on YouTube in general and the _political_ YouTube in particular @bartlYouTubeChannelsUploads2018 @mungerPressingPlayPolitics2025.
+
+YouTube is the only major social media network more popular among right-leaning users @mungerRightWingYouTubeSupply2022.
+Additionally, and in contrast to other parties, populists prefer social media over talk shows @ernstPopulistsPreferSocial2019.
+As #cite(<engesserPopulismSocialMedia2017>, form: "prose", supplement: [1123]) indicate, the logic of social media platforms gives them more freedom to use strong language when attacking elites or ostracizing others.
+
+// While data on Germany specifically are scarce, a study from 2016 investigating a sample of Americans reported that around 90% of youth and young adults have used YouTube at least once in the past three months @costelloWhoViewsOnline2016[315].
+// Motivated by these discoveries, we recognize the importance of examining parties' YouTube videos, particularly emphasizing the effects of populist content.
+
+YouTube can be seen as a social media platform.
+Since everybody can publish content on this platform with very few hurdles, and viewers can self-select what content they are willing to watch, it is natural to view YouTube as a social network between people that is centered around sharing video content—in a way like Instagram is a social network centered around images.
+Studies that take such an approach might see YouTube from a supply-and-demand perspective, analyzing the side of the content creators and the viewers @mungerRightWingYouTubeSupply2022.
+While investigating YouTube through such a lens is a worthwhile endeavor, it might not be suitable to investigate politicians' content.
+Many scholars have proposed theories on why politicians, particularly populists, choose social media platforms over traditional hierarchical media.
+Nevertheless, populist leaders mostly utilize social media as a supplementary one-way broadcasting system, instead of interacting with citizens as #cite(<jungherrTwitterUseElection2016>, form: "prose") shows in a systematic literature review on twitter use in election campaigns.
+They might argue the social media facilitates personal and interactive conversations compared to the more traditional broadcasts through legacy media.
+#cite(<waisbordPopulistCommunicationDigital2017>, form: "prose"), for instance, have shown remarkably low interaction between Latin American politicians, populist and non-populist, on Twitter.
+
+This leds to believe, that videos on YouTube are best viewed from content delivery perspective first.
 
 == Populism
 
@@ -175,7 +201,7 @@ There is one strain that detects populism in political actors or parts of discou
 And there is another strain that is concerned with measuring populist attitudes among populations @akkermanHowPopulistAre2014 @hawkinsActivationPopulistAttitudes2020.
 
 A notable aspect of analysing populist communication on Social Media is that we are able to analyze direct feedback in terms of views, likes and comments on very specific bits of populist communication.
-According to #cite(<keffordPopulistAttitudesBringing2022>) they are the first to try to bridge this gap and try link populist communcation can populist attitudes in terms of voting behavior.
+According to #cite(<keffordPopulistAttitudesBringing2022>, form: "prose") they are the first to try to bridge this gap and try link populist communcation can populist attitudes in terms of voting behavior.
 From a theoretical perspective, they achieve this by combining the ideational approach and the discursive-perfomative approach.
 We follow their tradition loosely and believe we can at least get a rough grasp of how people react to populist communication, how their attitudes towards populist communcation is, or in other words: what they do or do not "like".
 
@@ -196,29 +222,6 @@ While the audiences on these platforms are often partisan and vary across differ
 // There are currently two parties in the German Bundestag that are considered populist, the AfD and the Left @rooduijnPopuListDatabasePopulist2023.
 
 
-== YouTube as a Research Platform <youtube-as-a-research-platform>
-
-YouTube is very popular in Germany @allgaierRezoGermanClimate2020.
-A fairly recent representative study among young Germans reports that 60% used the site daily or at least several times a week @feierabendJIMstudie2018Jugend2018.
-The study also shows that YouTube is the second most important site for respondents to obtain news and information, trailing only Google.
-
-YouTube is the only major social media network more popular among right-leaning users @mungerRightWingYouTubeSupply2022.
-Additionally, and in contrast to other parties, populists prefer social media over talk shows @ernstPopulistsPreferSocial2019.
-As #cite(<engesserPopulismSocialMedia2017>, form: "prose", supplement: [1123]) indicate, the logic of social media platforms gives them more freedom to use strong language when attacking elites or ostracizing others.
-
-// While data on Germany specifically are scarce, a study from 2016 investigating a sample of Americans reported that around 90% of youth and young adults have used YouTube at least once in the past three months @costelloWhoViewsOnline2016[315].
-// Motivated by these discoveries, we recognize the importance of examining parties' YouTube videos, particularly emphasizing the effects of populist content.
-
-YouTube can be seen as a social media platform.
-Since everybody can publish content on this platform with very few hurdles, and viewers can self-select what content they are willing to watch, it is natural to view YouTube as a social network between people that is centered around sharing video content—in a way like Instagram is a social network centered around images.
-Studies that take such an approach might see YouTube from a supply-and-demand perspective, analyzing the side of the content creators and the viewers @mungerRightWingYouTubeSupply2022.
-While investigating YouTube through such a lens is a worthwhile endeavor, it might not be suitable to investigate politicians' content.
-Many scholars have proposed theories on why politicians, particularly populists, choose social media platforms over traditional hierarchical media.
-Nevertheless, populist leaders mostly utilize social media as a supplementary one-way broadcasting system, instead of interacting with citizens as #cite(<jungherrTwitterUseElection2016>, form: "prose") shows in a systematic literature review on twitter use in election campaigns.
-They might argue the social media facilitates personal and interactive conversations compared to the more traditional broadcasts through legacy media.
-#cite(<waisbordPopulistCommunicationDigital2017>, form: "prose"), for instance, have shown remarkably low interaction between Latin American politicians, populist and non-populist, on Twitter.
-
-This leds to believe, that videos on YouTube are best viewed from content delivery perspective first.
 
 = Data & Methods <data-methods>
 
@@ -232,7 +235,7 @@ For this reason, both parties also maintain separate YouTube channels with \@cdu
 Conversely, the AfD's (Alternative for Germany) official channel (\@AfDTV) is distinct from the parliamentary group's channel (\@AfDFraktionimBundestag).
 Both channels, exhibiting comparable follower counts, were incorporated into our analysis.
 Consequently, our dataset encompasses a total of eight channels.
-The dataset is restricted to the period from December 6, 2017 (the final channel's inaugural video publication) to January 20, 2024 (a week before data collection) to give all videos time to accumulate views and likes.
+The dataset is restricted to the period from December 6, 2017 (the final channel's inaugural video publication) to February 24, 2025, the day of the Bundestagswahl 2025.
 
 The analysis of video material is very challenging, we therefore follow #cite(<schwemmerSocialMediaSellout2018>, form: "prose") and focus our analysis on the audio material.
 The audio data of all videos and their accompanying metadata were downloaded using _yt-dlp_.

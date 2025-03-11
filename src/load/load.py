@@ -1,6 +1,7 @@
 import ibis
 from ibis import _
 from ibis.expr.api import case
+import ibis.selectors as s
 
 import src
 
@@ -28,12 +29,12 @@ class DataLoader:
         self.con.read_parquet(ytdata / "popbert.parquet", "popbert")
 
     def channels(self):
-        table = self.con.table("channels")
+        table = self.con.table("channels").select(~s.cols("channel_url"))
         table = table.mutate(channel=_.channel.substitute(src.party_names))
         return table
 
     def videos(self, filtered: bool = True, _ignore_sentence_filter: bool = False):
-        table = self.con.table("videos")
+        table = self.con.table("videos").select(~s.cols("video_comments"))
         table = table.mutate(channel=_.channel.substitute(src.party_names))
         broken_table = self.con.table("broken_transcripts")
 

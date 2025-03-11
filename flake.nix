@@ -59,10 +59,12 @@
           lme4
           here
           irr
+          IRkernel
           jsonlite
           languageserver
           marginaleffects
           texreg
+          slider
           sjPlot
           sjstats
           MASS
@@ -110,12 +112,10 @@
             nix-gl-host.defaultPackage.${system}
           ];
 
-          # ldLibPath = if system == "x86_64-linux" then "${pkgs.linuxPackages.nvidia_x11}/lib" else "";
-
           shellHook = ''
                       export PYTHONPATH="$(pwd):$PYTHONPATH"
                       export RETICULATE_PYTHON=$(which python)
-            	  '';
+                '';
         };
       }
     );

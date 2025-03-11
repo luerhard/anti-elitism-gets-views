@@ -1,0 +1,271 @@
+---
+title: "Multi-level Regression"
+output:
+  html_document:
+    number_sections: true
+date: "2025-02-04"
+---
+
+```{r setup, include=FALSE}
+library(here)
+
+knitr::opts_chunk$set(echo = TRUE)
+options(box.path = here())
+
+box::use(
+  r / load
+)
+box::reload(load)
+
+library(tidyverse)
+library(texreg)
+library(ggeffects)
+library(ggpubr)
+
+library(lme4)
+library(marginaleffects)
+library(sjstats)
+
+theme_set(theme_minimal())
+
+channels <- load$channels()
+videos <- load$videos(filtered = TRUE) |> select(-c(channel))
+sentences <- load$sentences(filtered = TRUE)
+popbert <- load$popbert(filtered = TRUE)
+
+df_sents <- sentences |>
+  left_join(popbert, by = "sentence_id") |>
+  group_by(video_id) |>
+  summarize(
+    n_sents = n(),
+    elite = mean(elite),
+    pplcentr = mean(pplcentr)
+  )
+
+```
+
+```{r}
+centered <- function(x) (x - mean(x))
+z_transform <- function(x) as.vector(scale(x))
+
+df <- channels |>
+  left_join(videos, by = "channel_id") |>
+  left_join(df_sents, by = "video_id") |>
+  mutate(
+    channel = as_factor(channel)
+  )
+
+df <- df |>
+  # filter(video_datetime_upload > "2024-10-01") |>
+  mutate(
+    released_at = video_datetime_upload |> lubridate::floor_date(unit="month") |> format("%Y-%m"),
+    released_at = released_at |> factor(levels=sort(unique(released_at)), ordered=TRUE),
+    released_year = video_datetime_upload |> lubridate::floor_date(unit="year") |> format("%Y-%m")
+  ) |>
+  filter(channel != "FDP") |>
+  mutate(
+    channel = channel |> fct_drop(),
+    log_video_likes = sqrt(video_likes),
+    log_video_views = log(1 + video_views),
+    likes_per_view = video_likes / video_views,
+    video_duration = video_duration |> z_transform(),
+    n_sents = n_sents |> z_transform(),
+    elite = centered(elite),
+    pplcentr = centered(pplcentr),
+    pplcentr = centered(pplcentr)
+  ) |>
+  group_by(channel) |>
+  mutate(
+    channel_views_mean = 1
+  )
+```
+
+```{r}
+df |>
+  group_by(channel) |>
+  summarize(
+      n = n(),
+      na_likes = sum(is.na(video_likes)),
+      mean_likes = mean(video_likes, na.rm=T),
+      mean_views = mean(video_views, na.rm=F),
+      std_views = sd(video_views)
+    )
+```
+
+# Video Views
+
+```{r}
+ggplot(df, aes(log_video_views)) +
+  geom_histogram(bins=50)
+```
+
+## elite model
+
+```{r}
+model <- lme4::lmer(
+  formula = log_video_views ~ 1 + elite + n_sents + released_at + (elite | channel),
+  data = df
+)
+```
+
+```{r}
+performance::icc(model)
+```
+
+```{r}
+sjPlot::plot_model(model, type="re")
+```
+
+```{r}
+ggpredict(
+  model,
+  terms = c("elite", "channel"),
+  type="random",
+  margin="empirical"
+) |> plot(show_ci = F)
+```
+
+
+## pplcentr model
+
+```{r}
+model <- lme4::lmer(
+  formula = log_video_views ~ 1 + pplcentr + n_sents + released_at + (pplcentr | channel),
+  data = df
+)
+```
+
+```{r}
+performance::icc(model)
+```
+
+```{r}
+sjPlot::plot_model(model, type="re")
+```
+
+```{r}
+ggpredict(
+  model,
+  terms = c("pplcentr", "channel"),
+  type="random",
+  margin="empirical"
+) |> plot(show_ci = F)
+```
+
+# Video Likes
+
+```{r}
+df |> filter(!is.na(log_video_likes)) |>
+ggplot(aes(log_video_likes)) +
+  geom_histogram(bins=50)
+```
+
+## elite model
+
+```{r}
+model <- lme4::lmer(
+  formula = log_video_likes ~ 1 + elite + n_sents + (elite | channel),
+  REML=F,
+  data = df
+)
+```
+
+```{r}
+summary(model)
+```
+
+```{r}
+performance::icc(model)
+```
+
+```{r}
+sjPlot::plot_model(model, type="re")
+```
+
+```{r}
+ggpredict(
+  model,
+  terms = c("elite", "channel"),
+  type="random",
+  margin="empirical"
+) |> plot(show_ci = F)
+```
+
+## pplcentr model
+
+```{r}
+model <- lme4::lmer(
+  formula = log_video_likes ~ 1 + pplcentr + n_sents + (pplcentr | channel),
+  REML=F,
+  data = df
+)
+```
+
+```{r}
+summary(model)
+```
+
+```{r}
+performance::icc(model)
+```
+
+```{r}
+sjPlot::plot_model(model, type="re")
+```
+
+```{r}
+ggpredict(
+  model,
+  terms = c("pplcentr", "channel"),
+  type="random",
+  margin="empirical"
+) |> plot(show_ci = F)
+```
+
+# Likes per View
+
+```{r}
+df |>
+  group_by(channel) |>
+  mutate(
+    likes_per_view = (video_likes / video_views) |> z_transform()
+  ) |>
+  ungroup() |>
+  filter(!is.na(likes_per_view)) |>
+  ggplot(aes(likes_per_view)) +
+    geom_histogram(bins=150)
+```
+
+```{r}
+model <- lme4::lmer(
+  formula = likes_per_view ~ 1 + elite + released_at + n_sents + (elite | channel),
+  data = df |>
+  group_by(channel) |>
+  mutate(
+    likes_per_view = (video_likes / video_views) |> z_transform()
+  ) |>
+  ungroup()
+
+)
+```
+
+```{r}
+summary(model)
+```
+
+```{r}
+performance::icc(model)
+```
+
+```{r}
+sjPlot::plot_model(model, type="re")
+```
+
+```{r}
+ggpredict(
+  model,
+  terms = c("elite", "channel"),
+  type="random",
+  margin="empirical"
+) |> plot(show_ci = F)
+```

@@ -9,6 +9,6 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=lukas.erhard@sowi.uni-stuttgart.de
 
-cd cd /home/st/st_st/st_ac138201/workspaces/gpfs/st_ac138201-ytpop/ytpop
+cd /home/st/st_st/st_ac138201/workspaces/gpfs/st_ac138201-ytpop/ytpop
 
 ~/nix-portable nix develop --impure --command nixglhost python pipeline/04-run_popbert.py

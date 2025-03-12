@@ -15,7 +15,7 @@ class DataLoader:
     }
 
     PERIOD_START = "2017-12-06"
-    PERIOD_END = "2025-02-25"
+    PERIOD_END = "2025-02-24"
     MIN_TOKENS_PER_SENT = 5
     MIN_SENTS_PER_VIDEO = 5
 
@@ -33,10 +33,13 @@ class DataLoader:
         table = table.mutate(channel=_.channel.substitute(src.party_names))
         return table
 
-    def videos(self, filtered: bool = True, _ignore_sentence_filter: bool = False):
-        table = self.con.table("videos").select(~s.cols("video_comments"))
-        table = table.mutate(channel=_.channel.substitute(src.party_names))
-        broken_table = self.con.table("broken_transcripts")
+    def videos(
+        self,
+        filtered: bool = True,
+        _ignore_sentence_filter: bool = False,
+        _ignore_broken_transcripts_filter: bool = False,
+    ):
+        table = self.con.table("videos").select(~s.cols("video_comments", "channel"))
 
         if filtered:
             # filter by time and type
@@ -44,8 +47,11 @@ class DataLoader:
                 [
                     _.video_datetime_upload >= self.PERIOD_START,
                     _.video_datetime_upload <= self.PERIOD_END,
+                    _.video_was_live == False,
                 ],
-            ).anti_join(broken_table, ["video_id"])
+            )
+            if not _ignore_broken_transcripts_filter:
+                table = table.anti_join(self.broken_transcripts(filtered=False), ["video_id"])
 
             if not _ignore_sentence_filter:
                 # necessary to avoid possible infinite recursion
@@ -53,6 +59,18 @@ class DataLoader:
                 table = table.semi_join(sents, "video_id")
 
         return table
+
+    def broken_transcripts(self, filtered: True):
+        broken_table = self.con.table("broken_transcripts")
+        if filtered:
+            videos = self.videos(
+                filtered=True,
+                _ignore_broken_transcripts_filter=True,
+                _ignore_sentence_filter=True,
+            )
+            broken_table = broken_table.semi_join(videos, "video_id")
+
+        return broken_table
 
     def sentences(self, filtered: bool = True, _ignore_video_filter: bool = False):
         table = self.con.table("sentences")
@@ -69,7 +87,9 @@ class DataLoader:
 
             # remove videos with less too few sentences
             counts = (
-                table.group_by("video_id").agg(n_sents=_.sentence_id.count()).filter(_.n_sents > 5)
+                table.group_by("video_id")
+                .agg(n_sents=_.sentence_id.count())
+                .filter(_.n_sents >= self.MIN_SENTS_PER_VIDEO)
             )
             table = table.semi_join(counts, "video_id")
 

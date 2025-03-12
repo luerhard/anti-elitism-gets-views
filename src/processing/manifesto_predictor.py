@@ -1,4 +1,3 @@
-
 import numpy as np
 import torch
 from transformers import AutoModelForSequenceClassification
@@ -7,6 +6,7 @@ from transformers import AutoTokenizer
 from src.logging import logger as log
 from src.utils.iterate import chunks
 from src.utils.iterate import flatten_list
+
 
 class ManifestoPredictor:
     def __init__(self) -> None:

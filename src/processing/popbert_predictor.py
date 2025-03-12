@@ -4,6 +4,7 @@ from transformers import AutoTokenizer
 
 from src.utils.iterate import chunks
 
+
 class PopBERTPredictor:
     def __init__(self) -> None:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"

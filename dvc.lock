@@ -97,8 +97,8 @@ stages:
       size: 2744
     - path: src/processing/popbert_predictor.py
       hash: md5
-      md5: 2d75e89af67d95a035359924acc4e909
-      size: 2070
+      md5: e4dd97ffcd8f8e962b977a7da8c71c6d
+      size: 2071
     outs:
     - path: data/yt_metadata/popbert.parquet
       hash: md5

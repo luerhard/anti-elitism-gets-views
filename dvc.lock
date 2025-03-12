@@ -134,30 +134,46 @@ stages:
       nfiles: 9
     - path: pipeline/06-basic_descriptives.ipynb
       hash: md5
-      md5: 1e86d805f9595a04f8abbe3e5c8c2c0d
-      size: 21370
+      md5: e1f4f375952ddab631f7594d8867e687
+      size: 24741
     - path: src/load/
       hash: md5
-      md5: f39835ddeabffaacffdc22fd2d063336.dir
-      size: 19443
+      md5: 6467ec31d4c95e2b4683d41c36ee5d22.dir
+      size: 20879
       nfiles: 8
     outs:
     - path: reports/figures/populism_per_party.svg
       hash: md5
-      md5: c3cf27f0ded7a803bca9052e422f9d4a
-      size: 20685
+      md5: 1b12938539876eab85ede9b0d04491cc
+      size: 20681
     - path: reports/figures/view_count.svg
       hash: md5
-      md5: 781021057235358250c3f738066b8204
-      size: 276407
+      md5: 4bafdec8179b46b0632245754d128ab1
+      size: 278520
+    - path: reports/manuscript/inlines/n_broken.txt
+      hash: md5
+      md5: f033ab37c30201f73f142449d037028d
+      size: 2
+    - path: reports/manuscript/inlines/n_sents.txt
+      hash: md5
+      md5: 905429665852f3370bf51e1d049e73b8
+      size: 7
+    - path: reports/manuscript/inlines/n_videos.txt
+      hash: md5
+      md5: 80acad8cb1438d0e8c9091dc32289ed2
+      size: 6
+    - path: reports/manuscript/inlines/sum_duration.txt
+      hash: md5
+      md5: b487a71a21f687f478e9e585625936cf
+      size: 7
     - path: reports/notebooks/06-basic_descriptives.ipynb
       hash: md5
-      md5: 893f3395eb1cd22179693621276e8254
-      size: 30103
+      md5: b532c96617a22fd1042642a428735026
+      size: 34290
     - path: reports/tables/dataset_summary.csv
       hash: md5
-      md5: 365b5fd0848bd1152c22c3e2cbe62f73
-      size: 767
+      md5: f7ff449d2f598dc466fd6cbf2be72c11
+      size: 892
   nb_regression:
     cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
       '../reports/notebooks/07-nb_regression.html')"

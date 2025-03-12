@@ -76,7 +76,7 @@
   #set text(size: 0.93em)
 	#set align(left)
 	#set par(hanging-indent: 0cm, justify: true, leading: 0.4em)
-	#pad(x: 0.7cm)[#it.caption]
+	#pad(x: 0.4cm)[#it.caption]
 ]
 
 /* emergency workaround for filed bug*/
@@ -255,12 +255,15 @@ The content of the videos was transcribed using OpenAI's advanced speech-to-text
 This model provides significantly faster transcription compared to Whisper-large-v3 while maintaining comparable accuracy.
 However, Whisper models tend to produce erroneous transcriptions, known as hallucinations, particularly when the audio includes extended periods without speech, a common occurrence in YouTube videos.
 To address this issue, we employed the Silero voice activity detector @silerovad2024, isolating segments containing actual speech and passing only these segments to the Whisper transcription model.
-Although this approach effectively reduced the number of hallucinations, 80 videos had to be excluded from the analysis due to faulty transcripts.
+#let faulty_transcripts = read("inlines/n_broken.txt")
+Although this approach effectively reduced the number of hallucinations, #faulty_transcripts videos had to be excluded from the analysis due to faulty transcripts.
 Faulty transcripts were identified by generating all n-grams for values of n between 2 and 10, and determining whether any n-gram appeared more than nine consecutive times within a transcript.
 
 Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of SoMaJo @proislSoMaJoStateoftheartTokenization2016 tokenizer and sentence-splitter.
-After removing sentences with less than 5 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises 11,826 videos, totaling 1,655.3 hours of playtime and containing 842,672 sentences.
-
+#let hour_duration = read("inlines/sum_duration.txt")
+#let n_videos = read("inlines/n_videos.txt")
+#let n_sents = read("inlines/n_sents.txt")
+After removing sentences with less than 5 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises #n_videos videos, totaling #hour_duration hours of playtime and containing #n_sents sentences.
 == Populism Detection <detection-of-populism>
 
 In a subsequent article, I have applied the PopBERT @erhardPopBERTDetectingPopulism2024, a BERT-based transformer model, initially developed to analyze German parliamentary speeches, to study populism in transcripts of YouTube videos from the official channels of the German parties in the Bundestag.
@@ -301,7 +304,7 @@ The Greens, the Left Party and the SPD, on the other hand, tend to produce signi
   align(center)[
     #set text(size: 0.85em)
     #table(
-      columns: (2.3cm, ..(auto,) * (header.len() - 1)),
+      columns: (2.5cm, ..(auto,) * (header.len() - 1)),
       align: (left, ..(right,) * (header.len() - 1)),
       inset: 4pt,
       stroke: none,
@@ -317,9 +320,9 @@ The Greens, the Left Party and the SPD, on the other hand, tend to produce signi
     Summary statistics of the dataset.
     All data is current as of February 25, 2025, the day after the federal election.
     *chFollowers* corresponds to the number of followers that are shown given in the channel description; this number is most probably rounded to some degree by YouTube.
-    *videos* depicts the number of videos published since the start of the observation period.
-    *avgVideoLen* is shown in seconds.
-    *disabledLikes* corresponds to the number of returned missings for the like_count from the API, which indicates that the like functionality is disabled for a particular video.
+    *nVideos* depicts the number of videos published since the start of the observation period.
+    *meanVideoLen* is shown in seconds.
+    *nLikesNA* corresponds to the number of returned missings for the like_count from the API, which indicates that the like functionality is disabled for a particular video.
     *nSentences* corresponds to the number of sentences extracted from all valid videos per channel.
 
   ]

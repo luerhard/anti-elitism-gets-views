@@ -71,6 +71,14 @@
 
 #place(set-page-properties())
 
+#show figure: it => box(width:100%)[
+	#align(center)[#it.body]
+  #set text(size: 0.93em)
+	#set align(left)
+	#set par(hanging-indent: 0cm, justify: true, leading: 0.4em)
+	#pad(x: 0.7cm)[#it.caption]
+]
+
 /* emergency workaround for filed bug*/
 #show cite: it => {
   show "Vreese": "de Vreese"
@@ -242,19 +250,16 @@ The audio data of all videos and their accompanying metadata were downloaded usi
 In contrast to the abovementioned article, who use the pre-generated transcripts provided by YouTube, we use a state-of-the-art speech-to-text model to transcribe the audio material ourselves.
 This procedure ensures a enhanced quality of the transcripts, including correct punctuation and music recognition.
 
-The videos' content was transcribed using OpenAI's state-of-the-art speech-to-text model, whisper-large-v3-turbo @radfordRobustSpeechRecognition2022.
-This model is significantly faster than whisper-large-v3 while retaining almost the same performance.
-Around this model, we built a custom pipeline.
-The whisper models have a tendency to hallucinate when the audio that is to be transcribed contains longer periods with noch speech.
-This, though, happens quite a lot in YouTube videos.
-To mitigate the problem, we used the a the Silero voice acitivity detector @silerovad2024 to only pass audio sequences to the whisper model that actually contain speech.
 
-
-Because all whisper models suffer from a problem of hallucination when longer sequences of audio are annotated in which no speech is present, a custom pipeline was built around the model.
-
+The content of the videos was transcribed using OpenAI's advanced speech-to-text model, Whisper-large-v3-turbo @radfordRobustSpeechRecognition2022.
+This model provides significantly faster transcription compared to Whisper-large-v3 while maintaining comparable accuracy.
+However, Whisper models tend to produce erroneous transcriptions, known as hallucinations, particularly when the audio includes extended periods without speech, a common occurrence in YouTube videos.
+To address this issue, we employed the Silero voice activity detector @silerovad2024, isolating segments containing actual speech and passing only these segments to the Whisper transcription model.
+Although this approach effectively reduced the number of hallucinations, 80 videos had to be excluded from the analysis due to faulty transcripts.
+Faulty transcripts were identified by generating all n-grams for values of n between 2 and 10, and determining whether any n-gram appeared more than nine consecutive times within a transcript.
 
 Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of SoMaJo @proislSoMaJoStateoftheartTokenization2016 tokenizer and sentence-splitter.
-After removing sentences with less than 5 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises 9,394 videos, totaling 1,485 hours and featuring 708,549 sentences.
+After removing sentences with less than 5 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises 11,826 videos, totaling 1,655.3 hours of playtime and containing 842,672 sentences.
 
 == Populism Detection <detection-of-populism>
 
@@ -272,7 +277,7 @@ Subsequently, the focus shifts to exploring the relationship between populism an
 == German Parties on YouTube
 
 Summary statistics per channel are presented in @tab:descriptives.
-The most immediately apparent observation is that each of the two AfD channels, \@AfDFraktionimBundestag (388,000 followers), herein after referred to as AfD BT, and \@AfDTV (250,000), has more than twice as many followers as all the other analyzed channels combined (219,670).
+The most immediately apparent observation is that each of the two AfD channels, \@AfDFraktionimBundestag (521,000 followers), herein after referred to as AfD BT, and \@AfDTV (334,000), has more followers than all the other analyzed channels combined (252,410).
 The number of videos paints a similar picture.
 The two AfD channels are significantly more productive in terms of their video output.
 The average length of their videos is comparable to that of the CDU, CSU and FDP.
@@ -294,9 +299,9 @@ The Greens, the Left Party and the SPD, on the other hand, tend to produce signi
 
 #figure(
   align(center)[
-    #set text(size: 10.2pt)
+    #set text(size: 0.85em)
     #table(
-      columns: (1fr, ..(auto,) * (header.len() - 1)),
+      columns: (2.3cm, ..(auto,) * (header.len() - 1)),
       align: (left, ..(right,) * (header.len() - 1)),
       inset: 4pt,
       stroke: none,
@@ -308,15 +313,22 @@ The Greens, the Left Party and the SPD, on the other hand, tend to produce signi
       table.hline()
     )
   ]
-  , caption: [Summary statistics of the dataset.]
+  , caption: [
+    Summary statistics of the dataset.
+    All data is current as of February 25, 2025, the day after the federal election.
+    *chFollowers* corresponds to the number of followers that are shown given in the channel description; this number is most probably rounded to some degree by YouTube.
+    *videos* depicts the number of videos published since the start of the observation period.
+    *avgVideoLen* is shown in seconds.
+    *disabledLikes* corresponds to the number of returned missings for the like_count from the API, which indicates that the like functionality is disabled for a particular video.
+    *nSentences* corresponds to the number of sentences extracted from all valid videos per channel.
+
+  ]
   , kind: table
 ) <tab:descriptives>
 
-It is also evident that the number of comments on FDP and Green Party videos is almost zero.
 The FDP also has hardly any likes associated with their videos.
 A review of some of these parties' videos on the platform suggests that these functionalities were deactivated by the parties for most of the videos.
 Unfortunately, it was not possible to determine whether this was due to a lack of engagement on the part of users or because the corresponding function had been deactivated on the platform at the time the data was collected.
-While the number of comments is not relevant to the further course of the investigation, the number of likes per video is, and only the FDP is excluded from these further analyses.
 
 #figure(
   image("figures/figure_1.svg", width: 100%),

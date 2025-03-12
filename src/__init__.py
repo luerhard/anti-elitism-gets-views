@@ -59,6 +59,7 @@ party_names = {
     "BÜNDNIS 90/DIE GRÜNEN": "Greens",
     "AfD-Fraktion Bundestag": "AfD BT",
     "DIE LINKE": "Left",
+    "DieLinke": "Left",
 }
 
 channel_to_party = {

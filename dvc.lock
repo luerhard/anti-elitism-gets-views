@@ -134,8 +134,8 @@ stages:
       nfiles: 9
     - path: pipeline/06-basic_descriptives.ipynb
       hash: md5
-      md5: b995f0a720d06e2aef3bc10dd171676e
-      size: 24748
+      md5: a5b501eac79634ee7a2281183a73629b
+      size: 24726
     - path: src/load/
       hash: md5
       md5: 817536fd0f081990db50feae3947a2ee.dir
@@ -144,12 +144,12 @@ stages:
     outs:
     - path: reports/figures/populism_per_party.svg
       hash: md5
-      md5: a9976c7fb96d29d28de94b7d8e53277e
-      size: 21678
+      md5: 045644d977d12b67fabfb65046dcbaec
+      size: 21686
     - path: reports/figures/view_count.svg
       hash: md5
-      md5: 13701c2b7a932e36b0c231032c0c015b
-      size: 279833
+      md5: 5d4524280c0dd2040abb5cb16dc3088e
+      size: 279283
     - path: reports/manuscript/inlines/n_broken.txt
       hash: md5
       md5: f033ab37c30201f73f142449d037028d
@@ -168,8 +168,8 @@ stages:
       size: 7
     - path: reports/notebooks/06-basic_descriptives.ipynb
       hash: md5
-      md5: 7cdf7796ea136daf3ce96db437de4f7f
-      size: 34288
+      md5: 20520d78a02da4c29c174a4faf646ee9
+      size: 34283
     - path: reports/tables/dataset_summary.csv
       hash: md5
       md5: 6b0b332f66bf0ef8fd837e1b7bd18d45

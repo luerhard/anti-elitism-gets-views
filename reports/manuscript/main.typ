@@ -316,10 +316,9 @@ Subsequently, the focus shifts to exploring the relationship between populism an
 == German Parties on YouTube
 
 Summary statistics per channel are presented in @tab:descriptives.
-The most immediately apparent observation is that each of the two AfD channels, \@AfDFraktionimBundestag (521,000 followers), herein after referred to as AfD BT, and \@AfDTV (334,000), has more followers than all the other analyzed channels combined (252,410).
-The number of videos paints a similar picture.
-The two AfD channels are significantly more productive in terms of their video output and engagement.
-
+A notable observation is that each of the two AfD channels---\@AfDFraktionimBundestag (521,000 followers), hereafter referred to as AfD BT, and \@AfDTV (334,000 followers)---individually has more followers than all other analyzed channels combined (252,410 followers).
+While the CDU, FDP, Greens, and SPD channels have comparable follower counts around 30,000 each, the CSU, the smaller "sister party" of the CDU limited to Bavaria, has only 6,610 followers.
+In contrast, the Left party, another populist party represented in the Bundestag alongside the AfD, has a substantially higher follower count of 117,000, highlighting the greater popularity of populist parties compared to their non-populist counterparts.
 
 #let table_array = csv("tables/table_1.csv", row-type: array)
 #let header = table_array.first()
@@ -344,38 +343,38 @@ The two AfD channels are significantly more productive in terms of their video o
     )
   ],
   caption: [
-    Summary statistics of the dataset, the highest value for each row is marked as bold.
+    Summary statistics of the dataset.
     All data is current as of February 25, 2025, the day after the federal election.
     *chFollowers* corresponds to the number of followers that are shown given in the channel description; this number is most probably rounded to some degree by YouTube.
-    *nVideos* depicts the number of videos published since the start of the observation period.
     *meanVideoLen* is shown in seconds.
     *nLikesNA* corresponds to the number of returned missings for the like_count from the API, indicating that the like functionality is disabled for a particular video.
     *nSentences* corresponds to the number of sentences extracted from all valid videos per channel.
   ]
 ) <tab:descriptives>
 
-They not only have produced significantly more videos than the other channels, but their videos are also more viewed and more liked on average.
-The average like count for the FDP in this table might be misleading.
-They have disabled the like functionality for all but one video on their channel.
-Comparing median and mean values for both likes and views uncovers a major obstacle for the analysis of YouTube videos in general.
-The means show much higher values than the medians for all comparisons, indicating the the distribution is highly skewed and mean values are driven upwards by only some extremely successful videos.
-@fig:view_count shows the distribution of views and likes in order to take a closer look at the numbers.
-
-// The average length of their videos is comparable to that of the CDU, CSU and FDP.
-// The Greens, the Left Party and the SPD, on the other hand, tend to produce significantly longer videos than the aforementioned parties.
+The volume of videos produced follows a similar pattern, with both AfD channels demonstrating significantly higher productivity and engagement measured as median views and likes, followed by the Left.
+However, the average like count reported for the FDP may be misleading, as the like functionality has been disabled for all but one video on their channel.
+Comparing median and mean values for both likes and views reveals a substantial analytical challenge inherent to YouTube data.
+Specifically, the means are substantially higher than the medians for all metrics, indicating a highly skewed distribution driven upward by a few exceptionally successful videos.
+@fig:view_count illustrates the distributions of views and likes to examine these disparities more closely. Due to considerable variation in the raw counts, views and likes are displayed on a logarithmic scale.
 
 #figure(
   placement: auto,
   image("figures/figure_1.svg", width: 100%),
   caption: [
-    Distribution of likes and views per channel. All values are logged. The rectangle describes the .25, .5 and.75 quantiles. Outliers are represented by dots. Violin plots were superimposed on the boxplot to better visualize the distribution.]
+    Distribution of likes and views per channel.
+    All values are logged.
+    The rectangle describes the .25, .5 and.75 quantiles.
+    Outliers are represented by dots.
+    Violin plots were superimposed on the boxplot to better visualize the distribution.]
 ) <fig:view_count>
 
-Since these figures differ greatly between the channels, both are shown in logarithmic form.
-It is clear that all parties produce some successful videos, but the AfD stands out clearly here as well.
-While the median of the views with values between 777 (Greens) and 1,613 (Left Party) is quite similar for the other parties, it is significantly higher for AfD BT with 14,547 and AfD TV with 17,767.
-This picture becomes even clearer when looking at the number of likes.
-While no other party reaches a median like count of 100---the Left achieves the highest count with 86---the AfD reaches 1,808 with AfD BT and as much as 2,233 with AfD TV.
+In addition to the above-mentioned differences in median views and likes, we can see in this figure that all parties have some very successful videos in terms of views.
+It is evident that all parties produce some successful videos, but the AfD stands out clearly here as well.
+
+// While the median of the views with values between 777 (Greens) and 1,613 (Left Party) is quite similar for the other parties, it is significantly higher for AfD BT with 14,547 and AfD TV with 17,767.
+// This picture becomes even clearer when looking at the number of likes.
+// While no other party reaches a median like count of 100---the Left achieves the highest count with 86---the AfD reaches 1,808 with AfD BT and as much as 2,233 with AfD TV.
 
 == Populism by German Parties on YouTube
 

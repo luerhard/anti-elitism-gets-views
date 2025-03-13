@@ -1,5 +1,7 @@
 #import "@preview/drafting:0.2.0": *
 #import "template.typ": *
+#import "@preview/wordometer:0.1.4": word-count, total-words
+#show: word-count
 
 // TITLE PAGE
 #set text(
@@ -35,7 +37,7 @@
       "UniS": "University of Stuttgart, Institute for Social Sciences, Germany",
       "IRIS": "Research Forum for Reflecting on Intelligent Systems",
     ),
-    abstract: [#lorem(100)],
+    abstract: [#lorem(100) #linebreak() *SUM OF WORDS:* #total-words],
     keywords: ("Populism", "YouTube", "LLM")
   )
 ]
@@ -47,6 +49,38 @@
 
 #set quote(block: true)
 
+// Table highlight / format functions
+#let convert-to-float(val) = {
+  let check = val.find(regex("^\d+[\.,]?\d*$"))
+  if check != none {
+    str(calc.round(float(val), digits: 2))
+  } else {
+    val
+  }
+}
+
+
+#let highlight-max(row) = {
+  let numeric-part = row.slice(1).map(v => float(v))
+  let row-max = calc.max(..numeric-part)
+
+  let make-bold(item) = {
+
+    let check = item.find(regex("^\d+[\.,]?\d*$"))
+    if check == none {
+      item
+    } else {
+      let num-item = float(item)
+      if num-item == row-max {
+        set text(weight: "bold")
+        convert-to-float(item)
+      } else {
+        convert-to-float(item)
+      }
+    }
+  }
+  row.map(make-bold)
+}
 #let inote(body) = {
   set align(center)
   set par(leading: 0.45em, justify: false)
@@ -71,13 +105,13 @@
 
 #place(set-page-properties())
 
-#show figure: it => box(width:100%)[
-	#align(center)[#it.body]
-  #set text(size: 0.93em)
-	#set align(left)
-	#set par(hanging-indent: 0cm, justify: true, leading: 0.4em)
-	#pad(x: 0.4cm)[#it.caption]
-]
+#show figure: it => {
+	align(center)[#it.body]
+  set text(size: 0.93em)
+	set align(left)
+	set par(hanging-indent: 0cm, justify: true, leading: 0.4em)
+	pad(x: 0.4cm)[#it.caption]
+}
 
 /* emergency workaround for filed bug*/
 #show cite: it => {
@@ -88,6 +122,7 @@
   show regex("Vreese, C. H. de"): "de Vreese, C. H."
   it
 }
+
 
 
 = Introduction <introduction>
@@ -259,11 +294,12 @@ To address this issue, we employed the Silero voice activity detector @silerovad
 Although this approach effectively reduced the number of hallucinations, #faulty_transcripts videos had to be excluded from the analysis due to faulty transcripts.
 Faulty transcripts were identified by generating all n-grams for values of n between 2 and 10, and determining whether any n-gram appeared more than nine consecutive times within a transcript.
 
-Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of SoMaJo @proislSoMaJoStateoftheartTokenization2016 tokenizer and sentence-splitter.
+Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of the SoMaJo tokenizer and sentence-splitter @proislSoMaJoStateoftheartTokenization2016.
 #let hour_duration = read("inlines/sum_duration.txt")
 #let n_videos = read("inlines/n_videos.txt")
 #let n_sents = read("inlines/n_sents.txt")
-After removing sentences with less than 5 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises #n_videos videos, totaling #hour_duration hours of playtime and containing #n_sents sentences.
+After removing sentences with less than 3 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises #n_videos videos, totaling #hour_duration hours of playtime and containing #n_sents sentences.
+
 == Populism Detection <detection-of-populism>
 
 In a subsequent article, I have applied the PopBERT @erhardPopBERTDetectingPopulism2024, a BERT-based transformer model, initially developed to analyze German parliamentary speeches, to study populism in transcripts of YouTube videos from the official channels of the German parties in the Bundestag.
@@ -282,26 +318,17 @@ Subsequently, the focus shifts to exploring the relationship between populism an
 Summary statistics per channel are presented in @tab:descriptives.
 The most immediately apparent observation is that each of the two AfD channels, \@AfDFraktionimBundestag (521,000 followers), herein after referred to as AfD BT, and \@AfDTV (334,000), has more followers than all the other analyzed channels combined (252,410).
 The number of videos paints a similar picture.
-The two AfD channels are significantly more productive in terms of their video output.
-The average length of their videos is comparable to that of the CDU, CSU and FDP.
-The Greens, the Left Party and the SPD, on the other hand, tend to produce significantly longer videos than the aforementioned parties.
+The two AfD channels are significantly more productive in terms of their video output and engagement.
+
 
 #let table_array = csv("tables/table_1.csv", row-type: array)
 #let header = table_array.first()
-
-#let convert-to-float(val) = {
-  let check = val.find(regex("^\d+[\.,]?\d*$"))
-  if check != none {
-    str(calc.round(float(val), digits: 2))
-  } else {
-    val
-  }
-}
-
-#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
+#let table_content = table_array.slice(1).map(row => highlight-max(row))
+#show figure: set block(breakable: false)
 
 #figure(
-  align(center)[
+  kind: table,
+  context [
     #set text(size: 0.85em)
     #table(
       columns: (2.5cm, ..(auto,) * (header.len() - 1)),
@@ -315,31 +342,35 @@ The Greens, the Left Party and the SPD, on the other hand, tend to produce signi
       ..table_content.flatten(),
       table.hline()
     )
-  ]
-  , caption: [
-    Summary statistics of the dataset.
+  ],
+  caption: [
+    Summary statistics of the dataset, the highest value for each row is marked as bold.
     All data is current as of February 25, 2025, the day after the federal election.
     *chFollowers* corresponds to the number of followers that are shown given in the channel description; this number is most probably rounded to some degree by YouTube.
     *nVideos* depicts the number of videos published since the start of the observation period.
     *meanVideoLen* is shown in seconds.
-    *nLikesNA* corresponds to the number of returned missings for the like_count from the API, which indicates that the like functionality is disabled for a particular video.
+    *nLikesNA* corresponds to the number of returned missings for the like_count from the API, indicating that the like functionality is disabled for a particular video.
     *nSentences* corresponds to the number of sentences extracted from all valid videos per channel.
-
   ]
-  , kind: table
 ) <tab:descriptives>
 
-The FDP also has hardly any likes associated with their videos.
-A review of some of these parties' videos on the platform suggests that these functionalities were deactivated by the parties for most of the videos.
-Unfortunately, it was not possible to determine whether this was due to a lack of engagement on the part of users or because the corresponding function had been deactivated on the platform at the time the data was collected.
+They not only have produced significantly more videos than the other channels, but their videos are also more viewed and more liked on average.
+The average like count for the FDP in this table might be misleading.
+They have disabled the like functionality for all but one video on their channel.
+Comparing median and mean values for both likes and views uncovers a major obstacle for the analysis of YouTube videos in general.
+The means show much higher values than the medians for all comparisons, indicating the the distribution is highly skewed and mean values are driven upwards by only some extremely successful videos.
+@fig:view_count shows the distribution of views and likes in order to take a closer look at the numbers.
+
+// The average length of their videos is comparable to that of the CDU, CSU and FDP.
+// The Greens, the Left Party and the SPD, on the other hand, tend to produce significantly longer videos than the aforementioned parties.
 
 #figure(
+  placement: auto,
   image("figures/figure_1.svg", width: 100%),
   caption: [
-    Distribution of likes and views per channel. All values are logged. The rectangle describes the .25, .5 and.75 quantiles. Outliers are represented by dots. Violin plots were superimposed on the boxplot to better visualize the distribution.  ]
+    Distribution of likes and views per channel. All values are logged. The rectangle describes the .25, .5 and.75 quantiles. Outliers are represented by dots. Violin plots were superimposed on the boxplot to better visualize the distribution.]
 ) <fig:view_count>
 
-@fig:view_count shows the distribution of views and likes in order to take a closer look at the numbers.
 Since these figures differ greatly between the channels, both are shown in logarithmic form.
 It is clear that all parties produce some successful videos, but the AfD stands out clearly here as well.
 While the median of the views with values between 777 (Greens) and 1,613 (Left Party) is quite similar for the other parties, it is significantly higher for AfD BT with 14,547 and AfD TV with 17,767.
@@ -394,142 +425,9 @@ Consequently, we will exclude the FDP from the subsequent analysis relating to t
 #pagebreak()
 #set par(leading: 1em, spacing: 1.7em)
 #bibliography("references.bib", style: "apa")
-
-#set heading(numbering: none)
 #pagebreak()
-= Appendix <appendix>
 
-#show heading: it => {
-  if it.level == 1 and it.numbering != none {
-    [#it.supplement #counter(heading).display():]
-  } else if it.numbering != none {
-    [#counter(heading).display().]
-  }
-
-  h(0.3em)
-  it.body
-  parbreak()
-}
-
-#counter(heading).update(0)
-#set heading(numbering: "A.1", supplement: [Appendix])
-
-= Top 10 most viewed videos per channel
-
-#let table_array = csv("../tables/most_viewed_videos_per_channel.csv", row-type: array)
-#let header = ([Channel], [N Likes], [N Views], [Title])
-//
-#let convert-to-float(val) = {
-  let check = val.find(regex("^\d+[\.,]?\d*$"))
-  if check != none {
-    str(calc.round(float(val), digits: 2))
-  } else {
-    val
-  }
-}
-//
-#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
-//
 #show figure: set block(breakable: true)
-#figure(
-  align(center)[
-    #set par(leading: 0.65em, justify: false)
-    #set text(size: 10.2pt)
-    #table(
-      columns: (auto, ..(auto,) * (header.len() - 1)),
-      align: (left, ..(right,) * (header.len() - 2), left),
-      inset: 4pt,
-      stroke: (x, y) => (
-        top: if calc.rem(y - 1, 10) == 0 { 1pt }
-      ),
-      table.hline(),
-      table.header(..header),
-      table.vline(x: 1, start: 1, end: table_content.len() + 1),
-      table.hline(),
-      ..table_content.flatten(),
-      table.hline()
-    )
-  ]
-  , caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. The FDP is excluded due to their videos having basically no likes.]
-  , kind: table
-) <tab:most_viewed_videos>
+#set heading(numbering: none)
 
-= Top 10 most liked videos per channel
-
-#let table_array = csv("../tables/most_liked_videos_per_channel.csv", row-type: array)
-#let header = ([Channel], [N Likes], [N Views], [Title])
-//
-#let convert-to-float(val) = {
-  let check = val.find(regex("^\d+[\.,]?\d*$"))
-  if check != none {
-    str(calc.round(float(val), digits: 2))
-  } else {
-    val
-  }
-}
-//
-#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
-//
-#show figure: set block(breakable: true)
-#figure(
-  align(center)[
-    #set par(leading: 0.65em, justify: false)
-    #set text(size: 10.2pt)
-    #table(
-      columns: (auto, ..(auto,) * (header.len() - 1)),
-      align: (left, ..(right,) * (header.len() - 2), left),
-      inset: 4pt,
-      stroke: (x, y) => (
-        top: if calc.rem(y - 1, 10) == 0 { 1pt }
-      ),
-      table.hline(),
-      table.header(..header),
-      table.vline(x: 1, start: 1, end: table_content.len() + 1),
-      table.hline(),
-      ..table_content.flatten(),
-      table.hline()
-    )
-  ]
-  , caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. The FDP is excluded due to their videos having basically no likes.]
-  , kind: table
-) <tab:most_liked_videos>
-
-= Top 10 most anti-elitist videos per channel
-
-#let table_array = csv("../tables/most_antielitism_videos_per_channel.csv", row-type: array)
-#let header = ([Channel], [Total Sents], [Anti-Elite], [Title])
-//
-#let convert-to-float(val) = {
-  let check = val.find(regex("^\d+[\.,]?\d*$"))
-  if check != none {
-    str(calc.round(float(val), digits: 2))
-  } else {
-    val
-  }
-}
-//
-#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
-//
-#show figure: set block(breakable: true)
-#figure(
-  align(center)[
-    #set par(leading: 0.65em, justify: false)
-    #set text(size: 10.2pt)
-    #table(
-      columns: (auto, ..(auto,) * (header.len() - 1)),
-      align: (left, ..(right,) * (header.len() - 2), left),
-      inset: 4pt,
-      stroke: (x, y) => (
-        top: if calc.rem(y - 1, 10) == 0 { 1pt }
-      ),
-      table.hline(),
-      table.header(..header),
-      table.vline(x: 1, start: 1, end: table_content.len() + 1),
-      table.hline(),
-      ..table_content.flatten(),
-      table.hline()
-    )
-  ]
-  , caption: [This table shows the top 10 most anti-elitist videos per channel. Anti-Elite shows the fraction of sentences that are classified as anti-elitist in each video.]
-  , kind: table
-) <tab:most_anti_elitism_videos>
+// #include "appendix.typ"

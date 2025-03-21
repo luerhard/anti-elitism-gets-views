@@ -36,6 +36,7 @@ class DataLoader:
     def videos(
         self,
         filtered: bool = True,
+        text_fields: bool = False,
         _ignore_sentence_filter: bool = False,
         _ignore_broken_transcripts_filter: bool = False,
     ):
@@ -58,6 +59,9 @@ class DataLoader:
                 sents = self.sentences(_ignore_video_filter=True)
                 table = table.semi_join(sents, "video_id")
 
+        if not text_fields:
+            table = table.select(~s.cols("video_description"))
+
         return table
 
     def broken_transcripts(self, filtered: True):
@@ -72,7 +76,12 @@ class DataLoader:
 
         return broken_table
 
-    def sentences(self, filtered: bool = True, _ignore_video_filter: bool = False):
+    def sentences(
+        self,
+        filtered: bool = True,
+        text_fields: bool = False,
+        _ignore_video_filter: bool = False,
+    ):
         table = self.con.table("sentences")
 
         if filtered:
@@ -92,6 +101,9 @@ class DataLoader:
                 .filter(_.n_sents >= self.MIN_SENTS_PER_VIDEO)
             )
             table = table.semi_join(counts, "video_id")
+
+        if not text_fields:
+            table = table.select(~s.cols("tokens"))
 
         return table
 

@@ -1,7 +1,6 @@
 #import "@preview/drafting:0.2.0": *
 #import "template.typ": *
 #import "@preview/wordometer:0.1.4": word-count, total-words
-#show: word-count
 
 // TITLE PAGE
 #set text(
@@ -22,6 +21,10 @@
   spacing: 2em
 )
 
+#let count-words() = {
+
+}
+
 #page[
   #set par(leading: 1em, spacing: 1em)
   #show: article.with(
@@ -37,7 +40,7 @@
       "UniS": "University of Stuttgart, Institute for Social Sciences, Germany",
       "IRIS": "Research Forum for Reflecting on Intelligent Systems",
     ),
-    abstract: [#lorem(100) #linebreak() *SUM OF WORDS:* #total-words],
+    abstract: [#lorem(100)],
     keywords: ("Populism", "YouTube", "LLM")
   )
 ]
@@ -124,9 +127,10 @@
 }
 
 
-
+#[]<start>
+#word-count(total => [
+Word-Count: #total.words
 = Introduction <introduction>
-
 
 Populist parties threaten democratic values and contribute to ideological polarization @robertsPopulismPolarizationComparative2022.
 Yet it has been heavily on the rise in Western countries for decades.
@@ -221,7 +225,13 @@ While #cite(<moffittPopulism2020>, form: "prose", supplement: "Table 2.1") makes
 
 // First, we follow the discursive-perfomative approach in that we define populism as a gradational concept, in contrast to a binary approach which is commonly used in research using the ideational defintion. (CITE) // (CITE Moffit 2020, Table 2.1 -- roughly)
 This allows us to detect 'more or less' populism in specific texts.
-Secondly, we see populism less as an attribute of political actors but rather see it as a practice that political actors consciously choose to employ to convey an ideology to the audience.
+Secondly, we see populism less as an attribute of political actors but rather see it as a practice that political actors consciously choose to employ to convey an ideology to the audience. Assuming that parties behave similarly on YouTube as they do elsewhere in the political landscape, we can state:
+
+#quote(block: true)[
+    #strong[H1:]
+    _Populist parties convey more populist content on YouTube than non-populist parties._
+]
+
 
 // === What are "The People"? (or People-Centrism)
 
@@ -243,14 +253,27 @@ Populism reasearch is mostly divided into to different parts.
 There is one strain that detects populism in political actors or parts of discourse like speeches.
 And there is another strain that is concerned with measuring populist attitudes among populations @akkermanHowPopulistAre2014 @hawkinsActivationPopulistAttitudes2020.
 
-A notable aspect of analysing populist communication on Social Media is that we are able to analyze direct feedback in terms of views, likes and comments on very specific bits of populist communication.
+A notable aspect of analyzing populist communication on Social Media is that we are able to analyze direct feedback in terms of views, likes and comments on very specific bits of populist communication.
 According to #cite(<keffordPopulistAttitudesBringing2022>, form: "prose") they are the first to try to bridge this gap and try link populist communcation can populist attitudes in terms of voting behavior.
 From a theoretical perspective, they achieve this by combining the ideational approach and the discursive-perfomative approach.
-We follow their tradition loosely and believe we can at least get a rough grasp of how people react to populist communication, how their attitudes towards populist communcation is, or in other words: what they do or do not "like".
+We follow their tradition loosely and believe we can at least get a rough grasp of how people react to populist communication, how their attitudes towards populist communcation is, or in other words: what they do or do not 'like'.
 
 This highlights a major advantage of analyzing populist communication on social media platforms, namely the ability to gauge public responses to populist messaging.
 This process not only involves detecting populist content published by political actors but also measuring audience reactions through various platform-specific metrics such as likes, dislikes, views, or shares.
 While the audiences on these platforms are often partisan and vary across different channels, comparing how distinct publics (i.e. viewers, followers, or subscribers) engage with content---whether it leans towards populism or not---offers valuable insights into broader public sentiment and interaction patterns.
+
+Given this premise, we expect populist parties as well as populist content to be popular among people with populist attitudes.
+We also hypothesize the opposite to be true: populist parties as well as populist content will not be especially popular among people with less populist attitudes.
+We can there formulate the following hypotheses:
+
+#quote(block: true)[
+    #strong[H2a:]
+    _On channels of populist parties, we expect a positive relationship between a videos' amount of contained populism and it's user engagment._
+
+    #strong[H2b:]
+    _On non-populist channels, we expect no positive relationship between a videos' amount of populism and user engagement._
+
+]
 
 
 // == Populism in the German Bundestag <sec:pop_in_bundestag>
@@ -268,6 +291,11 @@ While the audiences on these platforms are often partisan and vary across differ
 
 = Data & Methods <data-methods>
 
+Our research methodology begins by retrieving the audio material from all the videos under investigation.
+A speech-to-text tool is then employed to extract the transcripts from these videos, effectively converting the auditory data into analyzable text.
+Finally, an LLM model is applied to the transcripts to detect populism, providing a systematic and automated approach to identifying populist language in the content.
+All steps are described in the following in more detail.
+
 == YouTube Data
 
 Using their official channels, we collected a dataset comprising YouTube videos from all six political parties within the German Bundestag.
@@ -279,6 +307,8 @@ Conversely, the AfD's (Alternative for Germany) official channel (\@AfDTV) is di
 Both channels, exhibiting comparable follower counts, were incorporated into our analysis.
 Consequently, our dataset encompasses a total of eight channels.
 The dataset is restricted to the period from December 6, 2017 (the final channel's inaugural video publication) to February 24, 2025, the day of the Bundestagswahl 2025.
+
+== Video transcripts
 
 The analysis of video material is very challenging, we therefore follow #cite(<schwemmerSocialMediaSellout2018>, form: "prose") and focus our analysis on the audio material.
 The audio data of all videos and their accompanying metadata were downloaded using _yt-dlp_.
@@ -300,13 +330,14 @@ Subsequently, the transcriptions were tokenized and segmented into sentences usi
 #let n_sents = read("inlines/n_sents.txt")
 After removing sentences with less than 3 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises #n_videos videos, totaling #hour_duration hours of playtime and containing #n_sents sentences.
 
-== Populism Detection <detection-of-populism>
+== Detecting Populism <detection-of-populism>
 
-In a subsequent article, I have applied the PopBERT @erhardPopBERTDetectingPopulism2024, a BERT-based transformer model, initially developed to analyze German parliamentary speeches, to study populism in transcripts of YouTube videos from the official channels of the German parties in the Bundestag.
-This adaptation involves using the model to detect populist rhetoric within these videos, identifying patterns of language that align with anti-elitism and people-centrism, and examining how these elements are associated with broader political ideologies.
-The analysis focuses on the official communications from these parties, providing insights into how established political entities engage with and propagate populist narratives through online video content.
-This approach highlights the versatility of the PopBERT model for examining populist discourse across different media and political contexts.
+To detect populism in transcripts of YouTube videos from the official channels of the German parties in the Bundestag, we apply PopBERT, a BERT-based transformer model, fine-tuned to specifically detect anti-elitism and people-centrism in German political speech @erhardPopBERTDetectingPopulism2024.
 
+Although PopBERT was trained on transcripts of parliamentary speeches, we consider its application to videos from official party channels feasible.
+There is a high degree of similarity in tone, vocabulary, and rhetorical style between these two contexts.
+Additionally, there is substantial overlap in the speakers themselves, and the videos originate predominantly from the same time period as the training data.
+Therefore, we expect the model to reliably generalize to this closely related domain.
 
 = Results <results>
 
@@ -417,10 +448,10 @@ Consequently, we will exclude the FDP from the subsequent analysis relating to t
   ]
 ) <fig:nb_reg_likes>
 
-
-
 = Discussion <discussion>
 
+#[] <end>
+])
 #pagebreak()
 #set par(leading: 1em, spacing: 1.7em)
 #bibliography("references.bib", style: "apa")
@@ -429,4 +460,4 @@ Consequently, we will exclude the FDP from the subsequent analysis relating to t
 #show figure: set block(breakable: true)
 #set heading(numbering: none)
 
-// #include "appendix.typ"
+#include "appendix.typ"

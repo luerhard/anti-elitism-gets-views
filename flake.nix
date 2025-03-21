@@ -53,11 +53,15 @@
         # all R packages go here
         rEnv = with pkgs.rPackages; [
           box
+          caret
           effects
           ggeffects
           ggpubr
-          lme4
           here
+          #
+          iml
+          patchwork
+          #
           irr
           IRkernel
           jsonlite
@@ -68,6 +72,8 @@
           sjPlot
           sjstats
           MASS
+          ranger
+          randomForest
           reticulate
           svglite
           tidyverse

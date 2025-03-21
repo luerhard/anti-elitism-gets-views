@@ -17,79 +17,104 @@ box::reload(load)
 
 library(MASS)
 library(tidyverse)
-library(marginaleffects)
-library(ggplot2)
+# library(marginaleffects)
 library(ggeffects)
 library(ggpubr)
 
 theme_set(theme_minimal())
 
-channels <- load$channels()
-videos <- load$videos() |> select(!(channel))
-sentences <- load$sentences()
-popbert <- load$popbert()
 z_transform <- function(x) as.vector(scale(x))
 
-df_sents <- sentences |>
-  left_join(popbert, by = "sentence_id") |>
-  group_by(video_id) |>
-  summarize(
-    elite = mean(elite),
-    pplcentr = mean(pplcentr)
-  )
-
-df_videos <- channels |>
-  left_join(videos, by = "channel_id" )|>
-  left_join(df_sents, by = "video_id") |>
-  filter(channel != "FDP") |>
+df <- load$regression_data() |>
+  filter(video_datetime_upload > "2020-01-01") |>
+  group_by(channel) |>
   mutate(
-    channel = channel |> as_factor()
-  )
-```
-
-```{r}
-df <- df_videos %>%
-  mutate(
-    year = video_datetime_upload |> lubridate::year() |> as_factor(),
-  ) %>%
-  group_by(channel) %>%
-  mutate(
-    elite = z_transform(elite),
-    pplcentr = z_transform(pplcentr)
-  ) %>%
+    views = log(video_views),
+    likes = video_likes,
+    d_elite = elite,
+    elite = elite - mean(elite),
+    d_pplcentr = pplcentr,
+    pplcentr = pplcentr - mean(pplcentr)
+  ) |>
   ungroup()
 ```
+
+
+# show descriptives
 
 ```{r}
 df |>
   group_by(channel) |>
-  summarize(n())
+  summarize(
+    n = n(),
+    elite_mean = mean(d_elite),
+    elite_sd = sd(d_elite),
+    pplcentr_mean = mean(d_pplcentr),
+    pplcentr_sd = sd(d_pplcentr),
+  ) |> print(n=100)
+```
+
+# NB Regression on Video Views
+
+```{r}
+elite_form <- formula(
+  views ~ channel * (elite) + n_sents + released_at
+)
+
+elite_model <- lm(elite_form, data = df)
+summary(elite_model)
 ```
 
 ```{r}
-df_likes <- df |> filter(!is.na(video_likes))
+pplcentr_form <- formula(
+  views ~ channel + pplcentr + channel:pplcentr + released_year + channel:released_year + n_sents
+)
+
+pplcentr_model <- lm(pplcentr_form, data = df)
+summary(pplcentr_model)
 ```
 
 ```{r}
-df_likes |>
-  group_by(channel) |>
-  summarize(n())
+
+create_plot <- function(model, predictor) {
+
+  grid_vals <- list(
+    c(-0.1, -0.05, 0, 0.05, 0.1, 0.2, 0.3 )
+  )
+  names(grid_vals) <- predictor
+  marginaleffects::plot_predictions(
+      model,
+      by = c("channel", predictor),
+      transform = exp,
+      newdata = marginaleffects::datagrid(
+        !!!grid_vals,
+        grid_type = "counterfactual"
+      )
+    ) +
+    coord_flip() +
+    theme_ggeffects(base_family = "serif")
+}
+
+elite_plot <- create_plot(elite_model, "elite")
+pplcentr_plot <- create_plot(pplcentr_model, "pplcentr")
+
+ggarrange(elite_plot, pplcentr_plot, ncol = 1)
 ```
 
 # NB Regression on Video Likes
 
 ```{r}
 elite_form <- formula(
-  video_likes ~ channel + elite + channel:elite + year + video_duration
+  likes ~ channel + elite + channel:elite + released_year + channel:released_year + video_duration
 )
 
-elite_model <- glm.nb(elite_form, data = df_likes)
+elite_model <- glm.nb(elite_form, data = df)
 summary(elite_model)
 ```
 
 ```{r}
 pplcentr_form <- formula(
-  video_likes ~ channel + pplcentr + channel:pplcentr + year + video_duration
+  likes ~ channel + pplcentr + channel:pplcentr + released_year + channel:released_year + video_duration
 )
 
 pplcentr_model <- glm.nb(pplcentr_form, data = df)
@@ -99,14 +124,14 @@ summary(pplcentr_model)
 ```{r}
 elite_plot <- marginaleffects::plot_predictions(
     elite_model,
-    condition = list("channel", "elite" = "threenum")
+    condition = list("channel", "elite" = "quartile")
   ) +
   coord_flip() +
   theme_ggeffects(base_family = "serif")
 
 pplcentr_plot <- marginaleffects::plot_predictions(
     pplcentr_model,
-    condition = list("channel", "pplcentr" = "threenum")
+    condition = list("channel", "pplcentr" = "quartile")
   ) +
   coord_flip() +
   theme_ggeffects(base_family = "serif")
@@ -119,9 +144,6 @@ p <- here("reports", "figures", "nb_regression_like_count.svg")
 if (file.exists(p)) file.remove(p)
 ggsave(p, width = 7, height = 5)
 ```
-
-
-# NB Regression on Video Views
 
 ```{r}
 # df |>

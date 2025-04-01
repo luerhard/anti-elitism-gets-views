@@ -15,9 +15,8 @@ box::use(
 )
 box::reload(load)
 
-library(MASS)
 library(tidyverse)
-# library(marginaleffects)
+library(marginaleffects)
 library(ggeffects)
 library(ggpubr)
 
@@ -26,15 +25,16 @@ theme_set(theme_minimal())
 z_transform <- function(x) as.vector(scale(x))
 
 df <- load$regression_data() |>
-  filter(video_datetime_upload > "2020-01-01") |>
   group_by(channel) |>
   mutate(
     views = log(video_views),
-    likes = video_likes,
+    likes = log1p(video_likes),
     d_elite = elite,
-    elite = elite - mean(elite),
+    # elite = z_transform(elite),
+    # elite = elite - mean(elite),
     d_pplcentr = pplcentr,
-    pplcentr = pplcentr - mean(pplcentr)
+    # pplcentr = pplcentr - mean(pplcentr)
+    # pplcentr = z_transform(pplcentr)
   ) |>
   ungroup()
 ```
@@ -57,25 +57,80 @@ df |>
 # NB Regression on Video Views
 
 ```{r}
+channels <- df |> select(channel) |> pull() |> unique()
+
+grid_vals <- list(
+  seq(0, 0.8, 0.01)
+)
+
 elite_form <- formula(
-  views ~ channel * (elite) + n_sents + released_at
+  views ~ elite + released_year
 )
 
-elite_model <- lm(elite_form, data = df)
-summary(elite_model)
-```
-
-```{r}
 pplcentr_form <- formula(
-  views ~ channel + pplcentr + channel:pplcentr + released_year + channel:released_year + n_sents
+  views ~ pplcentr + released_year
 )
 
-pplcentr_model <- lm(pplcentr_form, data = df)
-summary(pplcentr_model)
+elite_preds 1- list()
+pplcentr_preds <- list()
+i <- 0
+
+for (channel in channels) {
+  i <- i + 1
+
+  df_channel <- df  |> filter(channel==!!channel)
+
+  elite_model <- lm(elite_form, data = df_channel)
+
+  predictions <- marginaleffects::slopes(
+    model = elite_model,
+    by = c("released_year", "elite"),
+    newdata = df_channel,
+    # newdata = marginaleffects::datagrid(
+    #   model = elite_model,
+    #   newdata = df_channel
+    # )
+    ) |> mutate(
+      channel = !!channel
+    )
+
+  elite_preds[[i]] = predictions
+
+  pplcentr_model <- lm(pplcentr_form, data = df_channel)
+
+  predictions <- marginaleffects::slopes(
+    model = pplcentr_model,
+    by = c("released_year", "pplcentr"),
+    newdata = df_channel,
+  ) |> mutate(
+    channel = !!channel
+  )
+
+  pplcentr_preds[[i]] = predictions
+
+}
 ```
 
 ```{r}
+df_elite <- elite_preds |>
+  bind_rows() |>
+  rename(popvar = elite) |>
+  mutate(var = "elite")
 
+df_pplcentr <- pplcentr_preds |>
+  bind_rows() |>
+  rename(popvar = pplcentr) |>
+  mutate(var = "pplcentr")
+
+df_pred <- df_elite |> bind_rows(df_pplcentr)
+```
+
+```{r}
+ggplot(df_pred, aes(x=popvar, y=estimate, color=var)) +
+  geom_smooth() +
+  facet_wrap(~channel, scales="free_y")
+```
+```{r}
 create_plot <- function(model, predictor) {
 
   grid_vals <- list(
@@ -87,8 +142,7 @@ create_plot <- function(model, predictor) {
       by = c("channel", predictor),
       transform = exp,
       newdata = marginaleffects::datagrid(
-        !!!grid_vals,
-        grid_type = "counterfactual"
+        pplcentr = seq(0, 0.8, 0.02)
       )
     ) +
     coord_flip() +

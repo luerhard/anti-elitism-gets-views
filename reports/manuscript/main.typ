@@ -1,4 +1,4 @@
-#import "@preview/drafting:0.2.0": *
+#import "@preview/drafting:0.2.2": *
 #import "template.typ": *
 #import "@preview/wordometer:0.1.4": word-count, total-words
 
@@ -9,21 +9,12 @@
   lang: "en"
 )
 
-#set page(
-  paper: "a4",
-  margin: (x: 3cm, y: 3cm)
-)
-
 #set par(
   leading: 1.3em,
   justify: true,
   linebreaks: "optimized",
   spacing: 2em
 )
-
-#let count-words() = {
-
-}
 
 #page[
   #set par(leading: 1em, spacing: 1em)
@@ -96,17 +87,12 @@
 
 }
 
-#let mnote(body) = {
-  let mybody = {
-    set align(left)
-    set par(leading: 0.45em, justify: false)
-    body
-  }
-  let default-rect = rect.with(inset: 0.4em, radius: 0.3em, fill: orange.lighten(70%))
-  margin-note(mybody, rect: default-rect, side:right)
-}
+#set page(
+  paper: "a4",
+  margin: (left: 2cm, right: 4cm)
+)
 
-#place(set-page-properties())
+#set-page-properties(margin-left: 2cm, margin-right: 4cm)
 
 #show figure: it => {
 	align(center)[#it.body]
@@ -126,13 +112,33 @@
   it
 }
 
+#let mnote(body) = {
+  let mybody = {
+    set align(left)
+    set par(leading: 0.45em, justify: false)
+    body
+  }
+  let default-rect = rect.with(inset: 0.4em, radius: 0.3em, fill: orange.lighten(70%))
+  margin-note(mybody, rect: default-rect, side:right)
+}
 
-#[]<start>
+#let float-note(body) = {
+  let mybody = {
+    set align(left)
+    set par(leading: 0.45em, justify: false)
+    body
+  }
+  let default-rect = rect.with(inset: 0.4em, radius: 0.3em, fill: orange.lighten(70%))
+  margin-note(mybody, rect: default-rect, stroke:none, side:right, fill: orange.lighten(80%))
+}
+
+
 #word-count(total => [
-Word-Count: #total.words
+
 = Introduction <introduction>
 
 Populist parties threaten democratic values and contribute to ideological polarization @robertsPopulismPolarizationComparative2022.
+#[]<start>#float-note[Word-Count: #total.words]
 Yet it has been heavily on the rise in Western countries for decades.
 Germany had its populist surge with rise of the Alternative for Germany (AfD).
 While originally founded as a Euroskeptic response to the problems of the 2008 financial crisis, the party was quickly overtaken by right-wing anti-immigrant sentiment.
@@ -224,6 +230,7 @@ Although this approach is less prevalent in the empirical literature, as it is c
 While #cite(<moffittPopulism2020>, form: "prose", supplement: "Table 2.1") makes a clear distinction in that the ideational approach views populism as a purely binary attribute of political actors, Mudde recognizes a gradual "more or less populism" and merely qualifies that it makes little sense to speak of "weak populists" in the case of non-populist actors who use some populist phrases @muddePopulismIdeatioalApproach2017.
 
 // First, we follow the discursive-perfomative approach in that we define populism as a gradational concept, in contrast to a binary approach which is commonly used in research using the ideational defintion. (CITE) // (CITE Moffit 2020, Table 2.1 -- roughly)
+
 This allows us to detect 'more or less' populism in specific texts.
 Secondly, we see populism less as an attribute of political actors but rather see it as a practice that political actors consciously choose to employ to convey an ideology to the audience. Assuming that parties behave similarly on YouTube as they do elsewhere in the political landscape, we can state:
 
@@ -315,6 +322,8 @@ The audio data of all videos and their accompanying metadata were downloaded usi
 In contrast to the abovementioned article, who use the pre-generated transcripts provided by YouTube, we use a state-of-the-art speech-to-text model to transcribe the audio material ourselves.
 This procedure ensures a enhanced quality of the transcripts, including correct punctuation and music recognition.
 
+#inote[Automatic transcripts are not very good. We rely on the performance of PopBERT to a large extent and need the transcripts to be as good as possible (training data is manually transcribed speeches from the bundestag; punctuation marks are very important in German and are mostly non-existent in YouTube automated transcripts)]
+
 
 The content of the videos was transcribed using OpenAI's advanced speech-to-text model, Whisper-large-v3-turbo @radfordRobustSpeechRecognition2022.
 This model provides significantly faster transcription compared to Whisper-large-v3 while maintaining comparable accuracy.
@@ -338,6 +347,8 @@ Although PopBERT was trained on transcripts of parliamentary speeches, we consid
 There is a high degree of similarity in tone, vocabulary, and rhetorical style between these two contexts.
 Additionally, there is substantial overlap in the speakers themselves, and the videos originate predominantly from the same time period as the training data.
 Therefore, we expect the model to reliably generalize to this closely related domain.
+
+#inote[What settings / thresholds did we use? We passed sentences independently etc.]
 
 = Results <results>
 

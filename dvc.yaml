@@ -61,7 +61,6 @@ stages:
     - pipeline/07-nb_regression.Rmd
     outs:
     - reports/notebooks/07-nb_regression.html
-    - reports/figures/nb_regression_like_count.svg
   top_videos:
     cmd: papermill pipeline/08-top_videos.ipynb reports/notebooks/08-top_videos.ipynb
     deps:

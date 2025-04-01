@@ -72,10 +72,9 @@ regression_data <- function() {
       released_year = released_year |>
         factor(levels=sort(unique(released_year)), ordered=FALSE)
     ) |>
-    filter(channel != "FDP") |>
     mutate(
       channel = channel |> fct_drop(),
-      log_video_likes = log(video_likes),
+      log_video_likes = log1p(video_likes),
       log_video_views = log(video_views),
       likes_per_view = video_likes / video_views,
       log_video_duration = log(video_duration),
@@ -88,14 +87,6 @@ regression_data <- function() {
     ) |>
     ungroup()
 
-  # count_before <- nrow(df)
-  # df <- df |>
-  #   filter(
-  #     between(channel_scaled_video_views, -2.5, 2.5)
-  #   )
-  # count_after <- nrow(df)
-
-  # print(paste("Removed", count_before - count_after, "outliers"))
 
   return(df)
 }

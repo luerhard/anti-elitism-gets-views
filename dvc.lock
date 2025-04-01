@@ -178,41 +178,29 @@ stages:
     cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
       '../reports/notebooks/07-nb_regression.html')"
     deps:
-    - path: data/interim/popbert.parquet.gzip
-      hash: md5
-      md5: 1fa0f6af6cdf39fdf8a275d8390045e5
-      size: 13111387
-    - path: data/interim/sentences.parquet.gzip
-      hash: md5
-      md5: 8406669a97e71bb2f6741cbca36f6b40
-      size: 35887187
     - path: data/yt_metadata/
       hash: md5
-      md5: 87a253cb9cf25a9194627c12dc3788b4.dir
-      size: 63637660
+      md5: 89c579ca5e8ee644f6844111e1eeddbb.dir
+      size: 64485314
       nfiles: 9
     - path: pipeline/07-nb_regression.Rmd
       hash: md5
-      md5: 8c723053e5b0f82b0cb3c1480bb38c94
-      size: 3768
+      md5: 52ffddd13a2ab3aa4ef723c5211da92c
+      size: 5198
     - path: r/load.R
       hash: md5
-      md5: 7fb1f7f5cf47402c3a0fe97f8837d072
-      size: 747
+      md5: c75811a8219b72cd96a8de9f23e930b3
+      size: 2404
     - path: src/load/
       hash: md5
-      md5: 2bfbd9f70117ef6611e34c32f282a0ce.dir
-      size: 10633
-      nfiles: 5
+      md5: 399da2cba9e25b50c27ec60837e53f11.dir
+      size: 21525
+      nfiles: 8
     outs:
-    - path: reports/figures/nb_regression_like_count.svg
-      hash: md5
-      md5: 33db99db4dcdf0e3bb4c6d7c188ba1c2
-      size: 23111
     - path: reports/notebooks/07-nb_regression.html
       hash: md5
-      md5: ef7271cdf0ae20df4dfff7feed1c860c
-      size: 737690
+      md5: 7c66cfc4b49248e77f07e80da9a1be6f
+      size: 2099738
   comment_analysis:
     cmd: papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
     deps:

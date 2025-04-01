@@ -37,13 +37,13 @@ stages:
     - data/yt_metadata/popbert.parquet:
         persist: true
   basic_descriptives:
-    cmd: papermill pipeline/06-basic_descriptives.ipynb reports/notebooks/06-basic_descriptives.ipynb
+    cmd: papermill pipeline/05-basic_descriptives.ipynb reports/notebooks/05-basic_descriptives.ipynb
     deps:
     - src/load/
     - data/yt_metadata/
-    - pipeline/06-basic_descriptives.ipynb
+    - pipeline/05-basic_descriptives.ipynb
     outs:
-    - reports/notebooks/06-basic_descriptives.ipynb
+    - reports/notebooks/05-basic_descriptives.ipynb
     - reports/tables/dataset_summary.csv
     - reports/figures/view_count.svg
     - reports/figures/populism_per_party.svg
@@ -51,24 +51,28 @@ stages:
     - reports/manuscript/inlines/n_sents.txt
     - reports/manuscript/inlines/n_videos.txt
     - reports/manuscript/inlines/sum_duration.txt
-  nb_regression:
-    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
-      '../reports/notebooks/07-nb_regression.html')"
+  regressions:
+    cmd: Rscript -e "rmarkdown::render('pipeline/06-regressions.Rmd', 'html_document',
+      '../reports/notebooks/06-regressions.html')"
     deps:
     - src/load/
     - r/load.R
     - data/yt_metadata/
-    - pipeline/07-nb_regression.Rmd
+    - pipeline/06-regressions.Rmd
     outs:
-    - reports/notebooks/07-nb_regression.html
+    - reports/notebooks/06-regressions.html
+    - reports/figures/reg_ame_views_elite.svg
+    - reports/figures/reg_ame_views_pplcentr.svg
+    - reports/figures/reg_ame_likes_elite.svg
+    - reports/figures/reg_ame_likes_pplcentr.svg
   top_videos:
-    cmd: papermill pipeline/08-top_videos.ipynb reports/notebooks/08-top_videos.ipynb
+    cmd: papermill pipeline/07-top_videos.ipynb reports/notebooks/07-top_videos.ipynb
     deps:
     - src/load/
     - data/yt_metadata/
-    - pipeline/08-top_videos.ipynb
+    - pipeline/07-top_videos.ipynb
     outs:
-    - reports/notebooks/08-top_videos.ipynb
+    - reports/notebooks/07-top_videos.ipynb
     - reports/tables/most_liked_videos_per_channel.csv
     - reports/tables/most_viewed_videos_per_channel.csv
     - reports/tables/most_antielitism_videos_per_channel.csv

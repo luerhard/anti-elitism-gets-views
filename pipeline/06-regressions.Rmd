@@ -105,7 +105,7 @@ create_predictions <- function(formula, data, popvar) {
 ```
 
 ```{r}
-create_plot <- function(df, var) {
+create_plot <- function(df, xlab, ylab) {
   df_plot <- df |>
     left_join(df_summary_long, by = c("channel", "var")) |>
     mutate(new = (popvar * sd) + mean) |>
@@ -124,9 +124,10 @@ create_plot <- function(df, var) {
     geom_hline(data = df_lines, aes(yintercept = intercept_y), color = "red", linetype = "dashed") +
     facet_wrap(~ channel, scales="free") +
     labs(
-      title=paste("Average Marginal Effect of", var),
+      title=paste("Average Marginal Effect of", xlab),
     ) +
-    xlab(var)
+    xlab(xlab) +
+    ylab(ylab)
 }
 ```
 
@@ -165,6 +166,7 @@ for (channel in channels) {
 
 }
 ```
+
 ```{r}
 df_elite <- elite_preds |>
   bind_rows() |>
@@ -175,18 +177,20 @@ df_pplcentr <- pplcentr_preds |>
   bind_rows() |>
   rename(popvar = pplcentr) |>
   mutate(var = "pplcentr")
-
-df_pred <- df_elite |> bind_rows(df_pplcentr)
-```
-
-
-
-```{r, fig.width=10, fig.height=11}
-create_plot(df_elite, "Anti-Elitism")
 ```
 
 ```{r, fig.width=10, fig.height=11}
-create_plot(df_pplcentr, "People-Centrism")
+plot <- create_plot(df_elite, "Anti-Elitism", "Number of Likes")
+path = here("reports", "figures", "reg_ame_likes_elite.svg")
+if (file.exists(path)) file.remove(path)
+ggsave(path, plot, width=10, height=12)
+```
+
+```{r, fig.width=10, fig.height=11}
+plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Likes")
+path = here("reports", "figures", "reg_ame_likes_pplcentr.svg")
+if (file.exists(path)) file.remove(path)
+ggsave(path, plot, width=10, height=12)
 ```
 
 # Regression on Video Views
@@ -240,9 +244,15 @@ df_pred <- df_elite |> bind_rows(df_pplcentr)
 
 
 ```{r, fig.width=10, fig.height=11}
-create_plot(df_elite, "Anti-Elitism")
+plot <- create_plot(df_elite, "Anti-Elitism", "Number of Likes")
+path = here("reports", "figures", "reg_ame_views_elite.svg")
+if (file.exists(path)) file.remove(path)
+ggsave(path, plot, width=10, height=12)
 ```
 
 ```{r, fig.width=10, fig.height=11}
-create_plot(df_pplcentr, "People-Centrism")
+plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Likes")
+path = here("reports", "figures", "reg_ame_views_pplcentr.svg")
+if (file.exists(path)) file.remove(path)
+ggsave(path, plot, width=10, height=12)
 ```

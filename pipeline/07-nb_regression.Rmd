@@ -4,7 +4,9 @@ output: html_document
 date: "2024-02-06"
 ---
 
-```{r setup, include=FALSE}
+# Load data
+
+```{r setup, include=T}
 library(here)
 
 knitr::opts_chunk$set(echo = TRUE)
@@ -24,26 +26,31 @@ theme_set(theme_minimal())
 
 z_transform <- function(x) as.vector(scale(x))
 
-df <- load$regression_data() |>
+df <- load$regression_data()
+
+count_before <- nrow(df)
+df <- df |>
   group_by(channel) |>
   mutate(
-    views = log(video_views),
-    likes = log1p(video_likes),
     d_elite = elite,
-    # elite = z_transform(elite),
-    # elite = elite - mean(elite),
+    elite = z_transform(elite),
     d_pplcentr = pplcentr,
-    # pplcentr = pplcentr - mean(pplcentr)
-    # pplcentr = z_transform(pplcentr)
+    pplcentr = z_transform(pplcentr),
+    likes_per_view = video_likes / video_views
+  ) |>
+  filter(
+    between(z_transform(video_views), -2.5, 2.5)
   ) |>
   ungroup()
-```
+count_after <- nrow(df)
 
+print(paste("Removed", count_before - count_after, "outliers"))
+```
 
 # show descriptives
 
 ```{r}
-df |>
+df_summary <- df |>
   group_by(channel) |>
   summarize(
     n = n(),
@@ -51,66 +58,113 @@ df |>
     elite_sd = sd(d_elite),
     pplcentr_mean = mean(d_pplcentr),
     pplcentr_sd = sd(d_pplcentr),
-  ) |> print(n=100)
-```
-
-# NB Regression on Video Views
-
-```{r}
-channels <- df |> select(channel) |> pull() |> unique()
-
-grid_vals <- list(
-  seq(0, 0.8, 0.01)
-)
-
-elite_form <- formula(
-  views ~ elite + released_year
-)
-
-pplcentr_form <- formula(
-  views ~ pplcentr + released_year
-)
-
-elite_preds 1- list()
-pplcentr_preds <- list()
-i <- 0
-
-for (channel in channels) {
-  i <- i + 1
-
-  df_channel <- df  |> filter(channel==!!channel)
-
-  elite_model <- lm(elite_form, data = df_channel)
-
-  predictions <- marginaleffects::slopes(
-    model = elite_model,
-    by = c("released_year", "elite"),
-    newdata = df_channel,
-    # newdata = marginaleffects::datagrid(
-    #   model = elite_model,
-    #   newdata = df_channel
-    # )
-    ) |> mutate(
-      channel = !!channel
-    )
-
-  elite_preds[[i]] = predictions
-
-  pplcentr_model <- lm(pplcentr_form, data = df_channel)
-
-  predictions <- marginaleffects::slopes(
-    model = pplcentr_model,
-    by = c("released_year", "pplcentr"),
-    newdata = df_channel,
-  ) |> mutate(
-    channel = !!channel
+    n_sents_mean = mean(n_sents),
+    n_sents_sd = sd(n_sents)
   )
 
-  pplcentr_preds[[i]] = predictions
+df_summary_long <- df_summary |>
+  tidyr::pivot_longer(
+    cols = c(elite_mean, elite_sd, pplcentr_mean, pplcentr_sd),
+    names_to = c("var", ".value"),
+    names_pattern = "(elite|pplcentr)_(mean|sd)"
+  )
 
+print(df_summary, n=100)
+```
+
+```{r}
+df |>
+  drop_na(log_video_likes) |>
+  group_by(channel) |>
+  summarize(
+    views_likes_cor = cor(log_video_views, log_video_likes)
+  )
+
+```
+
+# define functions
+
+```{r}
+create_predictions <- function(formula, data, popvar) {
+
+  model <- lm(formula, data = data)
+
+  predictions <- marginaleffects::avg_predictions(
+    model = model,
+    by = popvar,
+    transform = exp,
+    newdata = datagrid(
+      model = model,
+      !!!set_names(list(seq(-2, 2, 0.1)), popvar),
+      grid_type = "counterfactual"
+    )
+  )
+
+  return(predictions)
 }
 ```
 
+```{r}
+create_plot <- function(df, var) {
+  df_plot <- df |>
+    left_join(df_summary_long, by = c("channel", "var")) |>
+    mutate(new = (popvar * sd) + mean) |>
+    filter(between(new, 0, 1))
+
+  df_lines <- df_plot |>
+    group_by(channel) |>
+    slice_min(abs(new - 0), with_ties = FALSE) |>
+    select(channel, intercept_y = estimate)
+
+  df_plot |>
+  ggplot(aes(x=new, y=estimate)) +
+    geom_line() +
+    scale_x_continuous(breaks = scales::breaks_pretty(n = 4)) +
+    geom_ribbon(aes(ymin=conf.low, ymax=conf.high), alpha=0.1, linetype=2) +
+    geom_hline(data = df_lines, aes(yintercept = intercept_y), color = "red", linetype = "dashed") +
+    facet_wrap(~ channel, scales="free") +
+    labs(
+      title=paste("Average Marginal Effect of", var),
+    ) +
+    xlab(var)
+}
+```
+
+# Regression on Video Likes
+
+```{r}
+channels <- df |>
+  filter(channel != "FDP") |>
+  select(channel) |>
+  pull() |>
+  unique()
+
+elite_form <- formula(
+  log_video_likes ~ elite + n_sents +released_year + elite:released_year
+)
+
+pplcentr_form <- formula(
+  log_video_likes ~ pplcentr + n_sents + released_year + pplcentr:released_year
+)
+
+i <- 0
+elite_preds <- list()
+pplcentr_preds <- list()
+for (channel in channels) {
+  i <- i + 1
+
+  df_channel <- df |>
+    filter(channel==!!channel) |>
+    select(log_video_views, log_video_likes, pplcentr, elite, released_year, log_n_sents, n_sents) |>
+    drop_na()
+
+  elite_preds[[i]] = create_predictions(elite_form, df_channel, "elite") |>
+    mutate(channel = !!channel)
+  pplcentr_preds[[i]] = create_predictions(pplcentr_form, df_channel, "pplcentr") |>
+    mutate(channel = !!channel)
+
+}
+```
 ```{r}
 df_elite <- elite_preds |>
   bind_rows() |>
@@ -125,136 +179,70 @@ df_pplcentr <- pplcentr_preds |>
 df_pred <- df_elite |> bind_rows(df_pplcentr)
 ```
 
-```{r}
-ggplot(df_pred, aes(x=popvar, y=estimate, color=var)) +
-  geom_smooth() +
-  facet_wrap(~channel, scales="free_y")
-```
-```{r}
-create_plot <- function(model, predictor) {
 
-  grid_vals <- list(
-    c(-0.1, -0.05, 0, 0.05, 0.1, 0.2, 0.3 )
-  )
-  names(grid_vals) <- predictor
-  marginaleffects::plot_predictions(
-      model,
-      by = c("channel", predictor),
-      transform = exp,
-      newdata = marginaleffects::datagrid(
-        pplcentr = seq(0, 0.8, 0.02)
-      )
-    ) +
-    coord_flip() +
-    theme_ggeffects(base_family = "serif")
-}
 
-elite_plot <- create_plot(elite_model, "elite")
-pplcentr_plot <- create_plot(pplcentr_model, "pplcentr")
-
-ggarrange(elite_plot, pplcentr_plot, ncol = 1)
+```{r, fig.width=10, fig.height=11}
+create_plot(df_elite, "Anti-Elitism")
 ```
 
-# NB Regression on Video Likes
+```{r, fig.width=10, fig.height=11}
+create_plot(df_pplcentr, "People-Centrism")
+```
+
+# Regression on Video Views
 
 ```{r}
+channels <- df |>
+  select(channel) |>
+  pull() |>
+  unique()
+
 elite_form <- formula(
-  likes ~ channel + elite + channel:elite + released_year + channel:released_year + video_duration
+  log_video_views ~ elite + n_sents + released_year + elite:released_year
 )
 
-elite_model <- glm.nb(elite_form, data = df)
-summary(elite_model)
-```
-
-```{r}
 pplcentr_form <- formula(
-  likes ~ channel + pplcentr + channel:pplcentr + released_year + channel:released_year + video_duration
+  log_video_views ~ pplcentr + n_sents + released_year + pplcentr:released_year
 )
 
-pplcentr_model <- glm.nb(pplcentr_form, data = df)
-summary(pplcentr_model)
-```
+i <- 0
+elite_preds <- list()
+pplcentr_preds <- list()
+for (channel in channels) {
+  i <- i + 1
 
-```{r}
-elite_plot <- marginaleffects::plot_predictions(
-    elite_model,
-    condition = list("channel", "elite" = "quartile")
-  ) +
-  coord_flip() +
-  theme_ggeffects(base_family = "serif")
+  df_channel <- df |>
+    filter(channel==!!channel) |>
+    select(log_video_views, pplcentr, elite, released_year, log_n_sents, n_sents) |>
+    drop_na()
 
-pplcentr_plot <- marginaleffects::plot_predictions(
-    pplcentr_model,
-    condition = list("channel", "pplcentr" = "quartile")
-  ) +
-  coord_flip() +
-  theme_ggeffects(base_family = "serif")
 
-ggarrange(elite_plot, pplcentr_plot, ncol = 1)
-```
+  elite_preds[[i]] = create_predictions(elite_form, df_channel, "elite") |>
+    mutate(channel = !!channel)
+  pplcentr_preds[[i]] = create_predictions(pplcentr_form, df_channel, "pplcentr") |>
+    mutate(channel = !!channel)
 
-```{r}
-p <- here("reports", "figures", "nb_regression_like_count.svg")
-if (file.exists(p)) file.remove(p)
-ggsave(p, width = 7, height = 5)
-```
-
-```{r}
-# df |>
-#   select(video_views, channel, elite, year, video_duration) |>
-#   group_by(channel) |>
-#   summarize(across(everything(), ~ is.na(.) |> sum()))
+}
 ```
 ```{r}
-# elite_form <- formula(
-#   video_views ~ channel + elite + channel*elite + year + video_duration
-# )
+df_elite <- elite_preds |>
+  bind_rows() |>
+  rename(popvar = elite) |>
+  mutate(var = "elite")
 
-# elite_model <- glm.nb(elite_form, data = df)
-# summary(elite_model)
+df_pplcentr <- pplcentr_preds |>
+  bind_rows() |>
+  rename(popvar = pplcentr) |>
+  mutate(var = "pplcentr")
+
+df_pred <- df_elite |> bind_rows(df_pplcentr)
 ```
 
-```{r}
-# pplcentr_form <- formula(
-#   video_views ~ channel + pplcentr + channel:pplcentr + year + video_duration
-# )
 
-# pplcentr_model <- glm.nb(pplcentr_form, data = df)
-# summary(pplcentr_model)
+```{r, fig.width=10, fig.height=11}
+create_plot(df_elite, "Anti-Elitism")
 ```
 
-```{r}
-# elite_plot <- sjPlot::plot_model(
-#   elite_model,
-#   type = "eff",
-#   terms = c("channel", "elite [-1,0,1]")
-# ) +
-#   coord_flip() +
-#   labs(
-#     title = "Marginal Effects of Anti-Elitism",
-#     x = "Channel",
-#     y = "Number of Views",
-#     color = "Anti-Elitism\n(standardized)"
-#   ) +
-#   theme_ggeffects(base_family = "serif")
-
-# pplcentr_plot <- sjPlot::plot_model(
-#   pplcentr_model,
-#   type = "eff",
-#   terms = c("channel", "pplcentr [-1,0,1]")
-# ) +
-#   coord_flip() +
-#   labs(
-#     title = "Marginal Effects of People-Centrism",
-#     x = "Channel",
-#     y = "Number of Views",
-#     color = "People-Centrism\n(standardized)"
-#   ) +
-#   theme_ggeffects(base_family = "serif")
-
-# ggarrange(elite_plot, pplcentr_plot, ncol = 1)
-```
-
-```{r}
-# ggsave(here("reports", "figures", "nb_regression_view_count.svg"), width = 7, height = 5)
+```{r, fig.width=10, fig.height=11}
+create_plot(df_pplcentr, "People-Centrism")
 ```

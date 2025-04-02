@@ -32,6 +32,11 @@ popbert <- function(filtered=TRUE) {
   return(df)
 }
 
+colormap <- function() {
+  src <- reticulate::import("src")
+  cmap <- unlist(src$colormap, use.names=T)
+  return(cmap)
+}
 
 regression_data <- function() {
   channels <- channels()

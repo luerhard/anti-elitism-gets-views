@@ -310,12 +310,12 @@ stages:
       nfiles: 9
     - path: pipeline/06-regressions.Rmd
       hash: md5
-      md5: 3d9833ff23ff068229093a6c29760e81
-      size: 5843
+      md5: 94caa4354414e815666251affcd19ff3
+      size: 6415
     - path: r/load.R
       hash: md5
-      md5: c75811a8219b72cd96a8de9f23e930b3
-      size: 2404
+      md5: ec6776c8ed910d9f76a4338e98f62b50
+      size: 2525
     - path: src/load/
       hash: md5
       md5: 399da2cba9e25b50c27ec60837e53f11.dir
@@ -324,21 +324,21 @@ stages:
     outs:
     - path: reports/figures/reg_ame_likes_elite.svg
       hash: md5
-      md5: 176a835bf679f9b470b3df9409171f47
-      size: 47494
+      md5: b1996967991379bc337a0e3a00a40681
+      size: 42392
     - path: reports/figures/reg_ame_likes_pplcentr.svg
       hash: md5
-      md5: ac3176ff81a6866928e25d88d9006e6c
-      size: 48247
+      md5: 8c7b85ecfd97d4cf1f6027f425c8fe7d
+      size: 45923
     - path: reports/figures/reg_ame_views_elite.svg
       hash: md5
-      md5: 4bca1e22ebefa8ddc671bfb52f47973d
-      size: 53900
+      md5: c2c5bc913df6d6c1e68c4e0d7af8b3a5
+      size: 49705
     - path: reports/figures/reg_ame_views_pplcentr.svg
       hash: md5
-      md5: a0fa9eb750c041e50a3d7bef64c4b2ee
-      size: 52694
+      md5: 9f5daf6f0fe2d3c532cea18f05edc9c9
+      size: 51982
     - path: reports/notebooks/06-regressions.html
       hash: md5
-      md5: d8c63f3469144a5fedcc801248bc529e
-      size: 633020
+      md5: 96c1d52dd8d64367a9951a527a96b999
+      size: 2167299

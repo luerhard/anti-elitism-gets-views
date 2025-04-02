@@ -24,6 +24,11 @@ library(ggpubr)
 
 theme_set(theme_minimal())
 
+colormap <- load$colormap()
+
+PLOT_WIDTH <- 10
+PLOT_HEIGHT <- 8
+
 z_transform <- function(x) as.vector(scale(x))
 
 df <- load$regression_data()
@@ -36,11 +41,12 @@ df <- df |>
     elite = z_transform(elite),
     d_pplcentr = pplcentr,
     pplcentr = z_transform(pplcentr),
-    likes_per_view = video_likes / video_views
+    log_video_likes = z_transform(log_video_likes),
+    log_video_views = z_transform(log_video_views)
   ) |>
-  filter(
-    between(z_transform(video_views), -2.5, 2.5)
-  ) |>
+  # filter(
+  #   between(z_transform(video_views), -2.5, 2.5)
+  # ) |>
   ungroup()
 count_after <- nrow(df)
 
@@ -117,17 +123,30 @@ create_plot <- function(df, xlab, ylab) {
     select(channel, intercept_y = estimate)
 
   df_plot |>
-  ggplot(aes(x=new, y=estimate)) +
+  ggplot(aes(x=new, y=estimate, color=channel)) +
     geom_line() +
-    scale_x_continuous(breaks = scales::breaks_pretty(n = 4)) +
-    geom_ribbon(aes(ymin=conf.low, ymax=conf.high), alpha=0.1, linetype=2) +
+    scale_x_continuous(
+      breaks = scales::breaks_pretty(n = 4),
+      expand = expansion(mult = c(0.03, 0.03)),
+    ) +
+    geom_ribbon(aes(ymin=conf.low, ymax=conf.high), alpha=0.05, linetype=2) +
     geom_hline(data = df_lines, aes(yintercept = intercept_y), color = "red", linetype = "dashed") +
-    facet_wrap(~ channel, scales="free") +
+    facet_wrap(~ channel, scales="free_x", ncol=4) +
+    scale_color_manual(values=colormap) +
     labs(
       title=paste("Average Marginal Effect of", xlab),
     ) +
     xlab(xlab) +
-    ylab(ylab)
+    ylab(ylab) +
+    theme_ggeffects(
+      base_family = "serif",
+      base_size = 21
+    ) +
+    theme(
+      legend.position="none",
+      panel.spacing=unit(1.2, "lines"),
+      axis.title.x = element_text(margin = margin(t = 20))
+    )
 }
 ```
 
@@ -141,7 +160,7 @@ channels <- df |>
   unique()
 
 elite_form <- formula(
-  log_video_likes ~ elite + n_sents +released_year + elite:released_year
+  log_video_likes ~ elite + n_sents + released_year + elite:released_year
 )
 
 pplcentr_form <- formula(
@@ -183,14 +202,16 @@ df_pplcentr <- pplcentr_preds |>
 plot <- create_plot(df_elite, "Anti-Elitism", "Number of Likes")
 path = here("reports", "figures", "reg_ame_likes_elite.svg")
 if (file.exists(path)) file.remove(path)
-ggsave(path, plot, width=10, height=12)
+ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
+plot
 ```
 
 ```{r, fig.width=10, fig.height=11}
 plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Likes")
 path = here("reports", "figures", "reg_ame_likes_pplcentr.svg")
 if (file.exists(path)) file.remove(path)
-ggsave(path, plot, width=10, height=12)
+ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
+plot
 ```
 
 # Regression on Video Views
@@ -228,6 +249,7 @@ for (channel in channels) {
 
 }
 ```
+
 ```{r}
 df_elite <- elite_preds |>
   bind_rows() |>
@@ -244,15 +266,17 @@ df_pred <- df_elite |> bind_rows(df_pplcentr)
 
 
 ```{r, fig.width=10, fig.height=11}
-plot <- create_plot(df_elite, "Anti-Elitism", "Number of Likes")
+plot <- create_plot(df_elite, "Anti-Elitism", "Number of Views")
 path = here("reports", "figures", "reg_ame_views_elite.svg")
 if (file.exists(path)) file.remove(path)
-ggsave(path, plot, width=10, height=12)
+ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
+plot
 ```
 
 ```{r, fig.width=10, fig.height=11}
-plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Likes")
+plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Views")
 path = here("reports", "figures", "reg_ame_views_pplcentr.svg")
 if (file.exists(path)) file.remove(path)
-ggsave(path, plot, width=10, height=12)
+ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
+plot
 ```

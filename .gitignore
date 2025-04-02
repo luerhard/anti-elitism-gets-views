@@ -175,3 +175,5 @@ overleaf
 .direnv/
 result
 /test.txt
+pipeline/*.html
+pipeline/**/

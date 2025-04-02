@@ -436,6 +436,31 @@ The Greens, the Left and the SPD all show similar high amounts of this populist 
 
 == Populism and Popularity <populism-and-popularity>
 
+To analyze the relationship between populism and popularity we use Ordinary Least Squares (OLS) regressions and regress each populism dimensions separately on the outcome variable of interest.
+Popularity of YouTube videos can either be defined as the number of views a videos is able to accumlate or the number of times a video is liked.
+Both variables measure a slightly different concept of engagement.
+Since it is not clear which one we specifically want here, we will run both and compare the result.
+Also, because the channels have vastly different amounts of contained populism per video, number of videos, views, and likes, we employ separate regressions per channel and compare the effect sizes.
+
+Each regression is therefore run on videos from a single channel, and on either the logged number of likes or logged number of views.
+We control for the year of a video's release, the number of sentences in the video's transcript, and add an interaction effect between the populism dimension and the year of release for each regression.
+For each regression, we z-transform the dependent variable as well as the populism dimension to ensure comparability between the effect sizes in the final comparison.
+
+@fig:likes_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
+The range for the x-axis for each channel is bounded by the interval $[-2, 2]$ standard deviations, with impossible values (anti-elitism values that are lower that zero) removed.
+The x-axis is than back-transformed to its original values to show the actual percentage values of the populist dimension for each prediction.
+
+#figure(
+  image("figures/figure_3.svg", width: 100%),
+  // placement: auto,
+  caption: [
+    Regression of Anti-Elitism on Number of Likes per video. A separate regression is run for each channel.
+
+  ]
+) <fig:likes_elite>
+
+
+
 A key finding here is that only the populist parties (both AfD channels and the Left) show a clear correlation between the number of likes of a video and populist dimensions.
 This suggests that people who watch videos from populist parties do so deliberately and in search of anti-elitist content.
 This effect is not seen for people-centrism.
@@ -443,21 +468,32 @@ As illustrated in @tab:descriptives, the FDP has received an almost negligible n
 A review of their YouTube content reveals that the FDP has disabled the like feature on nearly all of their videos.
 Consequently, we will exclude the FDP from the subsequent analysis relating to the number of likes.
 
-// #figure(
-//   image("figures/figure_4.svg", width: 100%),
-//   // placement: auto,
-//   caption: [
-//     Negative Binomial Regression on Number of Views per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
-//   ]
-// ) <fig:nb_reg_views>
+#inote[
+- welche Effekte sind signifikant?
+  - afd 2x
+  - CSU
+  - Left
+  - SPD
+
+AfD und Linke ergeben Sinn, CSU maybe, SPD weniger... Aber ist auch ein Ergebnis.
+
+- Breite der Konfidenzintervalle interpretieren (je breiter, desto weniger Daten)
+
+- x-Achse beschreiben: Regression ist mit within-channel-z-transformed populism vars gerechnet und -2, 2 stds wurden für die AMEs berechnet. Unmögliche Werte (kleiner 0) wurden ausgeschlossen und die Werte für die x-Achse auf die Originalwerte zurückgerechnet.
+
+
+- Beide Effekte darstellen? elite + pplcentr? Das wird dann eine ganze Menge plots, wenn man das auch noch für views + likes macht.
+
+]
+
+
 
 #figure(
-  image("figures/figure_3.svg", width: 100%),
+  image("figures/figure_4.svg", width: 100%),
   // placement: auto,
   caption: [
-    Negative Binomial Regression on Number of Likes per Video. Anti-elitism is z-transformed by the channel mean. Channel and Anti-Elitism are modeled using an interaction effect. We control for the year of release and video length.
   ]
-) <fig:nb_reg_likes>
+) <fig:likes_pplcentr>
 
 = Discussion <discussion>
 

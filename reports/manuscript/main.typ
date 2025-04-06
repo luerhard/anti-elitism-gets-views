@@ -439,61 +439,55 @@ The Greens, the Left and the SPD all show similar high amounts of this populist 
 To analyze the relationship between populism and popularity we use Ordinary Least Squares (OLS) regressions and regress each populism dimensions separately on the outcome variable of interest.
 Popularity of YouTube videos can either be defined as the number of views a videos is able to accumlate or the number of times a video is liked.
 Both variables measure a slightly different concept of engagement.
-Since it is not clear which one we specifically want here, we will run both and compare the result.
-Also, because the channels have vastly different amounts of contained populism per video, number of videos, views, and likes, we employ separate regressions per channel and compare the effect sizes.
+The results here are shown for the number of views as the dependent variable, results for the number of likes on the same data are shown in @ap:reg_on_likes.
 
+Because the channels have vastly different amounts of contained populism per video, number of videos, views, and likes, we employ separate regressions per channel and compare the effect sizes.
 Each regression is therefore run on videos from a single channel, and on either the logged number of likes or logged number of views.
+
+#inote[
+- within group standardization of views and populism
+  - we assume that people are likely to be aware of content that is published within the same channel, but not on other channel. We therefore standardize effects within channels. That way, we are able to investigate if videos that are more populist compared to other content of the same channel accumulates more popularity, again compared to videos of the same channel.
+]
+
+To mitigate effects that depend on the general status of the
 We control for the year of a video's release, the number of sentences in the video's transcript, and add an interaction effect between the populism dimension and the year of release for each regression.
 For each regression, we z-transform the dependent variable as well as the populism dimension to ensure comparability between the effect sizes in the final comparison.
 
-@fig:likes_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
+@fig:views_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
 The range for the x-axis for each channel is bounded by the interval $[-2, 2]$ standard deviations, with impossible values (anti-elitism values that are lower that zero) removed.
 The x-axis is than back-transformed to its original values to show the actual percentage values of the populist dimension for each prediction.
-
+The red dashed lines indicates the expected trajectory of the effect if there were no relationship between anti-elitism and view count.
+The confidence intervals give a an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
 #figure(
-  image("figures/figure_3.svg", width: 100%),
+  image("../figures/reg_ame_views_elite.svg", width: 100%),
   // placement: auto,
   caption: [
-    Regression of Anti-Elitism on Number of Likes per video. A separate regression is run for each channel.
+    Regression of Anti-Elitism on Number of Views per video. A separate regression is run for each channel.
 
   ]
-) <fig:likes_elite>
+) <fig:views_elite>
 
-
-
-A key finding here is that only the populist parties (both AfD channels and the Left) show a clear correlation between the number of likes of a video and populist dimensions.
-This suggests that people who watch videos from populist parties do so deliberately and in search of anti-elitist content.
-This effect is not seen for people-centrism.
-As illustrated in @tab:descriptives, the FDP has received an almost negligible number of likes on their videos.
-A review of their YouTube content reveals that the FDP has disabled the like feature on nearly all of their videos.
-Consequently, we will exclude the FDP from the subsequent analysis relating to the number of likes.
-
-#inote[
-- welche Effekte sind signifikant?
-  - afd 2x
-  - CSU
-  - Left
-  - SPD
-
-AfD und Linke ergeben Sinn, CSU maybe, SPD weniger... Aber ist auch ein Ergebnis.
-
-- Breite der Konfidenzintervalle interpretieren (je breiter, desto weniger Daten)
-
-- x-Achse beschreiben: Regression ist mit within-channel-z-transformed populism vars gerechnet und -2, 2 stds wurden für die AMEs berechnet. Unmögliche Werte (kleiner 0) wurden ausgeschlossen und die Werte für die x-Achse auf die Originalwerte zurückgerechnet.
-
-
-- Beide Effekte darstellen? elite + pplcentr? Das wird dann eine ganze Menge plots, wenn man das auch noch für views + likes macht.
-
-]
-
+The results indicate a positive relationship of the relative amount of anti-elitism contained in a video and the number of likes it accumulates for the channels AfD BT, AfD TV, CDU, Left, and SPD.
+@ap:reg_on_likes shows the same figures run against the dependent variable of like count.
 
 
 #figure(
-  image("figures/figure_4.svg", width: 100%),
+  image("../figures/reg_ame_views_pplcentr.svg", width: 100%),
   // placement: auto,
   caption: [
+    Regression of People-Centrism on Number of Views per video. A separate regression is run for each channel.
+
   ]
-) <fig:likes_pplcentr>
+) <fig:views_pplcentr>
+
+// A key finding here is that only the populist parties (both AfD channels and the Left) show a clear correlation between the number of likes of a video and populist dimensions.
+// This suggests that people who watch videos from populist parties do so deliberately and in search of anti-elitist content.
+// This effect is not seen for people-centrism.
+// As illustrated in @tab:descriptives, the FDP has received an almost negligible number of likes on their videos.
+// A review of their YouTube content reveals that the FDP has disabled the like feature on nearly all of their videos.
+// Consequently, we will exclude the FDP from the subsequent analysis relating to the number of likes.
+
+
 
 = Discussion <discussion>
 

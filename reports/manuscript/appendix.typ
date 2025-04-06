@@ -34,7 +34,25 @@
     str(section) + str(fig_num)
 })
 
+= Regressions Results on Number of Likes <ap:reg_on_likes>
 
+#figure(
+  image("../figures/reg_ame_likes_elite.svg", width: 100%),
+  // placement: auto,
+  caption: [
+    Regression of Anti-Elitism on Number of Likes per video. A separate regression is run for each channel.
+
+  ]
+) <fig:likes_elite>
+
+#figure(
+  image("../figures/reg_ame_likes_pplcentr.svg", width: 100%),
+  // placement: auto,
+  caption: [
+    Regression of People-Centrism on Number of Likes per video. A separate regression is run for each channel.
+
+  ]
+) <fig:likes_pplcentr>
 
 = Top 10 most viewed video per channel <ap:most_viewed>
 

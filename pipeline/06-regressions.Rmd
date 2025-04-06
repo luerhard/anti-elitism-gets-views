@@ -44,9 +44,9 @@ df <- df |>
     log_video_likes = z_transform(log_video_likes),
     log_video_views = z_transform(log_video_views)
   ) |>
-  # filter(
-  #   between(z_transform(video_views), -2.5, 2.5)
-  # ) |>
+  filter(
+    between(z_transform(video_views), -2.5, 2.5)
+  ) |>
   ungroup()
 count_after <- nrow(df)
 
@@ -126,8 +126,8 @@ create_plot <- function(df, xlab, ylab) {
   ggplot(aes(x=new, y=estimate, color=channel)) +
     geom_line() +
     scale_x_continuous(
-      breaks = scales::breaks_pretty(n = 4),
-      expand = expansion(mult = c(0.03, 0.03)),
+      breaks = scales::breaks_pretty(n = 5),
+      expand = expansion(mult = c(0.04, 0.04)),
     ) +
     geom_ribbon(aes(ymin=conf.low, ymax=conf.high), alpha=0.05, linetype=2) +
     geom_hline(data = df_lines, aes(yintercept = intercept_y), color = "red", linetype = "dashed") +
@@ -140,7 +140,7 @@ create_plot <- function(df, xlab, ylab) {
     ylab(ylab) +
     theme_ggeffects(
       base_family = "serif",
-      base_size = 21
+      base_size = 14
     ) +
     theme(
       legend.position="none",
@@ -180,6 +180,7 @@ for (channel in channels) {
 
   elite_preds[[i]] = create_predictions(elite_form, df_channel, "elite") |>
     mutate(channel = !!channel)
+
   pplcentr_preds[[i]] = create_predictions(pplcentr_form, df_channel, "pplcentr") |>
     mutate(channel = !!channel)
 

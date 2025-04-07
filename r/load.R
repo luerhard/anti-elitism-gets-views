@@ -70,7 +70,7 @@ regression_data <- function() {
         lubridate::floor_date(unit="month") |>
         format("%Y-%m"),
       released_at = released_at |>
-        factor(levels=sort(unique(released_at)), ordered=TRUE),
+        factor(levels=sort(unique(released_at)), ordered=FALSE),
       released_year = video_datetime_upload |>
         lubridate::floor_date(unit="year") |>
         format("%Y"),

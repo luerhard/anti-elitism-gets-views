@@ -450,6 +450,7 @@ Each regression is therefore run on videos from a single channel, and on either 
 ]
 
 To mitigate effects that depend on the general status of the
+
 We control for the year of a video's release, the number of sentences in the video's transcript, and add an interaction effect between the populism dimension and the year of release for each regression.
 For each regression, we z-transform the dependent variable as well as the populism dimension to ensure comparability between the effect sizes in the final comparison.
 
@@ -468,7 +469,8 @@ The confidence intervals give a an indication on how much data points are availa
 ) <fig:views_elite>
 
 The results indicate a positive relationship of the relative amount of anti-elitism contained in a video and the number of likes it accumulates for the channels AfD BT, AfD TV, CDU, Left, and SPD.
-@ap:reg_on_likes shows the same figures run against the dependent variable of like count.
+@ap:reg_on_likes shows the same figures computed against the dependent variable of like count.
+
 
 
 #figure(

@@ -271,7 +271,7 @@ While the audiences on these platforms are often partisan and vary across differ
 
 Given this premise, we expect populist parties as well as populist content to be popular among people with populist attitudes.
 We also hypothesize the opposite to be true: populist parties as well as populist content will not be especially popular among people with less populist attitudes.
-We can there formulate the following hypotheses:
+We can formulate the following hypotheses:
 
 #quote(block: true)[
     #strong[H2a:]
@@ -433,6 +433,15 @@ The Greens, the Left and the SPD all show similar high amounts of this populist 
     Each case in this figure is a video; the values represent the relative proportion of sentences that are flagged with the respective populst dimension.
   ]
 ) <fig:populism_dimensions>
+
+Comparing the detected levels of populism across all channels, we find partial support for *H1*, which proposes that populist parties convey more populist content on YouTube than non-populist parties.
+This hypothesis is particularly supported in the dimension of anti-elitism: the channels of the AfD and the Left clearly contain more anti-elitist content than those of other parties.
+Additionally, the Left's channel proportionally conveys the most people-centric content.
+However, the AfD channels display surprisingly limited people-centric appeals.
+Specifically, the AfD BT channel contains almost no people-centric content and primarily focuses on an exceptionally high volume of anti-elitist messaging.
+The AfD TV channel exhibits a similar but somewhat more moderate pattern.
+
+
 
 == Populism and Popularity <populism-and-popularity>
 

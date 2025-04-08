@@ -183,7 +183,6 @@ This research aims to take a closer look at the use and spread of populism on Yo
 YouTube is very popular in Germany @allgaierRezoGermanClimate2020.
 A fairly recent representative study among young Germans reports that 60% used the site daily or at least several times a week @feierabendJIMstudie2018Jugend2018.
 The study also shows that YouTube is the second most important site for respondents to obtain news and information, trailing only Google.
-
 While the YouTube is still dramatically understudied compared to other social media platforms @mungerPressingPlayPolitics2025, increasing effort is undertaken to systematically analyze content on YouTube in general and the _political_ YouTube in particular @bartlYouTubeChannelsUploads2018 @mungerPressingPlayPolitics2025.
 
 YouTube is the only major social media network more popular among right-leaning users @mungerRightWingYouTubeSupply2022.
@@ -203,6 +202,15 @@ They might argue the social media facilitates personal and interactive conversat
 #cite(<waisbordPopulistCommunicationDigital2017>, form: "prose"), for instance, have shown remarkably low interaction between Latin American politicians, populist and non-populist, on Twitter.
 
 This leds to believe, that videos on YouTube are best viewed from content delivery perspective first.
+In contrast to, for example, TV, however, it is possible to measure user engagement with content on YouTube in a number of ways.
+The two that we will focus on in this study are:
+1) ViewCount.
+The number of times a video was watched.
+While this is a rather naive metric, it is comparably insensitive to different interpretations.
+2) LikeCount.
+The number of times a video is liked.
+It measures a deeper engagement with a video but also can have some shortcomings.
+While some users just might never like a video, others might just like all videos or like videos that they want to save for later in ther "Liked Videos" tab on the website.
 
 == Populism
 
@@ -279,7 +287,6 @@ We can formulate the following hypotheses:
 
     #strong[H2b:]
     _On non-populist channels, we expect no positive relationship between a videos' amount of populism and user engagement._
-
 ]
 
 
@@ -445,42 +452,41 @@ The AfD TV channel exhibits a similar but somewhat more moderate pattern.
 
 == Populism and Popularity <populism-and-popularity>
 
-To analyze the relationship between populism and popularity we use Ordinary Least Squares (OLS) regressions and regress each populism dimensions separately on the outcome variable of interest.
-Popularity of YouTube videos can either be defined as the number of views a videos is able to accumlate or the number of times a video is liked.
-Both variables measure a slightly different concept of engagement.
+To analyze the relationship between populism and popularity we use Ordinary Least Squares (OLS) regressions and regress each populism dimensions separately on user engagement.
+As mentioned in @youtube-as-a-research-platform, we define user engagement as either LikeCount or ViewCount, assuming that both variables measure a slightly different level of engagement.
+#inote[
 The results here are shown for the number of views as the dependent variable, results for the number of likes on the same data are shown in @ap:reg_on_likes.
+]
 
 Because the channels have vastly different amounts of contained populism per video, number of videos, views, and likes, we employ separate regressions per channel and compare the effect sizes.
 Each regression is therefore run on videos from a single channel, and on either the logged number of likes or logged number of views.
+To ensure comparability of the effects, we additionally standardize (z-transform) the dependent variable as well as the populist dimension for each regression within each channel.
+Although it is important to bear this in mind during the interpretation of the results, we believe that we can achieve a better comparison between the effects.
+That way, we are able to investigate if videos that are more populist compared to other content of the same channel accumulates more popularity, again compared to videos of the same channel.
+In doing so, we explicitly express the believe that people watch and compare content from within the same channel when deciding about their engagement but not necessarily between channels.
 
-#inote[
-- within group standardization of views and populism
-  - we assume that people are likely to be aware of content that is published within the same channel, but not on other channel. We therefore standardize effects within channels. That way, we are able to investigate if videos that are more populist compared to other content of the same channel accumulates more popularity, again compared to videos of the same channel.
-]
-
-To mitigate effects that depend on the general status of the
-
-We control for the year of a video's release, the number of sentences in the video's transcript, and add an interaction effect between the populism dimension and the year of release for each regression.
-For each regression, we z-transform the dependent variable as well as the populism dimension to ensure comparability between the effect sizes in the final comparison.
+We control for the year of a video's release, the number of sentences in the video's transcript.
+Additionally, we control for short vs. long videos and add an interaction effect between the core populist dimension and the is_short variable to allow for different effects in short vs. long videos.
+This is especially important since the populist dimension is measured as a _percentage of sentences that contain the populist dimension_ which might express something different in a video with very few sentences vs a video with many sentences.
 
 @fig:views_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
 The range for the x-axis for each channel is bounded by the interval $[-2, 2]$ standard deviations, with impossible values (anti-elitism values that are lower that zero) removed.
 The x-axis is than back-transformed to its original values to show the actual percentage values of the populist dimension for each prediction.
 The red dashed lines indicates the expected trajectory of the effect if there were no relationship between anti-elitism and view count.
 The confidence intervals give a an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
+
 #figure(
   image("../figures/reg_ame_views_elite.svg", width: 100%),
   // placement: auto,
   caption: [
-    Regression of Anti-Elitism on Number of Views per video. A separate regression is run for each channel.
+    Regression of Anti-Elitism on Number of Views per video.
+    A separate regression is run for each channel.
 
   ]
 ) <fig:views_elite>
 
 The results indicate a positive relationship of the relative amount of anti-elitism contained in a video and the number of likes it accumulates for the channels AfD BT, AfD TV, CDU, Left, and SPD.
 @ap:reg_on_likes shows the same figures computed against the dependent variable of like count.
-
-
 
 #figure(
   image("../figures/reg_ame_views_pplcentr.svg", width: 100%),

@@ -36,7 +36,7 @@ df <- load$regression_data()
 count_before <- nrow(df)
 df <- df |>
   mutate(
-    is_short = ifelse(video_duration < 180, "short", "long") |> factor()
+    is_short = ifelse(video_duration < 180, "short", "long") |> factor(levels=c("short", "long"))
   ) |>
   group_by(channel) |>
   mutate(
@@ -104,7 +104,7 @@ create_predictions <- function(formula, data, popvar) {
     transform = exp,
     newdata = datagrid(
       model = model,
-      !!!set_names(list(seq(-2, 2, 0.1)), popvar),
+      !!!set_names(list(seq(-2, 2.5, 0.05)), popvar),
       grid_type = "counterfactual"
     )
   )
@@ -164,11 +164,11 @@ channels <- df |>
   unique()
 
 elite_form <- formula(
-  log_video_views ~ elite + n_sents + released_year + elite:released_year + is_short + elite:is_short
+  log_video_views ~ log_n_sents + released_year + elite * is_short
 )
 
 pplcentr_form <- formula(
-  log_video_views ~ pplcentr + n_sents + released_year + pplcentr:released_year + is_short + pplcentr:is_short
+  log_video_views ~ log_n_sents + released_year + pplcentr * is_short
 )
 
 i <- 0
@@ -206,7 +206,7 @@ df_pred <- df_elite |> bind_rows(df_pplcentr)
 
 
 ```{r, fig.width=10, fig.height=11}
-plot <- create_plot(df_elite, "Anti-Elitism", "Number of Views") + coord_cartesian(ylim=c(0.5, 2.5))
+plot <- create_plot(df_elite, "Anti-Elitism", "Number of Views") + coord_cartesian(ylim=c(0.6, 2.0))
 path = here("reports", "figures", "reg_ame_views_elite.svg")
 if (file.exists(path)) file.remove(path)
 ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
@@ -214,7 +214,7 @@ plot
 ```
 
 ```{r, fig.width=10, fig.height=11}
-plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Views") + coord_cartesian(ylim=c(0.5, 2.5))
+plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Views") + coord_cartesian(ylim=c(0.6, 1.7))
 path = here("reports", "figures", "reg_ame_views_pplcentr.svg")
 if (file.exists(path)) file.remove(path)
 ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
@@ -230,12 +230,13 @@ channels <- df |>
   pull() |>
   unique()
 
+
 elite_form <- formula(
-  log_video_likes ~ elite + n_sents + released_year + elite:released_year + is_short + elite:is_short
+  log_video_likes ~ log_n_sents + released_year + elite * is_short
 )
 
 pplcentr_form <- formula(
-  log_video_likes ~ pplcentr + n_sents + released_year + pplcentr:released_year + is_short + elite:is_short
+  log_video_likes ~ log_n_sents + released_year + pplcentr * is_short
 )
 
 i <- 0
@@ -270,7 +271,7 @@ df_pplcentr <- pplcentr_preds |>
 ```
 
 ```{r, fig.width=10, fig.height=11}
-plot <- create_plot(df_elite, "Anti-Elitism", "Number of Likes") + coord_cartesian(ylim=c(0.5, 2.5))
+plot <- create_plot(df_elite, "Anti-Elitism", "Number of Likes") + coord_cartesian(ylim=c(0.5, 2.2))
 path = here("reports", "figures", "reg_ame_likes_elite.svg")
 if (file.exists(path)) file.remove(path)
 ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
@@ -278,7 +279,7 @@ plot
 ```
 
 ```{r, fig.width=10, fig.height=11}
-plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Likes")+ coord_cartesian(ylim=c(0.5, 2.5))
+plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Likes")+ coord_cartesian(ylim=c(0.5, 1.8))
 path = here("reports", "figures", "reg_ame_likes_pplcentr.svg")
 if (file.exists(path)) file.remove(path)
 ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)

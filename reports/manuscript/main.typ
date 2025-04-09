@@ -322,6 +322,14 @@ Both channels, exhibiting comparable follower counts, were incorporated into our
 Consequently, our dataset encompasses a total of eight channels.
 The dataset is restricted to the period from December 6, 2017 (the final channel's inaugural video publication) to February 24, 2025, the day of the Bundestagswahl 2025.
 
+During the period of investigation, YouTube has updated its rules on Shorts.
+These are a separate video stream for short videos.
+Its implementation is comparable to TikTok.
+Since October 15, 2024, every video up to three minutes of length and with a square or vertical aspect ratio will automatically categorized as a Short @youtube2025-shorts.
+Although we have explicitly not included Shorts during data collection, we there possibly have content that is not solely published as long-form video on YouTube in our data.
+To handle that and homogenize the data anlysis, we create a variable in the data "is_short".
+It indicates whether a videos is up to 180 seconds in length.
+
 == Video transcripts
 
 The analysis of video material is very challenging, we therefore follow #cite(<schwemmerSocialMediaSellout2018>, form: "prose") and focus our analysis on the audio material.

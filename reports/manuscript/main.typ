@@ -472,12 +472,6 @@ We control for the year of a video's release, the number of sentences in the vid
 Additionally, we control for short vs. long videos and add an interaction effect between the core populist dimension and the is_short variable to allow for different effects in short vs. long videos.
 This is especially important since the populist dimension is measured as a _percentage of sentences that contain the populist dimension_ which might express something different in a video with very few sentences vs a video with many sentences.
 
-@fig:views_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
-The range for the x-axis for each channel is bounded by the interval $[-2, 2]$ standard deviations, with impossible values (anti-elitism values that are lower that zero) removed.
-The x-axis is than back-transformed to its original values to show the actual percentage values of the populist dimension for each prediction.
-The red dashed lines indicates the expected trajectory of the effect if there were no relationship between anti-elitism and view count.
-The confidence intervals give a an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
-
 #figure(
   image("../figures/reg_ame_views_elite.svg", width: 100%),
   // placement: auto,
@@ -487,6 +481,12 @@ The confidence intervals give a an indication on how much data points are availa
 
   ]
 ) <fig:views_elite>
+
+@fig:views_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
+The range for the x-axis for each channel is bounded by the interval $[-2, 2]$ standard deviations, with impossible values (anti-elitism values that are lower that zero) removed.
+The x-axis is than back-transformed to its original values to show the actual percentage values of the populist dimension for each prediction.
+The red dashed lines indicates the expected trajectory of the effect if there were no relationship between anti-elitism and view count.
+The confidence intervals give a an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
 
 The results indicate a positive relationship of the relative amount of anti-elitism contained in a video and the number of likes it accumulates for the channels AfD BT, AfD TV, CDU, Left, and SPD.
 @ap:reg_on_likes shows the same figures computed against the dependent variable of like count.

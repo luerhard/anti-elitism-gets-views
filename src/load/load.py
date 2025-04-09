@@ -62,6 +62,8 @@ class DataLoader:
         if not text_fields:
             table = table.select(~s.cols("video_description"))
 
+        table = table.mutate(video_is_short=_.video_duration <= 180)
+
         return table
 
     def broken_transcripts(self, filtered: True):

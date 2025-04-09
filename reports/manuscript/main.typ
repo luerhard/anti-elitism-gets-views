@@ -325,21 +325,22 @@ The dataset is restricted to the period from December 6, 2017 (the final channel
 == Video transcripts
 
 The analysis of video material is very challenging, we therefore follow #cite(<schwemmerSocialMediaSellout2018>, form: "prose") and focus our analysis on the audio material.
-The audio data of all videos and their accompanying metadata were downloaded using _yt-dlp_.
+In order to do that, audio data of all videos and their accompanying metadata were downloaded using _yt-dlp_.
 In contrast to the abovementioned article, who use the pre-generated transcripts provided by YouTube, we use a state-of-the-art speech-to-text model to transcribe the audio material ourselves.
-This procedure ensures a enhanced quality of the transcripts, including correct punctuation and music recognition.
+While there exist professional captions on some of the videos, many of the videos in our corpus do not have such manually created captions.
+The quality of the automatically generated subtitles on YouTube is not sufficient for our purposes.
+Although they are sufficient to understand the content of the video without sound, they usually lack word case (a significantly bigger problem in German than in English) and almost all punctuation marks.
+While this is only a minor problem for simple text analysis approaches, such as bag-of-words, we assume that such differences between the training material and the data to be analyzed can have unpredictable effects on the predictive power of more complex LLMs.
+We therefore try to achieve the highest possible quality of the automated transcripts.
 
-#inote[Automatic transcripts are not very good. We rely on the performance of PopBERT to a large extent and need the transcripts to be as good as possible (training data is manually transcribed speeches from the bundestag; punctuation marks are very important in German and are mostly non-existent in YouTube automated transcripts)]
-
-
-The content of the videos was transcribed using OpenAI's advanced speech-to-text model, Whisper-large-v3-turbo @radfordRobustSpeechRecognition2022.
-This model provides significantly faster transcription compared to Whisper-large-v3 while maintaining comparable accuracy.
+The content of the videos was transcribed using OpenAI's advanced speech-to-text model, whisper-large-v3-turbo @radfordRobustSpeechRecognition2022.
+This model provides significantly faster transcription compared to whisper-large-v3 while maintaining comparable accuracy.
 However, Whisper models tend to produce erroneous transcriptions, known as hallucinations, particularly when the audio includes extended periods without speech, a common occurrence in YouTube videos.
 To address this issue, we employed the Silero voice activity detector @silerovad2024, isolating segments containing actual speech and passing only these segments to the Whisper transcription model.
+
 #let faulty_transcripts = read("inlines/n_broken.txt")
 Although this approach effectively reduced the number of hallucinations, #faulty_transcripts videos had to be excluded from the analysis due to faulty transcripts.
 Faulty transcripts were identified by generating all n-grams for values of n between 2 and 10, and determining whether any n-gram appeared more than nine consecutive times within a transcript.
-
 Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of the SoMaJo tokenizer and sentence-splitter @proislSoMaJoStateoftheartTokenization2016.
 #let hour_duration = read("inlines/sum_duration.txt")
 #let n_videos = read("inlines/n_videos.txt")

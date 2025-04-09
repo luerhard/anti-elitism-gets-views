@@ -330,7 +330,7 @@ In contrast to the abovementioned article, who use the pre-generated transcripts
 While there exist professional captions on some of the videos, many of the videos in our corpus do not have such manually created captions.
 The quality of the automatically generated subtitles on YouTube is not sufficient for our purposes.
 Although they are sufficient to understand the content of the video without sound, they usually lack word case (a significantly bigger problem in German than in English) and almost all punctuation marks.
-While this is only a minor problem for simple text analysis approaches, such as bag-of-words, we assume that such differences between the training material and the data to be analyzed can have unpredictable effects on the predictive power of more complex LLMs.
+While this is only a minor problem for simple text analysis approaches, such as bag-of-words, we assume that such differences between the training material and the data to be analyzed can have unpredictable effects on the predictive power of more complex LLMs, such as the BERT model used below to detect populism.
 We therefore try to achieve the highest possible quality of the automated transcripts.
 
 The content of the videos was transcribed using OpenAI's advanced speech-to-text model, whisper-large-v3-turbo @radfordRobustSpeechRecognition2022.
@@ -350,13 +350,15 @@ After removing sentences with less than 3 tokens and videos with less than 5 sen
 == Detecting Populism <detection-of-populism>
 
 To detect populism in transcripts of YouTube videos from the official channels of the German parties in the Bundestag, we apply PopBERT, a BERT-based transformer model, fine-tuned to specifically detect anti-elitism and people-centrism in German political speech @erhardPopBERTDetectingPopulism2024.
-
 Although PopBERT was trained on transcripts of parliamentary speeches, we consider its application to videos from official party channels feasible.
 There is a high degree of similarity in tone, vocabulary, and rhetorical style between these two contexts.
 Additionally, there is substantial overlap in the speakers themselves, and the videos originate predominantly from the same time period as the training data.
 Therefore, we expect the model to reliably generalize to this closely related domain.
 
-#inote[What settings / thresholds did we use? We passed sentences independently etc.]
+To detect populism in the videos, we use the two core categories defined by PopBERT: anti-elitism and people-centrism.
+Analogous to the procedure in the associated article, the transcripts are divided into sentences and each sentence is fed into the model independently of the others and classified using the proposed thresholds.
+To obtain a value at the video level, the relative proportion of sentences classified as anti-elitist or people-centric is then calculated for each video.
+Since there are various possibilities in the literature for combining these dimensions, we examine both dimensions separately and refrain from combining them into a single populism score.
 
 = Results <results>
 

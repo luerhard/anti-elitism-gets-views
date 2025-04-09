@@ -35,9 +35,6 @@ df <- load$regression_data()
 
 count_before <- nrow(df)
 df <- df |>
-  mutate(
-    is_short = ifelse(video_duration < 180, "short", "long") |> factor(levels=c("short", "long"))
-  ) |>
   group_by(channel) |>
   mutate(
     d_elite = elite,

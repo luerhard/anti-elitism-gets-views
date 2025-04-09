@@ -6,35 +6,35 @@ box::use(
 
 channels <- function() {
   data_load <- reticulate::import("src.load")
-  loader = data_load$DataLoader()
+  loader <- data_load$DataLoader()
   df <- loader$channels()$to_pandas()
   return(df)
 }
 
-videos <- function(filtered=TRUE) {
+videos <- function(filtered = TRUE) {
   data_load <- reticulate::import("src.load")
-  loader = data_load$DataLoader()
-  df <- loader$videos(filtered=filtered)$to_pandas()
+  loader <- data_load$DataLoader()
+  df <- loader$videos(filtered = filtered)$to_pandas()
   return(df)
 }
 
-sentences <- function(filtered=TRUE) {
+sentences <- function(filtered = TRUE) {
   data_load <- reticulate::import("src.load")
-  loader = data_load$DataLoader()
+  loader <- data_load$DataLoader()
   df <- loader$sentences(filtered=filtered)$to_pandas()
   return(df)
 }
 
-popbert <- function(filtered=TRUE) {
+popbert <- function(filtered = TRUE) {
   data_load <- reticulate::import("src.load")
-  loader = data_load$DataLoader()
-  df <- loader$popbert(filtered=filtered)$to_pandas()
+  loader <- data_load$DataLoader()
+  df <- loader$popbert(filtered = filtered)$to_pandas()
   return(df)
 }
 
 colormap <- function() {
   src <- reticulate::import("src")
-  cmap <- unlist(src$colormap, use.names=T)
+  cmap <- unlist(src$colormap, use.names=TRUE)
   return(cmap)
 }
 
@@ -67,15 +67,16 @@ regression_data <- function() {
     # filter(video_datetime_upload > "2020-10-01") |>
     mutate(
       released_at = video_datetime_upload |>
-        lubridate::floor_date(unit="month") |>
+        lubridate::floor_date(unit = "month") |>
         format("%Y-%m"),
       released_at = released_at |>
-        factor(levels=sort(unique(released_at)), ordered=FALSE),
+        factor(levels = sort(unique(released_at)), ordered = FALSE),
       released_year = video_datetime_upload |>
-        lubridate::floor_date(unit="year") |>
+        lubridate::floor_date(unit = "year") |>
         format("%Y"),
       released_year = released_year |>
-        factor(levels=sort(unique(released_year)), ordered=FALSE)
+        factor(levels = sort(unique(released_year)), ordered = FALSE),
+      is_short = factor(video_is_short, levels = c(FALSE, TRUE))
     ) |>
     mutate(
       channel = channel |> fct_drop(),

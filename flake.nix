@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/1bde3e8e37a72989d4d455adde764d45f45dc11c";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     flake-utils.url = "github:numtide/flake-utils";
     nix-gl-host.url = "github:numtide/nix-gl-host";
   };
@@ -24,6 +24,7 @@
           };
           overlays = [
             (import ./nix/python-overlay.nix)
+            (import ./nix/r-overlay.nix)
           ];
         };
 
@@ -109,19 +110,21 @@
       in
       {
         defaultPackage = pkgs.mkShell {
-          packages = [
-            pyEnv # needs to be @ top of list, so the correct python interpreter is exposed
-            rEnv
-            # linuxCudaDeps
-            systemDeps
-          ] ++ pkgs.lib.lists.optional pkgs.stdenv.isLinux [
-            nix-gl-host.defaultPackage.${system}
-          ];
+          packages =
+            [
+              pyEnv # needs to be @ top of list, so the correct python interpreter is exposed
+              rEnv
+              # linuxCudaDeps
+              systemDeps
+            ]
+            ++ pkgs.lib.lists.optional pkgs.stdenv.isLinux [
+              nix-gl-host.defaultPackage.${system}
+            ];
 
           shellHook = ''
-                      export PYTHONPATH="$(pwd):$PYTHONPATH"
-                      export RETICULATE_PYTHON=$(which python)
-                '';
+            export PYTHONPATH="$(pwd):$PYTHONPATH"
+            export RETICULATE_PYTHON=$(which python)
+          '';
         };
       }
     );

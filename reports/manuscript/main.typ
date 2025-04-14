@@ -464,8 +464,8 @@ A possible explanation of low amount of people-centric messaging on this channel
 == Populism and Popularity <populism-and-popularity>
 
 To analyze the relationship between populism and popularity we use Ordinary Least Squares (OLS) regressions and regress each populism dimensions separately on user engagement.
-As mentioned in @youtube-as-a-research-platform, we define user engagement as either LikeCount or ViewCount, assuming that both variables measure a slightly different level of engagement.
-#inote[
+As mentioned in @youtube-as-a-research-platform, we define user engagement as either like count or view count, assuming that both variables measure a slightly different level of engagement.
+#footnote[
 The results here are shown for the number of views as the dependent variable, results for the number of likes on the same data are shown in @ap:reg_on_likes.
 ]
 
@@ -496,11 +496,6 @@ The x-axis is than back-transformed to its original values to show the actual pe
 The red dashed lines indicates the expected trajectory of the effect if there were no relationship between anti-elitism and view count.
 The confidence intervals give a an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
 
-We can observe a clear positive relationship for the video's amount of populism and its ViewCount for the AfD's channels for both short videos and long videos.
-Additionally we see an increase in expected ViewCount for the Left but only for long videos.
-Regarding *H2a* stating that on channels of populist parties, we expect a positive relationship between a videos' amount of contained populism and it's user engagement, we therefore find partial support on the anti-elitis dimension.
-
-@fig:views_pplcentr shows an analagous analysis but for people-centrism.
 
 #figure(
   image("../figures/reg_ame_views_pplcentr.svg", width: 100%),
@@ -510,6 +505,22 @@ Regarding *H2a* stating that on channels of populist parties, we expect a positi
 
   ]
 ) <fig:views_pplcentr>
+
+@fig:views_pplcentr illustrates the relationship between people-centric content and view count.
+The analysis yields a less clear-cut picture than observed with anti-elitist content.
+While a constistent trend is recognizable for long-form content on both AfD channels, and the Left's channel short-form videos on the AfD TV channel do not show the same relationship.
+For all channels the x-axis' upper limit which indicates values for +2 standard deviations of the people-centric content, is quite low for all channels, and the large confidence intervals for long form content on CDU and CSU show how sparse and/or varying the data is for values above 5%.
+
+We can observe a clear positive relationship for the video's amount of populism and its view count for the AfD's channels for both short videos and long videos.
+Additionally we see an increase in expected ViewCount for the Left but only for long videos.
+Regarding *H2a* stating that on channels of populist parties, we expect a positive relationship between a videos' amount of contained populism and it's user engagement, we therefore find partial support on the anti-elitist dimension.
+
+*H2b*
+
+These results partially align with our hypothesis H2a, predicting a positive engagement for populist content on populist party channels. The Left party partially confirms this hypothesis through its noticeable, albeit moderate, engagement boost from people-centric content. However, the AfD's minimal response to this dimension suggests their audience's primary attraction might stem from anti-elite narratives rather than general populist appeals. This provides valuable insights into populist communication dynamics, suggesting anti-elitist messaging may be more crucial for driving engagement within right-wing populist constituencies, whereas left-wing populism appears more balanced between anti-elitism and people-centric appeals.
+
+For the non-populist parties (CDU, CSU, FDP, Greens), Figure 4 reveals no consistent positive relationship between people-centric content and engagement, thus broadly supporting hypothesis H2b. This indicates that populist rhetorical strategies may not universally translate into increased engagement for all parties, reinforcing the notion that populist content effectiveness is contextually bound and audience-specific.
+
 
 The results indicate a positive relationship of the relative amount of anti-elitism contained in a video and the number of likes it accumulates for the channels AfD BT, AfD TV, CDU, Left, and SPD.
 @ap:reg_on_likes shows the same figures computed against the dependent variable of like count.

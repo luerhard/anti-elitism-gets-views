@@ -456,10 +456,10 @@ Comparing the detected levels of populism across all channels, we find partial s
 This hypothesis is particularly supported in the dimension of anti-elitism: the channels of the AfD and the Left clearly contain more anti-elitist content than those of other parties.
 Additionally, the Left's channel proportionally conveys the most people-centric content.
 However, the AfD channels display surprisingly limited people-centric appeals.
-Specifically, the AfD BT channel contains almost no people-centric content and primarily focuses on an exceptionally high volume of anti-elitist messaging.
 The AfD TV channel exhibits a similar but somewhat more moderate pattern.
-
-
+Specifically, the AfD BT channel contains almost no people-centric content and primarily focuses on an exceptionally high volume of anti-elitist messaging.
+It is worth noting at this point, that the AfD BT channel's content primarily consists speeches of AfD members of parliament talking in the Bundestag.
+A possible explanation of low amount of people-centric messaging on this channel could be that this forum is mostly used to attack the governing parties and much less so to actually appeal to "the people".
 
 == Populism and Popularity <populism-and-popularity>
 
@@ -496,8 +496,11 @@ The x-axis is than back-transformed to its original values to show the actual pe
 The red dashed lines indicates the expected trajectory of the effect if there were no relationship between anti-elitism and view count.
 The confidence intervals give a an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
 
-The results indicate a positive relationship of the relative amount of anti-elitism contained in a video and the number of likes it accumulates for the channels AfD BT, AfD TV, CDU, Left, and SPD.
-@ap:reg_on_likes shows the same figures computed against the dependent variable of like count.
+We can observe a clear positive relationship for the video's amount of populism and its ViewCount for the AfD's channels for both short videos and long videos.
+Additionally we see an increase in expected ViewCount for the Left but only for long videos.
+Regarding *H2a* stating that on channels of populist parties, we expect a positive relationship between a videos' amount of contained populism and it's user engagement, we therefore find partial support on the anti-elitis dimension.
+
+@fig:views_pplcentr shows an analagous analysis but for people-centrism.
 
 #figure(
   image("../figures/reg_ame_views_pplcentr.svg", width: 100%),
@@ -507,6 +510,9 @@ The results indicate a positive relationship of the relative amount of anti-elit
 
   ]
 ) <fig:views_pplcentr>
+
+The results indicate a positive relationship of the relative amount of anti-elitism contained in a video and the number of likes it accumulates for the channels AfD BT, AfD TV, CDU, Left, and SPD.
+@ap:reg_on_likes shows the same figures computed against the dependent variable of like count.
 
 // A key finding here is that only the populist parties (both AfD channels and the Left) show a clear correlation between the number of likes of a video and populist dimensions.
 // This suggests that people who watch videos from populist parties do so deliberately and in search of anti-elitist content.

@@ -1,7 +1,7 @@
 // This theme is inspired by https://github.com/zbowang/BeamerTheme
 // The typst version was written by https://github.com/OrangeX4
 
-#import "@preview/touying:0.6.0": *
+#import "@preview/touying:0.6.1": *
 #import themes.metropolis: *
 #import "@preview/showybox:2.0.4": showybox
 

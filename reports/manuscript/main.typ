@@ -212,10 +212,10 @@ They might argue the social media facilitates personal and interactive conversat
 This leads us to believe that videos on YouTube are best viewed from content delivery perspective first.
 In contrast to, for example, TV, however, it is possible to measure user engagement with content on YouTube in a number of ways.
 The two that we will focus on in this study are:
-1) ViewCount.
+1) view count.
 The number of times a video was watched.
 While this is a rather naive metric, it is comparably insensitive to different interpretations.
-2) LikeCount.
+2) like count.
 The number of times a video is liked.
 It measures a deeper engagement with a video but also can have some shortcomings.
 While some users just might never like a video, others might just like all videos or like videos that they want to save for later in their "Liked Videos" tab on the website.

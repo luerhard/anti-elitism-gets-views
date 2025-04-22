@@ -138,18 +138,18 @@ stages:
       size: 26631
     - path: src/load/
       hash: md5
-      md5: 9119d79ce2f70b2f301100938ec7f55a.dir
-      size: 12929
-      nfiles: 5
+      md5: db1152d8e823ed87e60b91f58b2aa7d3.dir
+      size: 28481
+      nfiles: 10
     outs:
     - path: reports/figures/populism_per_party.svg
       hash: md5
-      md5: fd05b06e8e25deb2d841b4d4d4c1f468
-      size: 21876
+      md5: 045644d977d12b67fabfb65046dcbaec
+      size: 21686
     - path: reports/figures/view_count.svg
       hash: md5
-      md5: 461b20c1bfe4956c6d0104168b83c0f5
-      size: 279509
+      md5: 5d4524280c0dd2040abb5cb16dc3088e
+      size: 279283
     - path: reports/manuscript/inlines/n_broken.txt
       hash: md5
       md5: f033ab37c30201f73f142449d037028d
@@ -168,8 +168,8 @@ stages:
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: 8506f378f2ca2595e5ac21e5ec3f1a78
-      size: 36036
+      md5: 3cc6f6d08807d5b07ad0cfd614190289
+      size: 36294
     - path: reports/tables/dataset_summary.csv
       hash: md5
       md5: 1a12726d60962fd13d7ceaaf9fa1f4d2
@@ -279,14 +279,14 @@ stages:
       size: 6152
     - path: src/load/
       hash: md5
-      md5: 9119d79ce2f70b2f301100938ec7f55a.dir
-      size: 12929
-      nfiles: 5
+      md5: db1152d8e823ed87e60b91f58b2aa7d3.dir
+      size: 28481
+      nfiles: 10
     outs:
     - path: reports/notebooks/07-top_videos.ipynb
       hash: md5
-      md5: 2b7b193388dc2c49df9b1f1986fc42de
-      size: 15686
+      md5: ce9e98e14a7f9d0f4b751a91dbff8198
+      size: 15685
     - path: reports/tables/most_antielitism_videos_per_channel.csv
       hash: md5
       md5: 5db4f167f49993c3aaa048841074422a
@@ -318,27 +318,27 @@ stages:
       size: 2621
     - path: src/load/
       hash: md5
-      md5: 9119d79ce2f70b2f301100938ec7f55a.dir
-      size: 12929
-      nfiles: 5
+      md5: db1152d8e823ed87e60b91f58b2aa7d3.dir
+      size: 28481
+      nfiles: 10
     outs:
     - path: reports/figures/reg_ame_likes_elite.svg
       hash: md5
-      md5: 5ef6c6a74196e63c7aeb3468cdbd1ef6
-      size: 100773
+      md5: 90637d85dd84b59b734d93e386886ee2
+      size: 100411
     - path: reports/figures/reg_ame_likes_pplcentr.svg
       hash: md5
-      md5: ec49b6872c8923990a01a0c27e19b0f3
-      size: 98597
+      md5: f1926e80354fd8f523e6999dd441aa9f
+      size: 98226
     - path: reports/figures/reg_ame_views_elite.svg
       hash: md5
-      md5: 194b4d8b971d83256fa3f04c1628d676
-      size: 111176
+      md5: d728e3a23e0a7c6a2dfaa615d1512783
+      size: 110794
     - path: reports/figures/reg_ame_views_pplcentr.svg
       hash: md5
-      md5: 41315dedc01e9c215a4a77926471daee
-      size: 114368
+      md5: c24cead39b4f1e4594646f448a77f272
+      size: 113944
     - path: reports/notebooks/06-regressions.html
       hash: md5
-      md5: 31050884a684ed83642557d802b359a9
-      size: 2165422
+      md5: 75ef482bba6b74b944cbd2f5304c2a22
+      size: 2726152

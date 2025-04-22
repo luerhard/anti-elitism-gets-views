@@ -1,5 +1,13 @@
-#import "@preview/touying:0.6.0": *
+#import "@preview/touying:0.6.1": *
 #import "stuttgart.typ": *
+
+#show list: e => {
+  show par: p => {
+    p
+    v(1.0em, weak: true)
+  }
+  e
+}
 
 #show: stuttgart-theme.with(
   config-colors(
@@ -73,36 +81,51 @@
 
 = Theory
 
+== Goal of this study
+
+#miniheader[Overview]
+
+- In this study, we investigate populist content on *YouTube*
+- YouTube meaning: the official *party channels* of all parties in the (last) German Bundestag
+- Dataset:
+  - Channels: \@FDP, \@DieGruenen, \@spdde, \@cdutv, \@csumedia, \@AfDTV, \@AfDFraktionimBundestag
+  - all videos between
+    - December 6, 2017 (final channel's inaugural video)
+    - February 24, 2025 (day of the Bundestagswahl 2025)
+  - Total:
+    - 12,178 videos
+    - 1,659.2 hours containing 908,222 sentences
+
 
 == Populism
 
-A slide about populism
+#miniheader[What is Populism?]
+
+- Defined as the struggle between the "corrupt elite" and the "virtuous" people @muddePopulistZeitgeist2004
+  - focusing on *anti-elitism* and *people-centrism*
+- Treated as gradational concept ("more or less populism") rather than binary attribute
+- In German context, *AfD* and *The Left* are considered populist parties
+
 
 == YouTube
 
-A slide about YouTube
+#miniheader[YouTube as a research platform]
 
-// #miniheader[Introduction]
+- Second most important information source for young Germans after Google
+- Enables measuring direct user engagement through *views* and *likes*
 
-// #v(1fr)
-// _In contrast to filter bubbles—which only suggest algorithmic curation will provide users with more ideologically congenial content, compared to an uncurated platform—rabbit holes *additionally imply* that the curation process *serves up content from one’s preferred side* but with *increasing extremity or intensity over time*._ @liuShorttermExposureFilterbubble2025
-
-// #v(1fr)
-// #infobox[Research Question][*Does the YouTube recommendation algorithm contribute to the creation of rabbit holes for it's users?* ]
-
-= Data & Methods
+= Dataset
 
 == Dataset
 
 #let table_array = csv("../tables/dataset_summary.csv", row-type: array)
 #let header = table_array.first()
 #let table_content = table_array.slice(1).map(row => highlight-max(row))
-#show figure: set block(breakable: false)
 
 #figure(
   kind: table,
   context [
-    #set text(size: 0.88em)
+    #set text(size: 0.89em)
     #table(
       columns: (4.5cm, ..(auto,) * (header.len() - 1)),
       align: (left, ..(right,) * (header.len() - 1)),
@@ -113,31 +136,18 @@ A slide about YouTube
       table.vline(x: 1, start: 1, end: table_content.len() + 1),
       table.hline(),
       ..table_content.flatten(),
-      table.hline()
+      table.hline(),
     )
   ],
 )
 
-#uncover("2")[
-  #highlight-rect(130pt, 30pt,160pt, 330pt)
+#only("2")[
+#highlight-rect(130pt, 30pt,160pt, 330pt)
 ]
 
-#uncover("3")[
+#only("3")[
 #highlight-rect(475pt, 165pt,60pt, 30pt)
 ]
-
-== Whisper
-
-A slide about Whisper
-
-== PopBERT
-
-A slide about PopBERT
-
-
-
-
-= Results
 
 == View and Like counts
 
@@ -145,6 +155,31 @@ A slide about PopBERT
   placement: none,
   image("../figures/view_count.svg", height: 100%),
 )
+
+== Whisper
+
+#miniheader[Speech-to-Text ]
+- Used OpenAI's *whisper-large-v3-turbo* model @radfordRobustSpeechRecognition2022 to transcribe video content
+- Combined with *Silero voice activity detector* @silerovad2024 to reduce hallucinations
+    - Isolates segments containing actual speech
+    - Passes only speech segments to Whisper transcription model
+
+#infobox[But why?][
+- Produces higher quality transcripts than YouTube's auto-generated captions
+  - Preserves word case (especially important in German)
+  - Maintains punctuation marks necessary for accurate analysis
+]
+
+== PopBERT
+
+#miniheader[Detection of Populism]
+
+- BERT-based transformer model specifically fine-tuned to detect populism in German political speech @erhardPopBERTDetectingPopulism2024
+- Detected on the sentence-level: *anti-elitism* and *people-centrism*
+- aggregated to the video-level by calculating the ratio
+
+= Results
+
 
 == Populism by channel
 
@@ -170,11 +205,12 @@ A slide about PopBERT
 
 = Conclusion
 
-What do we learn?
+#miniheader[Conclusion]
 
+What do we learn?
 
 = References
 
 #set text(size: 15pt)
-#bibliography("references.bib", style: "chicago-notes", title: none)
+#bibliography("references.bib", style: "modern-humanities-research-association.csl", title: none)
 #v(1fr)

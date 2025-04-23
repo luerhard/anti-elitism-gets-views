@@ -10,13 +10,13 @@ repos:
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-  rev: v0.9.4
+  rev: v0.11.6
   hooks:
   - id: ruff
     types_or: [python, pyi, jupyter]
     args: [--fix, --exit-non-zero-on-fix]
 - repo: https://github.com/iterative/dvc
-  rev: 3.59.0
+  rev: 3.59.1
   hooks:
   # - id: dvc-pre-commit
   #   additional_dependencies:

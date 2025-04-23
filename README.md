@@ -1,36 +1,14 @@
 # populism_on_yt
 
-## R
+## Installation
 
-### rig
+The repositories' environments are managed with nix.
+Use an existing nix installation to create the environment, running `nix develop --impure` from the root directory.
 
-R versions are managed using rig. Make sure to have version 4.2 selected. An easy way is to use `direnv`. To do that, install it add `eval "$(direnv hook zsh)` to `.zhsrc`.
+## Reproducing the pipeline
 
-Then, create a file `.envrc` in the project root with the content (fix paths):
+For a reproducible research model, this repository uses dvc.
+Because I am not allowed to share the data freely, you will not be able to access the data respository.
+For people with access to the Uni Stuttgart internal network, the pipeline can be run using `dvc repro`.
 
-```bash
-export R_LIBS_USER="renv/library/R-4.2/aarch64-apple-darwin20"
-export R_HOME="/Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/"
-rig switch 4.2-arm64
-layout_poetry
-```
-
-## renv
-To use pak for renv::restore use env variable:
-
-```bash
-export RENV_CONFIG_PAK_ENABLED=true
-rig run
-renv::restore()
-```
-
-## Python
-
-### poetry
-
-poetry is used to manage python dependencies
-
-```bash
-poetry install
-poetry run python
-```
+To do that you will need an external installation of dvc, which can, for example be installed using `uv tool install 'dvc[all]'`

@@ -85,7 +85,7 @@
 
 #miniheader[Overview]
 
-- In this study, we investigate populist content on *YouTube*
+- investigating populist content on *YouTube*
 - YouTube meaning: the official *party channels* of all parties in the (last) German Bundestag
 - Dataset:
   - Channels: \@FDP, \@DieGruenen, \@spdde, \@cdutv, \@csumedia, \@AfDTV, \@AfDFraktionimBundestag
@@ -188,6 +188,13 @@
   image("../figures/populism_per_party.svg", height: 100%),
 )
 
+== Explanation regression models
+
+#miniheader[Regressions]
+
+- DV: view count
+
+
 == Effect of Anti-Elitism
 
 #figure(
@@ -207,10 +214,15 @@
 
 #miniheader[Conclusion]
 
-What do we learn?
+- German populist parties are fare more successful that non-populist parties on YouTube
+- The use of populist language differs across populist parties:
+  - *AfD* emphasizes on *anti-elitist* messages
+  - the *Left* uses *people-centric* appeals more often
+
+
 
 = References
 
 #set text(size: 15pt)
-#bibliography("references.bib", style: "modern-humanities-research-association.csl", title: none)
+#bibliography("library/references.bib", style: "library/custom.csl", title: none)
 #v(1fr)

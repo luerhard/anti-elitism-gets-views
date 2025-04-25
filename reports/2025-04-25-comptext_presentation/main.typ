@@ -88,7 +88,7 @@
 - investigating populist content on *YouTube*
 - YouTube meaning: the official *party channels* of all parties in the (last) German Bundestag
 - Dataset:
-  - Channels: \@FDP, \@DieGruenen, \@spdde, \@cdutv, \@csumedia, \@AfDTV, \@AfDFraktionimBundestag
+  - Channels: \@FDP, \@DieGruenen, \@spdde, \@cdutv, \@csumedia, \@AfDTV, \@AfDFraktionimBundestag, \@DIELINKE
   - all videos between
     - December 6, 2017 (final channel's inaugural video)
     - February 24, 2025 (day of the Bundestagswahl 2025)
@@ -104,14 +104,14 @@
 - Defined as the struggle between the "corrupt elite" and the "virtuous" people @muddePopulistZeitgeist2004
   - focusing on *anti-elitism* and *people-centrism*
 - Treated as gradational concept ("more or less populism") rather than binary attribute
-- In German context, *AfD* and *The Left* are considered populist parties
+- In German context, *AfD* and *The Left* are considered populist parties @schurmannYellingSidelinesHow2022
 
 
 == YouTube
 
 #miniheader[YouTube as a research platform]
 
-- Second most important information source for young Germans after Google
+- Second most important information source for young Germans after Google @allgaierRezoGermanClimate2020
 - Enables measuring direct user engagement through *views* and *likes*
 
 = Dataset
@@ -190,10 +190,21 @@
 
 == Explanation regression models
 
-#miniheader[Regressions]
+#slide[
+#miniheader[Regression models]
 
-- DV: view count
-
+- DV: `log(view count)`
+- IVs:
+  - `log(n_sents)`
+  - `released_year`
+  - `is_short` (< 180sec)
+  - `elite/pplcentr`
+  - `is_short * elite/pplcentr` (interaction)
+][
+- Linear regressions, 1 per populist dimension per channel
+- Results displayed as Average Marginal Effects (*AME*)
+- Range x-axis: `[0, +2sd]`
+]
 
 == Effect of Anti-Elitism
 
@@ -212,17 +223,31 @@
 
 = Conclusion
 
+==
 #miniheader[Conclusion]
 
 - German populist parties are fare more successful that non-populist parties on YouTube
 - The use of populist language differs across populist parties:
-  - *AfD* emphasizes on *anti-elitist* messages
+  - *AfD* emphasizes *anti-elitist* messages
   - the *Left* uses *people-centric* appeals more often
+- Positive relationship between user engagement and populist content is clearest for the populist parties but can also be found in some other channels
 
-
+#show: appendix
 
 = References
 
+==
 #set text(size: 15pt)
 #bibliography("library/references.bib", style: "library/custom.csl", title: none)
 #v(1fr)
+
+
+#figure(
+  placement: none,
+  image("../figures/reg_ame_likes_elite.svg", height: 110%),
+)
+
+#figure(
+  placement: none,
+  image("../figures/reg_ame_likes_pplcentr.svg", height: 110%),
+)

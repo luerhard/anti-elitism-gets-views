@@ -136,11 +136,10 @@ stages:
       hash: md5
       md5: 4427f56220ae5047490250e0116d3ac5
       size: 26631
-    - path: src/load/
+    - path: src/load/load.py
       hash: md5
-      md5: db1152d8e823ed87e60b91f58b2aa7d3.dir
-      size: 28481
-      nfiles: 10
+      md5: 0543d97804aff75f171b11bf27358cac
+      size: 4556
     outs:
     - path: reports/figures/populism_per_party.svg
       hash: md5
@@ -277,11 +276,10 @@ stages:
       hash: md5
       md5: 046ad43bc8ce65dd9f7634d7ed7b14f0
       size: 6152
-    - path: src/load/
+    - path: src/load/load.py
       hash: md5
-      md5: db1152d8e823ed87e60b91f58b2aa7d3.dir
-      size: 28481
-      nfiles: 10
+      md5: 0543d97804aff75f171b11bf27358cac
+      size: 4556
     outs:
     - path: reports/notebooks/07-top_videos.ipynb
       hash: md5
@@ -316,11 +314,10 @@ stages:
       hash: md5
       md5: 452ea552cde5262d9da4ff3d70fc5d7a
       size: 2621
-    - path: src/load/
+    - path: src/load/load.py
       hash: md5
-      md5: db1152d8e823ed87e60b91f58b2aa7d3.dir
-      size: 28481
-      nfiles: 10
+      md5: 0543d97804aff75f171b11bf27358cac
+      size: 4556
     outs:
     - path: reports/figures/reg_ame_likes_elite.svg
       hash: md5

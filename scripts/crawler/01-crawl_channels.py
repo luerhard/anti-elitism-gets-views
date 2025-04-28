@@ -33,7 +33,7 @@ YTCHANNELS = [
 def main():
     for channel_url in YTCHANNELS:
         log.info("Starting Channel: %s", channel_url)
-        ycc = YTChannelCrawler(channel_url=channel_url, output=STORAGE_PATH)
+        ycc = YTChannelCrawler(channel_url=channel_url, output=STORAGE_PATH, start_date="2017-12-06")
         ycc.download_channel()
 
 

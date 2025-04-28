@@ -1,5 +1,6 @@
 """Crawl specific YT channels and download the matches."""
 
+import datetime as dt
 import json
 from pathlib import Path
 import re
@@ -19,9 +20,10 @@ from src.logging import logger as log
 class YTChannelCrawler:
     """YT Downloader."""
 
-    def __init__(self, channel_url: str, output: Path) -> None:
+    def __init__(self, channel_url: str, output: Path, start_date: str) -> None:
         self.channel_url = channel_url
         self.output = output
+        self.start_date = dt.datetime.strptime(start_date, "%Y-%m-%d")
 
         self.uploader_id = self.get_uploader_id(self.channel_url)
         self.subfolder = self.output / self.uploader_id
@@ -109,14 +111,22 @@ class YTChannelCrawler:
             else:
                 log.warning("Metadata for %s already exists. Skipping.", video_id)
 
-            if not self._video_already_exists(video_id) and not self.was_a_livestream(video_id):
-                try:
-                    self._download_video(url=url)
-                except DownloadError:
-                    log.error("Download Error during Video File: %s", video_id)
-                    raise
-            else:
-                log.warning("Video %s already exists or was live. Skipping.", video_id)
+            if not self.newer_than_startdate(video_id):
+                log.warning("Video %s too old. Skipping.", video_id)
+                continue
+
+            if self._video_already_exists(video_id):
+                log.warning("Video %s already exists. Skipping.", video_id)
+                continue
+
+            if self.was_a_livestream(video_id):
+                log.warning("Video %s was live. Skipping.", video_id)
+                continue
+            try:
+                self._download_video(url=url)
+            except DownloadError:
+                log.error("Download Error during Video File: %s", video_id)
+                raise
 
     def _download_video_metadata(self, url, video_id):
         info = self.ydl.get_video_info(url)
@@ -132,6 +142,15 @@ class YTChannelCrawler:
             content = json.loads(content)
 
         return content["is_live"] | content["was_live"]
+
+    def newer_than_startdate(self, video_id):
+        filename = f"{video_id}.json"
+        with ZipFile(self.meta_file_folder, "r") as archive:
+            _bytes = archive.read(filename)
+            content = _bytes.decode("utf-8")
+            content = json.loads(content)
+
+        return dt.datetime.fromtimestamp(content["timestamp"]) >= self.start_date
 
     def _download_video(self, url):
         self.ydl.download(url=url)

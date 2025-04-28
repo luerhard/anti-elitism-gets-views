@@ -33,7 +33,11 @@ def test_extract_video_info(tmp_path: Path):
 @pytest.mark.slow
 def test_channel_crawler(tmp_path: Path):
     channel = "https://www.youtube.com/@sonorityofficial9831"
-    yt_channel_crawler = YTChannelCrawler(channel_url=channel, output=tmp_path)
+    yt_channel_crawler = YTChannelCrawler(
+        channel_url=channel,
+        output=tmp_path,
+        start_date="2010-01-01",
+    )
     yt_channel_crawler.download_channel_videos()
 
     with zipfile.ZipFile(yt_channel_crawler.meta_file_folder, "r") as archive:

@@ -1,0 +1,6 @@
+outs:
+- md5: a6671adaadac359b1b96ac02974be98e.dir
+  size: 1132620416
+  nfiles: 319
+  hash: md5
+  path: '@spdbt'

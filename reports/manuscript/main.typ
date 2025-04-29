@@ -124,10 +124,11 @@ These findings underscore the importance of examining platform-specific communic
   let mybody = {
     set align(left)
     set par(leading: 0.45em, justify: false)
+    set text(size: 0.9em)
     body
   }
-  let default-rect = rect.with(inset: 0.4em, radius: 0.3em, fill: orange.lighten(70%))
-  margin-note(mybody, rect: default-rect, side:right)
+  let default-rect = rect.with(inset: 0.4em, radius: 0.3em, fill: orange.lighten(70%), stroke: black)
+  margin-note(mybody, rect: default-rect, side:right, stroke: blue.lighten(20%))
 }
 
 #let float-note(body) = {
@@ -146,7 +147,7 @@ These findings underscore the importance of examining platform-specific communic
 = Introduction <introduction>
 
 Populist parties threaten democratic values and contribute to ideological polarization @robertsPopulismPolarizationComparative2022.
-// #[]<start>#float-note[Word-Count: #total.words]
+#[]<start>#float-note[Word-Count: #total.words]
 Yet it has been heavily on the rise in Western countries for decades.
 Germany had its populist surge with rise of the Alternative for Germany (AfD).
 While originally founded as a Euroskeptic response to the problems of the 2008 financial crisis, the party was quickly overtaken by right-wing anti-immigrant sentiment.

@@ -156,10 +156,10 @@ class YTChannelCrawler:
             content = _bytes.decode("utf-8")
             content = json.loads(content)
 
-        ts = dt.datetime.fromtimestamp(content["timestamp"])
+        ts = content.get("timestamp")
         if not ts:
             return False
-        return ts >= self.start_date
+        return dt.datetime.fromtimestamp(ts) >= self.start_date
 
     def _download_video(self, url):
         self.ydl.download(url=url)

@@ -99,7 +99,13 @@ class YTChannelCrawler:
         all_ids = self._all_video_ids()
 
         for index, video_id in enumerate(all_ids, 1):
-            log.info("Starting (%d/%d) video: %s", index, len(all_ids), video_id)
+            log.info(
+                "Channel: %s | Starting (%d/%d) video: %s",
+                self.uploader_id,
+                index,
+                len(all_ids),
+                video_id,
+            )
             url = base_url + video_id
 
             if not self._video_metadata_already_exists(video_id=video_id):

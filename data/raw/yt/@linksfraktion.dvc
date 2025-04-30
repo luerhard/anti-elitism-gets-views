@@ -1,6 +1,6 @@
 outs:
-- md5: 0d435d7349e34585a3b63b27e14b62fe.dir
-  size: 1795515509
-  nfiles: 243
+- md5: 386fc0cbb6a4254e28da48510f521ba7.dir
+  size: 6521828854
+  nfiles: 1060
   hash: md5
   path: '@linksfraktion'

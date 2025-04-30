@@ -21,8 +21,8 @@ YTCHANNELS = [
     # "https://www.youtube.com/@csumedia",
     # "https://www.youtube.com/@csuimbundestag9622",
     # "https://www.youtube.com/@cdutv",
-    "https://www.youtube.com/@cducsu",
-    "https://www.youtube.com/@DIELINKE",
+    # "https://www.youtube.com/@cducsu",
+    # "https://www.youtube.com/@DIELINKE",
     "https://www.youtube.com/@linksfraktion",  # bis Ende 2023
     "https://www.youtube.com/@dielinkebt",  # ab 2023
     "https://www.youtube.com/@FDP",

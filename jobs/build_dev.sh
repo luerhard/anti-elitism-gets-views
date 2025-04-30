@@ -1,9 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=build_dev
-#SBATCH --partition=gpu-single
+#SBATCH --partition=cpu-single
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=10
-#SBATCH --gres=gpu:1
 #SBATCH --time=03:00:00
 #SBATCH --mem=10gb
 #SBATCH --mail-type=BEGIN,END,FAIL

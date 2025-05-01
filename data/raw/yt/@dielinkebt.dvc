@@ -1,0 +1,6 @@
+outs:
+- md5: 6eaec5fddfa2d5ac95b30a23c17362b8.dir
+  size: 148375178
+  nfiles: 49
+  hash: md5
+  path: '@dielinkebt'

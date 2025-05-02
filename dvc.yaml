@@ -1,15 +1,30 @@
 stages:
-  run_asr:
-    cmd: python pipeline/02-run_asr.py
+  build_metadata:
+    cmd: papermill pipeline/01-build_metadata.ipynb reports/notebooks/01-build_metadata.ipynb
     deps:
     - data/raw/yt/@AfDFraktionimBundestag
     - data/raw/yt/@AfDTV
-    - data/raw/yt/@DIELINKE
-    - data/raw/yt/@DieGruenen
-    - data/raw/yt/@FDP
+    - data/raw/yt/@cducsu
     - data/raw/yt/@cdutv
+    - data/raw/yt/@csuimbundestag9622
     - data/raw/yt/@csumedia
+    - data/raw/yt/@DieGruenen
+    - data/raw/yt/@gruenebundestag
+    - data/raw/yt/@DIELINKE
+    - data/raw/yt/@dielinkebt
+    - data/raw/yt/@linksfraktion
+    - data/raw/yt/@FDP
+    - data/raw/yt/@fdpbt
     - data/raw/yt/@spdde
+    - data/raw/yt/@spdbt
+    - pipeline/01-build_metadata.ipynb
+    outs:
+    - data/yt_metadata/videos.parquet
+    - reports/notebooks/01-build_metadata.ipynb
+
+  run_asr:
+    cmd: python pipeline/02-run_asr.py
+    deps:
     - pipeline/02-run_asr.py
     - src/processing/whisper_pipeline.py
     - data/yt_metadata/videos.parquet

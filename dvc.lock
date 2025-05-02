@@ -419,8 +419,8 @@ stages:
       nfiles: 2349
     - path: pipeline/01-build_metadata.ipynb
       hash: md5
-      md5: 596add7e4e34d506057d39d13dbdd685
-      size: 18389
+      md5: 21cea714376472a5bb8becf82570ad3e
+      size: 18390
     outs:
     - path: data/yt_metadata/videos.parquet
       hash: md5
@@ -428,5 +428,5 @@ stages:
       size: 6349327
     - path: reports/notebooks/01-build_metadata.ipynb
       hash: md5
-      md5: 9f72da75abaaffba22354702497b3ec5
-      size: 22973
+      md5: 2b9b53f534781af7ef6bed5ca93b81ff
+      size: 22975

@@ -379,14 +379,18 @@ stages:
       nfiles: 2349
     - path: pipeline/01-build_metadata.ipynb
       hash: md5
-      md5: 21cea714376472a5bb8becf82570ad3e
-      size: 18390
+      md5: f224efbf02c07e154bdad2384eafb79a
+      size: 26040
     outs:
+    - path: data/yt_metadata/channels.parquet
+      hash: md5
+      md5: 9194ae4232f85e166e887de50accbdf1
+      size: 10399
     - path: data/yt_metadata/videos.parquet
       hash: md5
-      md5: 8637eb5c21adf3c291f674fa1790be15
+      md5: 8c05edde0af474692c7e75d575065c3b
       size: 6349327
     - path: reports/notebooks/01-build_metadata.ipynb
       hash: md5
-      md5: 2b9b53f534781af7ef6bed5ca93b81ff
-      size: 22975
+      md5: 3970fe889b602b082e7f955bf229b744
+      size: 30381

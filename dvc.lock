@@ -5,7 +5,7 @@ stages:
     deps:
     - path: data/yt_metadata/videos.parquet
       hash: md5
-      md5: 8637eb5c21adf3c291f674fa1790be15
+      md5: 8c05edde0af474692c7e75d575065c3b
       size: 6349327
     - path: pipeline/02-run_asr.py
       hash: md5

@@ -1,5 +1,5 @@
-/channels.parquet
 /sentences.parquet
 /broken_transcripts.parquet
 /popbert.parquet
 /videos.parquet
+/channels.parquet

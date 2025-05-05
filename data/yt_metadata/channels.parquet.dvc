@@ -1,5 +1,0 @@
-outs:
-- md5: cc2a8aae4d54d8e4632dea2e262979e0
-  size: 10307
-  hash: md5
-  path: channels.parquet

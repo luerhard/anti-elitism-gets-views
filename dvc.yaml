@@ -19,6 +19,7 @@ stages:
     - data/raw/yt/@spdbt
     - pipeline/01-build_metadata.ipynb
     outs:
+    - data/yt_metadata/channels.parquet
     - data/yt_metadata/videos.parquet
     - reports/notebooks/01-build_metadata.ipynb
 

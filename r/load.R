@@ -34,7 +34,7 @@ popbert <- function(filtered = TRUE) {
 
 colormap <- function() {
   src <- reticulate::import("src")
-  cmap <- unlist(src$colormap, use.names=TRUE)
+  cmap <- unlist(src$r_colormap_party, use.names=TRUE)
   return(cmap)
 }
 

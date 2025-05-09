@@ -38,37 +38,54 @@ try:
 except KeyError:
     pass
 
-colormap = {
+_channel_names = {
+    "@AfDFraktionimBundestag": ("BT", "AfD"),
+    "@AfDTV": ("DE", "AfD"),
+    "@cducsu": ("BT", "CDU/CSU"),
+    "@cdutv": ("DE", "CDU/CSU"),
+    "@csuimbundestag9622": ("BT", "CDU/CSU"),
+    "@csumedia": ("DE", "CDU/CSU"),
+    "@DieGruenen": ("DE", "Greens"),
+    "@gruenebundestag": ("BT", "Greens"),
+    "@DIELINKE": ("DE", "Left"),
+    "@linksfraktion": ("BT", "Left", "old"),
+    "@dielinkebt": ("BT", "Left", "new"),
+    "@FDP": ("DE", "FDP"),
+    "@fdpbt": ("BT", "FDP"),
+    "@spdde": ("DE", "SPD"),
+    "@spdbt": ("BT", "SPD"),
+}
+
+
+def format_name(items):
+    if len(items) == 2:
+        return " ".join((items[1], items[0]))
+    else:
+        return " ".join((items[1], items[0], items[2]))
+
+
+channel_id2name = {k: format_name(v) for k, v in _channel_names.items()}
+channel_id2party = {k: v[1] for k, v in _channel_names.items()}
+
+cmaps_party2color = {
     "CDU": "#000000",
     "CSU": "#000000",
-    "Grüne": "#1AA037",
+    "CDU/CSU": "#000000",
     "Greens": "#1AA037",
-    "DIE LINKE": "#8B008B",  # SPD complementary for visual disambiguation
-    "Linke": "#8B008B",  # SPD complementary for visual disambiguation
     "Left": "#8B008B",  # SPD complementary for visual disambiguation
     "FDP": "#FFEF00",
-    "AfD TV": "#0489DB",
-    "AfD-Fraktion Bundestag": "#0489DB",
-    "AfD BT": "#0489DB",
+    "AfD": "#0489DB",
     "SPD": "#E3000F",
 }
 
-r_colormap = pd.DataFrame(colormap.items(), columns=["channel", "color"])
-
-party_names = {
-    "BÜNDNIS 90/DIE GRÜNEN": "Greens",
-    "AfD-Fraktion Bundestag": "AfD BT",
-    "DIE LINKE": "Left",
-    "DieLinke": "Left",
+cmaps_channel2color = {k: cmaps_party2color[v] for k, v in channel_id2party.items()}
+cmaps_name2color = {
+    channel_id2name[k]: cmaps_party2color[channel_id2party[k]] for k in channel_id2name.keys()
 }
 
-channel_to_party = {
-    "AfD BT": "AfD",
-    "AfD TV": "AfD",
-    "CDU": "CDU/CSU",
-    "CSU": "CDU/CSU",
-    "FDP": "FDP",
-    "Greens": "Greens",
-    "Left": "Left",
-    "SPD": "SPD",
-}
+r_colormap_id = pd.DataFrame(cmaps_channel2color.items(), columns=["channel", "color"])
+r_colormap_name = pd.DataFrame(cmaps_name2color.items(), columns=["channel", "color"])
+r_colormap_party = pd.DataFrame(cmaps_party2color.items(), columns=["party", "color"])
+
+
+mynewvar = "TEST"

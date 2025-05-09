@@ -15,9 +15,9 @@ class DataLoader:
     }
 
     PERIOD_START = "2017-12-06"
-    PERIOD_END = "2025-02-24"
+    PERIOD_END = "2025-04-24"
     MIN_TOKENS_PER_SENT = 3
-    MIN_SENTS_PER_VIDEO = 5
+    MIN_SENTS_PER_VIDEO = 4
 
     def __init__(self) -> None:
         ytdata = src.DATA / "yt_metadata"
@@ -30,7 +30,8 @@ class DataLoader:
 
     def channels(self):
         table = self.con.table("channels").select(~s.cols("channel_url"))
-        table = table.mutate(channel=_.channel.substitute(src.party_names))
+        table = table.mutate(channel=_.channel_uploader_id.substitute(src.channel_id2name))
+        table = table.mutate(party=_.channel_uploader_id.substitute(src.channel_id2party))
         return table
 
     def videos(

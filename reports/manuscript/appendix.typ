@@ -7,6 +7,28 @@
   }
 }
 
+#let highlight-max(row) = {
+  let numeric-part = row.slice(1).map(v => float(v))
+  let row-max = calc.max(..numeric-part)
+
+  let make-bold(item) = {
+
+    let check = item.find(regex("^\d+[\.,]?\d*$"))
+    if check == none {
+      item
+    } else {
+      let num-item = float(item)
+      if num-item == row-max {
+        set text(weight: "bold")
+        convert-to-float(item)
+      } else {
+        convert-to-float(item)
+      }
+    }
+  }
+  row.map(make-bold)
+}
+
 = Appendix <appendix>
 
 
@@ -14,7 +36,7 @@
 #counter(page).update(1)
 #counter(figure).update(0)
 
-#set heading(numbering: "A.1", supplement: [Appendix])
+#set heading(numbering: "A1", supplement: [Appendix])
 #show heading: it => {
   if it.level == 1 and it.numbering != none {
     [#it.supplement #counter(heading).display():]
@@ -33,6 +55,73 @@
     let section = counter(heading).display()
     str(section) + str(fig_num)
 })
+
+= Dataset
+
+== Videos per channel
+
+#let table_array = csv("../tables/videos_per_channel.csv", row-type: array)
+#let header = table_array.first()
+#let table_content = table_array.slice(1)
+
+#show table.cell: it => {
+    if it.x != 0 and it.y != 0 {
+        convert-to-float(it.body.text)
+   }
+    else {
+        it
+    }
+}
+
+// #show figure: set block(breakable: false)
+
+#figure(
+  kind: table,
+  context [
+    #set text(size: 0.85em)
+    #table(
+      columns: (2.5cm, ..(auto,) * (header.len() - 1)),
+      align: (left, ..(right,) * (header.len() - 1)),
+      inset: 4pt,
+      stroke: none,
+      table.hline(),
+      table.header(..header),
+      table.hline(),
+      table.vline(x: 1, start: 1, end: table_content.len() + 1),
+      ..table_content.flatten(),
+      table.hline()
+    )
+  ],
+  caption: [Number of Videos per channel.]
+)
+
+== Descriptives per channel
+
+#let table_array = csv("../tables/channel_descriptives.csv", row-type: array)
+#let header = table_array.first()
+#let table_content = table_array.slice(1)
+// #show figure: set block(breakable: false)
+
+#figure(
+  kind: table,
+  context [
+    #set text(size: 0.85em)
+    #table(
+      columns: (2.5cm, ..(auto,) * (header.len() - 1)),
+      align: (left, ..(right,) * (header.len() - 1)),
+      inset: 4pt,
+      stroke: none,
+      table.hline(),
+      table.header(..header),
+      table.vline(x: 1, start: 1, end: table_content.len() + 1),
+      table.hline(),
+      ..table_content.flatten(),
+      table.hline()
+    )
+  ],
+  caption: [Engagement metrics per channel.]
+)
+
 
 = Regressions Results on Number of Likes <ap:reg_on_likes>
 

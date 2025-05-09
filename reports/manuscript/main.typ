@@ -62,27 +62,6 @@ These findings underscore the importance of examining platform-specific communic
 }
 
 
-#let highlight-max(row) = {
-  let numeric-part = row.slice(1).map(v => float(v))
-  let row-max = calc.max(..numeric-part)
-
-  let make-bold(item) = {
-
-    let check = item.find(regex("^\d+[\.,]?\d*$"))
-    if check == none {
-      item
-    } else {
-      let num-item = float(item)
-      if num-item == row-max {
-        set text(weight: "bold")
-        convert-to-float(item)
-      } else {
-        convert-to-float(item)
-      }
-    }
-  }
-  row.map(make-bold)
-}
 #let inote(body) = {
   set align(center)
   set par(leading: 0.45em, justify: false)
@@ -397,42 +376,11 @@ Subsequently, the focus shifts to exploring the relationship between populism an
 
 == German Parties on YouTube
 
-Summary statistics per channel are presented in @tab:descriptives.
+// Summary statistics per channel are presented in @tab:descriptives.
 Notably, each of the two AfD channels---\@AfDFraktionimBundestag (521,000 followers), hereafter referred to as AfD BT, and \@AfDTV (334,000 followers)---individually has more followers than all other analyzed channels combined (252,410 followers).
 While the CDU, FDP, Greens, and SPD channels have comparable follower counts around 30,000 each, the CSU, the smaller "sister party" of the CDU limited to Bavaria, has only 6,610 followers.
 In contrast, the Left party, another populist party represented in the Bundestag alongside the AfD, has a substantially higher follower count of 117,000, highlighting the greater popularity of populist parties compared to their non-populist counterparts.
 
-#let table_array = csv("tables/table_1.csv", row-type: array)
-#let header = table_array.first()
-#let table_content = table_array.slice(1).map(row => highlight-max(row))
-#show figure: set block(breakable: false)
-
-#figure(
-  kind: table,
-  context [
-    #set text(size: 0.85em)
-    #table(
-      columns: (2.5cm, ..(auto,) * (header.len() - 1)),
-      align: (left, ..(right,) * (header.len() - 1)),
-      inset: 4pt,
-      stroke: none,
-      table.hline(),
-      table.header(..header),
-      table.vline(x: 1, start: 1, end: table_content.len() + 1),
-      table.hline(),
-      ..table_content.flatten(),
-      table.hline()
-    )
-  ],
-  caption: [
-    Summary statistics of the dataset.
-    All data is current as of February 25, 2025, the day after the federal election.
-    *chFollowers* corresponds to the number of followers that are shown given in the channel description; this number is most probably rounded to some degree by YouTube.
-    *meanVideoLen* is shown in seconds.
-    *nLikesNA* corresponds to the number of returned missings for the like_count from the API, indicating that the like functionality is disabled for a particular video.
-    *nSentences* corresponds to the number of sentences extracted from all valid videos per channel.
-  ]
-) <tab:descriptives>
 
 The volume of videos produced follows a similar pattern, with both AfD channels demonstrating significantly higher productivity and engagement measured as median views and likes, followed by the Left.
 However, the average like count reported for the FDP may be misleading, as the like functionality has been disabled for all but one video on their channel.

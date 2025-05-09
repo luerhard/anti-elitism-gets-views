@@ -12,7 +12,6 @@
   let row-max = calc.max(..numeric-part)
 
   let make-bold(item) = {
-
     let check = item.find(regex("^\d+[\.,]?\d*$"))
     if check == none {
       item
@@ -50,11 +49,13 @@
   parbreak()
 }
 
-#set figure(numbering: num => {
+#set figure(
+  numbering: num => {
     let fig_num = counter(figure).get().at(0)
     let section = counter(heading).display()
     str(section) + str(fig_num)
-})
+  },
+)
 
 = Dataset
 
@@ -65,12 +66,11 @@
 #let table_content = table_array.slice(1)
 
 #show table.cell: it => {
-    if it.x != 0 and it.y != 0 {
-        convert-to-float(it.body.text)
-   }
-    else {
-        it
-    }
+  if it.x != 0 and it.y != 0 {
+    convert-to-float(it.body.text)
+  } else {
+    it
+  }
 }
 
 // #show figure: set block(breakable: false)
@@ -92,7 +92,7 @@
       table.hline()
     )
   ],
-  caption: [Number of Videos per channel.]
+  caption: [Number of Videos per channel.],
 )
 
 == Descriptives per channel
@@ -119,7 +119,7 @@
       table.hline()
     )
   ],
-  caption: [Engagement metrics per channel.]
+  caption: [Engagement metrics per channel.],
 )
 
 
@@ -130,15 +130,15 @@
   // placement: auto,
   caption: [
     Regression of Anti-Elitism on Number of Likes per video. A separate regression is run for each channel.
-  ]
-  ) <fig:likes_elite>
+  ],
+) <fig:likes_elite>
 
 #figure(
   image("../figures/reg_ame_likes_pplcentr.svg", width: 100%),
   // placement: auto,
   caption: [
     Regression of People-Centrism on Number of Likes per video. A separate regression is run for each channel.
-  ]
+  ],
 ) <fig:likes_pplcentr>
 
 = Top 10 most viewed video per channel <ap:most_viewed>
@@ -156,7 +156,7 @@
       align: (left, ..(right,) * (header.len() - 2), left),
       inset: 4pt,
       stroke: (x, y) => (
-        top: if calc.rem(y - 1, 10) == 0 { 1pt }
+        top: if calc.rem(y - 1, 10) == 0 { 1pt },
       ),
       table.hline(),
       table.header(..header),
@@ -165,9 +165,9 @@
       ..table_content.flatten(),
       table.hline()
     )
-  ]
-  , caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. The FDP is excluded due to their videos having basically no likes.]
-  , kind: table
+  ],
+  caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. The FDP is excluded due to their videos having basically no likes.],
+  kind: table,
 ) <ap:tab:most_viewed_videos>
 
 = Top 10 most liked videos per channel <ap:most_liked>
@@ -188,7 +188,7 @@
         align: (left, ..(right,) * (header.len() - 2), left),
         inset: 4pt,
         stroke: (x, y) => (
-          top: if calc.rem(y - 1, 10) == 0 { 1pt }
+          top: if calc.rem(y - 1, 10) == 0 { 1pt },
         ),
         table.hline(),
         table.header(..header),
@@ -196,7 +196,7 @@
         table.hline(),
         ..table_content.flatten(),
         table.hline()
-      )
+      ),
     )
   ],
   caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. The FDP is excluded due to their videos having basically no likes.],
@@ -205,7 +205,7 @@
 = Top 10 most anti-elitist videos per channel <ap:most_elite>
 
 #let table_array = csv("../tables/most_antielitism_videos_per_channel.csv", row-type: array)
-#let header = ([Channel],  [Sents], [Anti-Elite], [Title])
+#let header = ([Channel], [Sents], [Anti-Elite], [Title])
 #let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
 
 #figure(
@@ -216,9 +216,7 @@
       columns: (auto, ..(auto,) * (header.len() - 1)),
       align: (left, ..(right,) * (header.len() - 2), left),
       inset: 4pt,
-      stroke: (x, y) => (
-        top: if calc.rem(y - 1, 10) == 0 { 1pt }
-      ),
+      stroke: (x, y) => (top: if calc.rem(y - 1, 10) == 0 { 1pt }),
       table.hline(),
       table.header(..header),
       table.vline(x: 1, start: 1, end: table_content.len() + 1),

@@ -42,9 +42,9 @@ _channel_names = {
     "@AfDFraktionimBundestag": ("BT", "AfD"),
     "@AfDTV": ("DE", "AfD"),
     "@cducsu": ("BT", "CDU/CSU"),
-    "@cdutv": ("DE", "CDU/CSU"),
-    "@csuimbundestag9622": ("BT", "CDU/CSU"),
-    "@csumedia": ("DE", "CDU/CSU"),
+    "@cdutv": ("DE", "CDU"),
+    "@csuimbundestag9622": ("BT", "CSU"),
+    "@csumedia": ("DE", "CSU"),
     "@DieGruenen": ("DE", "Greens"),
     "@gruenebundestag": ("BT", "Greens"),
     "@DIELINKE": ("DE", "Left"),
@@ -86,6 +86,3 @@ cmaps_name2color = {
 r_colormap_id = pd.DataFrame(cmaps_channel2color.items(), columns=["channel", "color"])
 r_colormap_name = pd.DataFrame(cmaps_name2color.items(), columns=["channel", "color"])
 r_colormap_party = pd.DataFrame(cmaps_party2color.items(), columns=["party", "color"])
-
-
-mynewvar = "TEST"

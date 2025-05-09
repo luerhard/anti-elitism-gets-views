@@ -60,7 +60,8 @@ stages:
     - pipeline/05-basic_descriptives.ipynb
     outs:
     - reports/notebooks/05-basic_descriptives.ipynb
-    - reports/tables/dataset_summary.csv
+    - reports/tables/channel_descriptives.csv
+    - reports/tables/videos_per_channel.csv
     - reports/figures/view_count.svg
     - reports/figures/populism_per_party.svg
     - reports/manuscript/inlines/n_broken.txt

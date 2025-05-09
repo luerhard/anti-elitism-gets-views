@@ -5,6 +5,7 @@ import requests
 
 from src import config
 
+
 class ManifestoAPI:
     def __init__(self) -> None:
         self.key = config["manifesto"]["api_key"]

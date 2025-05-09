@@ -17,7 +17,7 @@ class DataLoader:
     PERIOD_START = "2017-12-06"
     PERIOD_END = "2025-04-24"
     MIN_TOKENS_PER_SENT = 3
-    MIN_SENTS_PER_VIDEO = 4
+    MIN_SENTS_PER_VIDEO = 5
 
     def __init__(self) -> None:
         ytdata = src.DATA / "yt_metadata"

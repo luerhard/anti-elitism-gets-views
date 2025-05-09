@@ -67,6 +67,9 @@
           IRkernel
           jsonlite
           languageserver
+          bayesQR
+          quantreg
+          conquer
           marginaleffects
           texreg
           slider

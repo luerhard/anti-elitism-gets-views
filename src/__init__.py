@@ -20,24 +20,6 @@ TMP.mkdir(exist_ok=True)
 config = ConfigParser()
 config.read(PATH / "config.ini")
 
-try:
-    credentials = f"{config['DB']['username']}:{config['DB']['password']}"
-    db = f"{config['DB']['ip']}:{config['DB']['port']}/{config['DB']['database']}"
-    PS_ENGINE = f"postgresql+psycopg://{credentials}@{db}"
-
-    test_db = f"{config['DB']['ip']}:{config['DB']['port']}/test_{config['DB']['database']}"
-    PS_TEST_ENGINE = f"postgresql+psycopg://{credentials}@{test_db}"
-except KeyError:
-    pass
-
-try:
-    db_section = config["DB_doccano"]
-    db_doccano_credentials = f"{db_section['username']}:{db_section['password']}"
-    db = f"{db_section['ip']}:{db_section['port']}/{db_section['database']}"
-    DOCCANO_ENGINE = f"postgresql+psycopg://{credentials}@{db}"
-except KeyError:
-    pass
-
 _channel_names = {
     "@AfDFraktionimBundestag": ("BT", "AfD"),
     "@AfDTV": ("DE", "AfD"),
@@ -57,6 +39,25 @@ _channel_names = {
 }
 
 
+_channel_party_joined = {
+    "@AfDFraktionimBundestag": "AfD",
+    "@AfDTV": "AfD",
+    "@cducsu": "CDU/CSU",
+    "@cdutv": "CDU/CSU",
+    "@csuimbundestag9622": "CDU/CSU",
+    "@csumedia": "CDU/CSU",
+    "@DieGruenen": "Greens",
+    "@gruenebundestag": "Greens",
+    "@DIELINKE": "Left",
+    "@linksfraktion": "Left",
+    "@dielinkebt": "Left",
+    "@FDP": "FDP",
+    "@fdpbt": "FDP",
+    "@spdde": "SPD",
+    "@spdbt": "SPD",
+}
+
+
 def format_name(items):
     if len(items) == 2:
         return " ".join((items[1], items[0]))
@@ -65,7 +66,7 @@ def format_name(items):
 
 
 channel_id2name = {k: format_name(v) for k, v in _channel_names.items()}
-channel_id2party = {k: v[1] for k, v in _channel_names.items()}
+channel_id2party = dict(_channel_party_joined.items())
 
 cmaps_party2color = {
     "CDU": "#000000",
@@ -77,7 +78,6 @@ cmaps_party2color = {
     "AfD": "#0489DB",
     "SPD": "#E3000F",
 }
-
 cmaps_channel2color = {k: cmaps_party2color[v] for k, v in channel_id2party.items()}
 cmaps_name2color = {
     channel_id2name[k]: cmaps_party2color[channel_id2party[k]] for k in channel_id2name.keys()

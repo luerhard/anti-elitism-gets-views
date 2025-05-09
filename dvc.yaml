@@ -61,6 +61,7 @@ stages:
     outs:
     - reports/notebooks/05-basic_descriptives.ipynb
     - reports/tables/channel_descriptives.csv
+    - reports/tables/video_descriptives_per_channel.csv
     - reports/tables/videos_per_channel.csv
     - reports/figures/view_count.svg
     - reports/figures/populism_per_party.svg

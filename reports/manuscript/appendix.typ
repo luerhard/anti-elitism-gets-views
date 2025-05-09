@@ -1,11 +1,4 @@
-#let convert-to-float(val) = {
-  let check = val.find(regex("^\d+[\.,]?\d*$"))
-  if check != none {
-    str(calc.round(float(val), digits: 2))
-  } else {
-    val
-  }
-}
+#import "@preview/zero:0.3.3": ztable
 
 #let highlight-max(row) = {
   let numeric-part = row.slice(1).map(v => float(v))
@@ -59,19 +52,12 @@
 
 = Dataset
 
-== Videos per channel
+== Channels
 
-#let table_array = csv("../tables/videos_per_channel.csv", row-type: array)
+#let table_array = csv("../tables/channel_descriptives.csv", row-type: array)
 #let header = table_array.first()
 #let table_content = table_array.slice(1)
 
-#show table.cell: it => {
-  if it.x != 0 and it.y != 0 {
-    convert-to-float(it.body.text)
-  } else {
-    it
-  }
-}
 
 // #show figure: set block(breakable: false)
 
@@ -80,8 +66,8 @@
   context [
     #set text(size: 0.85em)
     #table(
-      columns: (2.5cm, ..(auto,) * (header.len() - 1)),
-      align: (left, ..(right,) * (header.len() - 1)),
+      columns: (3cm, 5cm, 3cm),
+      align: (left, left, right),
       inset: 4pt,
       stroke: none,
       table.hline(),
@@ -95,9 +81,37 @@
   caption: [Number of Videos per channel.],
 )
 
+
+== Videos per channel
+
+#let table_array = csv("../tables/videos_per_channel.csv", row-type: array)
+#let header = table_array.first()
+#let table_content = table_array.slice(1)
+
+#figure(
+  kind: table,
+  context [
+    #set text(size: 0.85em)
+    #ztable(
+      format: (none, ..(auto,) * (header.len() - 2), (digits: 3)),
+      columns: (2.5cm, ..(auto,) * (header.len() - 1)),
+      align: (left, ..(right,) * (header.len() - 1)),
+      inset: 4pt,
+      stroke: none,
+      table.hline(),
+      table.header(..header),
+      table.hline(),
+      table.vline(x: 1, start: 1, end: table_content.len() + 1),
+      ..table_content.flatten(),
+      table.hline(),
+    )
+  ],
+  caption: [Number of Videos per channel.],
+)
+
 == Descriptives per channel
 
-#let table_array = csv("../tables/channel_descriptives.csv", row-type: array)
+#let table_array = csv("../tables/video_descriptives_per_channel.csv", row-type: array)
 #let header = table_array.first()
 #let table_content = table_array.slice(1)
 // #show figure: set block(breakable: false)
@@ -106,7 +120,8 @@
   kind: table,
   context [
     #set text(size: 0.85em)
-    #table(
+    #ztable(
+      format: (none, (digits: 3), (digits: 0), (digits: 3), (digits: 0), auto),
       columns: (2.5cm, ..(auto,) * (header.len() - 1)),
       align: (left, ..(right,) * (header.len() - 1)),
       inset: 4pt,
@@ -116,7 +131,7 @@
       table.vline(x: 1, start: 1, end: table_content.len() + 1),
       table.hline(),
       ..table_content.flatten(),
-      table.hline()
+      table.hline(),
     )
   ],
   caption: [Engagement metrics per channel.],
@@ -145,7 +160,7 @@
 
 #let table_array = csv("../tables/most_viewed_videos_per_channel.csv", row-type: array)
 #let header = ([Channel], [N Likes], [N Views], [Title])
-#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
+#let table_content = table_array.slice(1)
 
 #figure(
   align(center)[
@@ -174,7 +189,7 @@
 
 #let table_array = csv("../tables/most_liked_videos_per_channel.csv", row-type: array)
 #let header = ([Channel], [N Likes], [N Views], [Title])
-#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
+#let table_content = table_array.slice(1)
 
 #show figure: set block(breakable: true)
 #figure(
@@ -206,7 +221,7 @@
 
 #let table_array = csv("../tables/most_antielitism_videos_per_channel.csv", row-type: array)
 #let header = ([Channel], [Sents], [Anti-Elite], [Title])
-#let table_content = table_array.slice(1).map(m => m.map(convert-to-float))
+#let table_content = table_array.slice(1)
 
 #figure(
   align(center)[

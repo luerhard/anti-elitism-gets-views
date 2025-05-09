@@ -1,0 +1,284 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-02-06"
+---
+
+# Load data
+
+```{r setup, include=T}
+library(here)
+
+knitr::opts_chunk$set(echo = TRUE)
+options(box.path = here())
+
+box::use(
+  r / load
+)
+box::reload(load)
+
+library(tidyverse)
+library(marginaleffects)
+library(ggeffects)
+library(ggpubr)
+
+theme_set(theme_minimal())
+
+colormap <- load$colormap()
+
+PLOT_WIDTH <- 10
+PLOT_HEIGHT <- 8
+
+z_transform <- function(x) as.vector(scale(x))
+
+df <- load$regression_data()
+
+count_before <- nrow(df)
+df <- df |>
+  group_by(channel) |>
+  mutate(
+    d_elite = elite,
+    elite = z_transform(elite),
+    d_pplcentr = pplcentr,
+    pplcentr = z_transform(pplcentr),
+    log_video_likes = z_transform(log_video_likes),
+    log_video_views = z_transform(log_video_views)
+  ) |>
+  filter(
+    between(z_transform(video_views), -2.5, 2.5)
+  ) |>
+  ungroup()
+count_after <- nrow(df)
+
+print(paste("Removed", count_before - count_after, "outliers"))
+```
+
+# show descriptives
+
+```{r}
+df_summary <- df |>
+  group_by(channel) |>
+  summarize(
+    n = n(),
+    elite_mean = mean(d_elite),
+    elite_sd = sd(d_elite),
+    pplcentr_mean = mean(d_pplcentr),
+    pplcentr_sd = sd(d_pplcentr),
+    n_sents_mean = mean(n_sents),
+    n_sents_sd = sd(n_sents)
+  )
+
+df_summary_long <- df_summary |>
+  tidyr::pivot_longer(
+    cols = c(elite_mean, elite_sd, pplcentr_mean, pplcentr_sd),
+    names_to = c("var", ".value"),
+    names_pattern = "(elite|pplcentr)_(mean|sd)"
+  )
+
+print(df_summary, n=100)
+```
+
+```{r}
+df |>
+  drop_na(log_video_likes) |>
+  group_by(channel) |>
+  summarize(
+    views_likes_cor = cor(log_video_views, log_video_likes)
+  )
+
+```
+
+# define functions
+
+```{r}
+create_predictions <- function(formula, data, popvar) {
+
+  model <- lm(formula, data = data)
+
+  predictions <- marginaleffects::avg_predictions(
+    model = model,
+    by = c(popvar, "is_short"),
+    transform = exp,
+    newdata = datagrid(
+      model = model,
+      !!!set_names(list(seq(-2, 2.5, 0.05)), popvar),
+      grid_type = "counterfactual"
+    )
+  )
+
+  return(predictions)
+}
+```
+
+```{r}
+create_plot <- function(df, xlab, ylab) {
+  df_plot <- df |>
+    left_join(df_summary_long, by = c("channel", "var")) |>
+    mutate(new = (popvar * sd) + mean) |>
+    filter(between(new, 0, 1))
+
+  df_lines <- df_plot |>
+    group_by(channel) |>
+    filter(is_short == "long") |>
+    slice_min(abs(new - 0), with_ties = FALSE) |>
+    select(channel, intercept_y = estimate)
+
+  df_plot |>
+  ggplot(aes(x=new, y=estimate, color=is_short, fill=is_short, group=is_short)) +
+    geom_line() +
+    scale_x_continuous(
+      breaks = scales::breaks_pretty(n = 5),
+      expand = expansion(mult = c(0.04, 0.04)),
+    ) +
+    geom_ribbon(aes(ymin=conf.low, ymax=conf.high), alpha=0.05, linetype=2) +
+    geom_hline(data = df_lines, aes(yintercept = intercept_y), color = "black", linetype = "dashed") +
+    facet_wrap(~ channel, scales="free_x", ncol=4) +
+    # scale_color_manual(values=colormap) +
+    labs(
+      title=paste("Average Marginal Effect of", xlab),
+    ) +
+    xlab(xlab) +
+    ylab(ylab) +
+    theme_ggeffects(
+      base_family = "serif",
+      base_size = 14
+    ) +
+    theme(
+      legend.position="bottom",
+      panel.spacing=unit(1.2, "lines"),
+      axis.title.x = element_text(margin = margin(t = 20))
+    )
+}
+```
+
+
+# Regression on Video Views
+
+```{r}
+channels <- df |>
+  select(channel) |>
+  pull() |>
+  unique()
+
+elite_form <- formula(
+  log_video_views ~ log_n_sents + released_year + elite * is_short
+)
+
+pplcentr_form <- formula(
+  log_video_views ~ log_n_sents + released_year + pplcentr * is_short
+)
+
+i <- 0
+elite_preds <- list()
+pplcentr_preds <- list()
+for (channel in channels) {
+  i <- i + 1
+
+  df_channel <- df |>
+    filter(channel==!!channel) |>
+    drop_na(log_video_views, elite, pplcentr)
+
+
+  elite_preds[[i]] = create_predictions(elite_form, df_channel, "elite") |>
+    mutate(channel = !!channel)
+  pplcentr_preds[[i]] = create_predictions(pplcentr_form, df_channel, "pplcentr") |>
+    mutate(channel = !!channel)
+
+}
+```
+
+```{r}
+df_elite <- elite_preds |>
+  bind_rows() |>
+  rename(popvar = elite) |>
+  mutate(var = "elite")
+
+df_pplcentr <- pplcentr_preds |>
+  bind_rows() |>
+  rename(popvar = pplcentr) |>
+  mutate(var = "pplcentr")
+
+df_pred <- df_elite |> bind_rows(df_pplcentr)
+```
+
+
+```{r, fig.width=10, fig.height=11}
+plot <- create_plot(df_elite, "Anti-Elitism", "Number of Views") + coord_cartesian(ylim=c(0.6, 2.0))
+path = here("reports", "figures", "reg_ame_views_elite.svg")
+if (file.exists(path)) file.remove(path)
+ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
+plot
+```
+
+```{r, fig.width=10, fig.height=11}
+plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Views") + coord_cartesian(ylim=c(0.6, 1.7))
+path = here("reports", "figures", "reg_ame_views_pplcentr.svg")
+if (file.exists(path)) file.remove(path)
+ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
+plot
+```
+
+# Regression on Video Likes
+
+```{r}
+channels <- df |>
+  filter(channel != "FDP") |>
+  select(channel) |>
+  pull() |>
+  unique()
+
+
+elite_form <- formula(
+  log_video_likes ~ log_n_sents + released_year + elite * is_short
+)
+
+pplcentr_form <- formula(
+  log_video_likes ~ log_n_sents + released_year + pplcentr * is_short
+)
+
+i <- 0
+elite_preds <- list()
+pplcentr_preds <- list()
+for (channel in channels) {
+  i <- i + 1
+
+  df_channel <- df |>
+    filter(channel==!!channel) |>
+    drop_na(log_video_likes, elite, pplcentr)
+
+  elite_preds[[i]] = create_predictions(elite_form, df_channel, "elite") |>
+    mutate(channel = !!channel)
+
+  pplcentr_preds[[i]] = create_predictions(pplcentr_form, df_channel, "pplcentr") |>
+    mutate(channel = !!channel)
+
+}
+```
+
+```{r}
+df_elite <- elite_preds |>
+  bind_rows() |>
+  rename(popvar = elite) |>
+  mutate(var = "elite")
+
+df_pplcentr <- pplcentr_preds |>
+  bind_rows() |>
+  rename(popvar = pplcentr) |>
+  mutate(var = "pplcentr")
+```
+
+```{r, fig.width=10, fig.height=11}
+plot <- create_plot(df_elite, "Anti-Elitism", "Number of Likes") + coord_cartesian(ylim=c(0.5, 2.2))
+path = here("reports", "figures", "reg_ame_likes_elite.svg")
+if (file.exists(path)) file.remove(path)
+ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
+plot
+```
+
+```{r, fig.width=10, fig.height=11}
+plot <- create_plot(df_pplcentr, "People-Centrism", "Number of Likes")+ coord_cartesian(ylim=c(0.5, 1.8))
+path = here("reports", "figures", "reg_ame_likes_pplcentr.svg")
+if (file.exists(path)) file.remove(path)
+ggsave(path, plot, width=PLOT_WIDTH, height=PLOT_HEIGHT)
+plot
+```

@@ -94,8 +94,8 @@ stages:
       nfiles: 7
     - path: pipeline/05-basic_descriptives.ipynb
       hash: md5
-      md5: 2abfee0a3f906377015196bd47ee8eb1
-      size: 9903
+      md5: dbdc6015a670b7a6b988aa971d43383b
+      size: 290575
     - path: src/load/load.py
       hash: md5
       md5: 7f81dc127a2f8f637fc7a4c30902d8df
@@ -127,16 +127,20 @@ stages:
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: 344512ef65cb63f12746de94505d5a8a
-      size: 295581
+      md5: 21f3696c07989fffd21fbfa7f704d39f
+      size: 298025
     - path: reports/tables/channel_descriptives.csv
       hash: md5
-      md5: 1376d57e9b999bb235b107dc73b0bab9
-      size: 872
+      md5: c43a2f7a809e4f39347c92062c8f0f97
+      size: 408
+    - path: reports/tables/video_descriptives_per_channel.csv
+      hash: md5
+      md5: d29db349f2b7cdd5f5f48feb3cd135d9
+      size: 980
     - path: reports/tables/videos_per_channel.csv
       hash: md5
-      md5: 849922e8cad3ea3747242706dc5a5057
-      size: 831
+      md5: 34b3af65403db42537cc5a4f83b4f9bb
+      size: 628
   nb_regression:
     cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
       '../reports/notebooks/07-nb_regression.html')"

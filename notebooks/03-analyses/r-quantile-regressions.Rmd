@@ -80,9 +80,9 @@ print(df_summary, n=100)
 
 ```{r}
 parties <- df |> pull(party) |> unique()
-quantiles = seq(0.01, 0.99, by=0.01)
+quantiles = seq(0.75, 0.99, by=0.01)
 elite_form <- formula(
-  log_video_likes ~ log_n_sents + released_year + is_short * elite
+  log_video_views ~ log_n_sents + released_year + is_short * elite + channel
 )
 
 extract_coefs <- function(model) {
@@ -107,20 +107,27 @@ for (party in parties) {
   reg_df <- df |>
     drop_na(video_views) |>
     filter(party == !!party) |>
-    mutate(channel = channel |> fct_drop())
+    mutate(
+      channel = channel |> fct_drop(),
+      party = party |> fct_drop()
+    )
 
-  model <- quantreg::rq(elite_form, data=reg_df, tau=quantiles, method="sfn")
+  for (q in quantiles) {
+    print(paste(party, q))
+    model <- quantreg::rq(elite_form, data=reg_df, tau=quantiles, method="sfn")
+  }
 
-  coefs <- extract_coefs(model)
-  coefs$party <- party
-  i <- i + 1
-  results[[i]] <- coefs
+
+  # coefs <- extract_coefs(model)
+  # coefs$party <- party
+  # i <- i + 1
+  # results[[i]] <- coefs
 }
-all_coefs <- results |> bind_rows()
+# all_coefs <- results |> bind_rows()
 ```
 
 
-```{r}
+```{r, eval=F}
 ggplot(all_coefs, aes(x=tau, y=elite)) +
   geom_line() +
   facet_wrap(~party, ncol=2, scales="free")

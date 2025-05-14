@@ -53,34 +53,42 @@
 
         # all R packages go here
         rEnv = with pkgs.rPackages; [
+          # always deps
           box
-          caret
-          effects
-          ggeffects
-          ggpubr
-          here
-          #
-          iml
-          patchwork
-          #
-          irr
+          reticulate
+          svglite
+          tidyverse
           IRkernel
           jsonlite
+          here
           languageserver
-          bayesQR
+          # m-effect
+          marginaleffects
+          effects
+          collapse
+          ggeffects
+          ggpubr
+          #
+          patchwork
+          # regressions
+          irr
+          tidybayes
+          brms
           quantreg
           conquer
-          marginaleffects
+          posterior
+          # stuff
           texreg
           slider
           sjPlot
           sjstats
           MASS
+          # RF stuff
+          caret
+          iml
           ranger
           randomForest
-          reticulate
-          svglite
-          tidyverse
+          # --
         ];
 
         # all python packages go here

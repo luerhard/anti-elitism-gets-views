@@ -1,0 +1,93 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-02-06"
+---
+
+# Load data
+
+```{r setup, include=T}
+library(here)
+
+knitr::opts_chunk$set(echo = TRUE)
+options(box.path = here())
+
+box::use(
+  r / load
+)
+box::reload(load)
+
+library(tidyverse)
+library(brms)
+library(marginaleffects)
+
+```
+
+
+```{r}
+model_path <- here("data", "models")
+
+models <- list()
+for (file in list.files(model_path, full.names = T)) {
+  model <- readRDS(file)
+  party_name <- basename(file) |> str_replace("\\.rds$", "")
+  models[[party_name]] <- model
+
+}
+```
+
+
+```{r}
+out <- list()
+i <- 0
+for (party in names(models)){
+  for (q in names(models[[party]])) {
+    model <- models[[party]][[q]]
+    preds <- avg_slopes(model) |>
+      filter(Term == "elite") |>
+      rename(est = estimate, lower_ci = conf.low, upper_ci = conf.high) |>
+      mutate(
+        party = !!party,
+        quantile = str_replace(q, "^q", "") |> as.integer()
+      )
+
+    # model_summary <- summary(models[[party]][[q]])
+    # est <- model_summary$fixed |>
+    #   rownames_to_column("term") |>
+    #   filter(term == "elite") |>
+    #   rename(est = Estimate, upper_ci = `u-95% CI`, lower_ci = `l-95% CI`, rhat = Rhat) |>
+    #   select(lower_ci, est, upper_ci, rhat) |>
+    #   mutate(
+    #     party = !!party,
+    #     quantile = str_replace(q, "^q", "") |> as.integer()
+    #   )
+    i <- i + 1
+    out[[i]] <- preds
+  }
+}
+
+outs <- bind_rows(out)
+```
+
+```{r}
+outs |>
+  ggplot(aes(x=quantile, y=est, color=is_short)) +
+    geom_line() +
+    geom_ribbon(aes(ymin=lower_ci, ymax=upper_ci), alpha=0.2) +
+    facet_wrap(~party, scales="free")
+```
+
+```{r}
+test$fixed
+```
+
+```{r}
+library(brms)
+library(marginaleffects)
+library(posterior)
+
+
+model <- models[["greens"]][["q25"]]
+
+avg_predictions(model, by=c("is_short"))
+```

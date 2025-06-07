@@ -1,30 +1,49 @@
 [project]
-name = "populism-on-yt"
-version = "0.1.0"
-description = ""
-authors = ["Lukas Erhard <luerhard@googlemail.com>"]
+description = "Add your description here"
+name = "ytpop"
 readme = "README.md"
-packages = [{include = "src"}]
-
-[tool.pytest.ini_options]
-markers = [
-  "slow: marks a test as slow",
-  "online: marks tests as needing a internet-connection",
+requires-python = ">=3.11"
+version = "0.1.0"
+dependencies = [
+    "ibis-framework[duckdb]>=10.5.0",
+    "ipython==8.31.0",
+    "levenshtein>=0.27.1",
+    "librosa>=0.11.0",
+    "matplotlib>=3.10.3",
+    "multiprocessing-logging>=0.3.4",
+    "numpy>=2.2.6",
+    "pandas>=2.2.3",
+    "rpy2>=3.5.17",
+    "silero-vad>=5.1.2",
+    "somajo>=2.4.3",
+    "torch>=2.7.0",
+    "torchaudio>=2.7.0",
+    "torchvision>=0.22.0",
+    "tqdm>=4.67.1",
+    "transformers>=4.51.3",
+    "yt-dlp>=2025.4.30",
 ]
-pythonpath = [
-  "."
+
+[dependency-groups]
+dev = [
+  "ipykernel>=6.29.5",
+  "jupyter>=1.1.1",
+  "papermill>=2.6.0",
+  "pip>=25.1.1",
+  "pytest>=8.3.5",
+  "pytest-cases>=3.8.6",
 ]
 
-[tool.ruff]
-fix = true
-include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
-target-version = "py311"
-line-length = 100
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+force-single-line = true
+force-sort-within-sections = true
+known-local-folder = ["src"]
 
 [tool.ruff.lint]
-ignore = ["D107", "E712"]
-unfixable = ["F401"]
-ignore-init-module-imports = true
+ignore = ["D107", "E712", "F401", "COM812"]
 select = [
   "ARG", # flake8-unused-arguments
   "B", # flake8-bugbear
@@ -41,22 +60,10 @@ select = [
   "UP", # pyupgrade
 ]
 
-[tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["E402"]
-"docs/**" = ["D"]
-"tests/**" = ["D"]
-"notebooks/**" = ["D"]
-"pipeline/**" = ["D103"]
-"notebooks/01-playground/**" = ["D103", "E402", "E501"]
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-
-[tool.ruff.lint.isort]
-force-single-line = true
-force-sort-within-sections = true
-known-local-folder = ["src"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.hatch.build]
+include = ["src"]

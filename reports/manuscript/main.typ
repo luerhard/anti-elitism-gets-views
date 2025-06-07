@@ -119,14 +119,12 @@
   let default-rect = rect.with(inset: 0.4em, radius: 0.3em, fill: orange.lighten(70%))
   margin-note(mybody, rect: default-rect, stroke: none, side: right, fill: orange.lighten(80%))
 }
-
-
 #word-count(total => [
-
   = Introduction <introduction>
 
+
   Populist parties threaten democratic values and contribute to ideological polarization @robertsPopulismPolarizationComparative2022.
-  #[]<start>#float-note[Word-Count: #total.words]
+  #float-note[Word-Count: #total.words]
   Yet it has been heavily on the rise in Western countries for decades.
   Germany had its populist surge with rise of the Alternative for Germany (AfD).
   While originally founded as a Euroskeptic response to the problems of the 2008 financial crisis, the party was quickly overtaken by right-wing anti-immigrant sentiment.
@@ -259,7 +257,7 @@
   #mnote[solche typos kamen schon häufiger (zB auch „and“ statt „an“); da nochmal in ruhe drüber]
   There is one strain that detects populism in political actors or parts of discourse like speeches.
   And there is another strain that is concerned with measuring populist attitudes among populations @akkermanHowPopulistAre2014 @hawkinsActivationPopulistAttitudes2020.
-  #mnote[die zweite ist ja für dich wurst; trotzdem erwähnen?]
+  // #mnote[die zweite ist ja für dich wurst; trotzdem erwähnen?]
 
   A notable aspect of analyzing populist communication on Social Media is that we are able to analyze direct feedback in terms of views, likes and comments on very specific bits of populist communication.
   According to #cite(<keffordPopulistAttitudesBringing2022>, form: "prose") they are the first to try to bridge this gap and try link populist communication can populist attitudes in terms of voting behavior.
@@ -290,16 +288,16 @@
   ]
 
 
-  // == Populism in the German Bundestag <sec:pop_in_bundestag>
+  == Populism in the German Bundestag <sec:pop_in_bundestag>
 
 
-  // // Populism can be defined in a lot of different ways, with the two main approaches being "actor-centered" and "communication-centered" (larsson et al, the rise of instagram).
-  // // While the former approach sees populism as a property of some political entity, be it a politician or a party, the latter considers populism as a style of communication (e.g. Jacobs et al or Stanyer et al.-- see larson).
-  // // We combine both approaches in classifying the parties, based on a actor-centered approach (using PopuList) and identifying populist dimensions in the commnunication that is shared on the parties' YouTube channel.
+  // Populism can be defined in a lot of different ways, with the two main approaches being "actor-centered" and "communication-centered" (larsson et al, the rise of instagram).
+  // While the former approach sees populism as a property of some political entity, be it a politician or a party, the latter considers populism as a style of communication (e.g. Jacobs et al or Stanyer et al.-- see larson).
+  // We combine both approaches in classifying the parties, based on a actor-centered approach (using PopuList) and identifying populist dimensions in the commnunication that is shared on the parties' YouTube channel.
 
-  // Despite debates on the role of moralistic language in populism, recent scholarship suggests that combining moral, anti-elitist, and people-centric elements is essential to classify a statement as populist (Stavrakakis and Jäger 2018; Dai and Kustov 2022). Thus, populism is characterized by these three intertwined attributes.
+  Despite debates on the role of moralistic language in populism, recent scholarship suggests that combining moral, anti-elitist, and people-centric elements is essential to classify a statement as populist (Stavrakakis and Jäger 2018; Dai and Kustov 2022). Thus, populism is characterized by these three intertwined attributes.
 
-  // There are currently two parties in the German Bundestag that are considered populist, the AfD and the Left @rooduijnPopuListDatabasePopulist2023.
+  There are currently two parties in the German Bundestag that are considered populist, the AfD and the Left @rooduijnPopuListDatabasePopulist2023.
 
 
 
@@ -454,7 +452,7 @@
   This is especially important since the populist dimension is measured as a _percentage of sentences that contain the populist dimension_ which might express something different in a video with very few sentences vs a video with many sentences.
 
   #figure(
-    image("../figures/reg_ame_views_elite.svg", width: 100%),
+    image("../figures/reg_views_elite.svg", width: 100%),
     // placement: auto,
     caption: [
       Regression of Anti-Elitism on Number of Views per video.
@@ -471,7 +469,7 @@
   The confidence intervals give an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
 
   #figure(
-    image("../figures/reg_ame_views_pplcentr.svg", width: 100%),
+    image("../figures/reg_views_pplcentr.svg", width: 100%),
     // placement: auto,
     caption: [
       Regression of People-Centrism on Number of Views per video. A separate regression is run for each channel.
@@ -518,7 +516,6 @@
   They also highlight the platform's potential to reinforce populist dynamics through its attention economy.
   Future research should expand on this by integrating multimodal analysis, user behavior data, and qualitative assessments of video content, in order to better understand the interplay between message, medium, and audience response.
 
-  #[] <end>
 ])
 #pagebreak()
 #set par(leading: 1em, spacing: 1.7em)

@@ -402,3 +402,58 @@ stages:
       hash: md5
       md5: 3970fe889b602b082e7f955bf229b744
       size: 30381
+  run_regressions:
+    cmd: Rscript pipeline/06-run_regressions.R
+    deps:
+    - path: data/yt_metadata/
+      hash: md5
+      md5: f5fa784e5cff54c11671f90d06127a36.dir
+      size: 92469404
+      nfiles: 7
+    - path: pipeline/06-run_regressions.R
+      hash: md5
+      md5: ff483aa6171c9bd83bf2ee19bb9a5b58
+      size: 2928
+    - path: src/load/load.py
+      hash: md5
+      md5: 6f91bfdab6242414a00e506acfc46cbd
+      size: 4813
+    outs:
+    - path: data/models/
+      hash: md5
+      md5: 279c119e38d224a6dba5243e638fc4b1.dir
+      size: 11346201498
+      nfiles: 384
+  plot_regressions:
+    cmd: papermill pipeline/07-plot_regressions.ipynb reports/notebooks/07-plot_regressions.ipynb
+    deps:
+    - path: data/models/
+      hash: md5
+      md5: 279c119e38d224a6dba5243e638fc4b1.dir
+      size: 11346201498
+      nfiles: 384
+    - path: pipeline/07-plot_regressions.ipynb
+      hash: md5
+      md5: fc2c6d86557b5b569a588335189ba613
+      size: 393620
+    outs:
+    - path: reports/figures/reg_likes_elite.svg
+      hash: md5
+      md5: bd0626a3216b73d4b976d648d4f5c180
+      size: 41772
+    - path: reports/figures/reg_likes_pplcentr.svg
+      hash: md5
+      md5: 0426088794099b531d2fc51428e5b4e5
+      size: 40736
+    - path: reports/figures/reg_views_elite.svg
+      hash: md5
+      md5: 22ea87b033ae1aa0ea9aaa19bc19ad13
+      size: 40733
+    - path: reports/figures/reg_views_pplcentr.svg
+      hash: md5
+      md5: 570e281713c42cafe18ea9e1920deb5c
+      size: 40951
+    - path: reports/notebooks/07-plot_regressions.ipynb
+      hash: md5
+      md5: 8a330c4f1771dbc3b5ac429453e4557d
+      size: 409013

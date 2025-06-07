@@ -1,8 +1,7 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     flake-utils.url = "github:numtide/flake-utils";
-    nix-gl-host.url = "github:numtide/nix-gl-host";
   };
 
   outputs =
@@ -10,49 +9,76 @@
       self,
       nixpkgs,
       flake-utils,
-      nix-gl-host,
       ...
-    }:
+    }@inputs:
     flake-utils.lib.eachSystem [ "aarch64-darwin" "x86_64-linux" ] (
       system:
       let
-
         pkgs = import nixpkgs {
           inherit system;
-          config = {
-            allowUnfree = true; # necessary for CUDA
-          };
           overlays = [
-            (import ./nix/python-overlay.nix)
             (import ./nix/r-overlay.nix)
+
           ];
         };
 
-        # general system dependencies
-        systemDeps = with pkgs; [
-          gcc
-          git # so git works in terminal
-          glibcLocales # get rid of error msgs "unable to set locale -- default to 'C'" in R
-          R # necessary, otherwise no package is found in R
-          pandoc
-          ffmpeg
-        ];
+        kernelsDir = ".devenv/.jupyter/kernels";
 
-        # Linux CUDA deps.
-        # Currently broken for python312 (?) Mismatch in driver version.
-        linuxCudaDeps =
-          if system == "x86_64-linux" then
-            with pkgs;
-            [
-              cudatoolkit
-              linuxPackages.nvidia_x11
-              cudaPackages.cudnn
-            ]
-          else
-            [ ];
+        jupyterStart = pkgs.writeShellScriptBin "jupyter-start" ''
 
-        # all R packages go here
-        rEnv = with pkgs.rPackages; [
+          echo "Setting up kernels for Jupyter..."
+
+          echo "R kernel"
+          kernelsDir=.venv/.jupyter/kernels
+
+          # Ensure an 'ir' folder exists in 'KernelsDir':
+          mkdir -p $kernelsDir/ir
+
+          # Copy the files using interpolation
+          cp -r ${pkgs.rPackages.IRkernel}/library/IRkernel/kernelspec/* $kernelsDir/ir
+
+          # Add write permission
+          chmod -R u+w $kernelsDir/ir
+          sed -i 's/"display_name": *"R"/"display_name": "R (devenv)"/' $kernelsDir/ir/kernel.json
+
+          # set up Jupyter to look for kernels in the '.jupyter' dir:
+          echo "Jupyter kernel R (devenv)  is ready."
+
+          uv run python -m ipykernel install --prefix="/tmp" --name="python" --display-name="Python (devenv)" > /dev/null 2>&1
+          cp -r /tmp/share/jupyter/kernels/python $kernelsDir/
+
+          echo "Jupyter kernel Python (devenv) is ready."
+
+          uv run jupyter notebook \
+          --no-browser \
+          --ip="localhost" \
+          --IdentityProvider.token="" \
+          --ServerApp.password="" \
+          --ServerApp.kernel_spec_manager_class='jupyter_client.kernelspec.KernelSpecManager' \
+          --KernelSpecManager.allowed_kernelspecs="['python', 'ir']"
+
+        '';
+
+        defaultSystemDeps =
+          [
+            # always system deps
+            pkgs.gcc
+            pkgs.uv
+            # weird build deps for rpy2
+            pkgs.bzip2
+            pkgs.icu
+            pkgs.libdeflate
+            pkgs.gettext
+            pkgs.xz
+            pkgs.zlib # # rpy2 deps end
+            pkgs.R
+            jupyterStart
+          ]
+          ++ pkgs.lib.lists.optionals pkgs.stdenv.isLinux [
+            pkgs.glibcLocales
+          ];
+
+        REnv = with pkgs.rPackages; [
           # always deps
           box
           reticulate
@@ -91,50 +117,26 @@
           # --
         ];
 
-        # all python packages go here
-        pyEnv = pkgs.python311.withPackages (
-          ppkgs: with ppkgs; [
-            ibis-framework
-            ipykernel
-            matplotlib
-            multiprocessing-logging
-            librosa
-            levenshtein
-            pandas
-            papermill
-            pip # important for reticulate
-            pytest
-            pytest-cases
-            silero-vad
-            wandb
-            rpy2
-            spacy
-            somajo
-            sqlalchemy
-            torch-bin
-            transformers
-            tqdm
-            yt-dlp
-          ]
-        );
-
       in
       {
         defaultPackage = pkgs.mkShell {
           packages =
             [
-              pyEnv # needs to be @ top of list, so the correct python interpreter is exposed
-              rEnv
-              # linuxCudaDeps
-              systemDeps
+              pkgs.git
             ]
-            ++ pkgs.lib.lists.optional pkgs.stdenv.isLinux [
-              nix-gl-host.defaultPackage.${system}
-            ];
-
+            ++ REnv
+            ++ defaultSystemDeps;
           shellHook = ''
-            export PYTHONPATH="$(pwd):$PYTHONPATH"
-            export RETICULATE_PYTHON=$(which python)
+            export UV_LINK_MODE=copy
+            export UV_MANAGED_PYTHON=true
+            export UV_PYTHON_DOWNLOADS="automatic"
+            export TZ="Europe/Berlin"
+            export R_HOME=$(Rscript -e "cat(R.home())")
+            uv sync
+            source .venv/bin/activate
+
+            export JUPYTER_PATH="$PWD/.venv/.jupyter"
+            export RETICULATE_PYTHON=$(uv python find)
           '';
         };
       }

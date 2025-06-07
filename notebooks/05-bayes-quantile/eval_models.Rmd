@@ -43,26 +43,19 @@ i <- 0
 for (party in names(models)){
   for (q in names(models[[party]])) {
     model <- models[[party]][[q]]
-    preds <- avg_slopes(model) |>
-      filter(Term == "elite") |>
-      rename(est = estimate, lower_ci = conf.low, upper_ci = conf.high) |>
+
+    model_summary <- summary(models[[party]][[q]])
+    est <- model_summary$fixed |>
+      rownames_to_column("term") |>
+      filter(term == "elite") |>
+      rename(est = Estimate, upper_ci = `u-95% CI`, lower_ci = `l-95% CI`, rhat = Rhat) |>
+      select(lower_ci, est, upper_ci, rhat) |>
       mutate(
         party = !!party,
         quantile = str_replace(q, "^q", "") |> as.integer()
       )
-
-    # model_summary <- summary(models[[party]][[q]])
-    # est <- model_summary$fixed |>
-    #   rownames_to_column("term") |>
-    #   filter(term == "elite") |>
-    #   rename(est = Estimate, upper_ci = `u-95% CI`, lower_ci = `l-95% CI`, rhat = Rhat) |>
-    #   select(lower_ci, est, upper_ci, rhat) |>
-    #   mutate(
-    #     party = !!party,
-    #     quantile = str_replace(q, "^q", "") |> as.integer()
-    #   )
     i <- i + 1
-    out[[i]] <- preds
+    out[[i]] <- est
   }
 }
 

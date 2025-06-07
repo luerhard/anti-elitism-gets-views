@@ -1,6 +1,6 @@
 import ibis
 from ibis import _
-from ibis.expr.api import case
+from ibis.expr.api import cases
 import ibis.selectors as s
 
 import src
@@ -22,16 +22,22 @@ class DataLoader:
     def __init__(self) -> None:
         ytdata = src.DATA / "yt_metadata"
         self.con = ibis.duckdb.connect(threads=6, memory_limit="10GB")
-        self.con.read_parquet(ytdata / "channels.parquet", "channels")
-        self.con.read_parquet(ytdata / "videos.parquet", "videos")
-        self.con.read_parquet(ytdata / "broken_transcripts.parquet", "broken_transcripts")
-        self.con.read_parquet(ytdata / "sentences.parquet", "sentences")
-        self.con.read_parquet(ytdata / "popbert.parquet", "popbert")
+        self.con.read_parquet(ytdata / "channels.parquet", table_name="channels")
+        self.con.read_parquet(ytdata / "videos.parquet", table_name="videos")
+        self.con.read_parquet(
+            ytdata / "broken_transcripts.parquet", table_name="broken_transcripts"
+        )
+        self.con.read_parquet(ytdata / "sentences.parquet", table_name="sentences")
+        self.con.read_parquet(ytdata / "popbert.parquet", table_name="popbert")
 
     def channels(self):
         table = self.con.table("channels").select(~s.cols("channel_url"))
-        table = table.mutate(channel=_.channel_uploader_id.substitute(src.channel_id2name))
-        table = table.mutate(party=_.channel_uploader_id.substitute(src.channel_id2party))
+        table = table.mutate(
+            channel=_.channel_uploader_id.substitute(src.channel_id2name)
+        )
+        table = table.mutate(
+            party=_.channel_uploader_id.substitute(src.channel_id2party)
+        )
         return table
 
     def videos(
@@ -53,7 +59,9 @@ class DataLoader:
                 ],
             )
             if not _ignore_broken_transcripts_filter:
-                table = table.anti_join(self.broken_transcripts(filtered=False), ["video_id"])
+                table = table.anti_join(
+                    self.broken_transcripts(filtered=False), ["video_id"]
+                )
 
             if not _ignore_sentence_filter:
                 # necessary to avoid possible infinite recursion
@@ -116,7 +124,7 @@ class DataLoader:
         if binarize_predictions:
 
             def apply_threshold(col, thresh):
-                return case().when(col > thresh, 1).else_(0).end()
+                return cases((col > thresh, 1), else_=0)
 
             table = table.mutate(
                 elite=apply_threshold(_.elite, self.POPBERT_THRESH["elite"]),

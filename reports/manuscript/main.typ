@@ -143,15 +143,17 @@
 
 
   // With the rise of YouTube as one of the most important social media networks on the Internet, it still lacks a thorough investigation @rauchfleischGermanFarrightYouTube2020.
-  This article investigates how German political parties utilize YouTube as a platform for political communication, with particular attention to patterns of engagement and popularity. An initial overview of the parties' YouTube channels reveals a striking disparity in audience size: the populist Alternative for Germany (AfD) significantly outpaces all other parties in terms of subscribers and likes. This observation raises a critical question: How do German political parties employ YouTube, and to what extent does populist rhetoric contribute to their success on the platform?
+  This article investigates how German political parties utilize YouTube as a platform for political communication, with particular attention to patterns of engagement and popularity.
 
-  Even without the direct interaction between content creators and viewers, this platform provides an easy way for almost everyone to create and share content.
-  #mnote[das hüpft hier. erst resultate angedeutet, dann warum die daten hilfreich sind]
   Of course, the German parties are also taking the opportunity to be represented on the platform, albeit with varying degrees of success.
-  While the audience is behind some of the more influential accounts on this platform, an examination of the content shared on YouTube enables us to examine the parties' self-representation in greater detail.
-  #footnote[There are some successful channels of German politicians like Sarah Wagenknecht (with 673,000 followers), or Alice Weidel (with 292,000 followers), with personal channels (checked on February 26, 2025).
-    Nevertheless, in this study we focus on the party channels.]
-  This research aims to take a closer look at the use and spread of populism on YouTube by German political parties.
+  An brief glance of the parties' YouTube channels reveals a striking disparity in audience size: the populist Alternative for Germany (AfD) significantly outpaces all other parties in terms of subscribers and likes. This observation raises a critical question: How do German political parties employ YouTube, and to what extent does populist rhetoric contribute to their success on the platform?
+
+  // Even without the direct interaction between content creators and viewers, this platform provides an easy way for almost everyone to create and share content.
+
+  // While the audience is behind some of the more influential accounts on this platform, an examination of the content shared on YouTube enables us to examine the parties' self-representation in greater detail.
+  // #footnote[There are some successful channels of German politicians like Sarah Wagenknecht (with 673,000 followers), or Alice Weidel (with 292,000 followers), with personal channels (checked on February 26, 2025).
+  //   Nevertheless, in this study we focus on the party channels.]
+  // This research aims to take a closer look at the use and spread of populism on YouTube by German political parties.
 
   #mnote[hier ggf nochmal was du vorhast zu machen oder, mMn noch besser, kurz ergebnisse zsfen]
 

@@ -288,7 +288,7 @@
 
   // Populism can be defined in a lot of different ways, with the two main approaches being "actor-centered" and "communication-centered" (larsson et al, the rise of instagram).
   // While the former approach sees populism as a property of some political entity, be it a politician or a party, the latter considers populism as a style of communication (e.g. Jacobs et al or Stanyer et al.-- see larson).
-  // We combine both approaches in classifying the parties, based on a actor-centered approach (using PopuList) and identifying populist dimensions in the communication that is shared on the parties' YouTube channel.
+  // We combine both approaches in classifying the parties, based on an actor-centered approach (using PopuList) and identifying populist dimensions in the communication that is shared on the parties' YouTube channel.
 
   Despite debates on the role of moralistic language in populism, recent scholarship suggests that combining moral, anti-elitist, and people-centric elements is essential to classify a statement as populist (Stavrakakis and Jäger 2018; Dai and Kustov 2022).
   Thus, populism is characterized by these three intertwined attributes.
@@ -320,9 +320,9 @@
   #mnote[könnte auch in appendix (die erklärung) und in main nur kurz dass du es unterscheidest]
   These are a separate video stream for short videos.
   Its implementation is comparable to TikTok.
-  Since October 15, 2024, every video up to three minutes of length and with a square or vertical aspect ratio will automatically categorized as a Short @youtube2025-shorts.
+  Since October 15, 2024, every video up to three minutes of length and with a square or vertical aspect ratio will be automatically categorized as a Short @youtube2025-shorts.
   Although we have explicitly not included Shorts during data collection, we there possibly have content that is not solely published as long-form video on YouTube in our data.
-  To handle that and homogenize the data anlysis, we create a variable in the data "is_short".
+  To handle that and homogenize the data analysis, we create a variable in the data "is_short".
   It indicates whether a videos is up to 180 seconds in length.
 
   == Video transcripts
@@ -440,7 +440,7 @@
   To ensure comparability of the effects, we additionally standardize (z-transform) the dependent variable as well as the populist dimension for each regression within each channel.
   Although it is important to bear this in mind during the interpretation of the results, we believe that we can achieve a better comparison between the effects.
   That way, we are able to investigate if videos that are more populist compared to other content of the same channel accumulates more popularity, again compared to videos of the same channel.
-  In doing so, we explicitly express the believe that people watch and compare content from within the same channel when deciding about their engagement but not necessarily between channels.
+  In doing so, we explicitly express the belief that people watch and compare content from within the same channel when deciding about their engagement but not necessarily between channels.
 
   We control for the year of a video's release, the number of sentences in the video's transcript.
   #mnote[das in data-section]
@@ -478,10 +478,10 @@
   While a consistent trend is recognizable for long-form content on both AfD channels, and the Left's channel short-form videos on the AfD TV channel do not show the same relationship.
   For all channels the x-axis' upper limit which indicates values for +2 standard deviations of the people-centric content, is quite low for all channels, and the large confidence intervals for long form content on CDU and CSU show how sparse and/or varying the data is for values above 5%.
 
-  Regarding *H2a* stating that on channels of populist parties, we expect a positive relationship between a videos' amount of contained populism and it's user engagement, we therefore find partial support on both dimensions.
+  Regarding *H2a* stating that on channels of populist parties, we expect a positive relationship between a video's amount of contained populism and it's user engagement, we therefore find partial support on both dimensions.
   We can observe a clear positive relationship for the video's amount of populism and its view count for the AfD's channels long videos.
   Additionally we see an increase in expected view count for the Left but only for long videos.
-  While the amount populist content in neither dimension seems to have an effect on user engagement for short videos in the Left's channel, the effect for all other types of videos from populists parties' channels is clearly positive.
+  While the amount of populist content in neither dimension seems to have an effect on user engagement for short videos in the Left's channel, the effect for all other types of videos from populists parties' channels is clearly positive.
 
   The analysis of viewer engagement across non-populist party channels (CDU, CSU, FDP, Greens, SPD) provides only limited support for *H2b*.
   No consistent or significant positive relationship is observed for some parties and video types, particularly for the channels of the FDP and the Greens.
@@ -493,7 +493,7 @@
 
   #mnote[start mit substantial claim?]
   This study shows the use of advanced speech recognition technology to analyze YouTube content.
-  By combining OpenAI's whisper-large-v3-turbo with Silero voice activity detection, high-quality transcripts were used to analyze populist content on the offical German parties' YouTube channels.
+  By combining OpenAI's whisper-large-v3-turbo with Silero voice activity detection, high-quality transcripts were used to analyze populist content on the official German parties' YouTube channels.
   It demonstrates that populist parties in Germany—most notably the AfD—are significantly more successful on YouTube than their non-populist counterparts.
   They not only attract larger audiences but also disseminate a substantially higher volume of populist content.
   This underscores the strategic advantage that populist actors hold on video-based platforms, where emotionally charged and confrontational messaging can gain visibility and engagement.

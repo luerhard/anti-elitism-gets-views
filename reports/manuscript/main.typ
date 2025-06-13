@@ -143,12 +143,7 @@
 
 
   // With the rise of YouTube as one of the most important social media networks on the Internet, it still lacks a thorough investigation @rauchfleischGermanFarrightYouTube2020.
-  #mnote[RQ here]
-  This article aims to take a closer look at the usage patterns of YouTube by German political parties.
-  A glance at the number of likes and followers for the parties' channels shows that the populist Alternative for Germany (AfD) has a massively larger followership on this platform than any other party.
-
-  // But YouTube is not "just" a social media platform.
-  // Im Gegensatz zu vielen anderen social media Plattformen, ist die Interaktivität hier stark eingeschränkt.
+  This article investigates how German political parties utilize YouTube as a platform for political communication, with particular attention to patterns of engagement and popularity. An initial overview of the parties' YouTube channels reveals a striking disparity in audience size: the populist Alternative for Germany (AfD) significantly outpaces all other parties in terms of subscribers and likes. This observation raises a critical question: How do German political parties employ YouTube, and to what extent does populist rhetoric contribute to their success on the platform?
 
   Even without the direct interaction between content creators and viewers, this platform provides an easy way for almost everyone to create and share content.
   #mnote[das hüpft hier. erst resultate angedeutet, dann warum die daten hilfreich sind]
@@ -158,11 +153,7 @@
     Nevertheless, in this study we focus on the party channels.]
   This research aims to take a closer look at the use and spread of populism on YouTube by German political parties.
 
-  #mnote[intro nicht mit rq schließen, früher. hier ggf nochmal was du vorhast zu machen oder, mMn noch besser, kurz ergebnisse zsfen]
-  #quote(block: true)[
-    #strong[Research Question:]
-    How do German political parties utilize YouTube and to what extent does populism influence the popularity of their content?
-  ]
+  #mnote[hier ggf nochmal was du vorhast zu machen oder, mMn noch besser, kurz ergebnisse zsfen]
 
   = Theory
 

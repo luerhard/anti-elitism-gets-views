@@ -126,11 +126,11 @@
   Populist parties threaten democratic values and contribute to ideological polarization @robertsPopulismPolarizationComparative2022.
   #float-note[Word-Count: #total.words]
   Yet it has been heavily on the rise in Western countries for decades.
-  Germany had its populist surge with rise of the Alternative for Germany (AfD).
+  Germany had its populist surge with the rise of the Alternative for Germany (AfD).
   While originally founded as a Euroskeptic response to the problems of the 2008 financial crisis, the party was quickly overtaken by right-wing anti-immigrant sentiment.
 
   Some attribute part of this success to social media, which is used far more by populist actors than non-populist ones (CITE?).
-  Although there exist research on populism on other social media platforms, such as TikTok @gonzalez-aguilarPopulistRightParties2023, Twitter @ernstExtremePartiesPopulism2017, Instagram @oloflarssonRiseInstagramTool2023, or Facebook @schurmannYellingSidelinesHow2022, research on YouTube is still lacking @mungerPressingPlayPolitics2025.
+  Although there exists research on populism on other social media platforms, such as TikTok @gonzalez-aguilarPopulistRightParties2023, Twitter @ernstExtremePartiesPopulism2017, Instagram @oloflarssonRiseInstagramTool2023, or Facebook @schurmannYellingSidelinesHow2022, research on YouTube is still lacking @mungerPressingPlayPolitics2025.
   While in previous years TV was "considered to be the most important advertising medium and televised political advertising a leading way of communication between candidates voters" @vesnic-alujevicYouTubePoliticalAdvertising2014[199] and it probably still is, its place at the top is being fiercely contested by emerging players on the web.
   Social media, especially YouTube as one of the largest platforms, is an important but understudied place where populism is being spread.
 
@@ -146,7 +146,7 @@
   This article investigates how German political parties utilize YouTube as a platform for political communication, with particular attention to patterns of engagement and popularity.
 
   Of course, the German parties are also taking the opportunity to be represented on the platform, albeit with varying degrees of success.
-  An brief glance of the parties' YouTube channels reveals a striking disparity in audience size: the populist Alternative for Germany (AfD) significantly outpaces all other parties in terms of subscribers and likes. This observation raises a critical question: How do German political parties employ YouTube, and to what extent does populist rhetoric contribute to their success on the platform?
+  A brief glance of the parties' YouTube channels reveals a striking disparity in audience size: the populist Alternative for Germany (AfD) significantly outpaces all other parties in terms of subscribers and likes. This observation raises a critical question: How do German political parties employ YouTube, and to what extent does populist rhetoric contribute to their success on the platform?
 
   // Even without the direct interaction between content creators and viewers, this platform provides an easy way for almost everyone to create and share content.
 
@@ -219,7 +219,7 @@
   Although this approach is less prevalent in the empirical literature, as it is considered "extremely abstract" and faces "serious problems when it comes to analysing populism in more concrete terms" #cite(<muddePopulismEuropeAmericas2012>, supplement: "p. 6"), it offers several valuable features that are applied in the in this work.
   While #cite(<moffittPopulism2020>, form: "prose", supplement: "Table 2.1") makes a clear distinction in that the ideational approach views populism as a purely binary attribute of political actors, Mudde recognizes a gradual "more or less populism" and merely qualifies that it does not make sense to speak of "weak populists" in the case of non-populist actors who use some populist phrases @muddePopulismIdeatioalApproach2017.
 
-  // First, we follow the discursive-perfomative approach in that we define populism as a gradational concept, in contrast to a binary approach which is commonly used in research using the ideational definition. (CITE) // (CITE Moffit 2020, Table 2.1 -- roughly)
+  // First, we follow the discursive-performative approach in that we define populism as a gradational concept, in contrast to a binary approach which is commonly used in research using the ideational definition. (CITE) // (CITE Moffit 2020, Table 2.1 -- roughly)
 
   This allows us to detect 'more or less' populism in specific texts.
   Secondly, we see populism less as an attribute of political actors, but rather, we see it as a practice that political actors consciously choose to employ in order to convey an ideology to their audience.
@@ -288,7 +288,7 @@
 
   // Populism can be defined in a lot of different ways, with the two main approaches being "actor-centered" and "communication-centered" (larsson et al, the rise of instagram).
   // While the former approach sees populism as a property of some political entity, be it a politician or a party, the latter considers populism as a style of communication (e.g. Jacobs et al or Stanyer et al.-- see larson).
-  // We combine both approaches in classifying the parties, based on a actor-centered approach (using PopuList) and identifying populist dimensions in the commnunication that is shared on the parties' YouTube channel.
+  // We combine both approaches in classifying the parties, based on a actor-centered approach (using PopuList) and identifying populist dimensions in the communication that is shared on the parties' YouTube channel.
 
   Despite debates on the role of moralistic language in populism, recent scholarship suggests that combining moral, anti-elitist, and people-centric elements is essential to classify a statement as populist (Stavrakakis and Jäger 2018; Dai and Kustov 2022).
   Thus, populism is characterized by these three intertwined attributes.

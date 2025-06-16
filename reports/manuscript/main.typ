@@ -248,31 +248,19 @@
   == Populist attitudes
 
   Populism research is mostly divided into two different parts.
-  #mnote[solche typos kamen schon häufiger (zB auch „and“ statt „an“); da nochmal in ruhe drüber]
   There is one strain that detects populism in political actors or in certain parts of the discourse, such as speeches.
   And there is another strain that is concerned with measuring populist attitudes among populations @akkermanHowPopulistAre2014 @hawkinsActivationPopulistAttitudes2020.
   // #mnote[die zweite ist ja für dich wurst; trotzdem erwähnen?]
 
   A notable aspect of analyzing populist communication on Social Media is that we are able to analyze direct feedback in terms of views, likes and comments on very specific bits of populist communication.
-  According to #cite(<keffordPopulistAttitudesBringing2022>, form: "prose") they are the first to try to bridge this gap and try to link populist communication can populist attitudes in terms of voting behavior.
+  According to #cite(<keffordPopulistAttitudesBringing2022>, form: "prose") they are the first to try to bridge this gap and try to link populist communication to populist attitudes in terms of voting behavior.
   From a theoretical perspective, they achieve this by combining the ideational approach and the discursive-performative approach.
-  We follow their tradition somewhat loosely and believe we can at least get a rough grasp of how people react
-  #mnote[damit wäre ich vorsichtig. „react“ klingt stark nach direkter interaktion. vielleicht eher auf „populismus -> popularity“ münzen; dazu passt ja auch die content delivery persp]
-  to populist communication, how their attitudes towards populist communication is, or in other words: what they do or do not 'like'.
-
+  We follow their tradition somewhat loosely and believe we can at least get a rough grasp of the effect of populist rhetoric on user engagement.
   This highlights a major advantage of analyzing populist communication on social media platforms, namely the ability to gauge public responses to populist messaging.
 
   This process does not only involve detecting populist content published by political actors, but it also measures audience reactions through various platform-specific metrics, such as likes, dislikes, views, or shares.
-  While the audiences on these platforms are often partisan and vary across different channels, comparing how distinct publics
-  #mnote[distinct publics die du ja nicht auseinander dividieren kannst. ich verstehe nicht ganz wie die jetzt hier aufkommen?]
-  (i.e. viewers, followers, or subscribers) engage with content---whether it leans towards populism or not---offers valuable insights into broader public sentiment and interaction patterns.
-
-  Given this premise, we expect populist parties as well as populist content to be popular among people with populist attitudes.
-  #mnote[das ist ein ganz schöner stretch, den dir reviewer um die ohren hauen können. das weisst du schlicht nicht. mMn ist es auch egal, weil du „nur“ darauf schaust ob populismus etwas häufiger gesehen / geliked macht.
-
-    du meintest ja auch dass du views als robustness, likes als main DV nehmen könntest. damit könntest du doch alles mehr auf engagement fokussieren, was die obigen punkte straffen könnte, weil zu engagement gibt es doch relativ viel in der kowi (s toxicity paper?) ]
-  We also hypothesize the opposite to be true: populist parties as well as populist content will not be especially popular among people with less populist attitudes.
-  We can formulate the following hypotheses:
+  While the audiences on these platforms are often partisan and vary across different channels, comparing how viewers engage with content---whether it leans towards populism or not---offers valuable insights into broader public sentiment and interaction patterns.
+  Given this premise, we can hypothesize some relationships about populist content of populist and non-populist parties and it's effect on user engagement.
 
   #quote(block: true)[
     #strong[H2a:]
@@ -315,6 +303,7 @@
   Both channels, exhibiting comparable follower counts, were incorporated into our analysis.
   Consequently, our dataset encompasses a total of eight channels.
   The dataset is restricted to the period from December 6, 2017 (the final channel's inaugural video publication) to February 24, 2025, the day of the Bundestagswahl 2025.
+  #mnote[Channel description updaten]
 
   During the period of investigation, YouTube has updated its rules on Shorts.
   #mnote[könnte auch in appendix (die erklärung) und in main nur kurz dass du es unterscheidest]
@@ -457,12 +446,12 @@
     ],
   ) <fig:views_elite>
 
-  @fig:views_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
-  The range for the x-axis for each channel is bounded by the interval $[-2, 2]$ standard deviations, with impossible values (anti-elitism values that are lower that zero) removed.
-  #mnote[einfach [0: 2 x SD]?]
-  The x-axis is then back-transformed to its original values to show the actual percentage values of the populist dimension for each prediction.
-  The red dashed lines indicates the expected trajectory of the effect if there were no relationship between anti-elitism and view count.
-  The confidence intervals give an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
+  // @fig:views_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
+  // The range for the x-axis for each channel is bounded by the interval $[-2, 2]$ standard deviations, with impossible values (anti-elitism values that are lower that zero) removed.
+  // #mnote[einfach [0: 2 x SD]?]
+  // The x-axis is then back-transformed to its original values to show the actual percentage values of the populist dimension for each prediction.
+  // The red dashed lines indicates the expected trajectory of the effect if there were no relationship between anti-elitism and view count.
+  // The confidence intervals give an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
 
   #figure(
     image("../figures/reg_views_pplcentr.svg", width: 100%),

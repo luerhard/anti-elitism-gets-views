@@ -94,53 +94,53 @@ stages:
       nfiles: 7
     - path: pipeline/05-basic_descriptives.ipynb
       hash: md5
-      md5: dbdc6015a670b7a6b988aa971d43383b
-      size: 290575
+      md5: bd08cb1d37d0ae6ca9a1a06aa8dce3c6
+      size: 342242
     - path: src/load/load.py
       hash: md5
-      md5: 7f81dc127a2f8f637fc7a4c30902d8df
-      size: 4663
+      md5: 6f91bfdab6242414a00e506acfc46cbd
+      size: 4813
     outs:
     - path: reports/figures/populism_per_party.svg
       hash: md5
-      md5: 7a26368ca4fccfa0f84268986f5b1780
-      size: 32029
+      md5: 45a74e8d04eede3bad877007cf798cbc
+      size: 31832
     - path: reports/figures/view_count.svg
       hash: md5
-      md5: bcd856689ce077e9ff35a068895d768b
-      size: 549258
+      md5: 5be89c9e3664990781624cf155878286
+      size: 546673
     - path: reports/manuscript/inlines/n_broken.txt
       hash: md5
       md5: a8baa56554f96369ab93e4f3bb068c22
       size: 3
     - path: reports/manuscript/inlines/n_sents.txt
       hash: md5
-      md5: 474855079c5b4994d99371478fe97515
+      md5: ee8f45f74f111b7b618ad462d6d7dd38
       size: 9
     - path: reports/manuscript/inlines/n_videos.txt
       hash: md5
-      md5: 2f6238a74198d6b69818a655bfd4fc6b
+      md5: a5cd156955e9f2b4e0a2620fd2c04e3b
       size: 6
     - path: reports/manuscript/inlines/sum_duration.txt
       hash: md5
-      md5: 3af917e925a84e27ccb4ca4b3949b8b7
+      md5: 4cdb62ea7b9a4ac4f6709539925fbcf5
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: 21f3696c07989fffd21fbfa7f704d39f
-      size: 298025
+      md5: f807acd35128cff5f93f59f34b0dec43
+      size: 352666
     - path: reports/tables/channel_descriptives.csv
       hash: md5
       md5: c43a2f7a809e4f39347c92062c8f0f97
       size: 408
     - path: reports/tables/video_descriptives_per_channel.csv
       hash: md5
-      md5: d29db349f2b7cdd5f5f48feb3cd135d9
-      size: 980
+      md5: af489317d606897382dd436957baba9d
+      size: 975
     - path: reports/tables/videos_per_channel.csv
       hash: md5
-      md5: 34b3af65403db42537cc5a4f83b4f9bb
-      size: 628
+      md5: 304352cd87ec4fc60ea8fdc3427233a3
+      size: 629
   nb_regression:
     cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
       '../reports/notebooks/07-nb_regression.html')"

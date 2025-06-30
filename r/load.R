@@ -1,7 +1,8 @@
 box::use(
   reticulate,
   forcats[as_factor, fct_drop],
-  dplyr[...]
+  dplyr[...],
+  stats[setNames]
 )
 
 channels <- function() {
@@ -21,7 +22,7 @@ videos <- function(filtered = TRUE) {
 sentences <- function(filtered = TRUE) {
   data_load <- reticulate::import("src.load")
   loader <- data_load$DataLoader()
-  df <- loader$sentences(filtered=filtered)$to_pandas()
+  df <- loader$sentences(filtered = filtered)$to_pandas()
   return(df)
 }
 
@@ -34,8 +35,9 @@ popbert <- function(filtered = TRUE) {
 
 colormap <- function() {
   src <- reticulate::import("src")
-  cmap <- unlist(src$r_colormap_party, use.names=TRUE)
-  return(cmap)
+  cmap_df <- src$r_colormap_party
+  cmap_vec <- setNames(as.character(cmap_df$color), cmap_df$party)
+  return(cmap_vec)
 }
 
 regression_data <- function() {

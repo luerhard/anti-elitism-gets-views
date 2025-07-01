@@ -160,8 +160,8 @@
 
   YouTube is very popular in Germany @allgaierRezoGermanClimate2020.
   A representative study among young Germans reports that 60% used the site daily or at least several times a week @feierabendJIMstudie2018Jugend2018.
-  The study also shows that YouTube is the second most important site for respondents to obtain news and information, trailing only Google.
-  While the YouTube is still dramatically understudied compared to other social media platforms @mungerPressingPlayPolitics2025, increasing effort is undertaken to systematically analyze content on YouTube in general and the _political_ YouTube in particular @bartlYouTubeChannelsUploads2018 @mungerPressingPlayPolitics2025.
+  The study also shows that YouTube is the second most important site for respondents to obtain news and information, trailing only behind Google.
+  While the YouTube is still dramatically understudied compared to other social media platforms @mungerPressingPlayPolitics2025, increasing effort is undertaken to systematically analyze content on YouTube in general and the _political_ YouTube in particular @bartlYouTubeChannelsUploads2018.
 
 
   // While data on Germany specifically are scarce, a study from 2016 investigating a sample of Americans reported that around 90% of youth and young adults have used YouTube at least once in the past three months @costelloWhoViewsOnline2016[315].
@@ -178,8 +178,8 @@
   Nevertheless, populist leaders mostly utilize social media as a supplementary one-way broadcasting system, instead of interacting with citizens, as #cite(<jungherrTwitterUseElection2016>, form: "prose") shows in a systematic literature review on Twitter use in election campaigns. #mnote[ggf kürzen; das argument ist klar und gut]
   They might argue the social media facilitates personal and interactive conversations compared to the more traditional broadcasts through legacy media.
   #cite(<waisbordPopulistCommunicationDigital2017>, form: "prose"), for instance, have shown remarkably low interaction between Latin American politicians, populist and non-populist, on Twitter.
-  This leads us to believe that videos on YouTube are best viewed from a content delivery perspective first.
-  In contrast to, for example, TV, however, it is possible to measure user engagement with content on YouTube in a variety of ways.
+  This leads us to believe that videos of politicians and political parties on YouTube are best viewed from a content delivery perspective first.
+  In contrast to, TV, however, it is possible to measure user engagement with content on YouTube in a variety of ways.
   The two that we will be focusing on in this study are:
   1) view count.
   The number of times a video was watched.
@@ -203,27 +203,33 @@
   // What all approaches on populism share, is a common understanding that at its core, populism is about a
 
   The most popular definition of populism in the empirical literature is given by Cas #cite(<muddePopulistZeitgeist2004>, form: "prose").
-  This approach frames populism primarily as a conflict between the corrupt elite and the virtuous people, and therefore focuses on two key notions: anti-elitism and people-centrism.
-  #mnote[die beiden dimensionen musst du mehr erklären. dafür gäbe es bei anderen punkten in dieser section kürzungsmglkeiten]
   Populism in this context emphasizes the homogeneous nature of the people, often depicted as a cultural or economic entity, and defines the elite variably depending on context @muddeStudyingPopulismComparative2018.
   It is seen as a "thin-centered ideology" with a narrow scope compared to broader ideologies like nativism or socialism, which it can accompany @muddePopulistZeitgeist2004 @hawkinsIdeationalApproachPopulism2019a.
   Populism, seen as a thin ideology, describes a worldview that is characterized above all by the antagonistic relationship between the virtuous people and the corrupt elite, which is linked to a thick ideology @muddePopulistZeitgeist2004.
   Understanding populist rhetoric and claims that support this antagonism is thereby key to explaining their electoral success @devreesePopulismExpressionPolitical2018.
 
-  Another notable perspective on populism is the discursive-performative approach.
-  Rooted in the work of Ernesto Laclau, it is by far the most common approach by political theorists @moffittPopulism2020.// (S. ~60 von 360, Beginn "The Discursive-Performative Approach")
-  Although this approach is less prevalent in the empirical literature, as it is considered "extremely abstract" and faces "serious problems when it comes to analysing populism in more concrete terms" #cite(<muddePopulismEuropeAmericas2012>, supplement: "p. 6"), it offers several valuable features that are applied in the in this work.
+  This approach frames populism primarily as a conflict between the corrupt elite and the virtuous people, and therefore focuses on two key notions: anti-elitism and people-centrism.
+  Anti-elitism is a moralizing critique of a perceived corrupt elite—such as political, economic, or cultural elites—accused of acting against the interests of the people.
+  People-centrism refers to the idea that a homogenous and virtuous "people" are the sole legitimate source of political power, often contrasted with an elite that deprives them of their rights or identity.
+
+  // Another notable perspective on populism is the discursive-performative approach.
+  // Rooted in the work of Ernesto Laclau, it is by far the most common approach by political theorists @moffittPopulism2020.// (S. ~60 von 360, Beginn "The Discursive-Performative Approach")
+  // Although this approach is less prevalent in the empirical literature, as it is considered "extremely abstract" and faces "serious problems when it comes to analysing populism in more concrete terms" #cite(<muddePopulismEuropeAmericas2012>, supplement: "p. 6"), it offers several valuable features that are applied in the in this work.
   While #cite(<moffittPopulism2020>, form: "prose", supplement: "Table 2.1") makes a clear distinction in that the ideational approach views populism as a purely binary attribute of political actors, Mudde recognizes a gradual "more or less populism" and merely qualifies that it does not make sense to speak of "weak populists" in the case of non-populist actors who use some populist phrases @muddePopulismIdeationalApproach2017.
 
+  For the purpose of this research, we integrate both perspectives by conceptualizing populism as a binary attribute that can be assigned to political parties.
+  In the current German Bundestag, two parties---the AfD and the Left---are classified as populist, according to the PopuList database @rooduijnPopuListDatabasePopulist2023.
+
+  At the same time, we adopt a practice-oriented view of populism, understanding it as a strategic mode of communication that political actors may deliberately adopt to convey their ideological positions.
+  This dual approach enables us to examine populism not only at the party level but also as a gradational phenomenon observable in individual texts.
+
+  Assuming that political parties use YouTube in ways consistent with their broader communicative behavior, we propose the following hypothesis:
   // First, we follow the discursive-performative approach in that we define populism as a gradational concept, in contrast to a binary approach which is commonly used in research using the ideational definition. (CITE) // (CITE Moffit 2020, Table 2.1 -- roughly)
 
-  This allows us to detect 'more or less' populism in specific texts.
-  Secondly, we see populism less as an attribute of political actors, but rather, we see it as a practice that political actors consciously choose to employ in order to convey an ideology to their audience.
-  Assuming that parties behave similarly on YouTube to how they do elsewhere in the political landscape, we can infer that:
 
   #quote(block: true)[
     #strong[H1:]
-    _Populist parties convey more populist content on YouTube than non-populist parties._
+    _Populist parties convey, on average, more populist content on YouTube than non-populist parties._
   ]
 
 
@@ -246,7 +252,6 @@
   Populism research is mostly divided into two different parts.
   There is one strain that detects populism in political actors or in certain parts of the discourse, such as speeches.
   And there is another strain that is concerned with measuring populist attitudes among populations @akkermanHowPopulistAre2014 @hawkinsActivationPopulistAttitudes2020.
-  // #mnote[die zweite ist ja für dich wurst; trotzdem erwähnen?]
 
   A notable aspect of analyzing populist communication on Social Media is that we are able to analyze direct feedback in terms of views, likes and comments on very specific bits of populist communication.
   According to #cite(<keffordPopulistAttitudesBringing2022>, form: "prose") they are the first to try to bridge this gap and try to link populist communication to populist attitudes in terms of voting behavior.
@@ -267,19 +272,15 @@
   ]
 
 
-  == Populism in the German Bundestag <sec:pop_in_bundestag>
+  // == Populism in the German Bundestag <sec:pop_in_bundestag>
 
 
   // Populism can be defined in a lot of different ways, with the two main approaches being "actor-centered" and "communication-centered" (larsson et al, the rise of instagram).
   // While the former approach sees populism as a property of some political entity, be it a politician or a party, the latter considers populism as a style of communication (e.g. Jacobs et al or Stanyer et al.-- see larson).
   // We combine both approaches in classifying the parties, based on an actor-centered approach (using PopuList) and identifying populist dimensions in the communication that is shared on the parties' YouTube channel.
 
-  Despite debates on the role of moralistic language in populism, recent scholarship suggests that combining moral, anti-elitist, and people-centric elements is essential to classify a statement as populist (Stavrakakis and Jäger 2018; Dai and Kustov 2022).
-  Thus, populism is characterized by these three intertwined attributes.
-
-  There are currently two parties in the German Bundestag that are considered populist, the AfD and the Left @rooduijnPopuListDatabasePopulist2023.
-
-
+  // Despite debates on the role of moralistic language in populism, recent scholarship suggests that combining moral, anti-elitist, and people-centric elements is essential to classify a statement as populist (Stavrakakis and Jäger 2018; Dai and Kustov 2022).
+  // Thus, populism is characterized by these three intertwined attributes.
 
   = Data & Methods <data-methods>
 

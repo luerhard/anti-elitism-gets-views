@@ -163,9 +163,6 @@
   The study also shows that YouTube is the second most important site for respondents to obtain news and information, trailing only Google.
   While the YouTube is still dramatically understudied compared to other social media platforms @mungerPressingPlayPolitics2025, increasing effort is undertaken to systematically analyze content on YouTube in general and the _political_ YouTube in particular @bartlYouTubeChannelsUploads2018 @mungerPressingPlayPolitics2025.
 
-  YouTube is the only major social media network that is more popular among right-leaning users @mungerRightWingYouTubeSupply2022.
-  Additionally, and in contrast to other parties, populists prefer social media over talk shows @ernstPopulistsPreferSocial2019.
-  As #cite(<engesserPopulismSocialMedia2017>, form: "prose", supplement: [1123]) indicate, the logic of social media platforms gives them more freedom to use strong language when attacking elites or ostracizing others.
 
   // While data on Germany specifically are scarce, a study from 2016 investigating a sample of Americans reported that around 90% of youth and young adults have used YouTube at least once in the past three months @costelloWhoViewsOnline2016[315].
   // Motivated by these discoveries, we recognize the importance of examining parties' YouTube videos, particularly emphasizing the effects of populist content.
@@ -173,12 +170,14 @@
   YouTube can be seen as a social media platform.
   Since everybody can publish content on this platform with very few hurdles, and viewers can self-select what content they are willing to watch, it is natural to view YouTube as a social network between people that is centered around sharing video content—in a way like Instagram is a social network centered around images.
   Studies that take such an approach might see YouTube from a supply-and-demand perspective, analyzing the side of both the content creators and the viewers @mungerRightWingYouTubeSupply2022.
-  While investigating YouTube through such a lens is a worthwhile endeavor, it might not be suitable to investigate politicians' content.
+  While investigating YouTube through such a lens is a worthwhile endeavor, it might not be suitable to investigate political parties' and politicians' content.
   Many scholars have proposed theories on why politicians, particularly populists, choose social media platforms over traditional hierarchical media.
+  YouTube is the only major social media network that is more popular among right-leaning users @mungerRightWingYouTubeSupply2022.  Additionally, and in contrast to other parties, populists prefer social media over talk shows @ernstPopulistsPreferSocial2019.
+  As #cite(<engesserPopulismSocialMedia2017>, form: "prose", supplement: [1123]) indicate, the logic of social media platforms gives them more freedom to use strong language when attacking elites or ostracizing others.
+
   Nevertheless, populist leaders mostly utilize social media as a supplementary one-way broadcasting system, instead of interacting with citizens, as #cite(<jungherrTwitterUseElection2016>, form: "prose") shows in a systematic literature review on Twitter use in election campaigns. #mnote[ggf kürzen; das argument ist klar und gut]
   They might argue the social media facilitates personal and interactive conversations compared to the more traditional broadcasts through legacy media.
   #cite(<waisbordPopulistCommunicationDigital2017>, form: "prose"), for instance, have shown remarkably low interaction between Latin American politicians, populist and non-populist, on Twitter.
-
   This leads us to believe that videos on YouTube are best viewed from a content delivery perspective first.
   In contrast to, for example, TV, however, it is possible to measure user engagement with content on YouTube in a variety of ways.
   The two that we will be focusing on in this study are:
@@ -261,10 +260,10 @@
 
   #quote(block: true)[
     #strong[H2a:]
-    _On channels of populist parties, we expect a positive relationship between a videos' amount of contained populism and it's user engagment._
+    _For content of populist parties, we expect a positive relationship between a videos' amount of populism and it's user engagment._
 
     #strong[H2b:]
-    _On non-populist channels, we expect no positive relationship between a videos' amount of populism and user engagement._
+    _For content of non-populist channels, we expect no positive relationship between a videos' amount of populism and user engagement._
   ]
 
 

@@ -42,15 +42,13 @@
   parbreak()
 }
 
-#set figure(
-  numbering: num => {
-    let fig_num = counter(figure).get().at(0)
-    let section = counter(heading).display()
-    str(section) + str(fig_num)
-  },
-)
+#set figure(numbering: num => {
+  let fig_num = counter(figure).get().at(0)
+  let section = counter(heading).display()
+  str(section) + str(fig_num)
+})
 
-= Dataset
+= Dataset <ap:dataset>
 
 == Channels
 
@@ -75,7 +73,7 @@
       table.hline(),
       table.vline(x: 1, start: 1, end: table_content.len() + 1),
       ..table_content.flatten(),
-      table.hline()
+      table.hline(),
     )
   ],
   caption: [Number of Videos per channel.],
@@ -178,7 +176,7 @@
       table.vline(x: 1, start: 1, end: table_content.len() + 1),
       table.hline(),
       ..table_content.flatten(),
-      table.hline()
+      table.hline(),
     )
   ],
   caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. The FDP is excluded due to their videos having basically no likes.],
@@ -196,23 +194,20 @@
   align(center)[
     #set par(leading: 0.65em, justify: false)
     #set text(size: 10.2pt)
-    #block(
-      breakable: true,
-      table(
-        columns: (auto, ..(auto,) * (header.len() - 1)),
-        align: (left, ..(right,) * (header.len() - 2), left),
-        inset: 4pt,
-        stroke: (x, y) => (
-          top: if calc.rem(y - 1, 10) == 0 { 1pt },
-        ),
-        table.hline(),
-        table.header(..header),
-        table.vline(x: 1, start: 1, end: table_content.len() + 1),
-        table.hline(),
-        ..table_content.flatten(),
-        table.hline()
+    #block(breakable: true, table(
+      columns: (auto, ..(auto,) * (header.len() - 1)),
+      align: (left, ..(right,) * (header.len() - 2), left),
+      inset: 4pt,
+      stroke: (x, y) => (
+        top: if calc.rem(y - 1, 10) == 0 { 1pt },
       ),
-    )
+      table.hline(),
+      table.header(..header),
+      table.vline(x: 1, start: 1, end: table_content.len() + 1),
+      table.hline(),
+      ..table_content.flatten(),
+      table.hline(),
+    ))
   ],
   caption: [Most successful videos. Shown are the top 10 videos ordered by video_likes. The FDP is excluded due to their videos having basically no likes.],
 ) <ap:tab:most_liked_videos>
@@ -237,7 +232,7 @@
       table.vline(x: 1, start: 1, end: table_content.len() + 1),
       table.hline(),
       ..table_content.flatten(),
-      table.hline()
+      table.hline(),
     ),
   ],
   caption: [This table shows the top 10 most anti-elitist videos per channel. Anti-Elite shows the fraction of sentences that are classified as anti-elitist in each video.],

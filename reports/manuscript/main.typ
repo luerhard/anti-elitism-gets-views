@@ -292,24 +292,23 @@
   == YouTube Data
 
   Using their official channels, we collected a dataset comprising YouTube videos from all six political parties within the German Bundestag.
-  The FDP (Liberal Democratic Party) with \@FDP, the Greens with \@DieGruenen, the SPD (Social Democratic Party) with \@spdde and the Left with \@DIELINKE have easily identifiable main official party channels.
-  The CDU (Christian Democratic Union) and CSU (Christian Social Union) are two separate political parties in Germany that operate as sister parties.
-  The CDU is active in all German states except Bavaria, where the CSU operates exclusively.
-  For this reason, both parties also maintain separate YouTube channels with \@cdutv and \@csumedia, although they are regarded as a single faction within the Bundestag.
-  Conversely, the AfD's (Alternative for Germany) official channel (\@AfDTV) is distinct from the parliamentary group's channel (\@AfDFraktionimBundestag).
-  Both channels, exhibiting comparable follower counts, were incorporated into our analysis.
-  Consequently, our dataset encompasses a total of eight channels.
-  The dataset is restricted to the period from December 6, 2017 (the final channel's inaugural video publication) to February 24, 2025, the day of the Bundestagswahl 2025.
-  #mnote[Channel description updaten]
+  The dataset is restricted to the period from December 6, 2017 (the date of the AfD's inaugural video on the platform) to February 24, 2025, the day of the Bundestagswahl 2025.
+  For each party, two types of channels were collected: The official channel of the national party as well as the official channel of the faction in the Bundestag.
+  This approach entails to problematic cases:
+  First, the national party of the Left has changed channels as of 2024.
+  For them, both channels are included in the analyses.
+  Secondly, the CDU/CSU is a parliamentary alliance at the national level, consisting of the CSU—a party that operates exclusively in Bavaria—and the CDU, which is active in all other German federal states.
+  However, both parties maintain partially separate social media presences.
+  For the purposes of this analysis, we therefore aggregate the channels of the CSU and CDU, as well as the separate accounts of the CDU/CSU parliamentary group in the Bundestag and the CSU’s parliamentary group in the Bundestag.
+  A full list of all 15 channels included in this analysis can be found in @ap:dataset.
 
   During the period of investigation, YouTube has updated its rules on Shorts.
-  #mnote[könnte auch in appendix (die erklärung) und in main nur kurz dass du es unterscheidest]
-  These are a separate video stream for short videos.
-  Its implementation is comparable to TikTok.
+  These are a separate video stream for short videos with an implementation comparable to TikTok.
   Since October 15, 2024, every video up to three minutes of length and with a square or vertical aspect ratio will be automatically categorized as a Short @youtube2025-shorts.
   Although we have explicitly not included Shorts during data collection, we there possibly have content that is not solely published as long-form video on YouTube in our data.
   To handle that and homogenize the data analysis, we create a variable in the data "is_short".
   It indicates whether a videos is up to 180 seconds in length.
+  #mnote[könnte auch in appendix (die erklärung) und in main nur kurz dass du es unterscheidest]
 
   == Video transcripts
 
@@ -328,13 +327,14 @@
   To address this issue, we employed the Silero voice activity detector @silerovad2024, isolating segments containing actual speech and passing only these segments to the Whisper transcription model.
 
   #let faulty_transcripts = read("inlines/n_broken.txt")
-  Although this approach effectively reduced the number of hallucinations, #faulty_transcripts videos had to be excluded from the analysis due to faulty transcripts.
-  Faulty transcripts were identified by generating all n-grams for values of n between 2 and 10, and determining whether any n-gram appeared more than nine consecutive times within a transcript.
-  Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of the SoMaJo tokenizer and sentence-splitter @proislSoMaJoStateoftheartTokenization2016.
   #let hour_duration = read("inlines/sum_duration.txt")
   #let n_videos = read("inlines/n_videos.txt")
   #let n_sents = read("inlines/n_sents.txt")
-  After removing sentences with less than 3 tokens and videos with less than 5 sentences (mostly music-only videos with written text on screen), our clean dataset comprises #n_videos videos, totaling #hour_duration hours of playtime and containing #n_sents sentences.
+
+  Although this approach effectively reduced the number of hallucinations, #faulty_transcripts videos had to be excluded from the analysis due to faulty transcripts.
+  Faulty transcripts were identified by generating all n-grams for values of n between 2 and 10, and determining whether any n-gram appeared more than nine consecutive times within a transcript.
+  Subsequently, the transcriptions were tokenized and segmented into sentences using the current version of the SoMaJo tokenizer and sentence-splitter @proislSoMaJoStateoftheartTokenization2016.
+  After removing sentences with less than 3 tokens and videos with less than 5 sentences (often music-only videos optionally with written text on screen), our clean dataset comprises #n_videos videos, totaling #hour_duration hours of playtime and containing #n_sents sentences.
 
   == Detecting Populism <detection-of-populism>
 
@@ -346,7 +346,7 @@
 
   To detect populism in the videos, we use the two core categories defined by PopBERT: anti-elitism and people-centrism.
   Analogous to the procedure in the associated article, the transcripts are divided into sentences and each sentence is fed into the model independently of the others and classified using the proposed thresholds.
-  To obtain a value at the video level, the relative proportion of sentences that are classified as anti-elitist or people-centric is then calculated for each video.
+  To obtain a value at the video level, the relative proportion of sentences that are classified as anti-elitist and people-centric is then calculated for each video.
   Since there are various possibilities in the literature for combining these dimensions, we examine both dimensions separately and choose to refrain from combining them into a single populism score.
 
   = Results <results>
@@ -385,11 +385,12 @@
 
   == Populism by German Parties on YouTube
 
-  @fig:populism_dimensions shows the relative proportion of sentences classified by PopBERT as anti-elitist and people-centrist by video.
-  It becomes immediately apparent that both channels of the AfD exhibit a much higher proportion of anti-elitist statements than do the channels of any other party.
-  The second-highest amount of anti-elitist statements, though exhibiting substantially lower numbers, is expressed by the Left; the other populist party in the Bundestag.
-  People-Centrism, on the other hand, draws a different picture.
-  The Greens, the Left and the SPD all show similar high amounts of this populist dimension, though, in contrast to the anti-elitism dimension, no party surpasses a relative proportion of 5%.
+  @fig:populism_dimensions shows the relative proportion of sentences classified by PopBERT as anti-elitist and people-centrist for each video.
+  It becomes immediately apparent that both AfD channels contain a significantly higher share of anti-elitist statements than the channels of any other party.
+  In many videos, the AfD channels reach proportions of anti-elitist content exceeding 10%, while most other parties remain well below 5%.
+  The second-highest level of anti-elitist rhetoric is found in content from the Left, the other populist party in the Bundestag, although the proportion is substantially lower than that of the AfD.
+  Notably, CSU BT also shows elevated levels of anti-elitist messaging compared to most non-populist parties.
+  This suggests that anti-elitist rhetoric is not exclusive to parties commonly labeled as populist.
 
   #figure(
     image("figures/figure_2.svg", width: 100%),
@@ -401,21 +402,33 @@
 
   Comparing the detected levels of populism across all channels, we find partial support for *H1*, which proposes that populist parties convey more populist content on YouTube than non-populist parties.
   This hypothesis is particularly supported in the dimension of anti-elitism: the channels of the AfD and the Left clearly contain more anti-elitist content than those of other parties.
-  Additionally, the Left's channel proportionally conveys the most people-centric content.
+  Additionally, the Left’s DE channel proportionally conveys the highest amount of people-centric content.
   However, the AfD channels display surprisingly limited people-centric appeals.
-  The AfD TV channel exhibits a similar but somewhat more moderate pattern.
-  Specifically, the AfD BT channel contains almost no people-centric content and primarily focuses on an exceptionally high volume of anti-elitist messaging.
-  It is worth noting at this point, that the AfD BT channel's content primarily consists speeches of AfD members of parliament talking in the Bundestag.
-  A possible explanation of low amount of people-centric messaging on this channel could be that this forum is mostly used to attack the governing parties and much less so to actually appeal to "the people".
+  The AfD TV channel exhibits a similar, though somewhat more moderate, pattern.
+  Specifically, the AfD BT channel contains very little people-centric content and primarily focuses on an exceptionally high volume of anti-elitist messaging.
+  It is worth noting that the AfD BT channel mainly features speeches by AfD members of parliament delivered in the Bundestag.
+  A possible explanation for the combination of low levels of people-centric messaging and high levels of anti-elitist statements is that the AfD may use their speaking time in the Bundestag primarily to attack the governing parties, rather than to appeal directly to “the people.”
 
   == Populism and Popularity <populism-and-popularity>
 
-  To analyze the relationship between populism and popularity, we use Bayesian Quantile Regressions.
+  In this section, we use views as the primary dependent variable, while the corresponding results for likes are reported in the appendix.
+  Using likes as a proxy for user engagement presents two major issues in our dataset.
+  First, a substantial number of videos received very few likes, making this metric an unreliable indicator of engagement.
+  Second, the like functionality is disabled on all videos from two channels---CSU BT and FDP DE---which would require excluding these channels entirely from the analysis.
+
+  To analyze the relationship between populism and popularity, we use Bayesian quantile regressions.
+  This approach allows us to investigate how the relationship between populist dimensions and user engagement varies across different quantiles of the dependent variable.
+  For each of the six parties, we estimate 12 quantile models for each of the two populist dimensions, resulting in a total of 144 regression models.
+  In all models, we assume an asymmetric Laplace distribution for the dependent variable, defined as the logged number of views per video.
+  We use weakly informative priors: N(0,15) for the intercept, N(0,2) for the coefficients, and Cauchy(0,2) for the sigma parameter.
+  These priors reflect a conservative modeling approach, assuming no prior relationship by centering all distributions around zero.
+
   - why bayesian regression
   - (why not multi-level models?)
   - describe bayes regressions
     - single model per party
     - what DV, what AVs?
+  -
 
 
   #figure(
@@ -428,13 +441,14 @@
     ],
   ) <fig:views_elite>
 
-  // anti-elitism results
-  Coeficients for AfD, CDU/CSU, Left and SPD are consistently positive over all tau values. For these parties we there see a positive relationship between the proportion of anti-elitist messages in a video and it's number of views.
-  We find a monotonic increase for the coefficient for CDU/CSU and Left over tau values. For these two parties, we can therefore see an increase in the relationship if we estimate higher percentiles (taus).
-  This is espeically relevant when investigating especially successful (viral) videos that accumulate a significant portion of views and therefore have the most potential to influence people's attitudes.
-  We also find a slight decrease in the coefficient for the AfD starting at a tau value of around .8. Despite this decrease in the relationship for high percentiles the relationship remains high vor all values of tau, indiciating, that, while anti-elitist messaging plays a significant role for the success of an AfD video, other mechanisms may play a more important role for the 20% most successful videos on these channels.
-  While the SPD also shows a significant positive coefficient over all tau values, the relationship appears to be weaker compared to the aforementioned parties.
-  Lastly, we find (almost) not relationship between anti-elitist messaging and user engagement for the Greens and the FDP.
+  Coefficients for the AfD, CDU/CSU, the Left, and the SPD are consistently positive across all tau values.
+  For these parties, we observe a positive relationship between the proportion of anti-elitist messages in a video and its number of views.
+  For the CDU/CSU and the Left, the coefficient increases monotonically with higher tau values.
+  This suggests that anti-elitist messaging is particularly relevant for the most successful (i.e., viral) videos, which attract a disproportionate share of views and may exert greater influence on audience attitudes.
+  For the AfD, we observe a slight decline in the coefficient starting at a tau value of approximately 0.8.
+  Despite this decline, the relationship remains strong across all tau values, indicating that while anti-elitist rhetoric significantly contributes to the success of AfD videos, other factors may play a more prominent role in the top 20% of videos.
+  The SPD also shows a consistently positive coefficient, though the relationship is weaker compared to the parties mentioned above.
+  Finally, we find little to no relationship between anti-elitist messaging and user engagement for the Greens and the FDP.
 
   #figure(
     image("../figures/reg_views_pplcentr.svg", width: 100%),
@@ -446,11 +460,10 @@
   ) <fig:views_pplcentr>
 
 
-  //people-centrism results
-  The coefficients for people-centrism paint a somewhat similar picture albeit they are generally much smaller.
-  We find a consistent positive effect for the AfD, and show a slight increase for values for tau over .7 compared to lower the values between .5 and .7.
-  Coefficients for the CDU/CSU and Left are positive up until tau values of about .8, above the the coefficients are not significantly different from zero.
-  For Greens, FDP and SPD, we cannot assume that any coeffients are different from zero, with some exceptions in the top end for the FDP and the low end for the SPD.
+  The coefficients for people-centrism present a somewhat similar pattern, although they are generally much smaller in magnitude.
+  We find a consistently positive effect for the AfD, with a slight increase in coefficient values for tau levels above 0.7 compared to those between 0.5 and 0.7.
+  For the CDU/CSU and the Left, coefficients remain positive up to tau values of approximately 0.8; beyond this point, they are no longer significantly different from zero.
+  For the Greens, FDP, and SPD, there is no consistent evidence that people-centrism is associated with user engagement, with a few exceptions observed at the upper end of the distribution for the FDP and the lower end for the SPD.
 
   - we see some indication for non-linearity in the relationships between engagement and popoulist dimensions, when predicting different levels of engagement.
   -

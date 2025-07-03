@@ -423,14 +423,6 @@
   We use weakly informative priors: N(0,15) for the intercept, N(0,2) for the coefficients, and Cauchy(0,2) for the sigma parameter.
   These priors reflect a conservative modeling approach, assuming no prior relationship by centering all distributions around zero.
 
-  - why bayesian regression
-  - (why not multi-level models?)
-  - describe bayes regressions
-    - single model per party
-    - what DV, what AVs?
-  -
-
-
   #figure(
     image("../figures/reg_views_elite.svg", width: 100%),
     // placement: auto,
@@ -461,51 +453,50 @@
 
 
   The coefficients for people-centrism present a somewhat similar pattern, although they are generally much smaller in magnitude.
-  We find a consistently positive effect for the AfD, with a slight increase in coefficient values for tau levels above 0.7 compared to those between 0.5 and 0.7.
+  We find a consistent positive effect for the AfD, with a slight increase in coefficient values for tau levels above 0.7 compared to those between 0.5 and 0.7.
   For the CDU/CSU and the Left, coefficients remain positive up to tau values of approximately 0.8; beyond this point, they are no longer significantly different from zero.
   For the Greens, FDP, and SPD, there is no consistent evidence that people-centrism is associated with user engagement, with a few exceptions observed at the upper end of the distribution for the FDP and the lower end for the SPD.
 
   - we see some indication for non-linearity in the relationships between engagement and popoulist dimensions, when predicting different levels of engagement.
-  -
 
 
-     // To analyze the relationship between populism and popularity we use Ordinary Least Squares (OLS) regressions and regress each populism dimensions separately on user engagement.
+    // To analyze the relationship between populism and popularity we use Ordinary Least Squares (OLS) regressions and regress each populism dimensions separately on user engagement.
     // As mentioned in @youtube-as-a-research-platform, we define user engagement as either like count or view count, assuming that both variables measure a slightly different level of engagement.
     // #mnote[kurz begründen warum mixed regs keine gute option sind? ]
     // #footnote[
     //   The results here are shown for the number of views as the dependent variable, results for the number of likes on the same data are shown in @ap:reg_on_likes.
     // ]
 
-     // Because the channels have vastly different amounts of contained populism per video, number of videos, views, and likes, we employ separate regressions per channel and compare the effect sizes.
+    // Because the channels have vastly different amounts of contained populism per video, number of videos, views, and likes, we employ separate regressions per channel and compare the effect sizes.
     // Each regression is thus run on videos from a single channel, and on either the logged number of likes or logged number of views.
     // To ensure comparability of the effects, we additionally standardize (z-transform) the dependent variable as well as the populist dimension for each regression within each channel.
     // Although it is important to bear this in mind during the interpretation of the results, we believe that we can achieve a better comparison between the effects.
     // That way, we are able to investigate if videos that are more populist compared to other content of the same channel accumulates more popularity, again compared to videos of the same channel.
     // In doing so, we explicitly express the belief that people watch and compare content from within the same channel when deciding about their engagement but not necessarily between channels.
 
-     // We control for the year of a video's release, the number of sentences in the video's transcript.
+    // We control for the year of a video's release, the number of sentences in the video's transcript.
     // #mnote[das in data-section]
     // Additionally, we control for short vs. long videos and add an interaction effect between the core populist dimension and the is_short variable to allow for different effects in short vs. long videos.
     // This is especially important since the populist dimension is measured as a _percentage of sentences that contain the populist dimension_ which might express something different in a video with very few sentences vs a video with many sentences.
 
-     // @fig:views_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
+    // @fig:views_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
     // The range for the x-axis for each channel is bounded by the interval $[-2, 2]$ standard deviations, with impossible values (anti-elitism values that are lower that zero) removed.
     // #mnote[einfach [0: 2 x SD]?]
     // The x-axis is then back-transformed to its original values to show the actual percentage values of the populist dimension for each prediction.
     // The red dashed lines indicates the expected trajectory of the effect if there were no relationship between anti-elitism and view count.
     // The confidence intervals give an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
 
-     // @fig:views_pplcentr illustrates the relationship between people-centric content and view count.
+    // @fig:views_pplcentr illustrates the relationship between people-centric content and view count.
     // The analysis yields a less clear-cut picture than observed with anti-elitist content.
     // While a consistent trend is recognizable for long-form content on both AfD channels, and the Left's channel short-form videos on the AfD TV channel do not show the same relationship.
     // For all channels the x-axis' upper limit which indicates values for +2 standard deviations of the people-centric content, is quite low for all channels, and the large confidence intervals for long form content on CDU and CSU show how sparse and/or varying the data is for values above 5%.
 
-     // Regarding *H2a* stating that on channels of populist parties, we expect a positive relationship between a video's amount of contained populism and it's user engagement, we therefore find partial support on both dimensions.
+    // Regarding *H2a* stating that on channels of populist parties, we expect a positive relationship between a video's amount of contained populism and it's user engagement, we therefore find partial support on both dimensions.
     // We can observe a clear positive relationship for the video's amount of populism and its view count for the AfD's channels long videos.
     // Additionally we see an increase in expected view count for the Left but only for long videos.
     // While the amount of populist content in neither dimension seems to have an effect on user engagement for short videos in the Left's channel, the effect for all other types of videos from populists parties' channels is clearly positive.
 
-     // The analysis of viewer engagement across non-populist party channels (CDU, CSU, FDP, Greens, SPD) provides only limited support for *H2b*.
+    // The analysis of viewer engagement across non-populist party channels (CDU, CSU, FDP, Greens, SPD) provides only limited support for *H2b*.
     // No consistent or significant positive relationship is observed for some parties and video types, particularly for the channels of the FDP and the Greens.
     // On the other hand, some effects---such as the influence of anti-elitism in the SPD and CDU channels---show a clear positive relationship.
     // However, the very limited range on the x-axis and the wide confidence intervals for higher values of anti-elitism and people-centrism suggest that these findings are based on only a few data points and/or reflect substantial variability, especially compared to the results for the populist parties' channels.

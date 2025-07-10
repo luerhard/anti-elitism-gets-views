@@ -45,10 +45,10 @@ df <- load$regression_data()
 df <- df |>
   group_by(channel) |>
   mutate(
-    d_elite = elite,
-    elite = z_transform(elite),
-    d_pplcentr = pplcentr,
-    pplcentr = z_transform(pplcentr),
+    d_log_video_views = log_video_views,
+    log_video_views = z_transform(log_video_views),
+    d_log_video_likes = log_video_likes,
+    log_video_likes = z_transform(log_video_likes)
   ) |>
   ungroup()
 

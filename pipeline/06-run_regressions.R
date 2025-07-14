@@ -46,9 +46,9 @@ df <- df |>
   group_by(channel) |>
   mutate(
     d_log_video_views = log_video_views,
-    log_video_views = z_transform(log_video_views),
+    video_views = z_transform(video_views),
     d_log_video_likes = log_video_likes,
-    log_video_likes = z_transform(log_video_likes)
+    video_likes = z_transform(video_likes)
   ) |>
   ungroup()
 
@@ -58,10 +58,10 @@ parties <- df |>
 
 
 model_types <- list(
-  views_elite = formula(log_video_views ~ channel + log_n_sents + released_year + is_short + elite),
-  views_pplcentr = formula(log_video_views ~ channel + log_n_sents + released_year + is_short + pplcentr),
-  likes_elite = formula(log_video_likes ~ channel + log_n_sents + released_year + is_short + elite),
-  likes_pplcentr = formula(log_video_likes ~ channel + log_n_sents + released_year + is_short + pplcentr)
+  views_elite = formula(video_views ~ channel + log_n_sents + released_year + is_short + elite),
+  views_pplcentr = formula(video_views ~ channel + log_n_sents + released_year + is_short + pplcentr)
+  # likes_elite = formula(video_likes ~ channel + log_n_sents + released_year + is_short + elite),
+  # likes_pplcentr = formula(video_likes ~ channel + log_n_sents + released_year + is_short + pplcentr)
 )
 
 

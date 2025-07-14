@@ -416,8 +416,8 @@ stages:
       nfiles: 7
     - path: pipeline/06-run_regressions.R
       hash: md5
-      md5: c6a51ea9034e42a91dfc33e456072881
-      size: 2995
+      md5: 44d5e7fa05f130d8dab345d5a1d530e6
+      size: 2966
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -425,9 +425,9 @@ stages:
     outs:
     - path: data/models/
       hash: md5
-      md5: bb0cd3b6e13b3e255144ee039d444cff.dir
-      size: 7811949810
-      nfiles: 256
+      md5: dd34b493ad418b28eff4903ad4dd3eed.dir
+      size: 6345843064
+      nfiles: 192
   plot_regressions:
     cmd: papermill pipeline/07-plot_regressions.ipynb
       reports/notebooks/07-plot_regressions.ipynb

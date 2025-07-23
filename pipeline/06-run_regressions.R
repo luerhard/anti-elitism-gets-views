@@ -19,11 +19,6 @@ mad_transform <- function(x) {
   med <- median(x, na.rm = TRUE)
   mad_val <- mad(x, constant = 1.4826, na.rm = TRUE)
 
-  # Handle case where MAD is 0 (all values identical)
-  if (mad_val == 0) {
-    return(rep(0, length(x)))
-  }
-
   return((x - med) / mad_val)
 }
 
@@ -83,7 +78,7 @@ model_types <- list(
 )
 
 
-quantiles <- c(0.5, 0.6, 0.7, 0.75, 0.8, 0.85, 0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99)
+quantiles <- c(0.5, 0.6, 0.7, 0.75, 0.8, 0.85, 0.9, 0.91, 0.92, 0.93, 0.94, 0.95)
 
 for (model_type in names(model_types)) {
   print(paste("Starting model_type", model_type))

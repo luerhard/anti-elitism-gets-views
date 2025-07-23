@@ -1,7 +1,7 @@
 box::use(
   reticulate,
   forcats[as_factor, fct_drop],
-  dplyr[left_join, group_by, summarize, mutate, arrange, ungroup, rename, select, filter, bind_rows],
+  dplyr[left_join, group_by, summarize, mutate, arrange, ungroup, rename, select, filter, bind_rows, n],
   stats[setNames],
   future[plan, multisession, sequential],
   furrr[future_map_dfr],

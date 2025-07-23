@@ -2,7 +2,10 @@ box::use(
   reticulate,
   forcats[as_factor, fct_drop],
   dplyr[...],
-  stats[setNames]
+  stats[setNames],
+  future[plan, multisession, sequential],
+  furrr[future_map_dfr],
+  tibble[rownames_to_column]
 )
 
 channels <- function() {
@@ -97,4 +100,58 @@ regression_data <- function() {
 
 
   return(df)
+}
+
+
+read_model <- function(model_file) {
+    readRDS(model_file)
+}
+
+create_model_summary <- function(model, var) {
+    model_summary <- summary(model)
+
+    df <- model_summary$fixed |>
+        rownames_to_column("term") |>
+        filter(term == !!var) |>
+        rename(est = Estimate, upper_ci = `u-95% CI`, lower_ci = `l-95% CI`, rhat = Rhat) |>
+        select(lower_ci, est, upper_ci, rhat)
+}
+
+regression_results <- function(model_file, var) {
+  model <- read_model(model_file)
+  df <- create_model_summary(model, var)
+  df$var <- var
+}
+
+
+read_quantile_regs_from_folder <- function(folder_path, var) {
+  files_in_folder <- list.files(folder_path, include.dirs=F, full.names=T, pattern = "*\\.rds", ignore.case=T)
+  future::plan(future::multisession, workers = 4)
+
+  results <- furrr::future_map_dfr(
+    files_in_folder,
+    ~{
+      tryCatch({
+        cat("Processing file:", basename(.x), "\r")  # Debug outputs
+        result <- regression_results(.x, var)
+        if (nrow(result) == 0) {
+          warning("No results for variable '", var, "' in file: ", basename(.x))
+        }
+        return(result)
+      }, error = function(e) {
+        warning(paste("Error processing file:", e$message))
+        return(data.frame())
+      })
+    }
+  )
+
+
+  future::plan(future::sequential)
+
+  return(results)
+
+}
+
+read_party <- function(base_path, party, var) {
+
 }

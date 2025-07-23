@@ -95,6 +95,8 @@
           ggeffects
           ggpubr
           #
+          future
+          furrr
           patchwork
           # regressions
           irr
@@ -109,12 +111,6 @@
           sjPlot
           sjstats
           MASS
-          # RF stuff
-          caret
-          iml
-          ranger
-          randomForest
-          # --
         ];
 
       in

@@ -14,6 +14,20 @@ out_path <- here("data", "models")
 z_transform <- function(x) as.vector(scale(x))
 
 
+# mean absolute deviation transformation
+mad_transform <- function(x) {
+  med <- median(x, na.rm = TRUE)
+  mad_val <- mad(x, constant = 1.4826, na.rm = TRUE)
+
+  # Handle case where MAD is 0 (all values identical)
+  if (mad_val == 0) {
+    return(rep(0, length(x)))
+  }
+
+  return((x - med) / mad_val)
+}
+
+
 bayes_model <- function(form, data, quantile) {
   my_priors <- c(
     prior(normal(0, 15), class = "Intercept"),
@@ -45,10 +59,13 @@ df <- load$regression_data()
 df <- df |>
   group_by(channel) |>
   mutate(
+
     d_log_video_views = log_video_views,
-    video_views = z_transform(video_views),
+    video_views = mad_transform(video_views),
+
     d_log_video_likes = log_video_likes,
-    video_likes = z_transform(video_likes)
+    video_likes = mad_transform(video_likes)
+
   ) |>
   ungroup()
 
@@ -60,6 +77,7 @@ parties <- df |>
 model_types <- list(
   views_elite = formula(video_views ~ channel + log_n_sents + released_year + is_short + elite),
   views_pplcentr = formula(video_views ~ channel + log_n_sents + released_year + is_short + pplcentr)
+
   # likes_elite = formula(video_likes ~ channel + log_n_sents + released_year + is_short + elite),
   # likes_pplcentr = formula(video_likes ~ channel + log_n_sents + released_year + is_short + pplcentr)
 )

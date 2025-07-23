@@ -94,6 +94,7 @@
           collapse
           ggeffects
           ggpubr
+          patchwork
           #
           future
           furrr

@@ -71,10 +71,10 @@ parties <- df |>
 
 model_types <- list(
   views_elite = formula(video_views ~ channel + log_n_sents + released_year + is_short + elite),
-  views_pplcentr = formula(video_views ~ channel + log_n_sents + released_year + is_short + pplcentr)
+  views_pplcentr = formula(video_views ~ channel + log_n_sents + released_year + is_short + pplcentr),
 
-  # likes_elite = formula(video_likes ~ channel + log_n_sents + released_year + is_short + elite),
-  # likes_pplcentr = formula(video_likes ~ channel + log_n_sents + released_year + is_short + pplcentr)
+  likes_elite = formula(video_likes ~ channel + log_n_sents + released_year + is_short + elite),
+  likes_pplcentr = formula(video_likes ~ channel + log_n_sents + released_year + is_short + pplcentr)
 )
 
 

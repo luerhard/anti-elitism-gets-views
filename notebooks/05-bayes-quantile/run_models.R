@@ -48,11 +48,11 @@ run_bayes_reg <- function(data, quantiles) {
       elite_form_bayes,
       data = reg_df,
       family = asym_laplace(),
-      # prior = my_priors,
+      prior = my_priors,
       chains = 6,
       cores = 12,
       threads = threading(2),
-      iter = 2000,
+      iter = 4000,
       warmup = 1000,
       control = list(adapt_delta = 0.95)
     )

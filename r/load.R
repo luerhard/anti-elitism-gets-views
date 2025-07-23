@@ -1,11 +1,12 @@
 box::use(
   reticulate,
   forcats[as_factor, fct_drop],
-  dplyr[...],
+  dplyr[left_join, group_by, summarize, mutate, arrange, ungroup, rename, select, filter, bind_rows],
   stats[setNames],
   future[plan, multisession, sequential],
   furrr[future_map_dfr],
-  tibble[rownames_to_column]
+  tibble[rownames_to_column],
+  here[here]
 )
 
 channels <- function() {
@@ -102,56 +103,67 @@ regression_data <- function() {
   return(df)
 }
 
-
 read_model <- function(model_file) {
-    readRDS(model_file)
+    if (!file.exists(model_file)) stop("File does not exist: ", model_file)
+    model <- readRDS(model_file)
+    return(model)
 }
 
-create_model_summary <- function(model, var) {
-    model_summary <- summary(model)
+create_model_summary <- function(model) {
+  model_summary <- summary(model)
 
-    df <- model_summary$fixed |>
-        rownames_to_column("term") |>
-        filter(term == !!var) |>
-        rename(est = Estimate, upper_ci = `u-95% CI`, lower_ci = `l-95% CI`, rhat = Rhat) |>
-        select(lower_ci, est, upper_ci, rhat)
+  df <- model_summary$fixed |>
+      rownames_to_column("term") |>
+      rename(est = Estimate, upper_ci = `u-95% CI`, lower_ci = `l-95% CI`, rhat = Rhat) |>
+      select(term, lower_ci, est, upper_ci, rhat) |>
+      mutate(quantile = model$formula$pfix$quantile)
+
+  return(df)
 }
 
-regression_results <- function(model_file, var) {
-  model <- read_model(model_file)
-  df <- create_model_summary(model, var)
-  df$var <- var
-}
+read_quantile_models_from_folder <- function(folder_path) {
 
-
-read_quantile_regs_from_folder <- function(folder_path, var) {
   files_in_folder <- list.files(folder_path, include.dirs=F, full.names=T, pattern = "*\\.rds", ignore.case=T)
-  future::plan(future::multisession, workers = 4)
 
-  results <- furrr::future_map_dfr(
-    files_in_folder,
-    ~{
-      tryCatch({
-        cat("Processing file:", basename(.x), "\r")  # Debug outputs
-        result <- regression_results(.x, var)
-        if (nrow(result) == 0) {
-          warning("No results for variable '", var, "' in file: ", basename(.x))
-        }
-        return(result)
-      }, error = function(e) {
-        warning(paste("Error processing file:", e$message))
-        return(data.frame())
-      })
-    }
+  future::plan(future::multicore, workers = 4L)
+
+  suppressMessages(
+    results <- furrr::future_map(
+      files_in_folder,
+      ~{
+        tryCatch({
+          model <- read_model(.x)
+          summary <- create_model_summary(model)
+          return(summary)
+        }, error = function(e) {
+          warning(paste("Error processing file:", e$message))
+          return(data.frame())
+        })
+      }
+    )
   )
 
-
   future::plan(future::sequential)
+  gc(verbose = F)
 
   return(results)
+}
+
+read_party_results <- function(base_path, party) {
+
+  summaries <- read_quantile_models_from_folder(here(base_path, party))
+  df <- dplyr::bind_rows(summaries)
+  df$party <- party
+
+  return(df)
 
 }
 
-read_party <- function(base_path, party, var) {
-
-}
+# regression_results <- function(model_file) {
+#   model <- read_model(model_file)
+#   df <- create_model_summary(model)
+#   if (nrow(df) == 0) {
+#     stop("DF len is zero for:", model_file)
+#   }
+#   return(df)
+# }

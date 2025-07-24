@@ -65,6 +65,8 @@ stages:
     - reports/tables/videos_per_channel.csv
     - reports/figures/view_count.svg
     - reports/figures/populism_per_party.svg
+    - reports/figures/elite_over_time.svg
+    - reports/figures/pplcentr_over_time.svg
     - reports/manuscript/inlines/n_broken.txt
     - reports/manuscript/inlines/n_sents.txt
     - reports/manuscript/inlines/n_videos.txt

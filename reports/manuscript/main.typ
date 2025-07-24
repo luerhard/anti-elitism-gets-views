@@ -413,9 +413,19 @@
     image("../figures/elite_over_time.svg", width: 100%),
     // placement: auto,
     caption: [
-      Each case in this figure is a video; the values represent the relative proportion of sentences that are flagged with the respective populist dimension.
+      Anti-Elitism per channel and party over time.
+      Lines are drawn using a loess function with span of 0.3.
     ],
   ) <fig:elite-over-time>
+
+  #figure(
+    image("../figures/pplcentr_over_time.svg", width: 100%),
+    // placement: auto,
+    caption: [
+      People-Centrism per channel and party over time.
+      Lines are drawn using a loess function with span of 0.3.
+    ],
+  ) <fig:pplcentr-over-time>
 
   == Populism and Popularity <populism-and-popularity>
 

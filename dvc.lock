@@ -95,8 +95,8 @@ stages:
       nfiles: 7
     - path: pipeline/05-basic_descriptives.ipynb
       hash: md5
-      md5: ca5e7067ea3b5c865587330ab887eb17
-      size: 564901
+      md5: 2dc191374856ec98afd3961d4fe5da04
+      size: 333153
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -104,16 +104,16 @@ stages:
     outs:
     - path: reports/figures/elite_over_time.svg
       hash: md5
-      md5: 89b467d1aee0df0ca241ee33d42e60d4
-      size: 75461
+      md5: 02fcbef7188902a6d3f154516a52a6f3
+      size: 73871
     - path: reports/figures/populism_per_party.svg
       hash: md5
       md5: 45a74e8d04eede3bad877007cf798cbc
       size: 31832
     - path: reports/figures/pplcentr_over_time.svg
       hash: md5
-      md5: eb65337954630d49b829a99f3e579b48
-      size: 70504
+      md5: df8f072c2acaa35b95313f764f3a573b
+      size: 71034
     - path: reports/figures/view_count.svg
       hash: md5
       md5: 5be89c9e3664990781624cf155878286
@@ -136,8 +136,8 @@ stages:
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: ec55ce60c371eb979ff3a636b7a3ca86
-      size: 578122
+      md5: 028c3c42900b91f6af3b120a9ecdb3b0
+      size: 568361
     - path: reports/tables/channel_descriptives.csv
       hash: md5
       md5: c43a2f7a809e4f39347c92062c8f0f97

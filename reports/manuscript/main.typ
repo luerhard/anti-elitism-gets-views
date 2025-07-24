@@ -407,7 +407,15 @@
   The AfD TV channel exhibits a similar, though somewhat more moderate, pattern.
   Specifically, the AfD BT channel contains very little people-centric content and primarily focuses on an exceptionally high volume of anti-elitist messaging.
   It is worth noting that the AfD BT channel mainly features speeches by AfD members of parliament delivered in the Bundestag.
-  A possible explanation for the combination of low levels of people-centric messaging and high levels of anti-elitist statements is that the AfD may use their speaking time in the Bundestag primarily to attack the governing parties, rather than to appeal directly to “the people.”
+  A possible explanation for the combination of low levels of people-centric messaging and high levels of anti-elitist statements is that the AfD may use their speaking time in the Bundestag primarily to attack the governing parties, rather than to appeal directly to "the people."
+
+  #figure(
+    image("../figures/elite_over_time.svg", width: 100%),
+    // placement: auto,
+    caption: [
+      Each case in this figure is a video; the values represent the relative proportion of sentences that are flagged with the respective populist dimension.
+    ],
+  ) <fig:elite-over-time>
 
   == Populism and Popularity <populism-and-popularity>
 

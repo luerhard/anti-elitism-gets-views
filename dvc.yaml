@@ -87,8 +87,8 @@ stages:
     outs:
     - reports/figures/reg_views_elite.svg
     - reports/figures/reg_views_pplcentr.svg
-    - reports/figures/reg_likes_elite.svg
-    - reports/figures/reg_likes_pplcentr.svg
+    # - reports/figures/reg_likes_elite.svg
+    # - reports/figures/reg_likes_pplcentr.svg
     - reports/notebooks/07-plot_regressions.ipynb
   top_videos:
     cmd: papermill pipeline/07-top_videos.ipynb reports/notebooks/07-top_videos.ipynb

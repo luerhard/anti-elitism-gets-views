@@ -409,21 +409,44 @@
   It is worth noting that the AfD BT channel mainly features speeches by AfD members of parliament delivered in the Bundestag.
   A possible explanation for the combination of low levels of people-centric messaging and high levels of anti-elitist statements is that the AfD may use their speaking time in the Bundestag primarily to attack the governing parties, rather than to appeal directly to "the people."
 
+
+  @fig:elite-over-time depicts the temporal development of anti-elitist rhetoric across YouTube videos from German political parties from 2018 to 2024.
+  The analysis reveals distinct patterns between populist and non-populist parties.
+  The AfD demonstrates consistently elevated levels of anti-elitist messaging throughout the observation period, with both their Bundestag and national channels frequently reaching average levels between 10-15% of sentences classified as anti-elitist per video.
+  The Left party, as the other populist party in our sample, exhibits moderate but sustained anti-elitist rhetoric, maintaining levels generally higher than non-populist parties but substantially lower than the AfD.
+
+  Non-populist parties (CDU/CSU, FDP, Greens, SPD) display considerably lower baseline levels of anti-elitist content, typically remaining below 5%.
+  However, these parties show notable increases in anti-elitist rhetoric approaching the 2025 federal election, suggesting a broader intensification of political discourse.
+  This trend coincides with the dissolution of the traffic light coalition (SPD, Greens, FDP) in late 2024, following prolonged internal conflicts that culminated in the government's collapse in October and November.
+  The heightened political tensions during this period may have contributed to increased anti-establishment rhetoric across the political spectrum, as parties positioned themselves for the subsequent electoral campaign.
+
   #figure(
     image("../figures/elite_over_time.svg", width: 100%),
     // placement: auto,
     caption: [
-      Anti-Elitism per channel and party over time.
+      Average amount of Anti-Elitism per video for each channel and party over time.
       Lines are drawn using a loess function with span of 0.3.
+      Days of national elections are marked with vertical dashed lines.
     ],
   ) <fig:elite-over-time>
+
+  @fig:pplcentr-over-time illustrates the temporal patterns of people-centric appeals in German parties' YouTube content over the same period.
+  In contrast to anti-elitist rhetoric, people-centrism shows more varied distribution across the political spectrum.
+  The Left party's national channel exhibits the highest levels of people-centric messaging, reaching close to 10% during the electoral period 2021-2025 but also the CSU DE channels has some time periods with high amounts of people-centric appeals.
+  Notably, the AfD channels display only modest levels of people-centric content, particularly the Bundestag channel, which remains consistently low throughout the observation period.
+  This finding challenges expectations about populist communication strategies and suggests that the AfD's YouTube presence focuses more heavily on attacking elites rather than appealing directly to "the people."
+  The remaining parties show relatively low and stable levels of people-centric messaging over time, with occasional fluctuations but no clear systematic patterns.
+  However, we see a notable increase in people-centric rhetoric for the Left DE and, Left BT new and
+
+  Overall, people-centrism appears less pronounced and more evenly distributed across parties compared to anti-elitist rhetoric, supporting our analytical approach of examining these populist dimensions separately rather than as a combined measure.
 
   #figure(
     image("../figures/pplcentr_over_time.svg", width: 100%),
     // placement: auto,
     caption: [
-      People-Centrism per channel and party over time.
+      Average amount of People-Centrism per video for each channel and party over time.
       Lines are drawn using a loess function with span of 0.3.
+      Days of national elections are marked with vertical dashed lines.
     ],
   ) <fig:pplcentr-over-time>
 

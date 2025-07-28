@@ -95,8 +95,8 @@ stages:
       nfiles: 7
     - path: pipeline/05-basic_descriptives.ipynb
       hash: md5
-      md5: 91b6c42416035cd1e8a368bfaa95c9db
-      size: 385833
+      md5: 8a52ebb0d82ccdc33e5d9f5626fa7fb2
+      size: 393033
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -104,16 +104,16 @@ stages:
     outs:
     - path: reports/figures/elite_over_time.svg
       hash: md5
-      md5: 39bd4937d3393dc46797cbbe617f7e12
-      size: 63046
+      md5: 9152449f33665730d2a06f5c1e75df17
+      size: 63146
     - path: reports/figures/populism_per_party.svg
       hash: md5
       md5: 45a74e8d04eede3bad877007cf798cbc
       size: 31832
     - path: reports/figures/pplcentr_over_time.svg
       hash: md5
-      md5: 8432c4a08a018c29a666e6ff1e49faff
-      size: 58766
+      md5: d72b0dbd6fa38dcf20de08bf997f4940
+      size: 58842
     - path: reports/figures/view_count.svg
       hash: md5
       md5: 5be89c9e3664990781624cf155878286
@@ -136,8 +136,8 @@ stages:
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: 9a1ef9402b006517dc2e24110a87a079
-      size: 398242
+      md5: a2bd75d6452d49fba697d37e7fa86296
+      size: 405891
     - path: reports/tables/channel_descriptives.csv
       hash: md5
       md5: c43a2f7a809e4f39347c92062c8f0f97
@@ -447,18 +447,18 @@ stages:
       nfiles: 192
     - path: pipeline/07-plot_regressions.ipynb
       hash: md5
-      md5: 578dc07e70ededbd4e55fa9bcf004319
-      size: 175760
+      md5: 5058cc06af7d831dd629ef63e683df95
+      size: 272259
     outs:
     - path: reports/figures/reg_views_elite.svg
       hash: md5
-      md5: f8df5520130af16713bb1daa97e9aeb0
-      size: 36714
+      md5: 07c67eef0b9b1987f31f53a1e8f11f7c
+      size: 30778
     - path: reports/figures/reg_views_pplcentr.svg
       hash: md5
-      md5: 05c180629306eb649146382151f65bb2
-      size: 29629
+      md5: 908e954af10b35856696a1341aacf567
+      size: 29679
     - path: reports/notebooks/07-plot_regressions.ipynb
       hash: md5
-      md5: 8fe2c0148f368636b8adf7ccca8d4b80
-      size: 257709
+      md5: 26542b8c9e491ab66279dc19a417cc22
+      size: 301860

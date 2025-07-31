@@ -6,6 +6,7 @@ box::use(
   future[plan, multisession, sequential],
   furrr[future_map_dfr],
   tibble[rownames_to_column],
+  brms[bayes_R2],
   here[here]
 )
 
@@ -132,6 +133,21 @@ create_model_summary <- function(model) {
       rename(est = Estimate, upper_ci = `u-95% CI`, lower_ci = `l-95% CI`, rhat = Rhat) |>
       select(term, lower_ci, est, upper_ci, rhat) |>
       mutate(quantile = model$formula$pfix$quantile)
+
+  rsquared <- bayes_R2(model) |>
+    data.frame() |>
+    rownames_to_column("term") |>
+    rename(
+      est = Estimate,
+      lower_ci = Q2.5,
+      upper_ci = Q97.5,
+      est_error = Est.Error,
+    ) |>
+    mutate(
+      quantile = df$quantile[1]
+    )
+
+  df <- bind_rows(df, rsquared)
 
   return(df)
 }

@@ -432,13 +432,11 @@
 
   @fig:pplcentr-over-time illustrates the temporal patterns of people-centric appeals in German parties' YouTube content over the same period.
   In contrast to anti-elitist rhetoric, people-centrism shows more varied distribution across the political spectrum.
-  The Left party's national channel exhibits the highest levels of people-centric messaging, reaching close to 10% during the electoral period 2021-2025 but also the CSU DE channels has some time periods with high amounts of people-centric appeals.
+  The Left party's national channel exhibits the highest levels of people-centric messaging, reaching close to 10% during the electoral period 2021-2025 but also the CSU DE channel has some time periods with high amounts of people-centric appeals.
   Notably, the AfD channels display only modest levels of people-centric content, particularly the Bundestag channel, which remains consistently low throughout the observation period.
   This finding challenges expectations about populist communication strategies and suggests that the AfD's YouTube presence focuses more heavily on attacking elites rather than appealing directly to "the people."
   The remaining parties show relatively low and stable levels of people-centric messaging over time, with occasional fluctuations but no clear systematic patterns.
-  However, we see a notable increase in people-centric rhetoric for the Left DE and, Left BT new and
-
-  Overall, people-centrism appears less pronounced and more evenly distributed across parties compared to anti-elitist rhetoric, supporting our analytical approach of examining these populist dimensions separately rather than as a combined measure.
+  However, we see a notable increase in people-centric rhetoric for the
 
   #figure(
     image("../figures/pplcentr_over_time.svg", width: 100%),
@@ -449,6 +447,9 @@
       Days of national elections are marked with vertical dashed lines.
     ],
   ) <fig:pplcentr-over-time>
+
+  Overall, people-centrism appears less pronounced and more evenly distributed across parties compared to anti-elitist rhetoric, supporting our analytical approach of examining these populist dimensions separately rather than as a combined measure.
+
 
   == Populism and Popularity <populism-and-popularity>
 

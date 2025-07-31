@@ -100,6 +100,21 @@ regression_data <- function() {
     ungroup()
 
 
+  df <- df |>
+    group_by(channel) |>
+    mutate(
+      d_video_views = video_views,
+      video_views = scale(video_views)[,1],
+
+      d_video_likes = log_video_likes,
+      video_likes = scale(video_likes)[,1],
+
+      elite = elite * 100,
+      pplcentr = pplcentr * 100
+    ) |>
+    ungroup()
+
+
   return(df)
 }
 

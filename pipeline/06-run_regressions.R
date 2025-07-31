@@ -11,18 +11,6 @@ box::use(
 
 out_path <- here("data", "models")
 
-z_transform <- function(x) as.vector(scale(x))
-
-
-# mean absolute deviation transformation
-mad_transform <- function(x) {
-  med <- median(x, na.rm = TRUE)
-  mad_val <- mad(x, constant = 1.4826, na.rm = TRUE)
-
-  return((x - med) / mad_val)
-}
-
-
 bayes_model <- function(form, data, quantile) {
   my_priors <- c(
     prior(normal(0, 15), class = "Intercept"),
@@ -51,19 +39,6 @@ bayes_model <- function(form, data, quantile) {
 
 df <- load$regression_data()
 
-df <- df |>
-  group_by(channel) |>
-  mutate(
-
-    d_log_video_views = log_video_views,
-    video_views = mad_transform(video_views),
-
-    d_log_video_likes = log_video_likes,
-    video_likes = mad_transform(video_likes)
-
-  ) |>
-  ungroup()
-
 parties <- df |>
   pull(party) |>
   unique()
@@ -77,8 +52,7 @@ model_types <- list(
   likes_pplcentr = formula(video_likes ~ channel + log_n_sents + released_year + is_short + pplcentr)
 )
 
-
-quantiles <- c(0.5, 0.6, 0.7, 0.75, 0.8, 0.85, 0.9, 0.91, 0.92, 0.93, 0.94, 0.95)
+quantiles <- c(0.5, 0.6, 0.7, 0.75, 0.8, 0.85, 0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97)
 
 for (model_type in names(model_types)) {
   print(paste("Starting model_type", model_type))
@@ -119,13 +93,42 @@ for (model_type in names(model_types)) {
           drop_na(video_views)
       } else if (startsWith(model_type, "likes")) {
         reg_df <- reg_df |>
+          group_by(channel) |>
+          filter(sum(!is.na(video_likes)) > 10) |>
+          ungroup() |>
           drop_na(video_likes)
       } else {
         stop("Wrong model specification!")
       }
 
+      # Check if there's only one channel after filtering
+      n_channels <- reg_df |> pull(channel) |> n_distinct()
 
-      model <- bayes_model(form = model_formula, data = reg_df, quantile = quantile)
+      # Modify formula if only one channel
+      # important for FDP likes
+      if (n_channels <= 1) {
+        print("Only one channel found. Removing channel from model formula.")
+
+        # Remove channel term from formula
+        current_formula <- model_formula
+        formula_terms <- all.vars(current_formula)
+
+        # Get response variable (left side of ~)
+        response_var <- formula_terms[1]
+
+        # Get predictor variables (right side of ~), excluding 'channel'
+        predictor_vars <- formula_terms[-1]
+        predictor_vars <- predictor_vars[predictor_vars != "channel"]
+
+        # Create new formula without channel
+        new_formula_string <- paste(response_var, "~", paste(predictor_vars, collapse = " + "))
+        current_formula <- as.formula(new_formula_string)
+      } else {
+        current_formula <- model_formula
+      }
+
+
+      model <- bayes_model(form = current_formula, data = reg_df, quantile = quantile)
       saveRDS(model, fpath, compress = TRUE)
       model <- NULL
       gc()

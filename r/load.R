@@ -105,13 +105,11 @@ regression_data <- function() {
     group_by(channel) |>
     mutate(
       d_video_views = video_views,
-      video_views = scale(video_views)[,1],
-
+      video_views = scale(video_views)[, 1],
       d_video_likes = log_video_likes,
-      video_likes = scale(video_likes)[,1],
-
-      elite = elite * 100,
-      pplcentr = pplcentr * 100
+      video_likes = scale(video_likes)[, 1],
+      elite = elite,
+      pplcentr = pplcentr
     ) |>
     ungroup()
 
@@ -120,19 +118,19 @@ regression_data <- function() {
 }
 
 read_model <- function(model_file) {
-    if (!file.exists(model_file)) stop("File does not exist: ", model_file)
-    model <- readRDS(model_file)
-    return(model)
+  if (!file.exists(model_file)) stop("File does not exist: ", model_file)
+  model <- readRDS(model_file)
+  return(model)
 }
 
 create_model_summary <- function(model) {
   model_summary <- summary(model)
 
   df <- model_summary$fixed |>
-      rownames_to_column("term") |>
-      rename(est = Estimate, upper_ci = `u-95% CI`, lower_ci = `l-95% CI`, rhat = Rhat) |>
-      select(term, lower_ci, est, upper_ci, rhat) |>
-      mutate(quantile = model$formula$pfix$quantile)
+    rownames_to_column("term") |>
+    rename(est = Estimate, upper_ci = `u-95% CI`, lower_ci = `l-95% CI`, rhat = Rhat) |>
+    select(term, lower_ci, est, upper_ci, rhat) |>
+    mutate(quantile = model$formula$pfix$quantile)
 
   rsquared <- bayes_R2(model) |>
     data.frame() |>
@@ -153,23 +151,25 @@ create_model_summary <- function(model) {
 }
 
 read_quantile_models_from_folder <- function(folder_path) {
+  files_in_folder <- list.files(folder_path, include.dirs = F, full.names = T, pattern = "*\\.rds", ignore.case = T)
 
-  files_in_folder <- list.files(folder_path, include.dirs=F, full.names=T, pattern = "*\\.rds", ignore.case=T)
-
-  future::plan(future::multicore, workers = 4L)
+  future::plan(future::multicore, workers = 2L)
 
   suppressMessages(
     results <- furrr::future_map(
       files_in_folder,
-      ~{
-        tryCatch({
-          model <- read_model(.x)
-          summary <- create_model_summary(model)
-          return(summary)
-        }, error = function(e) {
-          warning(paste("Error processing file:", e$message))
-          return(data.frame())
-        })
+      ~ {
+        tryCatch(
+          {
+            model <- read_model(.x)
+            summary <- create_model_summary(model)
+            return(summary)
+          },
+          error = function(e) {
+            warning(paste("Error processing file:", e$message))
+            return(data.frame())
+          }
+        )
       }
     )
   )
@@ -181,13 +181,11 @@ read_quantile_models_from_folder <- function(folder_path) {
 }
 
 read_party_results <- function(base_path, party) {
-
   summaries <- read_quantile_models_from_folder(here(base_path, party))
   df <- dplyr::bind_rows(summaries)
   df$party <- party
 
   return(df)
-
 }
 
 # regression_results <- function(model_file) {

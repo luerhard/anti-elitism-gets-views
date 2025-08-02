@@ -442,23 +442,31 @@ stages:
     deps:
     - path: data/models/
       hash: md5
-      md5: af58745485e62b7ba117d7ca44017730.dir
-      size: 12257554355
+      md5: a6e80a5cb4dbf8ac6155ce5819b6fd62.dir
+      size: 11107155868
       nfiles: 336
     - path: pipeline/07-plot_regressions.ipynb
       hash: md5
-      md5: 5058cc06af7d831dd629ef63e683df95
-      size: 272259
+      md5: cfe7a67225ae20367af4f5faf75f9c82
+      size: 540719
     outs:
+    - path: reports/figures/reg_likes_elite.svg
+      hash: md5
+      md5: 06a49355c996bcc58498b3a997d9e77c
+      size: 31574
+    - path: reports/figures/reg_likes_pplcentr.svg
+      hash: md5
+      md5: 60fa2dbfc0af4963b245cf24f5caa18a
+      size: 32300
     - path: reports/figures/reg_views_elite.svg
       hash: md5
-      md5: 69fdec7823f7eeb0d74b652a80e71c3e
-      size: 35406
+      md5: 334c551a6a93832a89ac332c56b4bb80
+      size: 33390
     - path: reports/figures/reg_views_pplcentr.svg
       hash: md5
-      md5: 015209fd1a611cd1ac1d1868a0e4b9f9
-      size: 32581
+      md5: 5c88a2c8ef8bbdc60591eb1ebe7d2b2d
+      size: 31627
     - path: reports/notebooks/07-plot_regressions.ipynb
       hash: md5
-      md5: d541c0c7db7674e83bd2bf0450aa7865
-      size: 247951
+      md5: 94962f11aa5b0baee8cab89f615612ae
+      size: 410533

@@ -102,7 +102,7 @@ regression_data <- function() {
 
 
   df <- df |>
-    group_by(channel) |>
+    group_by(channel, released_year) |>
     mutate(
       d_video_views = video_views,
       video_views = scale(video_views)[, 1],

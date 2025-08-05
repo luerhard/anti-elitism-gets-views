@@ -424,8 +424,8 @@ stages:
       nfiles: 7
     - path: pipeline/06-run_regressions.R
       hash: md5
-      md5: 47e2826c83e06b2ba211e59c0357bdd8
-      size: 3771
+      md5: dca919bbea7120e3e9f0e0d636df6a8d
+      size: 3759
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -433,40 +433,40 @@ stages:
     outs:
     - path: data/models/
       hash: md5
-      md5: a6e80a5cb4dbf8ac6155ce5819b6fd62.dir
-      size: 11107155868
-      nfiles: 336
+      md5: efedf8b456fe24071b5505bfc5010a38.dir
+      size: 9251349273
+      nfiles: 288
   plot_regressions:
     cmd: papermill pipeline/07-plot_regressions.ipynb
       reports/notebooks/07-plot_regressions.ipynb
     deps:
     - path: data/models/
       hash: md5
-      md5: a6e80a5cb4dbf8ac6155ce5819b6fd62.dir
-      size: 11107155868
-      nfiles: 336
+      md5: efedf8b456fe24071b5505bfc5010a38.dir
+      size: 9251349273
+      nfiles: 288
     - path: pipeline/07-plot_regressions.ipynb
       hash: md5
-      md5: cfe7a67225ae20367af4f5faf75f9c82
-      size: 540719
+      md5: af139e2ba80a71e39f737563e368baf5
+      size: 399897
     outs:
     - path: reports/figures/reg_likes_elite.svg
       hash: md5
-      md5: 06a49355c996bcc58498b3a997d9e77c
-      size: 31574
+      md5: 1b6f619eaaec305242b08d332a770d31
+      size: 29713
     - path: reports/figures/reg_likes_pplcentr.svg
       hash: md5
-      md5: 60fa2dbfc0af4963b245cf24f5caa18a
-      size: 32300
+      md5: 8cae062fdcffa7c3c14effa973371305
+      size: 29694
     - path: reports/figures/reg_views_elite.svg
       hash: md5
-      md5: 334c551a6a93832a89ac332c56b4bb80
-      size: 33390
+      md5: a734bce659a8c9816fac98aec702e672
+      size: 31822
     - path: reports/figures/reg_views_pplcentr.svg
       hash: md5
-      md5: 5c88a2c8ef8bbdc60591eb1ebe7d2b2d
-      size: 31627
+      md5: 9951c7bc838b157df1e7d23a7118d065
+      size: 29766
     - path: reports/notebooks/07-plot_regressions.ipynb
       hash: md5
-      md5: 94962f11aa5b0baee8cab89f615612ae
-      size: 410533
+      md5: cca03276aff7662ffeaf49cc7d6ce917
+      size: 415394

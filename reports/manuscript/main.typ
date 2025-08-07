@@ -216,7 +216,6 @@
   // Rooted in the work of Ernesto Laclau, it is by far the most common approach by political theorists @moffittPopulism2020.// (S. ~60 von 360, Beginn "The Discursive-Performative Approach")
   // Although this approach is less prevalent in the empirical literature, as it is considered "extremely abstract" and faces "serious problems when it comes to analysing populism in more concrete terms" #cite(<muddePopulismEuropeAmericas2012>, supplement: "p. 6"), it offers several valuable features that are applied in the in this work.
   While #cite(<moffittPopulism2020>, form: "prose", supplement: "Table 2.1") makes a clear distinction in that the ideational approach views populism as a purely binary attribute of political actors, Mudde recognizes a gradual "more or less populism" and merely qualifies that it does not make sense to speak of "weak populists" in the case of non-populist actors who use some populist phrases @muddePopulismIdeationalApproach2017.
-
   For the purpose of this research, we integrate both perspectives by conceptualizing populism as a binary attribute that can be assigned to political parties.
   In the current German Bundestag, two parties---the AfD and the Left---are classified as populist, according to the PopuList database @rooduijnPopuListDatabasePopulist2023.
 
@@ -356,17 +355,46 @@
 
   == German Parties on YouTube
 
-  // Summary statistics per channel are presented in @tab:descriptives.
-  Notably, each of the two AfD channels---\@AfDFraktionimBundestag (521,000 followers), hereafter referred to as AfD BT, and \@AfDTV (334,000 followers)---individually has more followers than all other analyzed channels combined (252,410 followers).
-  While the CDU, FDP, Greens, and SPD channels have comparable follower counts around 30,000 each, the CSU, the smaller "sister party" of the CDU limited to Bavaria, has only 6,610 followers.
-  In contrast, the Left party, another populist party represented in the Bundestag alongside the AfD, has a substantially higher follower count of 117,000, highlighting the greater popularity of populist parties compared to their non-populist counterparts.
+  @tbl:channel_statistics provides an overview of all channels included in the subsequent analysis.
+  Several patterns emerge immediately.
+  Most notably, both AfD channels demonstrate substantially greater success compared to all other channels in the dataset.
+  They attract significantly more followers and receive considerably higher average view counts.
+  In addition, the total number of videos published across the two AfD channels exceeds that of any other party.
 
+  #let table_array = csv("../tables/channel_summary.csv", row-type: array)
+  #let header = table_array.first()
+  #let table_content = table_array.slice(1)
 
-  The volume of videos produced follows a similar pattern, with both AfD channels demonstrating significantly higher productivity and engagement, measured as median views and likes, followed by the Left.
-  However, the average like count reported for the FDP may be misleading, as the like functionality has been disabled for all but one video on their channel.
-  #mnote[die likes der fdp NA setzen?]
+  #figure(
+    kind: table,
+    context [
+      #set text(size: 0.85em)
+      #table(
+        columns: (2.5cm, 4.5cm, 2cm, 1.3cm, 2cm, 2.3cm),
+        align: (left, left, right, right, right, right),
+        inset: 4pt,
+        stroke: none,
+        table.hline(),
+        table.header(..header),
+        table.hline(),
+        table.vline(x: 1, start: 1, end: table_content.len() + 1),
+        ..table_content.flatten(),
+        table.hline(),
+      )
+    ],
+    caption: [Summary statistics for all selected channels.],
+  )<tbl:channel_statistics>
+
+  The only channel that approaches the AfD's metrics is the federal-level channel of Die Linke (Left DE).
+  However, a closer examination of this channel reveals a highly skewed distribution of views and likes, as indicated by a markedly higher mean compared to the median.
+  This distortion can be attributed to the fact that the channel began accumulating the majority of its followers only in the second half of 2024.
+  As a result, the channel's mean view count is inflated by recent high-performing videos, while the median remains comparatively low.
   Comparing median and mean values for both likes and views reveals a substantial analytical challenge inherent to YouTube data.
   Specifically, the means are substantially higher than the medians for all metrics, indicating a highly skewed distribution driven upward by a few exceptionally successful videos.
+
+  Looking at the distributions of views and likes a bit more closely, we see a similar pattern between both.
+  However, the average like count reported for the FDP may be misleading, as the like functionality has been disabled for all but one video on their channel.
+  #mnote[die likes der fdp NA setzen?]
   @fig:view_count illustrates the distributions of views and likes to examine these disparities more closely. Due to considerable variation in the raw counts, views and likes are displayed on a logarithmic scale.
 
   #figure(placement: auto, image("figures/figure_1.svg", width: 100%), caption: [
@@ -374,7 +402,8 @@
     All values are logged.
     The rectangle describes the .25, .5 and.75 quantiles.
     Outliers are represented by dots.
-    Violin plots were superimposed on the boxplot to better visualize the distribution.]) <fig:view_count>
+    Violin plots were superimposed on the boxplot to better visualize the distribution.
+  ]) <fig:view_count>
 
   In addition to the above-mentioned differences in median views and likes, we can see in this figure that all parties have some very successful videos in terms of views.
   It is evident that all parties produce some successful videos, but the AfD stands out clearly here as well.
@@ -400,15 +429,17 @@
     ],
   ) <fig:populism_dimensions>
 
-  Comparing the detected levels of populism across all channels, we find partial support for *H1*, which proposes that populist parties convey more populist content on YouTube than non-populist parties.
   This hypothesis is particularly supported in the dimension of anti-elitism: the channels of the AfD and the Left clearly contain more anti-elitist content than those of other parties.
   Additionally, the Left’s DE channel proportionally conveys the highest amount of people-centric content.
   However, the AfD channels display surprisingly limited people-centric appeals.
   The AfD TV channel exhibits a similar, though somewhat more moderate, pattern.
   Specifically, the AfD BT channel contains very little people-centric content and primarily focuses on an exceptionally high volume of anti-elitist messaging.
   It is worth noting that the AfD BT channel mainly features speeches by AfD members of parliament delivered in the Bundestag.
-  A possible explanation for the combination of low levels of people-centric messaging and high levels of anti-elitist statements is that the AfD may use their speaking time in the Bundestag primarily to attack the governing parties, rather than to appeal directly to "the people."
 
+  To further examine H1—which posits that populist parties convey more populist content on YouTube than non-populist parties—we conducted Welch’s t-tests for both key dimensions of populist discourse, comparing videos from populist parties (AfD and Die Linke) with those from non-populist parties.
+  For anti-elitism, the results strongly support *H1*: videos produced by populist parties exhibit a significantly higher level of anti-elitist content (M = 0.133) than those by non-populist parties (M = 0.036), a difference that is statistically significant (p < .001).
+  In contrast, for people-centrism, the data reveal a small but statistically significant difference in the opposite direction: non-populist parties demonstrate slightly higher average levels of people-centric appeals (M = 0.028) compared to populist parties (M = 0.025; p < .001), thereby contradicting *H1*.
+  One possible explanation for this pattern—high levels of anti-elitism coupled with comparatively low levels of people-centric messaging among populist parties—is that these parties may primarily use their parliamentary speaking time to criticize the governing parties, rather than to construct appeals directed toward “the people.” This interpretation is further supported by the observation that, within the populist camp, the channels operated by the parliamentary factions exhibit higher average levels of anti-elitism than those managed by the federal party organizations.
 
   @fig:elite-over-time depicts the temporal development of anti-elitist rhetoric across YouTube videos from German political parties from 2018 to 2024.
   The analysis reveals distinct patterns between populist and non-populist parties.

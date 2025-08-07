@@ -95,8 +95,8 @@ stages:
       nfiles: 7
     - path: pipeline/05-basic_descriptives.ipynb
       hash: md5
-      md5: bc0b72c322dd6f524e716abb30528a69
-      size: 393035
+      md5: 67f00d9087d1a95d163fca872d9fa325
+      size: 396416
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -136,12 +136,16 @@ stages:
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: 37636874fbfe7440cd41cf34bb729180
-      size: 405890
+      md5: 38d530857618c86abfc6aa122e784d9a
+      size: 412502
     - path: reports/tables/channel_descriptives.csv
       hash: md5
       md5: c43a2f7a809e4f39347c92062c8f0f97
       size: 408
+    - path: reports/tables/channel_summary.csv
+      hash: md5
+      md5: 8357911ee824d37a6f71e0f9ab8d99d0
+      size: 709
     - path: reports/tables/video_descriptives_per_channel.csv
       hash: md5
       md5: af489317d606897382dd436957baba9d

@@ -469,12 +469,15 @@
   This turbulent political moment also coincided with a notable rise in anti-elitist rhetoric from the CDU/CSU, then in opposition, which reached its highest level of such content in the Bundestag during the observation period.
 
   @fig:pplcentr-over-time illustrates the temporal patterns of people-centric appeals in German parties' YouTube content over the same period.
-  In contrast to anti-elitist rhetoric, people-centrism shows more varied distribution across the political spectrum.
+  We see some similar patterns across both dimensions of populism for multiple parties. The AfD which shows a very consistent amount of both dimensions over the observation period, albeit with much lower total amounts for people-centrism.
+  The SPD, CDU/CSU, and Greens show similar peaks for people-centrism as it showed above fro anti-elitism.
+  The Left also shows its increase in people-centric appeals for the Left DE channels around the time anti-elitist content increased in 2022.
   The Left party's national channel exhibits the highest levels of people-centric messaging, reaching close to 10% during the electoral period 2021-2025 but also the CSU DE channel has some time periods with high amounts of people-centric appeals.
+
+  In contrast to anti-elitist rhetoric, the FDP only shows a small and quickly decreasing surge of people-centric appeals in 2024.
   Notably, the AfD channels display only modest levels of people-centric content, particularly the Bundestag channel, which remains consistently low throughout the observation period.
+
   This finding challenges expectations about populist communication strategies and suggests that the AfD's YouTube presence focuses more heavily on attacking elites rather than appealing directly to "the people."
-  The remaining parties show relatively low and stable levels of people-centric messaging over time, with occasional fluctuations but no clear systematic patterns.
-  However, we see a notable increase in people-centric rhetoric for the
 
   #figure(
     image("../figures/pplcentr_over_time.svg", width: 100%),

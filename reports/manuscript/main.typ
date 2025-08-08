@@ -436,20 +436,16 @@
   Specifically, the AfD BT channel contains very little people-centric content and primarily focuses on an exceptionally high volume of anti-elitist messaging.
   It is worth noting that the AfD BT channel mainly features speeches by AfD members of parliament delivered in the Bundestag.
 
-  To further examine H1—which posits that populist parties convey more populist content on YouTube than non-populist parties—we conducted Welch’s t-tests for both key dimensions of populist discourse, comparing videos from populist parties (AfD and Die Linke) with those from non-populist parties.
+  To further examine H1—which posits that populist parties convey more populist content on YouTube than non-populist parties—we conducted Welch’s t-tests for both key dimensions of populist discourse, comparing videos from populist parties (AfD and the Left) with those from non-populist parties.
   For anti-elitism, the results strongly support *H1*: videos produced by populist parties exhibit a significantly higher level of anti-elitist content (M = 0.133) than those by non-populist parties (M = 0.036), a difference that is statistically significant (p < .001).
   In contrast, for people-centrism, the data reveal a small but statistically significant difference in the opposite direction: non-populist parties demonstrate slightly higher average levels of people-centric appeals (M = 0.028) compared to populist parties (M = 0.025; p < .001), thereby contradicting *H1*.
-  One possible explanation for this pattern—high levels of anti-elitism coupled with comparatively low levels of people-centric messaging among populist parties—is that these parties may primarily use their parliamentary speaking time to criticize the governing parties, rather than to construct appeals directed toward “the people.” This interpretation is further supported by the observation that, within the populist camp, the channels operated by the parliamentary factions exhibit higher average levels of anti-elitism than those managed by the federal party organizations.
+  One possible explanation for this pattern---high levels of anti-elitism coupled with comparatively low levels of people-centric messaging among populist parties---is that these parties may primarily use their parliamentary speaking time to criticize the governing parties, rather than to construct appeals directed toward "the people." This interpretation is further supported by the observation that, within the populist camp, the channels operated by the parliamentary factions (BT channels) exhibit higher average levels of anti-elitism than those managed by the federal party (DE channels) organizations.
 
   @fig:elite-over-time depicts the temporal development of anti-elitist rhetoric across YouTube videos from German political parties from 2018 to 2024.
   The analysis reveals distinct patterns between populist and non-populist parties.
   The AfD demonstrates consistently elevated levels of anti-elitist messaging throughout the observation period, with both their Bundestag and national channels frequently reaching average levels between 10-15% of sentences classified as anti-elitist per video.
   The Left party, as the other populist party in our sample, exhibits moderate but sustained anti-elitist rhetoric, maintaining levels generally higher than non-populist parties but substantially lower than the AfD.
 
-  Non-populist parties (CDU/CSU, FDP, Greens, SPD) display considerably lower baseline levels of anti-elitist content, typically remaining below 5%.
-  However, these parties show notable increases in anti-elitist rhetoric approaching the 2025 federal election, suggesting a broader intensification of political discourse.
-  This trend coincides with the dissolution of the traffic light coalition (SPD, Greens, FDP) in late 2024, following prolonged internal conflicts that culminated in the government's collapse in October and November.
-  The heightened political tensions during this period may have contributed to increased anti-establishment rhetoric across the political spectrum, as parties positioned themselves for the subsequent electoral campaign.
 
   #figure(
     image("../figures/elite_over_time.svg", width: 100%),
@@ -460,6 +456,17 @@
       Days of national elections are marked with vertical dashed lines.
     ],
   ) <fig:elite-over-time>
+
+  Non-populist parties (CDU/CSU, FDP, Greens, SPD) display considerably lower baseline levels of anti-elitist content, typically remaining below 5%.
+  However, these parties show notable increases in anti-elitist rhetoric approaching the 2025 federal election, suggesting a broader intensification of political discourse.
+
+  In mid-2024, all three parties of the governing "traffic light" coalition (SPD, Greens, and FDP) experienced a marked spike in anti-elitist rhetoric on their YouTube channels, occurring just a few months before the coalition ultimately collapsed.
+  The heightened political tensions during this period may have contributed to increased anti-establishment rhetoric across the political spectrum, as parties positioned themselves for the subsequent electoral campaign.
+  For the Greens and the FDP, this period represents an all-time high in the share of anti-elitist content ever published on their channels.
+  For the SPD, it marks the second-highest value on record, surpassed only by a surge at the end of 2023.
+  That earlier spike coincides with the ruling of the Federal Constitutional Court declaring the government’s budget draft unconstitutional, which triggered intense internal disputes---most notably over the debt brake (Schuldenbremse).
+  Around the same time, nationwide farmers' protests emerged in opposition to proposed cuts to tax subsidies for agricultural diesel.
+  This turbulent political moment also coincided with a notable rise in anti-elitist rhetoric from the CDU/CSU, then in opposition, which reached its highest level of such content in the Bundestag during the observation period.
 
   @fig:pplcentr-over-time illustrates the temporal patterns of people-centric appeals in German parties' YouTube content over the same period.
   In contrast to anti-elitist rhetoric, people-centrism shows more varied distribution across the political spectrum.

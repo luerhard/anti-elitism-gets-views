@@ -51,7 +51,7 @@ model_types <- list(
   likes_pplcentr = formula(video_likes ~ channel + log_n_sents + released_year + is_short + pplcentr)
 )
 
-quantiles <- c(0.5, 0.6, 0.7, 0.75, 0.8, 0.85, 0.9, 0.91, 0.92, 0.93, 0.94, 0.95)
+quantiles <- c(0.5, 0.6, 0.7, 0.75, 0.8, 0.85, 0.9, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99)
 
 for (model_type in names(model_types)) {
   print(paste("Starting model_type", model_type))

@@ -85,7 +85,8 @@ stages:
       md5: c65497e8d4e9577744d758f7fbde237a
       size: 4352558
   basic_descriptives:
-    cmd: papermill pipeline/05-basic_descriptives.ipynb reports/notebooks/05-basic_descriptives.ipynb
+    cmd: papermill pipeline/05-basic_descriptives.ipynb
+      reports/notebooks/05-basic_descriptives.ipynb
     deps:
     - path: data/yt_metadata/
       hash: md5
@@ -154,8 +155,8 @@ stages:
       md5: 304352cd87ec4fc60ea8fdc3427233a3
       size: 629
   nb_regression:
-    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 'html_document',
-      '../reports/notebooks/07-nb_regression.html')"
+    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd',
+      'html_document', '../reports/notebooks/07-nb_regression.html')"
     deps:
     - path: data/yt_metadata/
       hash: md5
@@ -181,7 +182,8 @@ stages:
       md5: 7c66cfc4b49248e77f07e80da9a1be6f
       size: 2099738
   comment_analysis:
-    cmd: papermill pipeline/08-comment_analysis.ipynb reports/notebooks/08-comment_analysis.ipynb
+    cmd: papermill pipeline/08-comment_analysis.ipynb
+      reports/notebooks/08-comment_analysis.ipynb
     deps:
     - path: data/raw/yt_metadata/
       hash: md5
@@ -245,7 +247,8 @@ stages:
       size: 1300907
       nfiles: 6
   top_videos:
-    cmd: papermill pipeline/07-top_videos.ipynb reports/notebooks/07-top_videos.ipynb
+    cmd: papermill pipeline/07-top_videos.ipynb
+      reports/notebooks/07-top_videos.ipynb
     deps:
     - path: data/yt_metadata/
       hash: md5
@@ -278,8 +281,8 @@ stages:
       md5: 4f388a1b02d69b9263a848ed2d159017
       size: 11976
   regressions:
-    cmd: Rscript -e "rmarkdown::render('pipeline/06-regressions.Rmd', 'html_document',
-      '../reports/notebooks/06-regressions.html')"
+    cmd: Rscript -e "rmarkdown::render('pipeline/06-regressions.Rmd',
+      'html_document', '../reports/notebooks/06-regressions.html')"
     deps:
     - path: data/yt_metadata/
       hash: md5
@@ -320,7 +323,8 @@ stages:
       md5: 75ef482bba6b74b944cbd2f5304c2a22
       size: 2726152
   build_metadata:
-    cmd: papermill pipeline/01-build_metadata.ipynb reports/notebooks/01-build_metadata.ipynb
+    cmd: papermill pipeline/01-build_metadata.ipynb
+      reports/notebooks/01-build_metadata.ipynb
     deps:
     - path: data/raw/yt/@AfDFraktionimBundestag
       hash: md5
@@ -437,7 +441,8 @@ stages:
       size: 12160013808
       nfiles: 384
   plot_regressions:
-    cmd: papermill pipeline/07-plot_regressions.ipynb reports/notebooks/07-plot_regressions.ipynb
+    cmd: papermill pipeline/07-plot_regressions.ipynb
+      reports/notebooks/07-plot_regressions.ipynb
     deps:
     - path: data/models/
       hash: md5
@@ -446,26 +451,26 @@ stages:
       nfiles: 384
     - path: pipeline/07-plot_regressions.ipynb
       hash: md5
-      md5: 1d29269dedacdae5ef29b641d18fae4c
-      size: 399897
+      md5: 9fa5bd4eaa5dfecd7c5f44ae6552d4bf
+      size: 698973
     outs:
     - path: reports/figures/reg_likes_elite.svg
       hash: md5
-      md5: 6b9779e9e42f80bbe23b5d9139d557aa
-      size: 36439
+      md5: a2d19e1cdd4f31064c2e36d52642c293
+      size: 41110
     - path: reports/figures/reg_likes_pplcentr.svg
       hash: md5
-      md5: 2f11943fdf185145102f72b96b253644
-      size: 33653
+      md5: 69e7812d90f071e8b276356aaf4f9a68
+      size: 37002
     - path: reports/figures/reg_views_elite.svg
       hash: md5
-      md5: a16b9bb5f6b63a669c5dde1ae188e5c0
-      size: 34768
+      md5: 4495a59939a62bb69dab296a5c1638af
+      size: 38451
     - path: reports/figures/reg_views_pplcentr.svg
       hash: md5
-      md5: 4268bb0bb0c2a275c5111e576c27e03d
-      size: 36492
+      md5: ddd22820d472e88c08d87f9bc3d23305
+      size: 39802
     - path: reports/notebooks/07-plot_regressions.ipynb
       hash: md5
-      md5: b6005209f3a192a4b0afd44278701c2c
-      size: 472375
+      md5: cddeb7d230a3cdc175f4c3c7528e2b54
+      size: 722954

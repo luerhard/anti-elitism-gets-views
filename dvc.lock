@@ -95,8 +95,8 @@ stages:
       nfiles: 7
     - path: pipeline/05-basic_descriptives.ipynb
       hash: md5
-      md5: 67f00d9087d1a95d163fca872d9fa325
-      size: 396416
+      md5: 373db99e7ce6e5cbceb510af75d5b8bb
+      size: 396448
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -104,20 +104,20 @@ stages:
     outs:
     - path: reports/figures/elite_over_time.svg
       hash: md5
-      md5: bfc28126bb0a76b44845c90f04b4d747
-      size: 63092
+      md5: 698de6474be3ad9baceea19e2edb0ef1
+      size: 63081
     - path: reports/figures/populism_per_party.svg
       hash: md5
-      md5: 45a74e8d04eede3bad877007cf798cbc
-      size: 31832
+      md5: 878b061f2eba5ef7cdce8b2c0d44e7ca
+      size: 32029
     - path: reports/figures/pplcentr_over_time.svg
       hash: md5
-      md5: 1103087907bedf687aa6460d045f2cc7
-      size: 58819
+      md5: ce8a4d12118349e9413ed0c4dd48fbc9
+      size: 58808
     - path: reports/figures/view_count.svg
       hash: md5
-      md5: 5be89c9e3664990781624cf155878286
-      size: 546673
+      md5: 9ced0d0d1412de8fc5728f851fcb2f30
+      size: 546924
     - path: reports/manuscript/inlines/n_broken.txt
       hash: md5
       md5: a8baa56554f96369ab93e4f3bb068c22
@@ -136,8 +136,8 @@ stages:
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: 38d530857618c86abfc6aa122e784d9a
-      size: 412502
+      md5: 1b9dd408ff03ea8bfbc0d51298a62020
+      size: 333474
     - path: reports/tables/channel_descriptives.csv
       hash: md5
       md5: c43a2f7a809e4f39347c92062c8f0f97
@@ -474,3 +474,28 @@ stages:
       hash: md5
       md5: cddeb7d230a3cdc175f4c3c7528e2b54
       size: 722954
+  bayes_r2_simulation:
+    cmd: papermill pipeline/08-bayes_r2_synthetic_test.ipynb
+      reports/notebooks/08-bayes_r2_synthetic_test.ipynb
+    deps:
+    - path: pipeline/08-bayes_r2_synthetic_test.ipynb
+      hash: md5
+      md5: 09a1f5d82bfbaff0992f78a8c0f58ed6
+      size: 129843
+    outs:
+    - path: reports/figures/bayes_r2_synthetic.svg
+      hash: md5
+      md5: efd1253e6160c586fc73ee89d6002211
+      size: 6021
+    - path: reports/figures/bayes_r2_synthetic_coefficients.svg
+      hash: md5
+      md5: 54e3b48111f78b3ed576c80bb9138e19
+      size: 20221
+    - path: reports/notebooks/08-bayes_r2_synthetic_test.ipynb
+      hash: md5
+      md5: 72d2da470301d8febb31eda37d8dd7c0
+      size: 144344
+    - path: reports/tables/synthetic_correlation_matrix.csv
+      hash: md5
+      md5: e96427b3171657211aa8f1fb2977cac7
+      size: 120

@@ -32,6 +32,7 @@ stages:
     outs:
     - data/interim/transcripts/v3_large_turbo.parquet:
         persist: true
+
   tokenize_transcripts:
     cmd: python pipeline/03-tokenize_transcripts.py
     deps:
@@ -43,6 +44,7 @@ stages:
         persist: true
     - data/yt_metadata/broken_transcripts.parquet:
         persist: true
+
   run_popbert:
     cmd: python pipeline/04-run_popbert.py
     deps:
@@ -52,6 +54,7 @@ stages:
     outs:
     - data/yt_metadata/popbert.parquet:
         persist: true
+
   basic_descriptives:
     cmd: papermill pipeline/05-basic_descriptives.ipynb reports/notebooks/05-basic_descriptives.ipynb
     deps:
@@ -72,6 +75,7 @@ stages:
     - reports/manuscript/inlines/n_sents.txt
     - reports/manuscript/inlines/n_videos.txt
     - reports/manuscript/inlines/sum_duration.txt
+
   run_regressions:
     cmd: Rscript pipeline/06-run_regressions.R
     deps:
@@ -80,6 +84,7 @@ stages:
     - pipeline/06-run_regressions.R
     outs:
     - data/models/
+
   plot_regressions:
     cmd: papermill pipeline/07-plot_regressions.ipynb reports/notebooks/07-plot_regressions.ipynb
     deps:
@@ -91,6 +96,7 @@ stages:
     - reports/figures/reg_likes_elite.svg
     - reports/figures/reg_likes_pplcentr.svg
     - reports/notebooks/07-plot_regressions.ipynb
+
   top_videos:
     cmd: papermill pipeline/07-top_videos.ipynb reports/notebooks/07-top_videos.ipynb
     deps:
@@ -102,3 +108,13 @@ stages:
     - reports/tables/most_liked_videos_per_channel.csv
     - reports/tables/most_viewed_videos_per_channel.csv
     - reports/tables/most_antielitism_videos_per_channel.csv
+
+  bayes_r2_simulation:
+    cmd: papermill pipeline/08-bayes_r2_synthetic_test.ipynb reports/notebooks/08-bayes_r2_synthetic_test.ipynb
+    deps:
+    - pipeline/08-bayes_r2_synthetic_test.ipynb
+    outs:
+    - reports/notebooks/08-bayes_r2_synthetic_test.ipynb
+    - reports/figures/bayes_r2_synthetic.svg
+    - reports/figures/bayes_r2_synthetic_coefficients.svg
+    - reports/tables/synthetic_correlation_matrix.csv

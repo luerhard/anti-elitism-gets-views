@@ -76,7 +76,7 @@
       table.hline(),
     )
   ],
-  caption: [Number of Videos per channel.],
+  caption: [Followers per channel.],
 )
 
 
@@ -138,21 +138,64 @@
 
 = Regressions Results on Number of Likes <ap:reg_on_likes>
 
-// #figure(
-//   image("../figures/reg_likes_elite.svg", width: 100%),
-//   // placement: auto,
-//   caption: [
-//     Regression of Anti-Elitism on Number of Likes per video. A separate regression is run for each channel.
-//   ],
-// ) <fig:likes_elite>
+#figure(
+  image("../figures/reg_likes_elite.svg", width: 100%),
+  // placement: auto,
+  caption: [
+    Regression of Anti-Elitism on Number of Likes per video. A separate regression is run for each channel.
+  ],
+) <fig:likes_elite>
 
-// #figure(
-//   image("../figures/reg_likes_pplcentr.svg", width: 100%),
-//   // placement: auto,
-//   caption: [
-//     Regression of People-Centrism on Number of Likes per video. A separate regression is run for each channel.
-//   ],
-// ) <fig:likes_pplcentr>
+#figure(
+  image("../figures/reg_likes_pplcentr.svg", width: 100%),
+  // placement: auto,
+  caption: [
+    Regression of People-Centrism on Number of Likes per video. A separate regression is run for each channel.
+  ],
+) <fig:likes_pplcentr>
+
+= Simulation study Bayesian $R^2$ <ap:sim_bayes_r2>
+
+TODO: DESCRIBE SIMULATION IN MORE DETAIL
+
+#let table_array = csv("../tables/synthetic_correlation_matrix.csv", row-type: array)
+#let header = table_array.first()
+#let table_content = table_array.slice(1)
+
+#figure(
+  kind: table,
+  context [
+    #set text(size: 0.85em)
+    #table(
+      columns: (2.5cm, 2.5cm, 2.5cm, 2.5cm, 2.5cm),
+      // align: (left, right, right, right, right),
+      inset: 4pt,
+      stroke: none,
+      table.hline(),
+      table.header(..header),
+      table.hline(),
+      ..table_content.flatten(),
+      table.hline(),
+    )
+  ],
+  caption: [Correlation matrix for variables underlying the simulation study.],
+)<tbl:bayes_r2_cor_mat>
+
+#figure(
+  image("../figures/bayes_r2_synthetic_coefficients.svg", width: 80%),
+  // placement: auto,
+  caption: [
+    Coefficients of quantile regressions with synthetic data.
+  ],
+) <fig:bayes_r2_coefficients>
+
+#figure(
+  image("../figures/bayes_r2_synthetic.svg", width: 80%),
+  // placement: auto,
+  caption: [
+    Bayesian $R^2$ for quantile regressions with synthetic data.
+  ],
+) <fig:bayes_r2>
 
 = Top 10 most viewed video per channel <ap:most_viewed>
 

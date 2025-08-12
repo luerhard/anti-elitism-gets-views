@@ -412,7 +412,7 @@
   // This picture becomes even clearer when looking at the number of likes.
   // While no other party reaches a median like count of 100---the Left achieves the highest count with 86---the AfD reaches 1,808 with AfD BT and as much as 2,233 with AfD TV.
 
-  == Populism by German Parties on YouTube
+  == Populism by German Parties on YouTube <sec:populism-on-yt>
 
   @fig:populism_dimensions shows the relative proportion of sentences classified by PopBERT as anti-elitist and people-centrist for each video.
   It becomes immediately apparent that both AfD channels contain a significantly higher share of anti-elitist statements than the channels of any other party.
@@ -494,119 +494,112 @@
 
   == Populism and Popularity <populism-and-popularity>
 
-  In this section, we use views as the primary dependent variable, while the corresponding results for likes are reported in the appendix.
-  Using likes as a proxy for user engagement presents two major issues in our dataset.
-  First, a substantial number of videos received very few likes, making this metric an unreliable indicator of engagement.
-  Second, the like functionality is disabled on all videos from two channels---CSU BT and FDP DE---which would require excluding these channels entirely from the analysis.
+  We now turn to the relationship between the amount of populist rhetoric in a video—operationalized through the share of anti-elitist and people-centric statements—and its popularity on YouTube. In the following, we focus on the number of views as the primary dependent variable; results for likes, which show highly similar patterns, are reported in @ap:reg_on_likes.#footnote[The results here are shown for the number of views as the dependent variable; results for the number of likes on the same data are shown in @ap:reg_on_likes.]
 
-  To analyze the relationship between populism and popularity, we use Bayesian quantile regressions.
-  This approach allows us to investigate how the relationship between populist dimensions and user engagement varies across different quantiles of the dependent variable.
-  For each of the six parties, we estimate 12 quantile models for each of the two populist dimensions, resulting in a total of 144 regression models.
-  In all models, we assume an asymmetric Laplace distribution for the dependent variable, defined as the logged number of views per video.
+  === Quantile Regressions
+
+  To capture potential heterogeneity across the distribution of video popularity, we employ Bayesian quantile regressions.
+  This approach allows us to estimate how the association between populist dimensions and engagement varies between relatively unsuccessful videos and those at the very top of the distribution.
+  For each of the six parties, we estimate 16 quantile models per populist dimension, resulting in a total of 192 quantile regressions.
+  All models use the number of views per video as the dependent variable, standardized within channel and year to control for time- and party-specific baselines.
+  In all models, we assume an asymmetric Laplace distribution for the dependent variable.
   We use weakly informative priors: N(0,15) for the intercept, N(0,2) for the coefficients, and Cauchy(0,2) for the sigma parameter.
   These priors reflect a conservative modeling approach, assuming no prior relationship by centering all distributions around zero.
+  #mnote[describe control IVs where?]
+
+  // We control for the year of a video's release, the number of sentences in the video's transcript.
+  // #mnote[das in data-section]
+  // Additionally, we control for short vs. long videos and add an interaction effect between the core populist dimension and the is_short variable to allow for different effects in short vs. long videos.
+  // This is especially important since the populist dimension is measured as a _percentage of sentences that contain the populist dimension_ which might express something different in a video with very few sentences vs a video with many sentences.
 
   #figure(
     image("../figures/reg_views_elite.svg", width: 100%),
     // placement: auto,
     caption: [
-      Coefficients of anti-elitism on views by tau for tau values $[.5, .95]$.
-      A separate regression is run for each channel.
-
+      Coefficients of anti-elitism on views by tau for tau values $[.50, .99]$.
+      Separate regressions are run for each channel.
+      The solid black lines depict the Bayesian $R^2$ at each quantile and are associated with the right y-axis labels.
+      The colored lines depict the coefficient size at the specific quantile for each party.
+      The ribbons enclosed in dashed lines depict the 95% Credible Interval.
+      Coefficients are associated with the left y-axis labels.
+      To enhance readability of small values, all axes are transformed using a pseudo log transformation with $sigma = 3.7$.
     ],
   ) <fig:views_elite>
 
-  Coefficients for the AfD, CDU/CSU, the Left, and the SPD are consistently positive across all tau values.
-  For these parties, we observe a positive relationship between the proportion of anti-elitist messages in a video and its number of views.
-  For the CDU/CSU and the Left, the coefficient increases monotonically with higher tau values.
-  This suggests that anti-elitist messaging is particularly relevant for the most successful (i.e., viral) videos, which attract a disproportionate share of views and may exert greater influence on audience attitudes.
-  For the AfD, we observe a slight decline in the coefficient starting at a tau value of approximately 0.8.
-  Despite this decline, the relationship remains strong across all tau values, indicating that while anti-elitist rhetoric significantly contributes to the success of AfD videos, other factors may play a more prominent role in the top 20% of videos.
-  The SPD also shows a consistently positive coefficient, though the relationship is weaker compared to the parties mentioned above.
-  Finally, we find little to no relationship between anti-elitist messaging and user engagement for the Greens and the FDP.
+
+  The results for anti-elitism as the populist dimension of interest are depicted in @fig:views_elite.
+  Across all parties, we find no or only negligible effects of anti-elitism at the lower quantiles of the view distribution.
+  In other words, for less popular videos, the amount of anti-elitist content appears to have little systematic influence on viewership.
+  However, the picture changes markedly in the upper quantiles: for all parties except the FDP, coefficients for anti-elitism increase sharply and almost exponentially toward the top end of the distribution.
+  This pronounced non-linearity in the effects provides strong justification for the use of quantile regression over conventional mean-based methods, which would obscure such patterns.
+  The substantive size of the effects at high quantiles is considerable.
+  For example, a coefficient of 10 implies that a 1 percentage point increase in anti-elitist content predicts an additional 0.1 standard deviations of views compared to other videos from the same channel in the same year.
+  These effects are accompanied by substantial increases in explanatory power: the Bayesian $R^2$ rises steeply with higher quantiles, reaching values around 0.40–0.45 for all parties in the upper tail of the distribution.
+  #footnote[To ensure that these high $R^2$ values are not statistical artifacts, we ran a small simulation study showing that these increases are in fact not artifacts. The results can be found in @ap:sim_bayes_r2.].
+
+  The FDP represents a notable outlier in this pattern.
+  Here, high levels of anti-elitism are associated with negative effects on views at the top quantiles, while the models explain a comparable share of variance to those of other parties.
+  Given the standardization within channel and year, this explained variance is primarily attributable to differences in the independent variables---most prominently anti-elitism---rather than to structural differences in baseline popularity.
 
   #figure(
     image("../figures/reg_views_pplcentr.svg", width: 100%),
     // placement: auto,
     caption: [
-      Regression of People-Centrism on Number of Views per video. A separate regression is run for each channel.
+      Coefficients of people-centrism on views by tau for tau values $[.50, .99]$.
+      Separate regressions are run for each channel.
+      The solid black lines depict the Bayesian $R^2$ at each quantile and are associated with the right y-axis labels.
+      The colored lines depict the coefficient size at the specific quantile for each party.
+      The ribbons enclosed in dashed lines depict the 95% Credible Interval.
+      Coefficients are associated with the left y-axis labels.
+      To enhance readability of small values, all axes are transformed using a pseudo log transformation with $sigma = 3.7$.
 
     ],
   ) <fig:views_pplcentr>
 
-
-  The coefficients for people-centrism present a somewhat similar pattern, although they are generally much smaller in magnitude.
-  We find a consistent positive effect for the AfD, with a slight increase in coefficient values for tau levels above 0.7 compared to those between 0.5 and 0.7.
-  For the CDU/CSU and the Left, coefficients remain positive up to tau values of approximately 0.8; beyond this point, they are no longer significantly different from zero.
-  For the Greens, FDP, and SPD, there is no consistent evidence that people-centrism is associated with user engagement, with a few exceptions observed at the upper end of the distribution for the FDP and the lower end for the SPD.
-
-  - we see some indication for non-linearity in the relationships between engagement and popoulist dimensions, when predicting different levels of engagement.
+  The results for people-centrism, depicted in @fig:views_pplcentr,are markedly weaker and more heterogeneuous than for anti-elitism.
+  Coefficients are generally indistinguishable from zero through the lower and mid‑quantiles, with only modest movement until the upper tail.
+  Near the top decile, some parties exhibit small positive effects, while others show null or even negative high‑quantile coefficients; overall magnitudes remain below those observed for anti‑elitism.
+  These results align with the descriptive evidence that people‑centrism is less pronounced and more evenly distributed across parties than anti‑elitist rhetoric (cf. @sec:populism-on-yt), and they reinforce our conclusion that anti‑elitism---not people‑centrism---drives the non‑linear engagement gains at the top of the view distribution.
 
 
-    // To analyze the relationship between populism and popularity we use Ordinary Least Squares (OLS) regressions and regress each populism dimensions separately on user engagement.
-    // As mentioned in @youtube-as-a-research-platform, we define user engagement as either like count or view count, assuming that both variables measure a slightly different level of engagement.
-    // #mnote[kurz begründen warum mixed regs keine gute option sind? ]
-    // #footnote[
-    //   The results here are shown for the number of views as the dependent variable, results for the number of likes on the same data are shown in @ap:reg_on_likes.
-    // ]
+  To summarize with respect to *H2a*, we find partial support: anti-elitist content is strongly and positively associated with views for both populist parties, but only in the upper tail of the distribution.
+  For the AfD, coefficients rise consistently across high quantiles, whereas for the Left the effects are smaller and become credibly positive only from about $tau ≈ 0.90$ onward.
+  For people-centrism, the AfD again conforms to H2a with positive effects emerging only at very high quantiles; by contrast, estimates for the Left are unstable—briefly dipping below zero—and become credibly positive only at $tau ≈ 0.99$.
+  Contrary to *H2b*, the non-populist parties exhibit broadly analogous patterns (near-zero effects at lower quantiles and steep increases at the top), with the notable exception of the FDP, whose anti-elitism coefficients turn negative at the very highest quantiles.
 
-    // Because the channels have vastly different amounts of contained populism per video, number of videos, views, and likes, we employ separate regressions per channel and compare the effect sizes.
-    // Each regression is thus run on videos from a single channel, and on either the logged number of likes or logged number of views.
-    // To ensure comparability of the effects, we additionally standardize (z-transform) the dependent variable as well as the populist dimension for each regression within each channel.
-    // Although it is important to bear this in mind during the interpretation of the results, we believe that we can achieve a better comparison between the effects.
-    // That way, we are able to investigate if videos that are more populist compared to other content of the same channel accumulates more popularity, again compared to videos of the same channel.
-    // In doing so, we explicitly express the belief that people watch and compare content from within the same channel when deciding about their engagement but not necessarily between channels.
+  === Hurdle Models
 
-    // We control for the year of a video's release, the number of sentences in the video's transcript.
-    // #mnote[das in data-section]
-    // Additionally, we control for short vs. long videos and add an interaction effect between the core populist dimension and the is_short variable to allow for different effects in short vs. long videos.
-    // This is especially important since the populist dimension is measured as a _percentage of sentences that contain the populist dimension_ which might express something different in a video with very few sentences vs a video with many sentences.
+  Two plausible interpretations of these findings emerge from the coefficient patterns:
+  1) *selection into successful videos*: while anti-elitism may not significantly boost engagement for most content, it could contribute to a video’s chances of becoming "very successful" relative to others from the same channel and year.
+  In this scenario, anti-elitist rhetoric functions as a factor increasing the probability of virality.
+  2) *marginal boost within already popular videos*: anti-elitism may have only minimal effects on the majority of videos but may enhance engagement for videos that are already performing well.
+  Both mechanisms would produce the coefficient trajectories observed in our results.
+  To explore these explanations further, we estimate hurdle models defining the top 10% of videos as "very successful" and separating the effects on the likelihood of entering this category from those on view counts within it.
+  This approach allows us to disentangle whether anti-elitism's influence operates mainly through selection into the top-performing segment or through amplification within it.
 
-    // @fig:views_elite depicts the average marginal effects of the anti-elitism dimension on the number of likes for each channel.
-    // The range for the x-axis for each channel is bounded by the interval $[-2, 2]$ standard deviations, with impossible values (anti-elitism values that are lower that zero) removed.
-    // #mnote[einfach [0: 2 x SD]?]
-    // The x-axis is then back-transformed to its original values to show the actual percentage values of the populist dimension for each prediction.
-    // The red dashed lines indicates the expected trajectory of the effect if there were no relationship between anti-elitism and view count.
-    // The confidence intervals give an indication on how much data points are available for the respective values with large intervals indicating a few videos actually exhibiting this amount of anti-elitism.
 
-    // @fig:views_pplcentr illustrates the relationship between people-centric content and view count.
-    // The analysis yields a less clear-cut picture than observed with anti-elitist content.
-    // While a consistent trend is recognizable for long-form content on both AfD channels, and the Left's channel short-form videos on the AfD TV channel do not show the same relationship.
-    // For all channels the x-axis' upper limit which indicates values for +2 standard deviations of the people-centric content, is quite low for all channels, and the large confidence intervals for long form content on CDU and CSU show how sparse and/or varying the data is for values above 5%.
+  = Discussion <discussion>
 
-    // Regarding *H2a* stating that on channels of populist parties, we expect a positive relationship between a video's amount of contained populism and it's user engagement, we therefore find partial support on both dimensions.
-    // We can observe a clear positive relationship for the video's amount of populism and its view count for the AfD's channels long videos.
-    // Additionally we see an increase in expected view count for the Left but only for long videos.
-    // While the amount of populist content in neither dimension seems to have an effect on user engagement for short videos in the Left's channel, the effect for all other types of videos from populists parties' channels is clearly positive.
+  #mnote[start mit substantial claim?]
+  This study shows the use of advanced speech recognition technology to analyze YouTube content.
+  By combining OpenAI's whisper-large-v3-turbo with Silero voice activity detection, high-quality transcripts were used to analyze populist content on the official German parties' YouTube channels.
+  It demonstrates that populist parties in Germany—most notably the AfD—are significantly more successful on YouTube than their non-populist counterparts.
+  They not only attract larger audiences but also disseminate a substantially higher volume of populist content.
+  This underscores the strategic advantage that populist actors hold on video-based platforms, where emotionally charged and confrontational messaging can gain visibility and engagement.
 
-    // The analysis of viewer engagement across non-populist party channels (CDU, CSU, FDP, Greens, SPD) provides only limited support for *H2b*.
-    // No consistent or significant positive relationship is observed for some parties and video types, particularly for the channels of the FDP and the Greens.
-    // On the other hand, some effects---such as the influence of anti-elitism in the SPD and CDU channels---show a clear positive relationship.
-    // However, the very limited range on the x-axis and the wide confidence intervals for higher values of anti-elitism and people-centrism suggest that these findings are based on only a few data points and/or reflect substantial variability, especially compared to the results for the populist parties' channels.
-    // The large confidence intervals and the low prevalence of populist content in non-populist channels further underscore the limited role that populist rhetoric plays in driving engagement outside of explicitly populist party ecosystems.
+  Importantly, the two core dimensions of populism—anti-elitism and people-centrism—differ both in their prevalence and in their relationship to user engagement.
+  Anti-elitist content is especially prominent on populist channels and is positively associated with viewer engagement, not only for populist parties but in some cases also for non-populist ones.
+  This suggests that anti-elitism may tap into broader affective dynamics on social media, such as a preference for polarizing or dramatic content.
+  Whether this effect reflects genuine user interest in anti-elite narratives or is amplified by platform features like algorithmic curation and clickbait-style presentation remains an open question.
 
-    = Discussion <discussion>
+  The limited effectiveness of people-centric content, particularly on the AfD TV channel and in short videos on the Left's channel, raises further questions about the content strategy and thematic focus of short-form video.
+  Since these formats may differ considerably in tone and purpose from longer videos and between channels, a closer analysis of the content itself is needed to understand these patterns.
+  It is also possible that limitations in the detection of people-centric language, as observed with the PopBERT model, have contributed to the observed discrepancies.
+  Still, assuming no systematic bias, the results support the analytical value of examining anti-elitism and people-centrism separately.
 
-    #mnote[start mit substantial claim?]
-    This study shows the use of advanced speech recognition technology to analyze YouTube content.
-    By combining OpenAI's whisper-large-v3-turbo with Silero voice activity detection, high-quality transcripts were used to analyze populist content on the official German parties' YouTube channels.
-    It demonstrates that populist parties in Germany—most notably the AfD—are significantly more successful on YouTube than their non-populist counterparts.
-    They not only attract larger audiences but also disseminate a substantially higher volume of populist content.
-    This underscores the strategic advantage that populist actors hold on video-based platforms, where emotionally charged and confrontational messaging can gain visibility and engagement.
-
-    Importantly, the two core dimensions of populism—anti-elitism and people-centrism—differ both in their prevalence and in their relationship to user engagement.
-    Anti-elitist content is especially prominent on populist channels and is positively associated with viewer engagement, not only for populist parties but in some cases also for non-populist ones.
-    This suggests that anti-elitism may tap into broader affective dynamics on social media, such as a preference for polarizing or dramatic content.
-    Whether this effect reflects genuine user interest in anti-elite narratives or is amplified by platform features like algorithmic curation and clickbait-style presentation remains an open question.
-
-    The limited effectiveness of people-centric content, particularly on the AfD TV channel and in short videos on the Left's channel, raises further questions about the content strategy and thematic focus of short-form video.
-    Since these formats may differ considerably in tone and purpose from longer videos and between channels, a closer analysis of the content itself is needed to understand these patterns.
-    It is also possible that limitations in the detection of people-centric language, as observed with the PopBERT model, have contributed to the observed discrepancies.
-    Still, assuming no systematic bias, the results support the analytical value of examining anti-elitism and people-centrism separately.
-
-    Taken together, these findings suggest that anti-elitist rhetoric plays a central role in driving engagement on YouTube, particularly within the context of right-wing populism.
-    They also highlight the platform's potential to reinforce populist dynamics through its attention economy.
-    Future research should expand on this by integrating multimodal analysis, user behavior data, and qualitative assessments of video content, in order to better understand the interplay between message, medium, and audience response.
+  Taken together, these findings suggest that anti-elitist rhetoric plays a central role in driving engagement on YouTube, particularly within the context of right-wing populism.
+  They also highlight the platform's potential to reinforce populist dynamics through its attention economy.
+  Future research should expand on this by integrating multimodal analysis, user behavior data, and qualitative assessments of video content, in order to better understand the interplay between message, medium, and audience response.
 
 ])
 #pagebreak()

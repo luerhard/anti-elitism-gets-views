@@ -83,7 +83,10 @@ stages:
     - src/load/load.py
     - pipeline/06-run_regressions.R
     outs:
-    - data/models/
+    - data/models/likes_elite
+    - data/models/likes_pplcentr
+    - data/models/views_elite
+    - data/models/views_pplcentr
 
   plot_regressions:
     cmd: papermill pipeline/07-plot_regressions.ipynb reports/notebooks/07-plot_regressions.ipynb

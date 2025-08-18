@@ -435,11 +435,26 @@ stages:
       md5: 6f91bfdab6242414a00e506acfc46cbd
       size: 4813
     outs:
-    - path: data/models/
+    - path: data/models/likes_elite
       hash: md5
-      md5: 035021b75d2ddf351886c47ea6fa4fee.dir
-      size: 12160013808
-      nfiles: 384
+      md5: a6c2a763a5f6d8bbb3a627d5d1878b97.dir
+      size: 3201496641
+      nfiles: 96
+    - path: data/models/likes_pplcentr
+      hash: md5
+      md5: 93ad640b40a29d0020ac79b61e0ac903.dir
+      size: 3005007761
+      nfiles: 96
+    - path: data/models/views_elite
+      hash: md5
+      md5: c0ee98f8f57a38ab7fc4980e9b3f7daf.dir
+      size: 2812300677
+      nfiles: 96
+    - path: data/models/views_pplcentr
+      hash: md5
+      md5: c06b18d221e3763a3c80e2d52924ff9f.dir
+      size: 3141208729
+      nfiles: 96
   plot_regressions:
     cmd: papermill pipeline/07-plot_regressions.ipynb
       reports/notebooks/07-plot_regressions.ipynb

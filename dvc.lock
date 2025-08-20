@@ -562,14 +562,14 @@ stages:
       nfiles: 12
     - path: pipeline/10-plot_hurdle_models.ipynb
       hash: md5
-      md5: de7fa9dfd32994502f41092bea7f29f9
-      size: 99197
+      md5: d657b2e86a759ab19bfbb64e95914594
+      size: 103126
     outs:
     - path: reports/figures/hurdle_model_coefficients.svg
       hash: md5
-      md5: 6c5fa1bf9ef7f68bba712006937561d1
-      size: 367368
+      md5: 0dfa4370bdc50089f1a903709739422c
+      size: 368907
     - path: reports/notebooks/10-plot_hurdle_models.ipynb
       hash: md5
-      md5: 60babb377fce243dd3b007af5764cf9f
-      size: 104176
+      md5: 6755f1a626cc740f4a4aaeba8c47015c
+      size: 108212

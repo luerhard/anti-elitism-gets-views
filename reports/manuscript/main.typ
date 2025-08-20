@@ -581,10 +581,9 @@
   #figure(
     image("../figures/hurdle_model_coefficients.svg", width: 100%),
     caption: [
-      This plot shows the coefficients for Anti-Elitism and People-Centrism in the hurdle negative binomial models.
-      The left columns indicates the hurdle parts where coefficients positive coefficients indicate a positive relationship to a structural zero, meaning that negative coefficients in this columns indicate that the variable contributes to the probability of a video being in the top 10% of videos.
-      The right column shows the coefficients for the same variable but for the negative binomial part.
-      Here, positive coefficients indicate a positive relationship between the variable and the videos' view counts.
+      This plot displays coefficients for Anti-Elitism and People-Centrism from hurdle negative binomial models.
+      Left panels show hurdle component coefficients, where negative values indicate increased probability of a video reaching the top 10% performance tier within its channel-year.
+      Right panels show negative binomial component coefficients, where positive values indicate higher view counts among videos already in the top 10%.
     ],
   ) <fig:hurdle_models>
 

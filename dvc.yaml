@@ -91,7 +91,10 @@ stages:
   plot_regressions:
     cmd: papermill pipeline/07-plot_regressions.ipynb reports/notebooks/07-plot_regressions.ipynb
     deps:
-    - data/models/
+    - data/models/likes_elite
+    - data/models/likes_pplcentr
+    - data/models/views_elite
+    - data/models/views_pplcentr
     - pipeline/07-plot_regressions.ipynb
     outs:
     - reports/figures/reg_views_elite.svg
@@ -121,3 +124,21 @@ stages:
     - reports/figures/bayes_r2_synthetic.svg
     - reports/figures/bayes_r2_synthetic_coefficients.svg
     - reports/tables/synthetic_correlation_matrix.csv
+
+  run_hurdle_models:
+    cmd: Rscript pipeline/09-run_hurdle_models.R
+    deps:
+    - data/yt_metadata/
+    - src/load/load.py
+    - pipeline/09-run_hurdle_models.R
+    outs:
+    - data/models/hurdle/
+
+  plot_hurdle_models:
+    cmd: papermill pipeline/10-plot_hurdle_models.ipynb reports/notebooks/10-plot_hurdle_models.ipynb
+    deps:
+    - data/models/hurdle
+    - pipeline/10-plot_hurdle_models.ipynb
+    outs:
+    - reports/figures/hurdle_model_coefficients.svg
+    - reports/notebooks/10-plot_hurdle_models.ipynb

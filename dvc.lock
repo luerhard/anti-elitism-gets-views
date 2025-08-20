@@ -459,11 +459,26 @@ stages:
     cmd: papermill pipeline/07-plot_regressions.ipynb
       reports/notebooks/07-plot_regressions.ipynb
     deps:
-    - path: data/models/
+    - path: data/models/likes_elite
       hash: md5
-      md5: 035021b75d2ddf351886c47ea6fa4fee.dir
-      size: 12160013808
-      nfiles: 384
+      md5: a6c2a763a5f6d8bbb3a627d5d1878b97.dir
+      size: 3201496641
+      nfiles: 96
+    - path: data/models/likes_pplcentr
+      hash: md5
+      md5: 93ad640b40a29d0020ac79b61e0ac903.dir
+      size: 3005007761
+      nfiles: 96
+    - path: data/models/views_elite
+      hash: md5
+      md5: c0ee98f8f57a38ab7fc4980e9b3f7daf.dir
+      size: 2812300677
+      nfiles: 96
+    - path: data/models/views_pplcentr
+      hash: md5
+      md5: c06b18d221e3763a3c80e2d52924ff9f.dir
+      size: 3141208729
+      nfiles: 96
     - path: pipeline/07-plot_regressions.ipynb
       hash: md5
       md5: 9fa5bd4eaa5dfecd7c5f44ae6552d4bf
@@ -514,3 +529,47 @@ stages:
       hash: md5
       md5: e96427b3171657211aa8f1fb2977cac7
       size: 120
+  run_hurdle_models:
+    cmd: Rscript pipeline/09-run_hurdle_models.R
+    deps:
+    - path: data/yt_metadata/
+      hash: md5
+      md5: f5fa784e5cff54c11671f90d06127a36.dir
+      size: 92469404
+      nfiles: 7
+    - path: pipeline/09-run_hurdle_models.R
+      hash: md5
+      md5: bcf8b7bc64712e84820829f62fa86c15
+      size: 2639
+    - path: src/load/load.py
+      hash: md5
+      md5: 6f91bfdab6242414a00e506acfc46cbd
+      size: 4813
+    outs:
+    - path: data/models/hurdle/
+      hash: md5
+      md5: bd169ccea695862213214eecf34f4b99.dir
+      size: 368126830
+      nfiles: 12
+  plot_hurdle_models:
+    cmd: papermill pipeline/10-plot_hurdle_models.ipynb
+      reports/notebooks/10-plot_hurdle_models.ipynb
+    deps:
+    - path: data/models/hurdle
+      hash: md5
+      md5: bd169ccea695862213214eecf34f4b99.dir
+      size: 368126830
+      nfiles: 12
+    - path: pipeline/10-plot_hurdle_models.ipynb
+      hash: md5
+      md5: f15d0af0147d0a8063995f423c08fd98
+      size: 79230
+    outs:
+    - path: reports/figures/hurdle_model_coefficients.svg
+      hash: md5
+      md5: 7ec5bb1d11e36750738621212f07aebb
+      size: 363945
+    - path: reports/notebooks/10-plot_hurdle_models.ipynb
+      hash: md5
+      md5: 8be80cf2f78f306c13830287976746af
+      size: 106120

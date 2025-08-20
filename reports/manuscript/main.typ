@@ -569,37 +569,67 @@
 
   === Hurdle Models
 
-  Two plausible interpretations of these findings emerge from the coefficient patterns:
-  1) *selection into successful videos*: while anti-elitism may not significantly boost engagement for most content, it could contribute to a video’s chances of becoming "very successful" relative to others from the same channel and year.
-  In this scenario, anti-elitist rhetoric functions as a factor increasing the probability of virality.
-  2) *marginal boost within already popular videos*: anti-elitism may have only minimal effects on the majority of videos but may enhance engagement for videos that are already performing well.
-  Both mechanisms would produce the coefficient trajectories observed in our results.
-  To explore these explanations further, we estimate hurdle models defining the top 10% of videos as "very successful" and separating the effects on the likelihood of entering this category from those on view counts within it.
-  This approach allows us to disentangle whether anti-elitism's influence operates mainly through selection into the top-performing segment or through amplification within it.
+  The coefficient patterns observed suggest two potential mechanisms through which anti-elitism influences video performance: (1) selection into high-performing content: anti-elitist rhetoric increases the probability of a video entering the top performance tier, or (2) conditional amplification: anti-elitism enhances engagement only among videos that already achieve substantial viewership.
 
+  To distinguish between these mechanisms, we estimate hurdle models that separate the probability of a video reaching the top 10% of channel-year performance from the magnitude of engagement within this elite tier.
+  We define "very successful" videos as those in the top decile of view counts within each channel-year combination, setting all remaining video view counts to zero.
+  This approach creates a two-stage process: a logistic hurdle component modeling selection into the top 10%, and a negative binomial component modeling view counts conditional on top-tier performance.
+  We estimate separate models for each populist dimension and party using the same covariates as in the main analysis.
+  Prior specifications include N(0,2) for negative binomial coefficients, N(0,4) for hurdle coefficients, N(qlogis(0.9), 0.5) for the hurdle intercept (reflecting the expected 90% zero-inflation), and N(log(mean_nonzero_views), 2) for the negative binomial intercept.
+  Models converged within 4000 iterations (2000 warmup).
+
+  #figure(
+    image("../figures/hurdle_model_coefficients.svg", width: 100%),
+    caption: [
+      This plot shows the coefficients for Anti-Elitism and People-Centrism in the hurdle negative binomial models.
+      The left columns indicates the hurdle parts where coefficients positive coefficients indicate a positive relationship to a structural zero, meaning that negative coefficients in this columns indicate that the variable contributes to the probability of a video being in the top 10% of videos.
+      The right column shows the coefficients for the same variable but for the negative binomial part.
+      Here, positive coefficients indicate a positive relationship between the variable and the videos' view counts.
+    ],
+  ) <fig:hurdle_models>
+
+  @fig:hurdle_models presents results for both populist dimensions.
+  In the hurdle component (left panels), negative coefficients indicate increased probability of top-tier performance, as the model estimates the probability of structural zeros.
+  Anti-elitism shows substantial negative coefficients across most parties (excluding FDP and Greens), suggesting that anti-elitist rhetoric enhances selection into high-performing videos.
+  In the negative binomial component (right panels), positive coefficients indicate amplification effects within the top tier.
+  Here, only the populist parties (AfD and Left) exhibit positive coefficients for anti-elitism, suggesting that anti-elitist content provides additional engagement benefits exclusively among videos from these parties that already achieve top-tier status.
+
+  People-centrism exhibits a somewhat different pattern (bottom panels).
+  In the hurdle component, while most coefficients are smaller in magnitude than those for anti-elitism, there are notable negative coefficients for AfD, CDU/CSU, and Left, suggesting that people-centric rhetoric does contribute to selection into top-performing videos for these parties, albeit more modestly than anti-elitism.
+  However, the negative binomial component reveals negative coefficients for some parties, particularly for CDU/CSU, Left, and SPD.
+  This indicates that for these parties, people-centric rhetoric may actually reduce engagement within already successful videos.
 
   = Discussion <discussion>
 
-  #mnote[start mit substantial claim?]
-  This study shows the use of advanced speech recognition technology to analyze YouTube content.
-  By combining OpenAI's whisper-large-v3-turbo with Silero voice activity detection, high-quality transcripts were used to analyze populist content on the official German parties' YouTube channels.
-  It demonstrates that populist parties in Germany—most notably the AfD—are significantly more successful on YouTube than their non-populist counterparts.
-  They not only attract larger audiences but also disseminate a substantially higher volume of populist content.
-  This underscores the strategic advantage that populist actors hold on video-based platforms, where emotionally charged and confrontational messaging can gain visibility and engagement.
+  Anti-elitist content drives higher engagement across the German political spectrum on YouTube, fundamentally challenging the assumption that people-centrism is an equally important dimension of populism in digital political communication.
+  Our findings reveal that while populist parties—particularly the AfD—produce substantially more anti-elitist rhetoric and achieve greater overall platform success, the relationship between anti-elitist messaging and audience engagement extends well beyond traditionally populist actors.
+  Quantile regression analysis demonstrates that increased anti-elitist content correlates with exponentially higher view counts in the upper distribution for nearly all parties.
+  This pattern could suggest that YouTube's attention economy systematically rewards confrontational political messaging that attacks established elites, regardless of the party's populist classification.
+  In stark contrast, people-centric appeals show inconsistent and often negligible effects on engagement, questioning whether this dimension should be considered co-equal with anti-elitist rhetoric in understanding populist communication strategies on video platforms.
 
-  Importantly, the two core dimensions of populism—anti-elitism and people-centrism—differ both in their prevalence and in their relationship to user engagement.
-  Anti-elitist content is especially prominent on populist channels and is positively associated with viewer engagement, not only for populist parties but in some cases also for non-populist ones.
-  This suggests that anti-elitism may tap into broader affective dynamics on social media, such as a preference for polarizing or dramatic content.
-  Whether this effect reflects genuine user interest in anti-elite narratives or is amplified by platform features like algorithmic curation and clickbait-style presentation remains an open question.
+  The analysis reveals a fundamental asymmetry in how populist dimensions operate on YouTube.
+  Anti-elitist rhetoric emerges as the primary driver of engagement, particularly for populist parties, while people-centric appeals show more limited and inconsistent effects.
+  The AfD channels contain substantially higher levels of anti-elitist content compared to non-populist parties, supporting our first hypothesis.
+  However, the finding that people-centrism is actually slightly higher among non-populist parties than populist parties challenges conventional expectations and suggests that confrontational content on YouTube may be favored over inclusive populist messaging.
 
-  The limited effectiveness of people-centric content, particularly on the AfD TV channel and in short videos on the Left's channel, raises further questions about the content strategy and thematic focus of short-form video.
-  Since these formats may differ considerably in tone and purpose from longer videos and between channels, a closer analysis of the content itself is needed to understand these patterns.
-  It is also possible that limitations in the detection of people-centric language, as observed with the PopBERT model, have contributed to the observed discrepancies.
-  Still, assuming no systematic bias, the results support the analytical value of examining anti-elitism and people-centrism separately.
+  The hurdle model analysis distinguishes between two mechanisms through which anti-elitism influences video performance.
+  The negative coefficients in the hurdle component indicate that anti-elitist content increases the probability of videos entering the top performance tier across most parties.
+  However, only populist parties show positive coefficients in the negative binomial component, suggesting that anti-elitist rhetoric provides additional engagement benefits exclusively among already successful videos from populist channels.
+  This finding supports the theoretical expectation that populist communication strategies are particularly effective within partisan audiences.
 
-  Taken together, these findings suggest that anti-elitist rhetoric plays a central role in driving engagement on YouTube, particularly within the context of right-wing populism.
-  They also highlight the platform's potential to reinforce populist dynamics through its attention economy.
-  Future research should expand on this by integrating multimodal analysis, user behavior data, and qualitative assessments of video content, in order to better understand the interplay between message, medium, and audience response.
+  However, several limitations warrant consideration.
+  First, our analysis focuses solely on official party channels, potentially missing important populist communication occurring through individual politicians' accounts or unofficial channels.
+  Second, while PopBERT demonstrates strong performance on parliamentary speech, its application to YouTube content represents a domain transfer that may introduce measurement error.
+  Due to the lower performance of the classifier for the people-centric dimension, some existing patterns might also be obscured by false measurement for this dimension.
+  Third, the study's focus on audio content necessarily excludes visual elements that may be crucial for understanding YouTube's full communicative impact.
+
+  That said, the broader implications for democratic discourse are concerning.
+  The systematic amplification of anti-elitist messaging, regardless of political alignment, suggests that YouTube's attention economy may contribute to the erosion of institutional trust and political civility.
+  The finding that confrontational rhetoric correlates with higher engagement across the political spectrum indicates that the platform's incentive structure may push all parties toward more aggressive communication styles.
+  Whether or not these finding hold true in other communicative settings also remains an open question.
+
+  These findings underscore YouTube's significant role in contemporary political communication and its potential contribution to democratic polarization.
+  Understanding how populist rhetoric operates on video platforms is crucial for developing informed responses to the challenges facing democratic societies in the digital age.
 
 ])
 #pagebreak()

@@ -65,7 +65,9 @@ class WhisperPipeline:
         self.model_type = model_type
         self.model_name = f"openai/whisper-{self.model_type}"
         log.info("Load transformers pipeline")
-        self.model = WhisperForConditionalGeneration.from_pretrained(self.model_name).to(
+        self.model = WhisperForConditionalGeneration.from_pretrained(
+            self.model_name
+        ).to(
             self.device,
         )
         self.processor = WhisperProcessor.from_pretrained(self.model_name)
@@ -74,7 +76,9 @@ class WhisperPipeline:
         # self.model.config.forced_decoder_ids[0][1] = 50261
 
     def _transcribe_segment(self, segment):
-        assert segment.shape[0] <= 30 * self.SAMPLING_RATE, "segment too long, will get cut off!"
+        assert segment.shape[0] <= 30 * self.SAMPLING_RATE, (
+            "segment too long, will get cut off!"
+        )
 
         inputs = self.processor.feature_extractor(
             segment,
@@ -92,7 +96,9 @@ class WhisperPipeline:
             language="<|de|>",
             task="transcribe",
         )
-        out = self.processor.tokenizer.batch_decode(predicted_ids, skip_special_tokens=True)
+        out = self.processor.tokenizer.batch_decode(
+            predicted_ids, skip_special_tokens=True
+        )
 
         return out[0]
 
@@ -180,7 +186,9 @@ class WhisperPipeline:
                 sub_transcript = ""
                 for sub_segment in sub_segments:
                     text_segment = self._transcribe_segment(sub_segment)
-                    sub_transcript = self._concatenate_strides(sub_transcript, text_segment)
+                    sub_transcript = self._concatenate_strides(
+                        sub_transcript, text_segment
+                    )
                 transcript_parts.append(sub_transcript)
 
         transcript = "".join(transcript_parts).strip()

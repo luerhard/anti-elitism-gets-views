@@ -14,10 +14,7 @@
   justify: true,
   linebreaks: "optimized",
   spacing: 2em,
-)
-
-#page[
-  #set par(leading: 1em, spacing: 1em)
+) #page[ #set par(leading: 1em, spacing: 1em)
   #show: article.with(
     title: "Populism on YouTube. How German Parties Utilize New Social Media Platforms.",
     authors: (

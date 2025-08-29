@@ -13,7 +13,16 @@ class ManifestoAPI:
         self.core_version = config["manifesto"]["core_version"]
         self.election_date = config["manifesto"]["election_date"]
         self.base_url = "https://manifesto-project.wzb.eu/api/v1"
-        self.parties = ["AfD", "CDU/CSU", "CDU", "CSU", "FDP", "90/Greens", "SPD", "LINKE"]
+        self.parties = [
+            "AfD",
+            "CDU/CSU",
+            "CDU",
+            "CSU",
+            "FDP",
+            "90/Greens",
+            "SPD",
+            "LINKE",
+        ]
 
     @staticmethod
     def _request(url):
@@ -44,12 +53,12 @@ class ManifestoAPI:
         return df.to_dict(orient="records")
 
     def get_metadata(self, party_key):
-        url = f"{self.base_url}/metadata?api_key={self.key}&keys[]={party_key}&version={self.metadata_version}" # noqa: E501
+        url = f"{self.base_url}/metadata?api_key={self.key}&keys[]={party_key}&version={self.metadata_version}"  # noqa: E501
         data = self._request(url)
         return data
 
     def get_text_annotations(self, party_key):
-        url = f"{self.base_url}/texts_and_annotations?api_key={self.key}&keys[]={party_key}&version={self.metadata_version}" # noqa: E501
+        url = f"{self.base_url}/texts_and_annotations?api_key={self.key}&keys[]={party_key}&version={self.metadata_version}"  # noqa: E501
 
         data = self._request(url)
         return data

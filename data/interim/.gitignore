@@ -2,3 +2,4 @@
 /sentences.parquet.gzip
 /popbert.parquet.gzip
 /manifesto_roberta.parquet.gzip
+/regression_results.rds

@@ -56,7 +56,10 @@ stages:
         persist: true
 
   basic_descriptives:
-    cmd: papermill pipeline/05-basic_descriptives.ipynb reports/notebooks/05-basic_descriptives.ipynb
+    cmd: |
+      papermill pipeline/05-basic_descriptives.ipynb reports/notebooks/05-basic_descriptives.ipynb
+      cp -fL reports/figures/* overleaf/figures/
+      cp -fL reports/tables/* overleaf/tables/
     deps:
     - src/load/load.py
     - data/yt_metadata/
@@ -67,10 +70,10 @@ stages:
     - reports/tables/video_descriptives_per_channel.csv
     - reports/tables/videos_per_channel.csv
     - reports/tables/channel_summary.csv
-    - reports/figures/view_count.svg
-    - reports/figures/populism_per_party.svg
-    - reports/figures/elite_over_time.svg
-    - reports/figures/pplcentr_over_time.svg
+    - reports/figures/view_count.jpg
+    - reports/figures/populism_per_party.jpg
+    - reports/figures/elite_over_time.jpg
+    - reports/figures/pplcentr_over_time.jpg
     - reports/manuscript/inlines/n_broken.txt
     - reports/manuscript/inlines/n_sents.txt
     - reports/manuscript/inlines/n_videos.txt
@@ -88,42 +91,30 @@ stages:
     - data/models/views_elite
     - data/models/views_pplcentr
 
-  plot_regressions:
-    cmd: papermill pipeline/07-plot_regressions.ipynb reports/notebooks/07-plot_regressions.ipynb
+  export_regression_results:
+    cmd: Rscript pipeline/07-export_regression_results.R
     deps:
     - data/models/likes_elite
     - data/models/likes_pplcentr
     - data/models/views_elite
     - data/models/views_pplcentr
-    - pipeline/07-plot_regressions.ipynb
+    - pipeline/07-export_regression_results.R
     outs:
-    - reports/figures/reg_views_elite.svg
-    - reports/figures/reg_views_pplcentr.svg
-    - reports/figures/reg_likes_elite.svg
-    - reports/figures/reg_likes_pplcentr.svg
-    - reports/notebooks/07-plot_regressions.ipynb
+    - data/interim/regression_results.rds
 
-  top_videos:
-    cmd: papermill pipeline/07-top_videos.ipynb reports/notebooks/07-top_videos.ipynb
+  plot_regressions:
+    cmd: |
+      papermill pipeline/08-plot_regressions.ipynb reports/notebooks/08-plot_regressions.ipynb
+      cp -fL reports/figures/* overleaf/figures/
     deps:
-    - src/load/load.py
-    - data/yt_metadata/
-    - pipeline/07-top_videos.ipynb
+    - data/interim/regression_results.rds
+    - pipeline/08-plot_regressions.ipynb
     outs:
-    - reports/notebooks/07-top_videos.ipynb
-    - reports/tables/most_liked_videos_per_channel.csv
-    - reports/tables/most_viewed_videos_per_channel.csv
-    - reports/tables/most_antielitism_videos_per_channel.csv
-
-  bayes_r2_simulation:
-    cmd: papermill pipeline/08-bayes_r2_synthetic_test.ipynb reports/notebooks/08-bayes_r2_synthetic_test.ipynb
-    deps:
-    - pipeline/08-bayes_r2_synthetic_test.ipynb
-    outs:
-    - reports/notebooks/08-bayes_r2_synthetic_test.ipynb
-    - reports/figures/bayes_r2_synthetic.svg
-    - reports/figures/bayes_r2_synthetic_coefficients.svg
-    - reports/tables/synthetic_correlation_matrix.csv
+    - reports/figures/reg_views_elite.jpg
+    - reports/figures/reg_views_pplcentr.jpg
+    - reports/figures/reg_likes_elite.jpg
+    - reports/figures/reg_likes_pplcentr.jpg
+    - reports/notebooks/08-plot_regressions.ipynb
 
   run_hurdle_models:
     cmd: Rscript pipeline/09-run_hurdle_models.R
@@ -135,10 +126,37 @@ stages:
     - data/models/hurdle/
 
   plot_hurdle_models:
-    cmd: papermill pipeline/10-plot_hurdle_models.ipynb reports/notebooks/10-plot_hurdle_models.ipynb
+    cmd: |
+      papermill pipeline/10-plot_hurdle_models.ipynb reports/notebooks/10-plot_hurdle_models.ipynb
+      cp -fL reports/figures/* overleaf/figures/
     deps:
     - data/models/hurdle
     - pipeline/10-plot_hurdle_models.ipynb
     outs:
-    - reports/figures/hurdle_model_coefficients.svg
+    - reports/figures/hurdle_model_coefficients.jpg
     - reports/notebooks/10-plot_hurdle_models.ipynb
+
+  top_videos:
+    cmd: papermill pipeline/11-top_videos.ipynb reports/notebooks/11-top_videos.ipynb
+    deps:
+    - src/load/load.py
+    - data/yt_metadata/
+    - pipeline/11-top_videos.ipynb
+    outs:
+    - reports/notebooks/11-top_videos.ipynb
+    - reports/tables/most_liked_videos_per_channel.csv
+    - reports/tables/most_viewed_videos_per_channel.csv
+    - reports/tables/most_antielitism_videos_per_channel.csv
+
+  bayes_r2_simulation:
+    cmd: |
+      papermill pipeline/12-bayes_r2_synthetic_test.ipynb reports/notebooks/12-bayes_r2_synthetic_test.ipynb
+      cp -fL reports/figures/* overleaf/figures/
+      cp -fL reports/tables/* overleaf/tables/
+    deps:
+    - pipeline/12-bayes_r2_synthetic_test.ipynb
+    outs:
+    - reports/notebooks/12-bayes_r2_synthetic_test.ipynb
+    - reports/figures/bayes_r2_synthetic.jpg
+    - reports/figures/bayes_r2_synthetic_coefficients.jpg
+    - reports/tables/synthetic_correlation_matrix.csv

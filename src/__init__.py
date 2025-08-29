@@ -80,7 +80,8 @@ cmaps_party2color = {
 }
 cmaps_channel2color = {k: cmaps_party2color[v] for k, v in channel_id2party.items()}
 cmaps_name2color = {
-    channel_id2name[k]: cmaps_party2color[channel_id2party[k]] for k in channel_id2name.keys()
+    channel_id2name[k]: cmaps_party2color[channel_id2party[k]]
+    for k in channel_id2name.keys()
 }
 
 r_colormap_id = pd.DataFrame(cmaps_channel2color.items(), columns=["channel", "color"])

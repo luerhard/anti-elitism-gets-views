@@ -49,13 +49,17 @@ def auto_upgrade_engine(engine, meta):
     with engine.begin() as connection:
         migration_context = MigrationContext.configure(connection)
         op = alembic.operations.Operations(migration_context)
-        migration_script = alembic.autogenerate.produce_migrations(migration_context, meta)
+        migration_script = alembic.autogenerate.produce_migrations(
+            migration_context, meta
+        )
         for operation in flatten_operations(migration_script.upgrade_ops):
             log.warn("auto_upgrade: %s", operation.to_diff_tuple())
             op.invoke(operation)
 
 
-def copy_database(source_engine, target_engine, metadata: sa.schema.MetaData, chunk_size: int):
+def copy_database(
+    source_engine, target_engine, metadata: sa.schema.MetaData, chunk_size: int
+):
     if target_engine.dialect.name == "sqlite":
         sa.event.listen(target_engine, "connect", set_fast_sqlite_pragmas)
 

@@ -91,7 +91,9 @@ def main():
             try:
                 sentences = cleaner.tokenize(transcript.text)
             except BrokenTranscriptError:
-                log.error("Transcript with ID: %s broken. Skipping.", transcript.video_id)
+                log.error(
+                    "Transcript with ID: %s broken. Skipping.", transcript.video_id
+                )
                 con.insert("broken_transcripts", [{"video_id": transcript.video_id}])
                 continue
 

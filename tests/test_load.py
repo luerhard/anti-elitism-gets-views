@@ -40,7 +40,10 @@ class TestDataLoader:
     def test_each_sent_has_popbert(self):
         popbert = self.dl.popbert(binarize_predictions=False)
         sents = self.dl.sentences()
-        assert popbert.sentence_id.nunique().execute() == sents.sentence_id.nunique().execute()
+        assert (
+            popbert.sentence_id.nunique().execute()
+            == sents.sentence_id.nunique().execute()
+        )
 
     def test_equal_lengths(self):
         videos = self.dl.videos()
@@ -49,7 +52,9 @@ class TestDataLoader:
 
     def test_popbert(self):
         sents = self.dl.sentences()
-        popbert = self.dl.popbert(binarize_predictions=False).semi_join(sents, ["sentence_id"])
+        popbert = self.dl.popbert(binarize_predictions=False).semi_join(
+            sents, ["sentence_id"]
+        )
         assert popbert.count().execute() == sents.count().execute()
         assert popbert.filter(popbert.elite.isnull()).count().execute() == 0
         assert popbert.filter(popbert.pplcentr.isnull()).count().execute() == 0

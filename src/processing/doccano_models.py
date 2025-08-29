@@ -59,7 +59,9 @@ class DjangoCeleryResultsChordcounter(Base):
     id = Column(
         Integer,
         primary_key=True,
-        server_default=text("nextval('django_celery_results_chordcounter_id_seq'::regclass)"),
+        server_default=text(
+            "nextval('django_celery_results_chordcounter_id_seq'::regclass)"
+        ),
     )
     group_id = Column(String(191), nullable=False, unique=True)
     sub_tasks = Column(Text, nullable=False)
@@ -72,7 +74,9 @@ class DjangoCeleryResultsGroupresult(Base):
     id = Column(
         Integer,
         primary_key=True,
-        server_default=text("nextval('django_celery_results_groupresult_id_seq'::regclass)"),
+        server_default=text(
+            "nextval('django_celery_results_groupresult_id_seq'::regclass)"
+        ),
     )
     group_id = Column(String(191), nullable=False, unique=True)
     date_created = Column(DateTime(True), nullable=False, index=True)
@@ -88,7 +92,9 @@ class DjangoCeleryResultsTaskresult(Base):
     id = Column(
         Integer,
         primary_key=True,
-        server_default=text("nextval('django_celery_results_taskresult_id_seq'::regclass)"),
+        server_default=text(
+            "nextval('django_celery_results_taskresult_id_seq'::regclass)"
+        ),
     )
     task_id = Column(String(191), nullable=False, unique=True)
     status = Column(String(50), nullable=False, index=True)
@@ -650,7 +656,9 @@ class ExamplesComment(Base):
     text = Column(Text, nullable=False)
     created_at = Column(DateTime(True), nullable=False, index=True)
     updated_at = Column(DateTime(True), nullable=False)
-    user_id = Column(ForeignKey("auth_user.id", deferrable=True, initially="DEFERRED"), index=True)
+    user_id = Column(
+        ForeignKey("auth_user.id", deferrable=True, initially="DEFERRED"), index=True
+    )
     example_id = Column(
         ForeignKey("examples_example.id", deferrable=True, initially="DEFERRED"),
         nullable=False,
@@ -715,7 +723,9 @@ class LabelsBoundingbox(Base):
         index=True,
     )
     label_id = Column(
-        ForeignKey("label_types_categorytype.id", deferrable=True, initially="DEFERRED"),
+        ForeignKey(
+            "label_types_categorytype.id", deferrable=True, initially="DEFERRED"
+        ),
         nullable=False,
         index=True,
     )
@@ -749,7 +759,9 @@ class LabelsCategory(Base):
         index=True,
     )
     label_id = Column(
-        ForeignKey("label_types_categorytype.id", deferrable=True, initially="DEFERRED"),
+        ForeignKey(
+            "label_types_categorytype.id", deferrable=True, initially="DEFERRED"
+        ),
         nullable=False,
         index=True,
     )
@@ -788,7 +800,9 @@ class LabelsSegmentation(Base):
         index=True,
     )
     label_id = Column(
-        ForeignKey("label_types_categorytype.id", deferrable=True, initially="DEFERRED"),
+        ForeignKey(
+            "label_types_categorytype.id", deferrable=True, initially="DEFERRED"
+        ),
         nullable=False,
         index=True,
     )
@@ -902,7 +916,9 @@ class LabelsRelation(Base):
         index=True,
     )
     type_id = Column(
-        ForeignKey("label_types_relationtype.id", deferrable=True, initially="DEFERRED"),
+        ForeignKey(
+            "label_types_relationtype.id", deferrable=True, initially="DEFERRED"
+        ),
         nullable=False,
         index=True,
     )
@@ -914,7 +930,11 @@ class LabelsRelation(Base):
     uuid = Column(UUID, nullable=False, unique=True)
 
     example = relationship("ExamplesExample")
-    from_id = relationship("LabelsSpan", primaryjoin="LabelsRelation.from_id_id == LabelsSpan.id")
-    to_id = relationship("LabelsSpan", primaryjoin="LabelsRelation.to_id_id == LabelsSpan.id")
+    from_id = relationship(
+        "LabelsSpan", primaryjoin="LabelsRelation.from_id_id == LabelsSpan.id"
+    )
+    to_id = relationship(
+        "LabelsSpan", primaryjoin="LabelsRelation.to_id_id == LabelsSpan.id"
+    )
     type = relationship("LabelTypesRelationtype")
     user = relationship("AuthUser")

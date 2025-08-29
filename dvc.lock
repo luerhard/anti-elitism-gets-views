@@ -13,8 +13,8 @@ stages:
       size: 2027
     - path: src/processing/whisper_pipeline.py
       hash: md5
-      md5: 18e7b31ac1eee8c9ccc4c86c9b139c60
-      size: 6304
+      md5: 66b986b5dfc79df05d8b71ac2dd2c090
+      size: 6418
     outs:
     - path: data/interim/transcripts/v3_large_turbo.parquet
       hash: md5
@@ -29,8 +29,8 @@ stages:
       size: 48045031
     - path: pipeline/03-tokenize_transcripts.py
       hash: md5
-      md5: 2087b50b8cc5bdaebca216c6f79fade9
-      size: 4602
+      md5: 846da82ff54933c4c75e010e3691e65f
+      size: 4640
     - path: src/processing/transcript_cleaner.py
       hash: md5
       md5: 02137f9a346df775deaa5d99965d757e
@@ -95,8 +95,8 @@ stages:
       nfiles: 7
     - path: pipeline/05-basic_descriptives.ipynb
       hash: md5
-      md5: 24978010a48984ddd80f3407a72169ee
-      size: 454050
+      md5: 59399c4d0ad70d5454e6a66298187579
+      size: 454048
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -136,8 +136,8 @@ stages:
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: fe91578f98f1b84ffc3eb27a58e8b3c8
-      size: 472170
+      md5: 51de9f8661456cd82ec3cbf07f1cb689
+      size: 472168
     - path: reports/tables/channel_descriptives.csv
       hash: md5
       md5: c43a2f7a809e4f39347c92062c8f0f97
@@ -257,8 +257,8 @@ stages:
       nfiles: 7
     - path: pipeline/11-top_videos.ipynb
       hash: md5
-      md5: 046ad43bc8ce65dd9f7634d7ed7b14f0
-      size: 6152
+      md5: 25d611aba4f16feb1014d6e23afe5593
+      size: 6306
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -266,8 +266,8 @@ stages:
     outs:
     - path: reports/notebooks/11-top_videos.ipynb
       hash: md5
-      md5: 953187ea96ffc5aff735537a9d415539
-      size: 15687
+      md5: 63e10d49bfc219447529f5172a0d3278
+      size: 15840
     - path: reports/tables/most_antielitism_videos_per_channel.csv
       hash: md5
       md5: 61dd5bf17fd28c8de257097aa4a17e72
@@ -403,8 +403,8 @@ stages:
       nfiles: 2349
     - path: pipeline/01-build_metadata.ipynb
       hash: md5
-      md5: f224efbf02c07e154bdad2384eafb79a
-      size: 26040
+      md5: 0966354b5ac5fdd33e724f6e9af3cd31
+      size: 26214
     outs:
     - path: data/yt_metadata/channels.parquet
       hash: md5

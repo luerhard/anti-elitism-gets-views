@@ -465,17 +465,17 @@ stages:
       size: 166203
     - path: pipeline/08-plot_regressions.ipynb
       hash: md5
-      md5: 4426c02ef56ee2e95f452f661c57980f
-      size: 549542
+      md5: a9a6d0cddb57f0f07a02a35d2f522c47
+      size: 549541
     outs:
     - path: reports/figures/reg_likes_elite.jpg
       hash: md5
-      md5: 5bc19334f3fdbb154cdd270c10b472f6
-      size: 2864198
+      md5: 06525d08f09aaea0a3f2688273d31876
+      size: 2996073
     - path: reports/figures/reg_likes_pplcentr.jpg
       hash: md5
-      md5: 53d4be0a0b58e4327969880441a8a1d0
-      size: 2481601
+      md5: 22b9cd1546ccd05bdcece5b20cf318a0
+      size: 2665519
     - path: reports/figures/reg_views_elite.jpg
       hash: md5
       md5: 064eed94cde7a87ed4c6e07483af543a
@@ -486,29 +486,29 @@ stages:
       size: 2660795
     - path: reports/notebooks/08-plot_regressions.ipynb
       hash: md5
-      md5: 0d163ee5e9c91c77b15eff5fdae793a0
-      size: 544263
+      md5: 9042abb038207d1430ab2f32c60cf8a7
+      size: 538881
   bayes_r2_simulation:
     cmd: "papermill pipeline/12-bayes_r2_synthetic_test.ipynb reports/notebooks/12-bayes_r2_synthetic_test.ipynb\n\
       cp -fL reports/figures/* overleaf/figures/\ncp -fL reports/tables/* overleaf/tables/\n"
     deps:
     - path: pipeline/12-bayes_r2_synthetic_test.ipynb
       hash: md5
-      md5: 48d64276a336eb5ab936982a142bf535
-      size: 130079
+      md5: 6c4b82ba5b58fcb28c693973bb942692
+      size: 129986
     outs:
     - path: reports/figures/bayes_r2_synthetic.jpg
       hash: md5
-      md5: cc8bc216acfdd2ee0afd5f26102230be
-      size: 626138
+      md5: 612cb6cc7a0c8884662d4bb56971ce72
+      size: 994603
     - path: reports/figures/bayes_r2_synthetic_coefficients.jpg
       hash: md5
-      md5: faf1327d20b7f42fa1d68896d882c155
-      size: 896763
+      md5: 2d159b012e29dc146b8621b17ce66bb4
+      size: 2289885
     - path: reports/notebooks/12-bayes_r2_synthetic_test.ipynb
       hash: md5
-      md5: 0803b03d1ab8bda7f890dab292338e03
-      size: 139155
+      md5: 894bc634ebacbed9d718151884cd952c
+      size: 138424
     - path: reports/tables/synthetic_correlation_matrix.csv
       hash: md5
       md5: e96427b3171657211aa8f1fb2977cac7

@@ -137,7 +137,9 @@ stages:
     - reports/notebooks/10-plot_hurdle_models.ipynb
 
   top_videos:
-    cmd: papermill pipeline/11-top_videos.ipynb reports/notebooks/11-top_videos.ipynb
+    cmd: |
+      papermill pipeline/11-top_videos.ipynb reports/notebooks/11-top_videos.ipynb
+      cp -fL reports/tables/* overleaf/tables/
     deps:
     - src/load/load.py
     - data/yt_metadata/

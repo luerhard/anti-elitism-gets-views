@@ -247,8 +247,8 @@ stages:
       size: 1300907
       nfiles: 6
   top_videos:
-    cmd: papermill pipeline/11-top_videos.ipynb
-      reports/notebooks/11-top_videos.ipynb
+    cmd: "papermill pipeline/11-top_videos.ipynb reports/notebooks/11-top_videos.ipynb\n\
+      cp -fL reports/tables/* overleaf/tables/\n"
     deps:
     - path: data/yt_metadata/
       hash: md5
@@ -257,8 +257,8 @@ stages:
       nfiles: 7
     - path: pipeline/11-top_videos.ipynb
       hash: md5
-      md5: 25d611aba4f16feb1014d6e23afe5593
-      size: 6306
+      md5: a95f09d7f2099154fdc2960e0a219547
+      size: 7755
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -266,20 +266,20 @@ stages:
     outs:
     - path: reports/notebooks/11-top_videos.ipynb
       hash: md5
-      md5: 63e10d49bfc219447529f5172a0d3278
-      size: 15840
+      md5: 4a433b04d8bb53d3d764ba028e865359
+      size: 17762
     - path: reports/tables/most_antielitism_videos_per_channel.csv
       hash: md5
-      md5: 61dd5bf17fd28c8de257097aa4a17e72
-      size: 12816
+      md5: bf15627f599514b8b73e9b604c4f01cb
+      size: 12904
     - path: reports/tables/most_liked_videos_per_channel.csv
       hash: md5
-      md5: 19f185e8310a60ff0a203c4e42b39b15
-      size: 12173
+      md5: 997252217e9d3ea55149e0915771243e
+      size: 12318
     - path: reports/tables/most_viewed_videos_per_channel.csv
       hash: md5
-      md5: 4f388a1b02d69b9263a848ed2d159017
-      size: 11976
+      md5: 6bdb08a7157182ea4fcc887eddd7d28b
+      size: 12093
   regressions:
     cmd: Rscript -e "rmarkdown::render('pipeline/06-regressions.Rmd',
       'html_document', '../reports/notebooks/06-regressions.html')"

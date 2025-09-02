@@ -465,29 +465,29 @@ stages:
       size: 166203
     - path: pipeline/08-plot_regressions.ipynb
       hash: md5
-      md5: 03ebd50421fd3f47ac3685e6283eb798
-      size: 523961
+      md5: 9d2d9510b2f9e1cefb39bf3746c712a9
+      size: 523808
     outs:
     - path: reports/figures/reg_likes_elite.jpg
       hash: md5
-      md5: 75a61abcd19ebd4fb1fb8410101ba289
-      size: 2225335
+      md5: 21cfc111e3574f1629789fcb8af2ed5a
+      size: 2318526
     - path: reports/figures/reg_likes_pplcentr.jpg
       hash: md5
-      md5: 6e5f136dac3874eb751ca249c9a19e75
-      size: 1992647
+      md5: eced7f2264b0cbc9caf2474f14021a01
+      size: 2103759
     - path: reports/figures/reg_views_elite.jpg
       hash: md5
-      md5: 94595349c783b0d6b90fefd84c09b9e6
-      size: 2096767
+      md5: ddd089534b7a336fdd2b46a3c856e3f7
+      size: 2151574
     - path: reports/figures/reg_views_pplcentr.jpg
       hash: md5
-      md5: 509abb5fece87d054bbe07e7f8f0aba2
-      size: 2092589
+      md5: 8319203af5251d288253646f9486054b
+      size: 2188764
     - path: reports/notebooks/08-plot_regressions.ipynb
       hash: md5
-      md5: a163edd781808f8ba4a0cbca26cb6e49
-      size: 545518
+      md5: 44a3abc2c0fb09fdd8351e3e86364096
+      size: 545514
   bayes_r2_simulation:
     cmd: "papermill pipeline/12-bayes_r2_synthetic_test.ipynb reports/notebooks/12-bayes_r2_synthetic_test.ipynb\n\
       cp -fL reports/figures/* overleaf/figures/\ncp -fL reports/tables/* overleaf/tables/\n"

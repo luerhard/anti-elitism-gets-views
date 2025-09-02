@@ -70,10 +70,8 @@ stages:
     - reports/tables/video_descriptives_per_channel.csv
     - reports/tables/videos_per_channel.csv
     - reports/tables/channel_summary.csv
-    - reports/figures/view_count.jpg
     - reports/figures/populism_per_party.jpg
-    - reports/figures/elite_over_time.jpg
-    - reports/figures/pplcentr_over_time.jpg
+    - reports/figures/populism_over_time.jpg
     - reports/manuscript/inlines/n_broken.txt
     - reports/manuscript/inlines/n_sents.txt
     - reports/manuscript/inlines/n_videos.txt
@@ -112,6 +110,7 @@ stages:
     outs:
     - reports/figures/reg_views_elite.jpg
     - reports/figures/reg_views_pplcentr.jpg
+    - reports/figures/reg_views.jpg
     - reports/figures/reg_likes_elite.jpg
     - reports/figures/reg_likes_pplcentr.jpg
     - reports/notebooks/08-plot_regressions.ipynb

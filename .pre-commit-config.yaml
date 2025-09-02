@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v5.0.0
+  rev: v6.0.0
   hooks:
   - id: trailing-whitespace
   - id: end-of-file-fixer
@@ -9,21 +9,14 @@ repos:
   - id: check-merge-conflict
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
-  rev: v0.11.6
+  rev: v0.12.11
   hooks:
   - id: ruff
     types_or: [python, pyi, jupyter]
     args: [--fix, --exit-non-zero-on-fix]
 - repo: https://github.com/iterative/dvc
-  rev: 3.59.1
+  rev: 3.61.0
   hooks:
-  # - id: dvc-pre-commit
-  #   additional_dependencies:
-  #   - .[all]
-  #   language_version: python3
-  #   stages:
-  #   - pre-commit
   - id: dvc-pre-push
     additional_dependencies:
     - .[all]
@@ -37,9 +30,3 @@ repos:
     stages:
     - post-checkout
     always_run: true
-# - repo: https://github.com/kynan/nbstripout
-#   rev: 0.8.1
-#   hooks:
-#     - id: nbstripout
-#       types_or: [jupyter]
-#       exclude: ^reports/notebooks

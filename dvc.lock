@@ -95,8 +95,8 @@ stages:
       nfiles: 7
     - path: pipeline/05-basic_descriptives.ipynb
       hash: md5
-      md5: 452e9c42e496838faec2da601f9c4901
-      size: 693199
+      md5: 533568e0b5447c09c78784db1930f1d1
+      size: 477084
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -104,12 +104,12 @@ stages:
     outs:
     - path: reports/figures/populism_over_time.jpg
       hash: md5
-      md5: f2a01a76193ecfb9b13a6ddca1401ae9
-      size: 3471805
+      md5: 2feba212a5ffad6241622362d559ea6f
+      size: 3395683
     - path: reports/figures/populism_per_party.jpg
       hash: md5
-      md5: 09cde61f6bb56799cb1feb2d09066e3c
-      size: 3499932
+      md5: 784f7fc09c0e2f0a3e7a01bd69dec171
+      size: 3523243
     - path: reports/manuscript/inlines/n_broken.txt
       hash: md5
       md5: a8baa56554f96369ab93e4f3bb068c22
@@ -128,8 +128,8 @@ stages:
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: 9b60dd76374dbad250ba84384f0aab6d
-      size: 712073
+      md5: afb4ebaa8df1c1645cb5669b39e41eae
+      size: 493882
     - path: reports/tables/channel_descriptives.csv
       hash: md5
       md5: c43a2f7a809e4f39347c92062c8f0f97
@@ -457,33 +457,33 @@ stages:
       size: 166203
     - path: pipeline/08-plot_regressions.ipynb
       hash: md5
-      md5: 1dda46a9b99e2f81775ea58cd11208b0
-      size: 524549
+      md5: c198774b3d819f14a10b2fe60e088a9e
+      size: 524789
     outs:
     - path: reports/figures/reg_likes_elite.jpg
       hash: md5
-      md5: 4276fb6dc2b3601210c244739422e9df
-      size: 2342095
+      md5: 21cfc111e3574f1629789fcb8af2ed5a
+      size: 2318526
     - path: reports/figures/reg_likes_pplcentr.jpg
       hash: md5
-      md5: 4e1044332f17e353fb4c26e23efb95ac
-      size: 2075124
+      md5: eced7f2264b0cbc9caf2474f14021a01
+      size: 2103759
     - path: reports/figures/reg_views.jpg
       hash: md5
-      md5: 6c3e3186f73facfd8956e2be95bdc835
-      size: 4004732
+      md5: a8842783b4635a0cc361bf0e0e503dac
+      size: 3962594
     - path: reports/figures/reg_views_elite.jpg
       hash: md5
-      md5: 237f96f2369145329bd5b2e65af5e489
-      size: 2178653
+      md5: ddd089534b7a336fdd2b46a3c856e3f7
+      size: 2151574
     - path: reports/figures/reg_views_pplcentr.jpg
       hash: md5
-      md5: 34e192abfdd8a64d0e6e76b40844c569
-      size: 2192874
+      md5: 8319203af5251d288253646f9486054b
+      size: 2188764
     - path: reports/notebooks/08-plot_regressions.ipynb
       hash: md5
-      md5: 4282fbfe94fddf6f12138acc09c5563a
-      size: 658863
+      md5: 0e3f767ad4826a523c95c75e4028bd84
+      size: 546964
   bayes_r2_simulation:
     cmd: "papermill pipeline/12-bayes_r2_synthetic_test.ipynb reports/notebooks/12-bayes_r2_synthetic_test.ipynb\n\
       cp -fL reports/figures/* overleaf/figures/\ncp -fL reports/tables/* overleaf/tables/\n"

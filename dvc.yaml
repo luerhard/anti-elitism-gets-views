@@ -70,6 +70,7 @@ stages:
     - reports/tables/video_descriptives_per_channel.csv
     - reports/tables/videos_per_channel.csv
     - reports/tables/channel_summary.csv
+    - reports/figures/view_count.jpg
     - reports/figures/populism_per_party.jpg
     - reports/figures/populism_over_time.jpg
     - reports/manuscript/inlines/n_broken.txt

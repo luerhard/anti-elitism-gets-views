@@ -95,8 +95,8 @@ stages:
       nfiles: 7
     - path: pipeline/05-basic_descriptives.ipynb
       hash: md5
-      md5: 533568e0b5447c09c78784db1930f1d1
-      size: 477084
+      md5: 477e4f17d363fcfca9788dce3a1a4e21
+      size: 617880
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -104,12 +104,16 @@ stages:
     outs:
     - path: reports/figures/populism_over_time.jpg
       hash: md5
-      md5: 2feba212a5ffad6241622362d559ea6f
-      size: 3395683
+      md5: 5cee3879fb65b9c885a7b68cd6171764
+      size: 3523311
     - path: reports/figures/populism_per_party.jpg
       hash: md5
-      md5: 784f7fc09c0e2f0a3e7a01bd69dec171
-      size: 3523243
+      md5: 986f6a9f9d891e65828cbe637ab5b1ff
+      size: 1556272
+    - path: reports/figures/view_count.jpg
+      hash: md5
+      md5: 0fb279763c2fea5edf1d969d0c9bd28e
+      size: 2208934
     - path: reports/manuscript/inlines/n_broken.txt
       hash: md5
       md5: a8baa56554f96369ab93e4f3bb068c22
@@ -128,8 +132,8 @@ stages:
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: afb4ebaa8df1c1645cb5669b39e41eae
-      size: 493882
+      md5: 8acd02bc6ce7ead18773d97df919b6a1
+      size: 712683
     - path: reports/tables/channel_descriptives.csv
       hash: md5
       md5: c43a2f7a809e4f39347c92062c8f0f97
@@ -147,7 +151,7 @@ stages:
       md5: 304352cd87ec4fc60ea8fdc3427233a3
       size: 629
   nb_regression:
-    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd',
+    cmd: Rscript -e "rmarkdown::render('pipeline/07-nb_regression.Rmd', 
       'html_document', '../reports/notebooks/07-nb_regression.html')"
     deps:
     - path: data/yt_metadata/
@@ -174,7 +178,7 @@ stages:
       md5: 7c66cfc4b49248e77f07e80da9a1be6f
       size: 2099738
   comment_analysis:
-    cmd: papermill pipeline/08-comment_analysis.ipynb
+    cmd: papermill pipeline/08-comment_analysis.ipynb 
       reports/notebooks/08-comment_analysis.ipynb
     deps:
     - path: data/raw/yt_metadata/
@@ -273,7 +277,7 @@ stages:
       md5: 6bdb08a7157182ea4fcc887eddd7d28b
       size: 12093
   regressions:
-    cmd: Rscript -e "rmarkdown::render('pipeline/06-regressions.Rmd',
+    cmd: Rscript -e "rmarkdown::render('pipeline/06-regressions.Rmd', 
       'html_document', '../reports/notebooks/06-regressions.html')"
     deps:
     - path: data/yt_metadata/
@@ -315,7 +319,7 @@ stages:
       md5: 75ef482bba6b74b944cbd2f5304c2a22
       size: 2726152
   build_metadata:
-    cmd: papermill pipeline/01-build_metadata.ipynb
+    cmd: papermill pipeline/01-build_metadata.ipynb 
       reports/notebooks/01-build_metadata.ipynb
     deps:
     - path: data/raw/yt/@AfDFraktionimBundestag
@@ -462,28 +466,28 @@ stages:
     outs:
     - path: reports/figures/reg_likes_elite.jpg
       hash: md5
-      md5: 21cfc111e3574f1629789fcb8af2ed5a
-      size: 2318526
+      md5: 4276fb6dc2b3601210c244739422e9df
+      size: 2342095
     - path: reports/figures/reg_likes_pplcentr.jpg
       hash: md5
-      md5: eced7f2264b0cbc9caf2474f14021a01
-      size: 2103759
+      md5: 4e1044332f17e353fb4c26e23efb95ac
+      size: 2075124
     - path: reports/figures/reg_views.jpg
       hash: md5
-      md5: a8842783b4635a0cc361bf0e0e503dac
-      size: 3962594
+      md5: 3646d47bfb284864735a9c30da555b2b
+      size: 4023388
     - path: reports/figures/reg_views_elite.jpg
       hash: md5
-      md5: ddd089534b7a336fdd2b46a3c856e3f7
-      size: 2151574
+      md5: 237f96f2369145329bd5b2e65af5e489
+      size: 2178653
     - path: reports/figures/reg_views_pplcentr.jpg
       hash: md5
-      md5: 8319203af5251d288253646f9486054b
-      size: 2188764
+      md5: 34e192abfdd8a64d0e6e76b40844c569
+      size: 2192874
     - path: reports/notebooks/08-plot_regressions.ipynb
       hash: md5
-      md5: 0e3f767ad4826a523c95c75e4028bd84
-      size: 546964
+      md5: 797596fcee7c6ac1ae0f3db197b4d9a1
+      size: 659106
   bayes_r2_simulation:
     cmd: "papermill pipeline/12-bayes_r2_synthetic_test.ipynb reports/notebooks/12-bayes_r2_synthetic_test.ipynb\n\
       cp -fL reports/figures/* overleaf/figures/\ncp -fL reports/tables/* overleaf/tables/\n"
@@ -542,17 +546,17 @@ stages:
       nfiles: 12
     - path: pipeline/10-plot_hurdle_models.ipynb
       hash: md5
-      md5: b16169f63b54a8cfe3bcbb86b3271cd7
-      size: 64444
+      md5: 2c59edf7ec602d061fd24fb0afb62a16
+      size: 64111
     outs:
     - path: reports/figures/hurdle_model_coefficients.jpg
       hash: md5
-      md5: 5acc95af3162bc4b17dfeadd2dd4e1fa
-      size: 1563964
+      md5: 43b3712e30c0248f92cb175354356555
+      size: 1566302
     - path: reports/notebooks/10-plot_hurdle_models.ipynb
       hash: md5
-      md5: c91f2ce246543078bf7e7b158a4f93bd
-      size: 68734
+      md5: cc321bf59d47c9d5f381c5a0344a8d7f
+      size: 96489
   export_regression_results:
     cmd: Rscript pipeline/07-export_regression_results.R
     deps:

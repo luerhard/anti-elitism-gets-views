@@ -424,8 +424,8 @@ stages:
       nfiles: 7
     - path: pipeline/06-run_regressions.R
       hash: md5
-      md5: fc0bc6bf68625ce4cca1602039265e7c
-      size: 3783
+      md5: df52c9ad55e5c14990543db0a4dcd354
+      size: 3966
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd
@@ -523,8 +523,8 @@ stages:
       nfiles: 7
     - path: pipeline/09-run_hurdle_models.R
       hash: md5
-      md5: bcf8b7bc64712e84820829f62fa86c15
-      size: 2639
+      md5: dfa37d381c936814393936723aec668e
+      size: 2682
     - path: src/load/load.py
       hash: md5
       md5: 6f91bfdab6242414a00e506acfc46cbd

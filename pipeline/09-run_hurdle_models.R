@@ -12,18 +12,27 @@ box::use(
 out_path <- here("data", "models", "hurdle")
 
 bayes_model <- function(form, data) {
-
-  log_mean_y <- mean(data$video_views[data$video_views > 0], na.rm = TRUE) |> log() |> as.numeric()
+  log_mean_y <- mean(data$video_views[data$video_views > 0], na.rm = TRUE) |>
+    log() |>
+    as.numeric()
   qlogis_09 <- qlogis(0.9)
 
   print(paste("LOG MEAN Y:", log_mean_y))
 
   my_priors <- c(
-      prior(normal(0, 3), class = "b", dpar="mu"),
-      prior(normal(0, 4), class = "b", dpar = "hu"),
-      prior_string(paste0("normal(", log_mean_y, ", 2)"), class = "Intercept", dpar = "mu"),
-      prior_string(paste0("normal(", qlogis_09, ", 0.5)"), class = "Intercept", dpar = "hu"),
-      prior(exponential(1), class = "shape")
+    prior(normal(0, 3), class = "b", dpar = "mu"),
+    prior(normal(0, 4), class = "b", dpar = "hu"),
+    prior_string(
+      paste0("normal(", log_mean_y, ", 2)"),
+      class = "Intercept",
+      dpar = "mu"
+    ),
+    prior_string(
+      paste0("normal(", qlogis_09, ", 0.5)"),
+      class = "Intercept",
+      dpar = "hu"
+    ),
+    prior(exponential(1), class = "shape")
   )
 
   model <- brms::brm(
@@ -38,8 +47,8 @@ bayes_model <- function(form, data) {
     warmup = 2000,
     seed = 1337,
     control = list(
-        adapt_delta = 0.99,
-        max_treedepth = 15
+      adapt_delta = 0.99,
+      max_treedepth = 15
     )
   )
 
@@ -53,14 +62,14 @@ parties <- df |>
   unique()
 
 model_types <- list(
-    views_elite = brms::bf(
-      video_views ~ elite + channel + released_year + log_n_sents + is_short,
-      hu ~ elite + channel + released_year + log_n_sents + is_short
-    ),
-    views_pplcentr = brms::bf(
-      video_views ~ pplcentr + channel + released_year + log_n_sents + is_short,
-      hu ~ pplcentr + channel + released_year + log_n_sents + is_short
-    )
+  views_elite = brms::bf(
+    video_views ~ elite + channel + released_year + log_n_sents + is_short,
+    hu ~ elite + channel + released_year + log_n_sents + is_short
+  ),
+  views_pplcentr = brms::bf(
+    video_views ~ pplcentr + channel + released_year + log_n_sents + is_short,
+    hu ~ pplcentr + channel + released_year + log_n_sents + is_short
+  )
 )
 
 for (model_type in names(model_types)) {
@@ -83,12 +92,14 @@ for (model_type in names(model_types)) {
       group_by(channel, released_year) |>
       mutate(
         video_views = d_video_views,
-        q = quantile(video_views, probs=0.9, type = 7),
+        q = quantile(video_views, probs = 0.9, type = 7),
         video_views = ifelse(video_views > q, video_views, 0)
       ) |>
       ungroup()
 
-    if (!dir.exists(fbase)) dir.create(fbase, recursive = T)
+    if (!dir.exists(fbase)) {
+      dir.create(fbase, recursive = T)
+    }
     fpath <- here(fbase, paste0(party_clean, ".rds"))
 
     if (file.exists(fpath)) {

@@ -1232,6 +1232,19 @@ wheels = [
 ]
 
 [[package]]
+name = "jiwer"
+version = "4.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "rapidfuzz" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/12/1e/963dfc249d5bbe88079b57a22556e981ddd9208e4b6116e48bdbfc01f26b/jiwer-4.0.0.tar.gz", hash = "sha256:ae9c051469102a61ef0927100baeeb4546f78d180c9b0948281d08eaf44c191e", size = 28074, upload-time = "2025-06-19T16:05:23.004Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/69/c9/172c525330c739a068c01050759a6f855ce16212db10a0359e690a03ac48/jiwer-4.0.0-py3-none-any.whl", hash = "sha256:7efaf0bd336b095d99ddef9dd67e1ee829d75d58aa2a81d9639870b01d6d95ea", size = 23034, upload-time = "2025-06-19T16:05:21.821Z" },
+]
+
+[[package]]
 name = "joblib"
 version = "1.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -4479,30 +4492,6 @@ wheels = [
 ]
 
 [[package]]
-name = "werpy"
-version = "3.1.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "numpy" },
-    { name = "pandas" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/e4/bc/ac4f57b25fb0d8c20186b4185fcbc4deb75c3035296274a1bca6ecd836ec/werpy-3.1.0.tar.gz", hash = "sha256:bc08327a31268a7e1c4d70dc2ffe056da311afee308e0343415c1b96f95e5fcc", size = 213451, upload-time = "2025-04-22T01:55:09.038Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/91/7d/c67fc85378108d390d254cd056a7909dfddb05dac0dd5742c6c8fa58a962/werpy-3.1.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:c1ec89451528b3acaadeada7a088c0e88329a14b4ecd58b545b9855daa0dd9e5", size = 89160, upload-time = "2025-04-22T01:54:50.641Z" },
-    { url = "https://files.pythonhosted.org/packages/3b/18/a7e679d65e1cad3e7e445944cb9cf7bd4a7946ad329bb66fc2b041fbb412/werpy-3.1.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:bba40ae39083508863276e092f2d86e88fb1999ca8b930dfc1b3389982f050d0", size = 118573, upload-time = "2025-04-22T01:54:52.138Z" },
-    { url = "https://files.pythonhosted.org/packages/75/8d/368d032327a652cab9c91abaac8b1ef2d8b5ff2ef34e50278b5ce4383d4e/werpy-3.1.0-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:e4d33f58b6025a9791b381a7bde759d047154f832db77473e4bc72daa9dcf1c8", size = 127287, upload-time = "2025-04-22T01:54:53.614Z" },
-    { url = "https://files.pythonhosted.org/packages/06/0f/b57d3f03df7208255e13810301284c08d619f182c5f0c67e5008247de6bb/werpy-3.1.0-cp311-cp311-win_amd64.whl", hash = "sha256:6f38c95908f46e8059cb752f3ef580fae18c07bb44fc311167308a9b9367b8ca", size = 126728, upload-time = "2025-04-22T01:54:55.279Z" },
-    { url = "https://files.pythonhosted.org/packages/16/0c/75eec33b49f28d0b231db86e2794c58eafa71dcc2b7191319e3421b4e5b6/werpy-3.1.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:e834982fc267a20f7ddb59c5f8c54a7020bc1a39bbe76b843412ec08f1e74562", size = 90325, upload-time = "2025-04-22T01:54:56.422Z" },
-    { url = "https://files.pythonhosted.org/packages/12/88/d9327292f6c5c8f0f9516f913fbc7fab7ee716f92d65f67028390d34dacf/werpy-3.1.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1fe07f3ee2af4479fae985c268174140b3d6bb069e642f53bf43c080b209fdc5", size = 115384, upload-time = "2025-04-22T01:54:57.538Z" },
-    { url = "https://files.pythonhosted.org/packages/b6/48/4f3fbcd810512d7c8759c4a80ee639691364f9d2e32f543cf2bd8029e0af/werpy-3.1.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:c6244b5335c2558b80ee40a7dc8dd930ac579e93fbe9dd8fb6c6fefb552fed34", size = 124707, upload-time = "2025-04-22T01:54:59.559Z" },
-    { url = "https://files.pythonhosted.org/packages/51/45/a3d464c609082874a0acec33126fdbeade89862104208ab62e5ede317c01/werpy-3.1.0-cp312-cp312-win_amd64.whl", hash = "sha256:f3cb31f79c58bece64c8ed1ba8ab0c803d78e9f573c0f63a4d744191dd90aed6", size = 123119, upload-time = "2025-04-22T01:55:01.093Z" },
-    { url = "https://files.pythonhosted.org/packages/49/51/d9739817043801696ef0a86c1a8c530f0882ac70454b998090e5fd42bed0/werpy-3.1.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:0c3fd9a62904dd4d2b2002dc12924261ff4b1268a79629cbde14ea7d513d16a9", size = 89226, upload-time = "2025-04-22T01:55:02.301Z" },
-    { url = "https://files.pythonhosted.org/packages/c8/af/728c570543f9f6d6c849bb8f25a85863a0a35a427d2e023ca2da92d7a779/werpy-3.1.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f6232e99add50b50e6f2c61f4f65b111c9f1a2dd139c638113ec2aeca01f8e66", size = 115578, upload-time = "2025-04-22T01:55:03.71Z" },
-    { url = "https://files.pythonhosted.org/packages/96/fe/f8d5831db42345ec9407ca13622a7d4369fbf565ac9f0a904e4bd13cc295/werpy-3.1.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:9a0d42df9b3893a3055ed496bb974960c990f202d9fda8ac9eec3970bc0b44c7", size = 124705, upload-time = "2025-04-22T01:55:05.32Z" },
-    { url = "https://files.pythonhosted.org/packages/57/f6/fdcf68adb40d604606853f4d9a4ecf8e0920ca9f9aef98daab674a79cf88/werpy-3.1.0-cp313-cp313-win_amd64.whl", hash = "sha256:c386fbd6b8c3ab7712dc941187fc4bf95f12f03fa6f78bd3070c72a7d8fedd09", size = 122783, upload-time = "2025-04-22T01:55:07.707Z" },
-]
-
-[[package]]
 name = "widgetsnbextension"
 version = "4.0.14"
 source = { registry = "https://pypi.org/simple" }
@@ -4610,6 +4599,7 @@ dependencies = [
     { name = "emoji" },
     { name = "ibis-framework", extra = ["duckdb"] },
     { name = "ipython" },
+    { name = "jiwer" },
     { name = "levenshtein" },
     { name = "librosa" },
     { name = "matplotlib" },
@@ -4624,7 +4614,6 @@ dependencies = [
     { name = "torchvision" },
     { name = "tqdm" },
     { name = "transformers" },
-    { name = "werpy" },
     { name = "yt-dlp" },
 ]
 
@@ -4646,6 +4635,7 @@ requires-dist = [
     { name = "emoji", specifier = ">=2.14.1" },
     { name = "ibis-framework", extras = ["duckdb"], specifier = ">=10.5.0" },
     { name = "ipython", specifier = "==8.31.0" },
+    { name = "jiwer", specifier = ">=4.0.0" },
     { name = "levenshtein", specifier = ">=0.27.1" },
     { name = "librosa", specifier = ">=0.11.0" },
     { name = "matplotlib", specifier = ">=3.10.3" },
@@ -4660,7 +4650,6 @@ requires-dist = [
     { name = "torchvision", specifier = ">=0.22.0" },
     { name = "tqdm", specifier = ">=4.67.1" },
     { name = "transformers", specifier = ">=4.51.3" },
-    { name = "werpy", specifier = ">=3.1.0" },
     { name = "yt-dlp", specifier = ">=2025.4.30" },
 ]
 

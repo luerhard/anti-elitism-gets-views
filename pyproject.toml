@@ -22,6 +22,7 @@ dependencies = [
     "torchvision>=0.22.0",
     "tqdm>=4.67.1",
     "transformers>=4.51.3",
+    "werpy>=3.1.0",
     "yt-dlp>=2025.4.30",
 ]
 
@@ -29,10 +30,13 @@ dependencies = [
 dev = [
   "ipykernel>=6.29.5",
   "jupyter>=1.1.1",
+  "marimo[recommended]>=0.17.8",
   "papermill>=2.6.0",
   "pip>=25.1.1",
   "pytest>=8.3.5",
   "pytest-cases>=3.8.6",
+  "python-lsp-ruff>=2.3.0",
+  "python-lsp-server>=1.13.2",
 ]
 
 [tool.ruff.lint.pydocstyle]

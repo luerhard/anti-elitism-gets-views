@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.17.8"
+__generated_with = "0.18.0"
 app = marimo.App(width="full")
 
 
@@ -14,14 +14,7 @@ def _():
     from sklearn.metrics import multilabel_confusion_matrix
 
     import src
-    from src.load import DataLoader
-    return DataLoader, classification_report, pd, src
-
-
-@app.cell
-def _(DataLoader):
-    dl = DataLoader()
-    return
+    return classification_report, pd, src
 
 
 @app.cell

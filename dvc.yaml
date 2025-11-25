@@ -162,3 +162,19 @@ stages:
     - reports/figures/bayes_r2_synthetic.jpg
     - reports/figures/bayes_r2_synthetic_coefficients.jpg
     - reports/tables/synthetic_correlation_matrix.csv
+
+  validate_whisper:
+    cmd: marimo export html pipeline/13-whisper_wer.py -o reports/notebooks/13-whisper_wer.html
+    deps:
+    - data/validation/whisper/
+    - pipeline/13-whisper_wer.py
+    outs:
+    - reports/notebooks/13-whisper_wer.html
+
+  validate_popbert:
+    cmd: marimo export html pipeline/14-validate_popbert.py -o reports/notebooks/14-validate_popbert.html
+    deps:
+    - data/validation/popbert/
+    - pipeline/14-validate_popbert.py
+    outs:
+    - reports/notebooks/14-validate_popbert.html

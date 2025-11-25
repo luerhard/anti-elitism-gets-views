@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.17.8"
+__generated_with = "0.18.0"
 app = marimo.App(width="full")
 
 
@@ -10,12 +10,13 @@ def _():
     import pandas as pd
 
     import src
-    from src.load import DataLoader
-    return DataLoader, pd, src
+    return pd, src
 
 
 @app.cell
-def _(DataLoader):
+def _():
+    from src.load import DataLoader
+
     dl = DataLoader()
     return (dl,)
 
@@ -66,25 +67,6 @@ def _(elite, nothing, pd, pplcentr):
 @app.cell
 def _(df, src):
     df.to_csv(src.PATH / "data/validation/popbert/unlabeled.csv", encoding="utf-8", index=False)
-    return
-
-
-@app.cell
-def _(elite, nothing, pd, pplcentr):
-    test = pd.concat(
-        [
-            elite.to_pandas(),
-            pplcentr.to_pandas(),
-            nothing.to_pandas(),
-        ],
-        axis=0,
-    )
-    return (test,)
-
-
-@app.cell
-def _(test):
-    test
     return
 
 

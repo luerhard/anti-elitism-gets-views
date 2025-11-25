@@ -589,3 +589,39 @@ stages:
       hash: md5
       md5: 5b1aecc4cdb7913a84f6fc8ad0c72e50
       size: 166203
+  validate_whisper:
+    cmd: marimo export html pipeline/13-whisper_wer.py -o 
+      reports/notebooks/13-whisper_wer.html
+    deps:
+    - path: data/validation/whisper/
+      hash: md5
+      md5: ac41aca841355d582fc83d5a68f754e4.dir
+      size: 7901
+      nfiles: 6
+    - path: pipeline/13-whisper_wer.py
+      hash: md5
+      md5: 6f1f783ad4be32aea32b9ba5596a87bf
+      size: 2936
+    outs:
+    - path: reports/notebooks/13-whisper_wer.html
+      hash: md5
+      md5: edfb0ad7850431d2bab1c5d529273f75
+      size: 91187
+  validate_popbert:
+    cmd: marimo export html pipeline/14-validate_popbert.py -o 
+      reports/notebooks/14-validate_popbert.html
+    deps:
+    - path: data/validation/popbert/
+      hash: md5
+      md5: c8f399f6de3c76ad371af0e5e479d29d.dir
+      size: 100727
+      nfiles: 3
+    - path: pipeline/14-validate_popbert.py
+      hash: md5
+      md5: f54564ad69ccb2c8df307ae0cc79872a
+      size: 2128
+    outs:
+    - path: reports/notebooks/14-validate_popbert.html
+      hash: md5
+      md5: 6c5db92d42121c9ab8f4af726ff9b05c
+      size: 63223

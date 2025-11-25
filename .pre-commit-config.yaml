@@ -10,13 +10,13 @@ repos:
   - id: check-merge-conflict
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.12.11
+  rev: v0.14.6
   hooks:
   - id: ruff
     types_or: [python, pyi, jupyter]
     args: [--fix, --exit-non-zero-on-fix]
 - repo: https://github.com/iterative/dvc
-  rev: 3.61.0
+  rev: 3.64.0
   hooks:
   - id: dvc-pre-push
     additional_dependencies:

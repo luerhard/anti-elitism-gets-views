@@ -399,8 +399,8 @@ stages:
       nfiles: 2349
     - path: pipeline/01-build_metadata.ipynb
       hash: md5
-      md5: 72edb20605d6242603fb659b3409fca9
-      size: 26975
+      md5: b87a37cb0ecaf39d850678bd9c0fd150
+      size: 26974
     outs:
     - path: data/yt_metadata/channels.parquet
       hash: md5
@@ -408,12 +408,12 @@ stages:
       size: 10468
     - path: data/yt_metadata/videos.parquet
       hash: md5
-      md5: 63f83ffdb03a68c145370e9ca8cf0915
-      size: 6409515
+      md5: 6c9f2c4deeabf7cb980622f697c14bc9
+      size: 6409456
     - path: reports/notebooks/01-build_metadata.ipynb
       hash: md5
-      md5: c346e244ef7386dbd9e9d3d4c6ccf9e2
-      size: 31408
+      md5: fea9526bba681006a251da9aee5495f9
+      size: 30964
   run_regressions:
     cmd: Rscript pipeline/06-run_regressions.R
     deps:

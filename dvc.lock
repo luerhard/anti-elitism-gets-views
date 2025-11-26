@@ -25,8 +25,8 @@ stages:
     deps:
     - path: data/interim/transcripts/v3_large_turbo.parquet
       hash: md5
-      md5: bbfafb4753dd3c4e8a79d03a6280dc6c
-      size: 48045031
+      md5: 655794b12463e0588d12b4e0b25813ba
+      size: 48380571
     - path: pipeline/03-tokenize_transcripts.py
       hash: md5
       md5: 846da82ff54933c4c75e010e3691e65f
@@ -38,12 +38,12 @@ stages:
     outs:
     - path: data/yt_metadata/broken_transcripts.parquet
       hash: md5
-      md5: 664ebe4dbe31f769bc1468344148b15b
-      size: 1653
+      md5: 3e07fe7820e5aff67756298e41acb0a5
+      size: 2157
     - path: data/yt_metadata/sentences.parquet
       hash: md5
-      md5: 72ae5f1d528ace8352192b521c513cab
-      size: 62439966
+      md5: 879df3144765b28abd12bde6ad10c2d8
+      size: 62906396
   run_popbert:
     cmd: python pipeline/04-run_popbert.py
     deps:

@@ -8,6 +8,4 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=lukas.erhard@sowi.uni-stuttgart.de
 
-cd /home/st/st_st/st_ac138201/workspaces/gpfs/st_ac138201-ytpop/ytpop
-
-~/nix-portable nix develop --impure --command python pipeline/03-tokenize_transcripts.py
+~/nix-portable nix develop --impure --command uv run pipeline/03-tokenize_transcripts.py

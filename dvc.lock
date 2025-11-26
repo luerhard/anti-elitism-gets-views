@@ -344,9 +344,9 @@ stages:
       nfiles: 1878
     - path: data/raw/yt/@FDP
       hash: md5
-      md5: 1ba16067ea78a532607f9dc4c73e8f73.dir
-      size: 21694010619
-      nfiles: 2326
+      md5: de80996b5cc38e4ea151af2461e42aba.dir
+      size: 21694366775
+      nfiles: 2327
     - path: data/raw/yt/@cducsu
       hash: md5
       md5: 4a707b1b26f5ec1757bbdd2cbd9026db.dir
@@ -374,9 +374,9 @@ stages:
       nfiles: 349
     - path: data/raw/yt/@fdpbt
       hash: md5
-      md5: 4881a3bc06c28187ab48398fa0505e3e.dir
-      size: 4133104842
-      nfiles: 675
+      md5: 244b84558ad6401a0b37f43e9fc4bf0a.dir
+      size: 5131238473
+      nfiles: 840
     - path: data/raw/yt/@gruenebundestag
       hash: md5
       md5: f596f96ae42ce2f61399a3182025f794.dir
@@ -399,21 +399,21 @@ stages:
       nfiles: 2349
     - path: pipeline/01-build_metadata.ipynb
       hash: md5
-      md5: 0966354b5ac5fdd33e724f6e9af3cd31
-      size: 26214
+      md5: 72edb20605d6242603fb659b3409fca9
+      size: 26975
     outs:
     - path: data/yt_metadata/channels.parquet
       hash: md5
-      md5: 9194ae4232f85e166e887de50accbdf1
-      size: 10399
+      md5: 128464bbbe5732b978a4c1d3a7bfb54a
+      size: 10468
     - path: data/yt_metadata/videos.parquet
       hash: md5
-      md5: 8c05edde0af474692c7e75d575065c3b
-      size: 6349327
+      md5: 63f83ffdb03a68c145370e9ca8cf0915
+      size: 6409515
     - path: reports/notebooks/01-build_metadata.ipynb
       hash: md5
-      md5: 3970fe889b602b082e7f955bf229b744
-      size: 30381
+      md5: c346e244ef7386dbd9e9d3d4c6ccf9e2
+      size: 31408
   run_regressions:
     cmd: Rscript pipeline/06-run_regressions.R
     deps:

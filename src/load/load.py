@@ -15,7 +15,7 @@ class DataLoader:
     }
 
     PERIOD_START = "2017-12-06"
-    PERIOD_END = "2025-04-24"
+    PERIOD_END = "2025-02-24"
     MIN_TOKENS_PER_SENT = 3
     MIN_SENTS_PER_VIDEO = 5
 
@@ -24,20 +24,14 @@ class DataLoader:
         self.con = ibis.duckdb.connect(threads=6, memory_limit="10GB")
         self.con.read_parquet(ytdata / "channels.parquet", table_name="channels")
         self.con.read_parquet(ytdata / "videos.parquet", table_name="videos")
-        self.con.read_parquet(
-            ytdata / "broken_transcripts.parquet", table_name="broken_transcripts"
-        )
+        self.con.read_parquet(ytdata / "broken_transcripts.parquet", table_name="broken_transcripts")
         self.con.read_parquet(ytdata / "sentences.parquet", table_name="sentences")
         self.con.read_parquet(ytdata / "popbert.parquet", table_name="popbert")
 
     def channels(self):
         table = self.con.table("channels").select(~s.cols("channel_url"))
-        table = table.mutate(
-            channel=_.channel_uploader_id.substitute(src.channel_id2name)
-        )
-        table = table.mutate(
-            party=_.channel_uploader_id.substitute(src.channel_id2party)
-        )
+        table = table.mutate(channel=_.channel_uploader_id.substitute(src.channel_id2name))
+        table = table.mutate(party=_.channel_uploader_id.substitute(src.channel_id2party))
         return table
 
     def videos(
@@ -55,13 +49,11 @@ class DataLoader:
                 [
                     _.video_datetime_upload >= self.PERIOD_START,
                     _.video_datetime_upload <= self.PERIOD_END,
-                    _.video_was_live == False,
+                    # _.video_was_live == False,
                 ],
             )
             if not _ignore_broken_transcripts_filter:
-                table = table.anti_join(
-                    self.broken_transcripts(filtered=False), ["video_id"]
-                )
+                table = table.anti_join(self.broken_transcripts(filtered=False), ["video_id"])
 
             if not _ignore_sentence_filter:
                 # necessary to avoid possible infinite recursion

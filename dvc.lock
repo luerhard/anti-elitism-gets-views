@@ -5,8 +5,8 @@ stages:
     deps:
     - path: data/yt_metadata/videos.parquet
       hash: md5
-      md5: 8c05edde0af474692c7e75d575065c3b
-      size: 6349327
+      md5: 6c9f2c4deeabf7cb980622f697c14bc9
+      size: 6409456
     - path: pipeline/02-run_asr.py
       hash: md5
       md5: 1ae95f48ff4da5b4259b2aa2f1b6119b
@@ -18,8 +18,8 @@ stages:
     outs:
     - path: data/interim/transcripts/v3_large_turbo.parquet
       hash: md5
-      md5: bbfafb4753dd3c4e8a79d03a6280dc6c
-      size: 48045031
+      md5: 655794b12463e0588d12b4e0b25813ba
+      size: 48380571
   tokenize_transcripts:
     cmd: python pipeline/03-tokenize_transcripts.py
     deps:

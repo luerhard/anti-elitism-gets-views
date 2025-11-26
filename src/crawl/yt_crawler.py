@@ -158,8 +158,15 @@ class YTChannelCrawler:
 
         ts = content.get("timestamp")
         if not ts:
+            upload_date = content.get("upload_date")
+            check = dt.datetime.strptime(upload_date, "%Y%m%d")
+        else:
+            check = dt.datetime.fromtimestamp(ts)
+
+        if not check:
             return False
-        return dt.datetime.fromtimestamp(ts) >= self.start_date
+
+        return check >= self.start_date
 
     def _download_video(self, url):
         self.ydl.download(url=url)

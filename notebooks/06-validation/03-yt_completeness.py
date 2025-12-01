@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.18.0"
+__generated_with = "0.17.8"
 app = marimo.App(width="full", auto_download=["html"])
 
 
@@ -34,7 +34,11 @@ def _(dl):
 
 @app.cell
 def _(videos):
-    counts = videos.groupby(["channel", "channel_uploader_id", "channel_id"]).size().reset_index(name="count")
+    counts = (
+        videos.groupby(["channel", "channel_uploader_id", "channel_id"])
+        .size()
+        .reset_index(name="count")
+    )
     counts
     return (counts,)
 
@@ -73,7 +77,9 @@ def _(build, datetime, pprint, src):
             )
 
             for it in res.get("items", []):
-                published_at = datetime.fromisoformat(it["snippet"]["publishedAt"].replace("Z", "+00:00"))
+                published_at = datetime.fromisoformat(
+                    it["snippet"]["publishedAt"].replace("Z", "+00:00")
+                )
                 if start <= published_at < end:
                     videos.append(it["contentDetails"]["videoId"])
 
@@ -106,7 +112,6 @@ def _(counts, end_date, list_uploads_in_range, start_date):
         video_ids = list_uploads_in_range(row.channel_id, start_date, end_date)
         for video_id in video_ids:
             rows.append({"channel_id": row.channel_id, "video_id": video_id})
-
     return (rows,)
 
 
@@ -118,7 +123,13 @@ def _(pd, rows):
 
 @app.cell
 def _(counts, df_api):
-    counts.merge(df_api, on="channel_id", how="left").fillna(0)
+    out = counts.merge(df_api, on="channel_id", how="left").fillna(0)
+    return (out,)
+
+
+@app.cell
+def _(out, src):
+    out.to_csv(src.PATH / "overleaf/tables/api_comparison.csv")
     return
 
 

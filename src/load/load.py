@@ -49,7 +49,7 @@ class DataLoader:
                 [
                     _.video_datetime_upload >= self.PERIOD_START,
                     _.video_datetime_upload <= self.PERIOD_END,
-                    # _.video_was_live == False,
+                    _.video_was_live == False,
                 ],
             )
             if not _ignore_broken_transcripts_filter:
@@ -67,7 +67,7 @@ class DataLoader:
 
         return table
 
-    def broken_transcripts(self, filtered: True):
+    def broken_transcripts(self, filtered: bool = True):
         broken_table = self.con.table("broken_transcripts")
         if filtered:
             videos = self.videos(

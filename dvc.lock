@@ -95,25 +95,25 @@ stages:
       nfiles: 7
     - path: pipeline/05-basic_descriptives.ipynb
       hash: md5
-      md5: 1c76c281725b8b20eb0e6abd32e9ec61
-      size: 616937
+      md5: 17563395c69bbda320419629283a012e
+      size: 616689
     - path: src/load/load.py
       hash: md5
-      md5: 036d63eb9effeb212c079636ac792408
-      size: 4711
+      md5: a32c5e8b92769b9bae0ee3a8d4358c35
+      size: 4716
     outs:
     - path: reports/figures/populism_over_time.jpg
       hash: md5
-      md5: 8a51d329d592cd2614d21facc29da33b
-      size: 744368
+      md5: 36536e0a5482813f48e28a0b3d143fa9
+      size: 772603
     - path: reports/figures/populism_per_party.jpg
       hash: md5
-      md5: fdf5071b01335984ceb75f9d6754c7ec
-      size: 309610
+      md5: 2fa4eca675b0cb7f0f611d51847160fb
+      size: 325861
     - path: reports/figures/view_count.jpg
       hash: md5
-      md5: 1351c6484ac1b7fa451b6b922a53df71
-      size: 447397
+      md5: 4a59c72b22ddbe9dbe7045a4dc130871
+      size: 454703
     - path: reports/manuscript/inlines/n_broken.txt
       hash: md5
       md5: 2b24d495052a8ce66358eb576b8912c8
@@ -132,8 +132,8 @@ stages:
       size: 7
     - path: reports/notebooks/05-basic_descriptives.ipynb
       hash: md5
-      md5: a5682de30316f6a6b6d6057fc690cc16
-      size: 488002
+      md5: 8467967665969508a9316e0bf9b24740
+      size: 492369
     - path: reports/tables/channel_descriptives.csv
       hash: md5
       md5: c43a2f7a809e4f39347c92062c8f0f97
@@ -257,13 +257,13 @@ stages:
       size: 7755
     - path: src/load/load.py
       hash: md5
-      md5: 036d63eb9effeb212c079636ac792408
-      size: 4711
+      md5: a32c5e8b92769b9bae0ee3a8d4358c35
+      size: 4716
     outs:
     - path: reports/notebooks/11-top_videos.ipynb
       hash: md5
-      md5: 0ce75d13c9eec873fb34dc8ed1628df4
-      size: 17761
+      md5: ac5edf2d83c481a447b08e43b5768534
+      size: 21285
     - path: reports/tables/most_antielitism_videos_per_channel.csv
       hash: md5
       md5: e8f0ee8f36a227f4642d7f420422c0c3
@@ -428,28 +428,28 @@ stages:
       size: 3966
     - path: src/load/load.py
       hash: md5
-      md5: 036d63eb9effeb212c079636ac792408
-      size: 4711
+      md5: a32c5e8b92769b9bae0ee3a8d4358c35
+      size: 4716
     outs:
     - path: data/models/likes_elite
       hash: md5
-      md5: ca61d98a0bf0909f855db925bcfed128.dir
-      size: 3950224483
+      md5: 87ac047f51141ad3d9861c97409042b6.dir
+      size: 3950990720
       nfiles: 96
     - path: data/models/likes_pplcentr
       hash: md5
-      md5: 0132bac9777f28ec4cbe31ab205083a1.dir
-      size: 4467056487
+      md5: 73b0da13d5cb619687b746c4d45d3e0a.dir
+      size: 4467082487
       nfiles: 96
     - path: data/models/views_elite
       hash: md5
-      md5: 8a7aafb98e361d0e923c4ea420395268.dir
-      size: 2910796075
+      md5: 92ca81548352c1c7f076cc0c1171c6e9.dir
+      size: 2910544335
       nfiles: 96
     - path: data/models/views_pplcentr
       hash: md5
-      md5: 49b83c14b04f97c8f884a6eb9dac800a.dir
-      size: 3435278629
+      md5: 35dfbbfd6af4d03229c50564207a73f4.dir
+      size: 3436169757
       nfiles: 96
   plot_regressions:
     cmd: "papermill pipeline/08-plot_regressions.ipynb reports/notebooks/08-plot_regressions.ipynb\n\
@@ -457,8 +457,8 @@ stages:
     deps:
     - path: data/interim/regression_results.rds
       hash: md5
-      md5: 902618222c7847cc2ed635f7b2f9f934
-      size: 166105
+      md5: 987dacca6a3f8c6c3b9db5da89c7e6d3
+      size: 166065
     - path: pipeline/08-plot_regressions.ipynb
       hash: md5
       md5: bfb16f300f97c33b5054e1038c311ed3
@@ -466,28 +466,28 @@ stages:
     outs:
     - path: reports/figures/reg_likes_elite.jpg
       hash: md5
-      md5: 2ef39d9526746ceb924c49835ee939eb
-      size: 533946
+      md5: fb04bb6ed9a0d932701db4611f02ac18
+      size: 538332
     - path: reports/figures/reg_likes_pplcentr.jpg
       hash: md5
-      md5: 1b8565a253c694fbc78d3e321b7e8d0d
-      size: 454694
+      md5: dc95e2e18c1cc51485124c2611d6df10
+      size: 455936
     - path: reports/figures/reg_views.jpg
       hash: md5
-      md5: 98f2f45ddd6136dbe1a54e9d2827c255
-      size: 856369
+      md5: 01787a909eed06ac324fa1ab1659ccce
+      size: 862540
     - path: reports/figures/reg_views_elite.jpg
       hash: md5
-      md5: dc7719a02b5021a5c5f66fda631368a8
-      size: 453011
+      md5: 9929f60a4614a4057ca2cd5165bab960
+      size: 461395
     - path: reports/figures/reg_views_pplcentr.jpg
       hash: md5
-      md5: b91f7f22f475e0e4a1193e2c532951e8
-      size: 469211
+      md5: b54cd5ad19364abc3b78e92d1f58a444
+      size: 484024
     - path: reports/notebooks/08-plot_regressions.ipynb
       hash: md5
-      md5: 93646e9744e63f3e69ffc44ad38a3f1c
-      size: 558995
+      md5: 822bc04236517eb65a52b6b01af16d38
+      size: 553123
   bayes_r2_simulation:
     cmd: "papermill pipeline/12-bayes_r2_synthetic_test.ipynb reports/notebooks/12-bayes_r2_synthetic_test.ipynb\n\
       cp -fL reports/figures/* overleaf/figures/\ncp -fL reports/tables/* overleaf/tables/\n"
@@ -527,13 +527,13 @@ stages:
       size: 2682
     - path: src/load/load.py
       hash: md5
-      md5: 036d63eb9effeb212c079636ac792408
-      size: 4711
+      md5: a32c5e8b92769b9bae0ee3a8d4358c35
+      size: 4716
     outs:
     - path: data/models/hurdle/
       hash: md5
-      md5: 2664ec96d959fceccd9bb800f1c1176e.dir
-      size: 368155073
+      md5: be4534c4466b7ba950fdd4d2c685b35b.dir
+      size: 368154218
       nfiles: 12
   plot_hurdle_models:
     cmd: "papermill pipeline/10-plot_hurdle_models.ipynb reports/notebooks/10-plot_hurdle_models.ipynb\n\
@@ -541,8 +541,8 @@ stages:
     deps:
     - path: data/models/hurdle
       hash: md5
-      md5: 2664ec96d959fceccd9bb800f1c1176e.dir
-      size: 368155073
+      md5: be4534c4466b7ba950fdd4d2c685b35b.dir
+      size: 368154218
       nfiles: 12
     - path: pipeline/10-plot_hurdle_models.ipynb
       hash: md5
@@ -551,34 +551,34 @@ stages:
     outs:
     - path: reports/figures/hurdle_model_coefficients.jpg
       hash: md5
-      md5: a44e28450f1fb2393ceffc996be259ba
-      size: 334492
+      md5: 3d62924aee6a53649f1b2cfd13bedd91
+      size: 331310
     - path: reports/notebooks/10-plot_hurdle_models.ipynb
       hash: md5
-      md5: 334a8e9714ef819271ee69256afc93f3
-      size: 69235
+      md5: 6b3be3d5112059df9d322adcce34dcf1
+      size: 66851
   export_regression_results:
     cmd: Rscript pipeline/07-export_regression_results.R
     deps:
     - path: data/models/likes_elite
       hash: md5
-      md5: ca61d98a0bf0909f855db925bcfed128.dir
-      size: 3950224483
+      md5: 87ac047f51141ad3d9861c97409042b6.dir
+      size: 3950990720
       nfiles: 96
     - path: data/models/likes_pplcentr
       hash: md5
-      md5: 0132bac9777f28ec4cbe31ab205083a1.dir
-      size: 4467056487
+      md5: 73b0da13d5cb619687b746c4d45d3e0a.dir
+      size: 4467082487
       nfiles: 96
     - path: data/models/views_elite
       hash: md5
-      md5: 8a7aafb98e361d0e923c4ea420395268.dir
-      size: 2910796075
+      md5: 92ca81548352c1c7f076cc0c1171c6e9.dir
+      size: 2910544335
       nfiles: 96
     - path: data/models/views_pplcentr
       hash: md5
-      md5: 49b83c14b04f97c8f884a6eb9dac800a.dir
-      size: 3435278629
+      md5: 35dfbbfd6af4d03229c50564207a73f4.dir
+      size: 3436169757
       nfiles: 96
     - path: pipeline/07-export_regression_results.R
       hash: md5
@@ -587,8 +587,8 @@ stages:
     outs:
     - path: data/interim/regression_results.rds
       hash: md5
-      md5: 902618222c7847cc2ed635f7b2f9f934
-      size: 166105
+      md5: 987dacca6a3f8c6c3b9db5da89c7e6d3
+      size: 166065
   validate_whisper:
     cmd: marimo export html pipeline/13-whisper_wer.py -o 
       reports/notebooks/13-whisper_wer.html

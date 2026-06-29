@@ -1,3 +1,6 @@
+# DVC config (contains remote credentials; kept local only)
+.dvc/config
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -177,3 +180,4 @@ pipeline/**/
 **/appendix.pdf
 pipeline/Rplots.ps
 **/__marimo__/**
+overleaf/
